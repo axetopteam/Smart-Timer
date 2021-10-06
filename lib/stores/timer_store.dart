@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/application/models/interval.dart';
@@ -13,13 +14,14 @@ abstract class TimerStateBase with Store {
 
   final List<Interval> timerSchedule;
 
+  final stream = Stream.periodic(const Duration(seconds: 1), (x) => x);
+  StreamSubscription? timerSubscription;
+
   @observable
   late Duration restTime;
 
   @observable
   var status = TimerStatus.stop;
-
-  Timer? timer;
 
   @observable
   var intervalIndex = 0;
@@ -27,16 +29,21 @@ abstract class TimerStateBase with Store {
   @computed
   Interval get currentInterval => timerSchedule[intervalIndex];
 
+  @computed
+  int get currentRound => max(((intervalIndex + 1) ~/ 2), 1);
+
+  int get rounds => (timerSchedule.length - 1) ~/ 2;
+
   @action
   void tick() {
     if (restTime.inSeconds > 0) {
       restTime = restTime - const Duration(seconds: 1);
     } else {
-      if (intervalIndex < timerSchedule.length) {
+      if (intervalIndex < timerSchedule.length - 1) {
         intervalIndex++;
         restTime = timerSchedule[intervalIndex].duration;
       } else {
-        timer?.cancel();
+        timerSubscription?.cancel();
         status = TimerStatus.done;
       }
     }
@@ -44,27 +51,25 @@ abstract class TimerStateBase with Store {
 
   @action
   void start() {
-    // time = initialTime;
-    timer?.cancel();
+    timerSubscription?.cancel();
     restTime = timerSchedule[0].duration;
     status = TimerStatus.run;
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    intervalIndex = 0;
+    timerSubscription = stream.listen((_) {
       tick();
     });
   }
 
   @action
   void pause() {
-    timer?.cancel();
+    // timer?.cancel();
+    timerSubscription?.pause();
     status = TimerStatus.pause;
   }
 
   @action
-  void restart() {
+  void resume() {
     status = TimerStatus.run;
-    timer?.cancel();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      tick();
-    });
+    timerSubscription?.resume();
   }
 }

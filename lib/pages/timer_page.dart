@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -5,6 +7,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
+import 'package:smart_timer/application/models/interval_type.dart';
+import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/stores/timer_store.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 
@@ -67,52 +71,85 @@ class _TimerPageState extends State<TimerPage> {
             title: const Text('Timer'),
             foregroundColor: AppColors.white,
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Observer(
-                builder: (_) => Text(
-                  '${((timerState.intervalIndex + 1) ~/ 2)}/${(timerState.timerSchedule.length - 1) ~/ 2}',
-                  style: AppFonts.header2,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Observer(
-                builder: (_) => Text(
-                  durationToString(timerState.restTime),
-                  style: const TextStyle(
-                    fontSize: 52,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      timerState.restart();
-                    },
-                    icon: const Icon(
-                      Icons.restart_alt_rounded,
-                      size: 40,
-                      color: Colors.blueAccent,
+          body: SizedBox(
+            width: double.infinity,
+            child: Observer(
+              builder: (ctx) => timerState.status == TimerStatus.done
+                  ? const Center(
+                      child: Text('Finish', style: AppFonts.header),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Observer(
+                          builder: (_) => Text(
+                            '${timerState.currentRound}/${timerState.rounds}',
+                            style: AppFonts.header2,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Observer(
+                          builder: (_) => Text(
+                            timerState.currentInterval.type == IntervalType.rest ? 'Rest' : 'Work',
+                            style: AppFonts.header2,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Observer(
+                          builder: (_) => Text(
+                            durationToString2(timerState.restTime),
+                            style: const TextStyle(
+                              fontSize: 52,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Observer(builder: (ctx) {
+                          Icon icon;
+                          void Function() onPressed;
+                          switch (timerState.status) {
+                            case TimerStatus.stop:
+                              icon = const Icon(
+                                Icons.play_arrow,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              );
+                              onPressed = timerState.start;
+                              break;
+                            case TimerStatus.run:
+                              icon = const Icon(
+                                Icons.pause,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              );
+                              onPressed = timerState.pause;
+                              break;
+                            case TimerStatus.pause:
+                              icon = const Icon(
+                                Icons.play_arrow,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              );
+                              onPressed = timerState.resume;
+                              break;
+                            case TimerStatus.done:
+                              icon = const Icon(
+                                Icons.restart_alt,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              );
+                              onPressed = timerState.start;
+                              break;
+                          }
+                          return IconButton(
+                            onPressed: onPressed,
+                            icon: icon,
+                          );
+                        }),
+                      ],
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      timerState.start();
-                    },
-                    icon: const Icon(
-                      Icons.play_arrow,
-                      size: 40,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         );
       },

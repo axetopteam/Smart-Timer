@@ -16,6 +16,13 @@ mixin _$TimerState on TimerStateBase, Store {
           Computed<Interval>(() => super.currentInterval,
               name: 'TimerStateBase.currentInterval'))
       .value;
+  Computed<int>? _$currentRoundComputed;
+
+  @override
+  int get currentRound =>
+      (_$currentRoundComputed ??= Computed<int>(() => super.currentRound,
+              name: 'TimerStateBase.currentRound'))
+          .value;
 
   final _$restTimeAtom = Atom(name: 'TimerStateBase.restTime');
 
@@ -99,11 +106,11 @@ mixin _$TimerState on TimerStateBase, Store {
   }
 
   @override
-  void restart() {
+  void resume() {
     final _$actionInfo = _$TimerStateBaseActionController.startAction(
-        name: 'TimerStateBase.restart');
+        name: 'TimerStateBase.resume');
     try {
-      return super.restart();
+      return super.resume();
     } finally {
       _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
@@ -115,7 +122,8 @@ mixin _$TimerState on TimerStateBase, Store {
 restTime: ${restTime},
 status: ${status},
 intervalIndex: ${intervalIndex},
-currentInterval: ${currentInterval}
+currentInterval: ${currentInterval},
+currentRound: ${currentRound}
     ''';
   }
 }
