@@ -9,6 +9,14 @@ part of 'timer_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$TimerState on TimerStateBase, Store {
+  Computed<Interval>? _$currentIntervalComputed;
+
+  @override
+  Interval get currentInterval => (_$currentIntervalComputed ??=
+          Computed<Interval>(() => super.currentInterval,
+              name: 'TimerStateBase.currentInterval'))
+      .value;
+
   final _$restTimeAtom = Atom(name: 'TimerStateBase.restTime');
 
   @override
@@ -106,7 +114,8 @@ mixin _$TimerState on TimerStateBase, Store {
     return '''
 restTime: ${restTime},
 status: ${status},
-intervalIndex: ${intervalIndex}
+intervalIndex: ${intervalIndex},
+currentInterval: ${currentInterval}
     ''';
   }
 }

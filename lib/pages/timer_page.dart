@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/stores/timer_store.dart';
@@ -19,24 +20,36 @@ class _TimerPageState extends State<TimerPage> {
 
   // AudioPlayer audioPlayer = AudioPlayer();
   final player = AudioPlayer();
-  late final Duration? duration;
+  late Duration? duration;
+  late final ReactionDisposer reactionDispose;
 
   @override
   void initState() {
     timerState = Provider.of<TimerState>(context, listen: false);
-    // audioPlayer.play('assets/sounds/countdown1.mp3', isLocal: true);
-
+    reactionDispose = reaction<Duration>(
+      (reac) {
+        return timerState.restTime;
+      },
+      (rest) async {
+        if (rest.inSeconds == 3) {
+          await player.play();
+          await player.pause();
+          player.seek(const Duration(milliseconds: 0));
+        }
+      },
+    );
     super.initState();
   }
 
   @override
   void dispose() {
+    player.stop();
+    reactionDispose();
     super.dispose();
   }
 
   Future<void> initAudio() async {
-    duration = await player.setAsset('assets/sounds/countdown1.mp3');
-    player.play();
+    duration = await player.setAsset('assets/sounds/countdown2.mp3');
   }
 
   @override
@@ -52,6 +65,7 @@ class _TimerPageState extends State<TimerPage> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Timer'),
+            foregroundColor: AppColors.white,
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -59,10 +73,11 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               Observer(
                 builder: (_) => Text(
-                  timerState.intervalIndex.toString(),
-                  style: AppFonts.body,
+                  '${((timerState.intervalIndex + 1) ~/ 2)}/${(timerState.timerSchedule.length - 1) ~/ 2}',
+                  style: AppFonts.header2,
                 ),
               ),
+              const SizedBox(height: 20),
               Observer(
                 builder: (_) => Text(
                   durationToString(timerState.restTime),

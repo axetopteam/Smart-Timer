@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/application/models/interval.dart';
+import 'package:smart_timer/application/models/interval_type.dart';
 
 part 'tabata.g.dart';
 
@@ -9,17 +11,28 @@ abstract class TabataStoreBase with Store {
   var rounds = 8;
 
   @observable
-  var workTime = const Duration(seconds: 20);
+  var workTime = Interval(
+    duration: const Duration(seconds: 20),
+    type: IntervalType.work,
+  );
 
   @observable
-  var restTime = const Duration(seconds: 10);
+  var restTime = Interval(
+    duration: const Duration(seconds: 10),
+    type: IntervalType.rest,
+  );
 
   @computed
-  Duration get totalTime => (workTime + restTime) * rounds;
+  Duration get totalTime => (workTime.duration + restTime.duration) * rounds;
 
   @computed
-  List<Duration> get schedule {
-    List<Duration> timing = [];
+  List<Interval> get schedule {
+    List<Interval> timing = [
+      Interval(
+        duration: const Duration(seconds: 10),
+        type: IntervalType.prelaunch,
+      )
+    ];
     for (int i = 0; i < rounds; i++) {
       timing.addAll([workTime, restTime]);
     }
@@ -32,12 +45,18 @@ abstract class TabataStoreBase with Store {
   }
 
   @action
-  void setWorkTime(Duration value) {
-    workTime = value;
+  void setWorkTime(Duration duration) {
+    workTime = Interval(
+      duration: duration,
+      type: IntervalType.work,
+    );
   }
 
   @action
-  void setRestTime(Duration value) {
-    restTime = value;
+  void setRestTime(Duration duration) {
+    restTime = Interval(
+      duration: duration,
+      type: IntervalType.rest,
+    );
   }
 }

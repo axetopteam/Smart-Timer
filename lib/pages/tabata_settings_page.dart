@@ -80,7 +80,7 @@ class TabataSettingsPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showRoundsPicker(
                       context,
-                      initialValue: tabataSettings.workTime,
+                      initialValue: tabataSettings.workTime.duration,
                       timeRange: tabataWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -89,7 +89,7 @@ class TabataSettingsPage extends StatelessWidget {
                   },
                   child: Observer(
                     builder: (ctx) => buildBorderContainer(
-                      durationToString2(tabataSettings.workTime),
+                      durationToString2(tabataSettings.workTime.duration),
                       width: 60,
                     ),
                   ),
@@ -109,7 +109,7 @@ class TabataSettingsPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showRoundsPicker(
                       context,
-                      initialValue: tabataSettings.restTime,
+                      initialValue: tabataSettings.restTime.duration,
                       timeRange: tabataWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -118,7 +118,7 @@ class TabataSettingsPage extends StatelessWidget {
                   },
                   child: Observer(
                     builder: (ctx) => buildBorderContainer(
-                      durationToString2(tabataSettings.restTime),
+                      durationToString2(tabataSettings.restTime.duration),
                       width: 60,
                     ),
                   ),

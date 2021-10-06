@@ -16,11 +16,11 @@ mixin _$TabataStore on TabataStoreBase, Store {
       (_$totalTimeComputed ??= Computed<Duration>(() => super.totalTime,
               name: 'TabataStoreBase.totalTime'))
           .value;
-  Computed<List<Duration>>? _$scheduleComputed;
+  Computed<List<Interval>>? _$scheduleComputed;
 
   @override
-  List<Duration> get schedule =>
-      (_$scheduleComputed ??= Computed<List<Duration>>(() => super.schedule,
+  List<Interval> get schedule =>
+      (_$scheduleComputed ??= Computed<List<Interval>>(() => super.schedule,
               name: 'TabataStoreBase.schedule'))
           .value;
 
@@ -42,13 +42,13 @@ mixin _$TabataStore on TabataStoreBase, Store {
   final _$workTimeAtom = Atom(name: 'TabataStoreBase.workTime');
 
   @override
-  Duration get workTime {
+  Interval get workTime {
     _$workTimeAtom.reportRead();
     return super.workTime;
   }
 
   @override
-  set workTime(Duration value) {
+  set workTime(Interval value) {
     _$workTimeAtom.reportWrite(value, super.workTime, () {
       super.workTime = value;
     });
@@ -57,13 +57,13 @@ mixin _$TabataStore on TabataStoreBase, Store {
   final _$restTimeAtom = Atom(name: 'TabataStoreBase.restTime');
 
   @override
-  Duration get restTime {
+  Interval get restTime {
     _$restTimeAtom.reportRead();
     return super.restTime;
   }
 
   @override
-  set restTime(Duration value) {
+  set restTime(Interval value) {
     _$restTimeAtom.reportWrite(value, super.restTime, () {
       super.restTime = value;
     });
@@ -84,22 +84,22 @@ mixin _$TabataStore on TabataStoreBase, Store {
   }
 
   @override
-  void setWorkTime(Duration value) {
+  void setWorkTime(Duration duration) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
         name: 'TabataStoreBase.setWorkTime');
     try {
-      return super.setWorkTime(value);
+      return super.setWorkTime(duration);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setRestTime(Duration value) {
+  void setRestTime(Duration duration) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
         name: 'TabataStoreBase.setRestTime');
     try {
-      return super.setRestTime(value);
+      return super.setRestTime(duration);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }

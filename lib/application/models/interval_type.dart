@@ -1,1 +1,1 @@
-enum IntervalType { work, rest }
+enum IntervalType { prelaunch, work, rest }
