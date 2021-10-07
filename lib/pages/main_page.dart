@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_timer/main.dart';
 import 'package:smart_timer/pages/tabata_settings_page.dart';
 
 class MainPage extends StatelessWidget {
@@ -31,11 +32,7 @@ class MainPage extends StatelessWidget {
                     title: 'TABATA',
                     color: Colors.green,
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => TabataSettingsPage(),
-                        ),
-                      );
+                      router.showTabataSettings();
                     }),
               ],
             )

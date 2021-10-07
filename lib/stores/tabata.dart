@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/application/models/interval.dart';
-import 'package:smart_timer/application/models/interval_type.dart';
+import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/interval_type.dart';
 
 part 'tabata.g.dart';
 

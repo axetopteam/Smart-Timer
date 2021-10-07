@@ -7,6 +7,7 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
+import 'package:smart_timer/main.dart';
 import 'package:smart_timer/pages/timer_page.dart';
 import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/stores/timer_store.dart';
@@ -140,12 +141,7 @@ class TabataSettingsPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                    return Provider<TimerState>(
-                      create: (ctx) => TimerState(tabataSettings.schedule),
-                      child: TimerPage(),
-                    );
-                  }));
+                  router.showTabataTimer(tabataSettings.schedule);
                 },
                 color: AppColors.accentBlue,
               ),

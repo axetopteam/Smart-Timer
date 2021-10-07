@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/pages/main_page.dart';
+import 'package:smart_timer/routes/main_route_information_parser.dart';
+import 'package:smart_timer/routes/main_router_delegate.dart';
 
-import 'pages/timer_page.dart';
-
+final navigatorKey = GlobalKey<NavigatorState>();
+final router = MainRouterDelegate(navigatorKey);
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp(router));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp(this.router, {Key? key}) : super(key: key) {
+    router.showMainPage();
+  }
 
+  final MainRouterDelegate router;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routeInformationParser: MainRouteInformationParser(),
+      routerDelegate: router,
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         brightness: Brightness.light,
@@ -24,7 +31,6 @@ class MyApp extends StatelessWidget {
           foregroundColor: AppColors.accentBlue,
         ),
       ),
-      home: const MainPage(),
     );
   }
 }

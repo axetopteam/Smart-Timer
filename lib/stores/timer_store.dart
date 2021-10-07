@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/application/models/interval.dart';
+import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 
 part 'timer_store.g.dart';
