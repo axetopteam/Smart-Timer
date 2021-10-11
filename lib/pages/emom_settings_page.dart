@@ -5,15 +5,15 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
-import 'package:smart_timer/stores/tabata.dart';
+import 'package:smart_timer/stores/emom.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-class TabataSettingsPage extends StatelessWidget {
-  TabataSettingsPage({Key? key}) : super(key: key);
+class EmomSettingsPage extends StatelessWidget {
+  EmomSettingsPage({Key? key}) : super(key: key);
 
-  final tabataSettings = TabataStore();
+  final emom = Emom();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,42 @@ class TabataSettingsPage extends StatelessWidget {
           children: [
             const SizedBox(height: 120),
             const Text(
-              'TABATA',
+              'EMOM',
               style: AppFonts.header,
             ),
             const SizedBox(height: 32),
             const Text(
-              'Set your Tabata Timer',
+              'Set your EMOM Timer',
               style: AppFonts.header2,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Every:',
+                  style: AppFonts.body,
+                ),
+                const SizedBox(width: 12),
+                GestureDetector(
+                  onTap: () async {
+                    final selectedTime = await TimePicker.showTimePicker(
+                      context,
+                      initialValue: emom.workTime.duration,
+                      timeRange: emomWorkTimes,
+                    );
+                    if (selectedTime != null) {
+                      emom.setWorkTime(selectedTime);
+                    }
+                  },
+                  child: Observer(
+                    builder: (ctx) => ValueContainer(
+                      durationToString2(emom.workTime.duration),
+                      width: 60,
+                    ),
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 12),
             Row(
@@ -51,82 +80,24 @@ class TabataSettingsPage extends StatelessWidget {
                   onTap: () async {
                     final selectedRounds = await RoundsPicker.showRoundsPicker(
                       context,
-                      initialValue: tabataSettings.roundsCount,
+                      initialValue: emom.roundsCount,
                       range: tabataRounds,
                     );
                     if (selectedRounds != null) {
-                      tabataSettings.setRounds(selectedRounds);
+                      // emom.setRounds(selectedRounds);
                     }
                   },
                   child: Observer(
-                    builder: (ctx) => ValueContainer('${tabataSettings.roundsCount}'),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Work:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedTime = await TimePicker.showTimePicker(
-                      context,
-                      initialValue: tabataSettings.workTime.duration,
-                      timeRange: tabataWorkTimes,
-                    );
-                    if (selectedTime != null) {
-                      tabataSettings.setWorkTime(selectedTime);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.workTime.duration),
-                      width: 60,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rest:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedTime = await TimePicker.showTimePicker(
-                      context,
-                      initialValue: tabataSettings.restTime.duration,
-                      timeRange: tabataWorkTimes,
-                    );
-                    if (selectedTime != null) {
-                      tabataSettings.setRestTime(selectedTime);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.restTime.duration),
-                      width: 60,
-                    ),
+                    builder: (ctx) => ValueContainer('${emom.roundsCount}'),
                   ),
                 )
               ],
             ),
             const Spacer(),
-            Text(
-              'Total time: ${durationToString2(tabataSettings.totalTime)}',
-              style: AppFonts.body,
-            ),
+            // Text(
+            //   'Total time: ${durationToString2(tabataSettings.totalTime)}',
+            //   style: AppFonts.body,
+            // ),
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -137,7 +108,7 @@ class TabataSettingsPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(tabataSettings.workout);
+                  router.showTimer(emom.workout);
                 },
                 color: AppColors.accentBlue,
               ),

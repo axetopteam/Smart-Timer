@@ -1,4 +1,5 @@
 import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/workout.dart';
 
 /// Class is having all parameters decoded from path
 class MainRoutePath {
@@ -25,7 +26,8 @@ enum PageType {
   splash,
   main,
   tabataSettings,
-  tabataTimer,
+  emomSettings,
+  timer,
   page404,
 }
 
@@ -63,7 +65,8 @@ abstract class PageData {
     PageType.splash: '',
     PageType.main: 'main',
     PageType.tabataSettings: 'tabataSettings',
-    PageType.tabataTimer: 'tabataTimer',
+    PageType.emomSettings: 'emomSettings',
+    PageType.timer: 'tabataTimer',
     PageType.page404: 'page404',
   };
 
@@ -98,13 +101,18 @@ class TabataSettigsPageData extends PageData {
   PageType get type => PageType.tabataSettings;
 }
 
-class TabataTimerPageData extends PageData {
-  TabataTimerPageData(this.schedule) : super();
-
-  final List<Interval> schedule;
+class EmomSettigsPageData extends PageData {
+  const EmomSettigsPageData() : super();
 
   @override
-  PageType get type => PageType.tabataTimer;
+  PageType get type => PageType.emomSettings;
+}
+
+class TimerPageData extends PageData {
+  TimerPageData(this.workout) : super();
+  final Workout workout;
+  @override
+  PageType get type => PageType.timer;
 }
 
 class Page404PageData extends PageData {

@@ -11,13 +11,14 @@ class MainButton extends StatelessWidget {
   final EdgeInsets padding;
 
   const MainButton({
+    Key? key,
     required this.child,
     this.onPressed,
     this.color = AppColors.white,
     this.borderRadius = 10,
     this.disabledColor = AppColors.gray5,
     this.padding = const EdgeInsets.symmetric(vertical: 14),
-  });
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(

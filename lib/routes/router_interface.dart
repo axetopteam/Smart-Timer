@@ -1,7 +1,8 @@
-import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/workout.dart';
 
 abstract class RouterInterface {
   void showMainPage();
   void showTabataSettings();
-  void showTabataTimer(List<Interval> schedule);
+  void showTimer(Workout workout);
+  void showEmomSettings();
 }

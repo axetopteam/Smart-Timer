@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 
 part 'timer_store.g.dart';
@@ -10,9 +11,9 @@ part 'timer_store.g.dart';
 class TimerState = TimerStateBase with _$TimerState;
 
 abstract class TimerStateBase with Store {
-  TimerStateBase(this.timerSchedule) : restTime = timerSchedule[0].duration;
+  TimerStateBase(this.workout) : restTime = workout.rounds[0].intervals[0].duration;
 
-  final List<Interval> timerSchedule;
+  final Workout workout;
 
   final stream = Stream.periodic(const Duration(seconds: 1), (x) => x);
   StreamSubscription? timerSubscription;
@@ -24,27 +25,41 @@ abstract class TimerStateBase with Store {
   var status = TimerStatus.stop;
 
   @observable
+  var roundIndex = 0;
+
+  @observable
   var intervalIndex = 0;
 
   @computed
-  Interval get currentInterval => timerSchedule[intervalIndex];
+  Round get currentRound => workout.rounds[roundIndex];
+
+  int get roundsCount => workout.roundsCound;
 
   @computed
-  int get currentRound => max(((intervalIndex + 1) ~/ 2), 1);
+  IntervalType get currentType => workout.rounds[roundIndex].intervals[intervalIndex].type;
 
-  int get rounds => (timerSchedule.length - 1) ~/ 2;
+  @computed
+  int get roundNumber {
+    return roundIndex == 0 ? 1 : roundIndex;
+  }
 
   @action
   void tick() {
     if (restTime.inSeconds > 0) {
       restTime = restTime - const Duration(seconds: 1);
     } else {
-      if (intervalIndex < timerSchedule.length - 1) {
+      if (intervalIndex < currentRound.intervals.length - 1) {
         intervalIndex++;
-        restTime = timerSchedule[intervalIndex].duration;
+        restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;
       } else {
-        timerSubscription?.cancel();
-        status = TimerStatus.done;
+        if (roundIndex < roundsCount - 1) {
+          roundIndex++;
+          intervalIndex = 0;
+          restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;
+        } else {
+          timerSubscription?.cancel();
+          status = TimerStatus.done;
+        }
       }
     }
   }
@@ -52,8 +67,9 @@ abstract class TimerStateBase with Store {
   @action
   void start() {
     timerSubscription?.cancel();
-    restTime = timerSchedule[0].duration;
+    restTime = workout.rounds[0].intervals[0].duration;
     status = TimerStatus.run;
+    roundIndex = 0;
     intervalIndex = 0;
     timerSubscription = stream.listen((_) {
       tick();

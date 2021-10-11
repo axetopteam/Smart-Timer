@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/pages/emom_settings_page.dart';
 import 'package:smart_timer/pages/main_page.dart';
 import 'package:smart_timer/pages/page_404.dart';
 import 'package:smart_timer/pages/splash_page.dart';
@@ -93,13 +95,20 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
           key: const ValueKey('TabataPage'),
           child: TabataSettingsPage(),
         );
-      case PageType.tabataTimer:
-        final data = pageData as TabataTimerPageData;
+
+      case PageType.emomSettings:
+        return MaterialPage(
+          key: const ValueKey('TabataPage'),
+          child: EmomSettingsPage(),
+        );
+
+      case PageType.timer:
+        final data = pageData as TimerPageData;
         return MaterialPage(
           key: const ValueKey('TabataTimer'),
           child: Provider<TimerState>(
-            create: (ctx) => TimerState(data.schedule),
-            child: TimerPage(),
+            create: (ctx) => TimerState(data.workout),
+            child: const TimerPage(),
           ),
         );
 
@@ -113,7 +122,7 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
 
   @override
   Future<void> setNewRoutePath(MainRoutePath configuration) async {
-    print('SET NEW ${configuration.toString()}');
+    debugPrint('SET NEW ${configuration.toString()}');
     //currentConfiguration = configuration;
     //notifyListeners();
   }
@@ -131,8 +140,14 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   }
 
   @override
-  void showTabataTimer(List<interval.Interval> schedule) {
-    currentConfiguration?.pages.add(TabataTimerPageData(schedule));
+  void showEmomSettings() {
+    currentConfiguration?.pages.add(const EmomSettigsPageData());
+    notifyListeners();
+  }
+
+  @override
+  void showTimer(Workout workout) {
+    currentConfiguration?.pages.add(TimerPageData(workout));
     notifyListeners();
   }
 }

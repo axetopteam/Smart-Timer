@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,7 +11,7 @@ import 'package:smart_timer/stores/timer_store.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 
 class TimerPage extends StatefulWidget {
-  TimerPage({Key? key}) : super(key: key);
+  const TimerPage({Key? key}) : super(key: key);
 
   @override
   State<TimerPage> createState() => _TimerPageState();
@@ -84,14 +82,14 @@ class _TimerPageState extends State<TimerPage> {
                       children: [
                         Observer(
                           builder: (_) => Text(
-                            '${timerState.currentRound}/${timerState.rounds}',
+                            '${timerState.roundNumber}/${timerState.roundsCount}',
                             style: AppFonts.header2,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            timerState.currentInterval.type == IntervalType.rest ? 'Rest' : 'Work',
+                            timerState.currentType == IntervalType.rest ? 'Rest' : 'Work',
                             style: AppFonts.header2,
                           ),
                         ),

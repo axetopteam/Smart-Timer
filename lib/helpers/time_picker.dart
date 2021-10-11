@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 
 class TimePicker extends StatefulWidget {
-  static Future<Duration?> showRoundsPicker(
+  static Future<Duration?> showTimePicker(
     BuildContext context, {
     required Duration initialValue,
     required List<Duration> timeRange,
@@ -59,7 +58,7 @@ class _TimePickerState extends State<TimePicker> {
               magnification: 1.2,
               backgroundColor: CupertinoColors.systemGrey5,
               scrollController: _controller,
-              children: tabataWorkTimes
+              children: widget.timeRange
                   .map(
                     (time) => Center(
                       child: Text(

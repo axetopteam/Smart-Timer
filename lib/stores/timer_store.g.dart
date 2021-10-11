@@ -9,19 +9,26 @@ part of 'timer_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$TimerState on TimerStateBase, Store {
-  Computed<Interval>? _$currentIntervalComputed;
+  Computed<Round>? _$currentRoundComputed;
 
   @override
-  Interval get currentInterval => (_$currentIntervalComputed ??=
-          Computed<Interval>(() => super.currentInterval,
-              name: 'TimerStateBase.currentInterval'))
-      .value;
-  Computed<int>? _$currentRoundComputed;
-
-  @override
-  int get currentRound =>
-      (_$currentRoundComputed ??= Computed<int>(() => super.currentRound,
+  Round get currentRound =>
+      (_$currentRoundComputed ??= Computed<Round>(() => super.currentRound,
               name: 'TimerStateBase.currentRound'))
+          .value;
+  Computed<IntervalType>? _$currentTypeComputed;
+
+  @override
+  IntervalType get currentType =>
+      (_$currentTypeComputed ??= Computed<IntervalType>(() => super.currentType,
+              name: 'TimerStateBase.currentType'))
+          .value;
+  Computed<int>? _$roundNumberComputed;
+
+  @override
+  int get roundNumber =>
+      (_$roundNumberComputed ??= Computed<int>(() => super.roundNumber,
+              name: 'TimerStateBase.roundNumber'))
           .value;
 
   final _$restTimeAtom = Atom(name: 'TimerStateBase.restTime');
@@ -51,6 +58,21 @@ mixin _$TimerState on TimerStateBase, Store {
   set status(TimerStatus value) {
     _$statusAtom.reportWrite(value, super.status, () {
       super.status = value;
+    });
+  }
+
+  final _$roundIndexAtom = Atom(name: 'TimerStateBase.roundIndex');
+
+  @override
+  int get roundIndex {
+    _$roundIndexAtom.reportRead();
+    return super.roundIndex;
+  }
+
+  @override
+  set roundIndex(int value) {
+    _$roundIndexAtom.reportWrite(value, super.roundIndex, () {
+      super.roundIndex = value;
     });
   }
 
@@ -121,9 +143,11 @@ mixin _$TimerState on TimerStateBase, Store {
     return '''
 restTime: ${restTime},
 status: ${status},
+roundIndex: ${roundIndex},
 intervalIndex: ${intervalIndex},
-currentInterval: ${currentInterval},
-currentRound: ${currentRound}
+currentRound: ${currentRound},
+currentType: ${currentType},
+roundNumber: ${roundNumber}
     ''';
   }
 }

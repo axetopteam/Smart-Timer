@@ -4,32 +4,25 @@ import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
 import 'package:smart_timer/models/workout.dart';
 
-part 'tabata.g.dart';
+part 'emom.g.dart';
 
-class TabataStore = TabataStoreBase with _$TabataStore;
+class Emom = EmomBase with _$Emom;
 
-abstract class TabataStoreBase with Store {
+abstract class EmomBase with Store {
   @observable
-  var roundsCount = 8;
+  var roundsCount = 10;
 
   @observable
   var workTime = Interval(
-    duration: const Duration(seconds: 20),
+    duration: const Duration(minutes: 1),
     type: IntervalType.work,
   );
 
-  @observable
-  var restTime = Interval(
-    duration: const Duration(seconds: 10),
-    type: IntervalType.rest,
-  );
-
-  @computed
-  Duration get totalTime => (workTime.duration + restTime.duration) * roundsCount;
+  Duration get totalTime => workTime.duration * roundsCount;
 
   @computed
   Workout get workout {
-    final round = Round([workTime, restTime]);
+    final round = Round([workTime]);
     List<Round> rounds = [];
 
     for (int i = 0; i < roundsCount; i++) {
@@ -48,14 +41,6 @@ abstract class TabataStoreBase with Store {
     workTime = Interval(
       duration: duration,
       type: IntervalType.work,
-    );
-  }
-
-  @action
-  void setRestTime(Duration duration) {
-    restTime = Interval(
-      duration: duration,
-      type: IntervalType.rest,
     );
   }
 }

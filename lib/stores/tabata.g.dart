@@ -16,26 +16,26 @@ mixin _$TabataStore on TabataStoreBase, Store {
       (_$totalTimeComputed ??= Computed<Duration>(() => super.totalTime,
               name: 'TabataStoreBase.totalTime'))
           .value;
-  Computed<List<Interval>>? _$scheduleComputed;
+  Computed<Workout>? _$workoutComputed;
 
   @override
-  List<Interval> get schedule =>
-      (_$scheduleComputed ??= Computed<List<Interval>>(() => super.schedule,
-              name: 'TabataStoreBase.schedule'))
+  Workout get workout =>
+      (_$workoutComputed ??= Computed<Workout>(() => super.workout,
+              name: 'TabataStoreBase.workout'))
           .value;
 
-  final _$roundsAtom = Atom(name: 'TabataStoreBase.rounds');
+  final _$roundsCountAtom = Atom(name: 'TabataStoreBase.roundsCount');
 
   @override
-  int get rounds {
-    _$roundsAtom.reportRead();
-    return super.rounds;
+  int get roundsCount {
+    _$roundsCountAtom.reportRead();
+    return super.roundsCount;
   }
 
   @override
-  set rounds(int value) {
-    _$roundsAtom.reportWrite(value, super.rounds, () {
-      super.rounds = value;
+  set roundsCount(int value) {
+    _$roundsCountAtom.reportWrite(value, super.roundsCount, () {
+      super.roundsCount = value;
     });
   }
 
@@ -108,11 +108,11 @@ mixin _$TabataStore on TabataStoreBase, Store {
   @override
   String toString() {
     return '''
-rounds: ${rounds},
+roundsCount: ${roundsCount},
 workTime: ${workTime},
 restTime: ${restTime},
 totalTime: ${totalTime},
-schedule: ${schedule}
+workout: ${workout}
     ''';
   }
 }

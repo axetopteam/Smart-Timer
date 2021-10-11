@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_timer/main.dart';
-import 'package:smart_timer/pages/tabata_settings_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -27,13 +26,20 @@ class MainPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                buildContainer(title: 'EMOM', color: Colors.indigoAccent),
                 buildContainer(
-                    title: 'TABATA',
-                    color: Colors.green,
-                    onPressed: () {
-                      router.showTabataSettings();
-                    }),
+                  title: 'EMOM',
+                  color: Colors.indigoAccent,
+                  onPressed: () {
+                    router.showEmomSettings();
+                  },
+                ),
+                buildContainer(
+                  title: 'TABATA',
+                  color: Colors.green,
+                  onPressed: () {
+                    router.showTabataSettings();
+                  },
+                ),
               ],
             )
           ],
