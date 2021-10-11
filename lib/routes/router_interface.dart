@@ -5,4 +5,5 @@ abstract class RouterInterface {
   void showTabataSettings();
   void showTimer(Workout workout);
   void showEmomSettings();
+  void showAmrapSettings();
 }

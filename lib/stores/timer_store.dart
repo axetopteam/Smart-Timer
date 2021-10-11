@@ -52,7 +52,7 @@ abstract class TimerStateBase with Store {
         intervalIndex++;
         restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;
       } else {
-        if (roundIndex < roundsCount - 1) {
+        if (roundIndex < roundsCount) {
           roundIndex++;
           intervalIndex = 0;
           restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;

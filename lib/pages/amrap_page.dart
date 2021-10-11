@@ -4,16 +4,17 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
-import 'package:smart_timer/stores/emom.dart';
+import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-class EmomSettingsPage extends StatelessWidget {
-  EmomSettingsPage({Key? key}) : super(key: key);
+import '../main.dart';
 
-  final emom = Emom();
+class AmrapPage extends StatelessWidget {
+  AmrapPage({Key? key}) : super(key: key);
+
+  final amrap = Amrap();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +30,12 @@ class EmomSettingsPage extends StatelessWidget {
           children: [
             const SizedBox(height: 120),
             const Text(
-              'EMOM',
+              'AMRAP',
               style: AppFonts.header,
             ),
             const SizedBox(height: 32),
             const Text(
-              'Set your EMOM Timer',
+              'As many rounds as possible in',
               style: AppFonts.header2,
             ),
             const SizedBox(height: 12),
@@ -42,7 +43,7 @@ class EmomSettingsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Every:',
+                  'Time:',
                   style: AppFonts.body,
                 ),
                 const SizedBox(width: 12),
@@ -50,16 +51,16 @@ class EmomSettingsPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: emom.workTime.duration,
-                      timeRange: emomWorkTimes,
+                      initialValue: amrap.workTime.duration,
+                      timeRange: amrapWorkTimes,
                     );
                     if (selectedTime != null) {
-                      emom.setWorkTime(selectedTime);
+                      amrap.setWorkTime(selectedTime);
                     }
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(emom.workTime.duration),
+                      durationToString2(amrap.workTime.duration),
                       width: 60,
                     ),
                   ),
@@ -67,32 +68,7 @@ class EmomSettingsPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rounds:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedRounds = await RoundsPicker.showRoundsPicker(
-                      context,
-                      initialValue: emom.roundsCount,
-                      range: tabataRounds,
-                    );
-                    if (selectedRounds != null) {
-                      emom.setRounds(selectedRounds);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer('${emom.roundsCount}'),
-                  ),
-                )
-              ],
-            ),
+
             const Spacer(),
             // Text(
             //   'Total time: ${durationToString2(tabataSettings.totalTime)}',
@@ -108,7 +84,7 @@ class EmomSettingsPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(emom.workout);
+                  router.showTimer(amrap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

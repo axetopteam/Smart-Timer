@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/pages/amrap_page.dart';
 import 'package:smart_timer/pages/emom_settings_page.dart';
 import 'package:smart_timer/pages/main_page.dart';
 import 'package:smart_timer/pages/page_404.dart';
@@ -9,6 +10,7 @@ import 'package:smart_timer/pages/tabata_settings_page.dart';
 import 'package:smart_timer/pages/timer_page.dart';
 import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/models/interval.dart' as interval;
+import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/stores/timer_store.dart';
 
 import 'main_route_path.dart';
@@ -21,11 +23,6 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
 
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-
-  bool get hasMainScreenInside {
-    final indexOfMain = currentConfiguration?.pages.indexWhere((element) => element.type == PageType.main);
-    return indexOfMain != null && indexOfMain != -1;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +99,12 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
           child: EmomSettingsPage(),
         );
 
+      case PageType.amrapSettings:
+        return MaterialPage(
+          key: const ValueKey('TabataPage'),
+          child: AmrapPage(),
+        );
+
       case PageType.timer:
         final data = pageData as TimerPageData;
         return MaterialPage(
@@ -142,6 +145,12 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   @override
   void showEmomSettings() {
     currentConfiguration?.pages.add(const EmomSettigsPageData());
+    notifyListeners();
+  }
+
+  @override
+  void showAmrapSettings() {
+    currentConfiguration?.pages.add(const AmrapSettigsPageData());
     notifyListeners();
   }
 

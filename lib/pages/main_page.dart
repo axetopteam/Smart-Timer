@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/main.dart';
 
 class MainPage extends StatelessWidget {
@@ -7,8 +8,10 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade50,
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor,
+        // elevation: 0,
         title: const Text('Smart Timer'),
       ),
       body: SafeArea(
@@ -18,7 +21,13 @@ class MainPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                buildContainer(title: 'AMRAP', color: Colors.amber),
+                buildContainer(
+                  title: 'AMRAP',
+                  color: Colors.amber,
+                  onPressed: () {
+                    router.showAmrapSettings();
+                  },
+                ),
                 buildContainer(title: 'FOR TIME', color: Colors.pink),
               ],
             ),

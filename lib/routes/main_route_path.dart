@@ -1,4 +1,3 @@
-import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/workout.dart';
 
 /// Class is having all parameters decoded from path
@@ -27,6 +26,7 @@ enum PageType {
   main,
   tabataSettings,
   emomSettings,
+  amrapSettings,
   timer,
   page404,
 }
@@ -66,6 +66,7 @@ abstract class PageData {
     PageType.main: 'main',
     PageType.tabataSettings: 'tabataSettings',
     PageType.emomSettings: 'emomSettings',
+    PageType.amrapSettings: 'amrapSettings',
     PageType.timer: 'tabataTimer',
     PageType.page404: 'page404',
   };
@@ -106,6 +107,13 @@ class EmomSettigsPageData extends PageData {
 
   @override
   PageType get type => PageType.emomSettings;
+}
+
+class AmrapSettigsPageData extends PageData {
+  const AmrapSettigsPageData() : super();
+
+  @override
+  PageType get type => PageType.amrapSettings;
 }
 
 class TimerPageData extends PageData {
