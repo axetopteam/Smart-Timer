@@ -30,10 +30,11 @@ class _TimerPageState extends State<TimerPage> {
     timerState = Provider.of<TimerState>(context, listen: false);
     reactionDispose = reaction<Duration>(
       (reac) {
-        return timerState.restTime;
+        return timerState.time;
       },
       (rest) async {
-        if (rest.inSeconds == 3) {
+        if ((timerState.currentInterval.isCountdown && rest.inSeconds == 3) ||
+            (!timerState.currentInterval.isCountdown && timerState.currentInterval.duration != null && rest == timerState.currentInterval.duration! - const Duration(seconds: 3))) {
           await player.play();
           await player.pause();
           player.seek(const Duration(milliseconds: 0));
@@ -96,7 +97,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            durationToString2(timerState.restTime),
+                            durationToString2(timerState.time),
                             style: const TextStyle(
                               fontSize: 52,
                             ),

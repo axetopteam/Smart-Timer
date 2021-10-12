@@ -6,8 +6,6 @@ class MainRoutePath {
 
   factory MainRoutePath.loading() => MainRoutePath([const SplashPageData()]);
   factory MainRoutePath.main() => MainRoutePath([const MainPageData()]);
-  factory MainRoutePath.tabataSettigs() => MainRoutePath([const TabataSettigsPageData()]);
-  factory MainRoutePath.tabataTimer() => MainRoutePath([const TabataSettigsPageData()]);
 
   final List<PageData> pages;
 
@@ -24,9 +22,10 @@ class MainRoutePath {
 enum PageType {
   splash,
   main,
-  tabataSettings,
-  emomSettings,
-  amrapSettings,
+  tabata,
+  emom,
+  amrap,
+  afap,
   timer,
   page404,
 }
@@ -64,10 +63,11 @@ abstract class PageData {
   static const Map<PageType, String> paths = <PageType, String>{
     PageType.splash: '',
     PageType.main: 'main',
-    PageType.tabataSettings: 'tabataSettings',
-    PageType.emomSettings: 'emomSettings',
-    PageType.amrapSettings: 'amrapSettings',
-    PageType.timer: 'tabataTimer',
+    PageType.tabata: 'tabata',
+    PageType.emom: 'emom',
+    PageType.amrap: 'amrap',
+    PageType.afap: 'afap',
+    PageType.timer: 'timer',
     PageType.page404: 'page404',
   };
 
@@ -95,25 +95,32 @@ class MainPageData extends PageData {
   PageType get type => PageType.main;
 }
 
-class TabataSettigsPageData extends PageData {
-  const TabataSettigsPageData() : super();
+class TabataPageData extends PageData {
+  const TabataPageData() : super();
 
   @override
-  PageType get type => PageType.tabataSettings;
+  PageType get type => PageType.tabata;
 }
 
-class EmomSettigsPageData extends PageData {
-  const EmomSettigsPageData() : super();
+class EmomPageData extends PageData {
+  const EmomPageData() : super();
 
   @override
-  PageType get type => PageType.emomSettings;
+  PageType get type => PageType.emom;
 }
 
-class AmrapSettigsPageData extends PageData {
-  const AmrapSettigsPageData() : super();
+class AmrapPageData extends PageData {
+  const AmrapPageData() : super();
 
   @override
-  PageType get type => PageType.amrapSettings;
+  PageType get type => PageType.amrap;
+}
+
+class AfapPageData extends PageData {
+  const AfapPageData() : super();
+
+  @override
+  PageType get type => PageType.afap;
 }
 
 class TimerPageData extends PageData {

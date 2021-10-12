@@ -3,17 +3,17 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/stores/amrap.dart';
+import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 import '../main.dart';
 
-class AmrapPage extends StatelessWidget {
-  AmrapPage({Key? key}) : super(key: key);
+class AfapPage extends StatelessWidget {
+  AfapPage({Key? key}) : super(key: key);
 
-  final amrap = Amrap();
+  final afap = Afap();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,12 @@ class AmrapPage extends StatelessWidget {
           children: [
             const SizedBox(height: 120),
             const Text(
-              'AMRAP',
+              'FOR TIME',
               style: AppFonts.header,
             ),
             const SizedBox(height: 32),
             const Text(
-              'As many rounds as possible in',
+              'As fast as possible for time',
               style: AppFonts.header2,
             ),
             const SizedBox(height: 12),
@@ -42,7 +42,7 @@ class AmrapPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Time:',
+                  'Time cap:',
                   style: AppFonts.body,
                 ),
                 const SizedBox(width: 12),
@@ -50,23 +50,22 @@ class AmrapPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: amrap.workTime.duration!,
-                      timeRange: amrapWorkTimes,
+                      initialValue: afap.workTime.duration ?? const Duration(minutes: 10),
+                      timeRange: afapWorkTimes,
                     );
-                    if (selectedTime != null) {
-                      amrap.setWorkTime(selectedTime);
-                    }
+
+                    afap.setTimeCap(selectedTime);
                   },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer(
-                      durationToString2(amrap.workTime.duration!),
+                  child: Observer(builder: (ctx) {
+                    final duration = afap.workTime.duration;
+                    return ValueContainer(
+                      duration != null ? durationToString2(duration) : 'None',
                       width: 60,
-                    ),
-                  ),
+                    );
+                  }),
                 )
               ],
             ),
-            const SizedBox(height: 12),
 
             const Spacer(),
             // Text(
@@ -83,7 +82,7 @@ class AmrapPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(amrap.workout);
+                  router.showTimer(afap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

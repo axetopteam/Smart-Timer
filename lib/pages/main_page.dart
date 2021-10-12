@@ -25,10 +25,16 @@ class MainPage extends StatelessWidget {
                   title: 'AMRAP',
                   color: Colors.amber,
                   onPressed: () {
-                    router.showAmrapSettings();
+                    router.showAmrap();
                   },
                 ),
-                buildContainer(title: 'FOR TIME', color: Colors.pink),
+                buildContainer(
+                  title: 'FOR TIME',
+                  color: Colors.pink,
+                  onPressed: () {
+                    router.showAfap();
+                  },
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -39,14 +45,14 @@ class MainPage extends StatelessWidget {
                   title: 'EMOM',
                   color: Colors.indigoAccent,
                   onPressed: () {
-                    router.showEmomSettings();
+                    router.showEmom();
                   },
                 ),
                 buildContainer(
                   title: 'TABATA',
                   color: Colors.green,
                   onPressed: () {
-                    router.showTabataSettings();
+                    router.showTabata();
                   },
                 ),
               ],

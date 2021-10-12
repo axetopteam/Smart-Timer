@@ -2,8 +2,9 @@ import 'package:smart_timer/models/workout.dart';
 
 abstract class RouterInterface {
   void showMainPage();
-  void showTabataSettings();
+  void showTabata();
   void showTimer(Workout workout);
-  void showEmomSettings();
-  void showAmrapSettings();
+  void showEmom();
+  void showAmrap();
+  void showAfap();
 }

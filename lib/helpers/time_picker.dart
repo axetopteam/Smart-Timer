@@ -7,7 +7,7 @@ class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
     required Duration initialValue,
-    required List<Duration> timeRange,
+    required List<Duration?> timeRange,
   }) {
     return showCupertinoModalPopup<Duration>(
       context: context,
@@ -25,7 +25,7 @@ class TimePicker extends StatefulWidget {
   }) : super(key: key);
 
   final Duration initialValue;
-  final List<Duration> timeRange;
+  final List<Duration?> timeRange;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -62,7 +62,7 @@ class _TimePickerState extends State<TimePicker> {
                   .map(
                     (time) => Center(
                       child: Text(
-                        durationToString2(time),
+                        time == null ? 'No time cap' : durationToString2(time),
                         textAlign: TextAlign.center,
                       ),
                     ),

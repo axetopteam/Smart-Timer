@@ -29,3 +29,5 @@ final amrapWorkTimes = List<Duration>.from([
       ...List.generate(95, (index) => Duration(minutes: 6 + index)), // 6:00 .. 100:00
     ],
   );
+
+final afapWorkTimes = List<Duration?>.from([null])..addAll(List.generate(100, (index) => Duration(minutes: 1 + index)));

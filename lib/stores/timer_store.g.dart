@@ -16,6 +16,13 @@ mixin _$TimerState on TimerStateBase, Store {
       (_$currentRoundComputed ??= Computed<Round>(() => super.currentRound,
               name: 'TimerStateBase.currentRound'))
           .value;
+  Computed<Interval>? _$currentIntervalComputed;
+
+  @override
+  Interval get currentInterval => (_$currentIntervalComputed ??=
+          Computed<Interval>(() => super.currentInterval,
+              name: 'TimerStateBase.currentInterval'))
+      .value;
   Computed<IntervalType>? _$currentTypeComputed;
 
   @override
@@ -31,18 +38,18 @@ mixin _$TimerState on TimerStateBase, Store {
               name: 'TimerStateBase.roundNumber'))
           .value;
 
-  final _$restTimeAtom = Atom(name: 'TimerStateBase.restTime');
+  final _$timeAtom = Atom(name: 'TimerStateBase.time');
 
   @override
-  Duration get restTime {
-    _$restTimeAtom.reportRead();
-    return super.restTime;
+  Duration get time {
+    _$timeAtom.reportRead();
+    return super.time;
   }
 
   @override
-  set restTime(Duration value) {
-    _$restTimeAtom.reportWrite(value, super.restTime, () {
-      super.restTime = value;
+  set time(Duration value) {
+    _$timeAtom.reportWrite(value, super.time, () {
+      super.time = value;
     });
   }
 
@@ -139,13 +146,25 @@ mixin _$TimerState on TimerStateBase, Store {
   }
 
   @override
+  void close() {
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.close');
+    try {
+      return super.close();
+    } finally {
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-restTime: ${restTime},
+time: ${time},
 status: ${status},
 roundIndex: ${roundIndex},
 intervalIndex: ${intervalIndex},
 currentRound: ${currentRound},
+currentInterval: ${currentInterval},
 currentType: ${currentType},
 roundNumber: ${roundNumber}
     ''';

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/pages/afap_page.dart';
 import 'package:smart_timer/pages/amrap_page.dart';
-import 'package:smart_timer/pages/emom_settings_page.dart';
+import 'package:smart_timer/pages/emom_page.dart';
 import 'package:smart_timer/pages/main_page.dart';
 import 'package:smart_timer/pages/page_404.dart';
 import 'package:smart_timer/pages/splash_page.dart';
-import 'package:smart_timer/pages/tabata_settings_page.dart';
+import 'package:smart_timer/pages/tabata_page.dart';
 import 'package:smart_timer/pages/timer_page.dart';
 import 'package:smart_timer/routes/router_interface.dart';
-import 'package:smart_timer/models/interval.dart' as interval;
-import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/stores/timer_store.dart';
 
 import 'main_route_path.dart';
@@ -87,22 +86,28 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
           child: MainPage(),
         );
 
-      case PageType.tabataSettings:
+      case PageType.tabata:
         return MaterialPage(
           key: const ValueKey('TabataPage'),
-          child: TabataSettingsPage(),
+          child: TabataPage(),
         );
 
-      case PageType.emomSettings:
+      case PageType.emom:
         return MaterialPage(
           key: const ValueKey('TabataPage'),
-          child: EmomSettingsPage(),
+          child: EmomPage(),
         );
 
-      case PageType.amrapSettings:
+      case PageType.amrap:
         return MaterialPage(
           key: const ValueKey('TabataPage'),
           child: AmrapPage(),
+        );
+
+      case PageType.afap:
+        return MaterialPage(
+          key: const ValueKey('TabataPage'),
+          child: AfapPage(),
         );
 
       case PageType.timer:
@@ -111,6 +116,7 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
           key: const ValueKey('TabataTimer'),
           child: Provider<TimerState>(
             create: (ctx) => TimerState(data.workout),
+            dispose: (ctx, state) => state.close(),
             child: const TimerPage(),
           ),
         );
@@ -137,20 +143,26 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   }
 
   @override
-  void showTabataSettings() {
-    currentConfiguration?.pages.add(const TabataSettigsPageData());
+  void showTabata() {
+    currentConfiguration?.pages.add(const TabataPageData());
     notifyListeners();
   }
 
   @override
-  void showEmomSettings() {
-    currentConfiguration?.pages.add(const EmomSettigsPageData());
+  void showEmom() {
+    currentConfiguration?.pages.add(const EmomPageData());
     notifyListeners();
   }
 
   @override
-  void showAmrapSettings() {
-    currentConfiguration?.pages.add(const AmrapSettigsPageData());
+  void showAmrap() {
+    currentConfiguration?.pages.add(const AmrapPageData());
+    notifyListeners();
+  }
+
+  @override
+  void showAfap() {
+    currentConfiguration?.pages.add(const AfapPageData());
     notifyListeners();
   }
 

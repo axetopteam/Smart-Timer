@@ -25,7 +25,7 @@ abstract class TabataStoreBase with Store {
   );
 
   @computed
-  Duration get totalTime => (workTime.duration + restTime.duration) * roundsCount;
+  Duration get totalTime => (workTime.duration! + restTime.duration!) * roundsCount;
 
   @computed
   Workout get workout {

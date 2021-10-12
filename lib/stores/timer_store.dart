@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
 import 'package:smart_timer/models/workout.dart';
@@ -11,7 +12,7 @@ part 'timer_store.g.dart';
 class TimerState = TimerStateBase with _$TimerState;
 
 abstract class TimerStateBase with Store {
-  TimerStateBase(this.workout) : restTime = workout.rounds[0].intervals[0].duration;
+  TimerStateBase(this.workout) : time = workout.rounds[0].intervals[0].duration ?? const Duration(seconds: 0);
 
   final Workout workout;
 
@@ -19,7 +20,7 @@ abstract class TimerStateBase with Store {
   StreamSubscription? timerSubscription;
 
   @observable
-  late Duration restTime;
+  late Duration time;
 
   @observable
   var status = TimerStatus.stop;
@@ -33,6 +34,9 @@ abstract class TimerStateBase with Store {
   @computed
   Round get currentRound => workout.rounds[roundIndex];
 
+  @computed
+  Interval get currentInterval => workout.rounds[roundIndex].intervals[intervalIndex];
+
   int get roundsCount => workout.roundsCound;
 
   @computed
@@ -45,17 +49,38 @@ abstract class TimerStateBase with Store {
 
   @action
   void tick() {
-    if (restTime.inSeconds > 0) {
-      restTime = restTime - const Duration(seconds: 1);
+    print('#TIMER# seconds: ${time.inSeconds}');
+    if (currentInterval.isCountdown) {
+      if (time.inSeconds > 0) {
+        time = time - const Duration(seconds: 1);
+      } else {
+        const oneSecond = Duration(seconds: 1);
+
+        if (intervalIndex < currentRound.intervals.length - 1) {
+          intervalIndex++;
+          time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
+        } else {
+          if (roundIndex < roundsCount) {
+            roundIndex++;
+            intervalIndex = 0;
+            time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
+          } else {
+            timerSubscription?.cancel();
+            status = TimerStatus.done;
+          }
+        }
+      }
     } else {
-      if (intervalIndex < currentRound.intervals.length - 1) {
-        intervalIndex++;
-        restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;
+      final duration = currentInterval.duration;
+      if (duration == null || time.inSeconds < duration.inSeconds) {
+        time = time + const Duration(seconds: 1);
       } else {
         if (roundIndex < roundsCount) {
           roundIndex++;
           intervalIndex = 0;
-          restTime = workout.rounds[roundIndex].intervals[intervalIndex].duration;
+          const oneSecond = Duration(seconds: 1);
+
+          time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
         } else {
           timerSubscription?.cancel();
           status = TimerStatus.done;
@@ -67,7 +92,7 @@ abstract class TimerStateBase with Store {
   @action
   void start() {
     timerSubscription?.cancel();
-    restTime = workout.rounds[0].intervals[0].duration;
+    time = currentInterval.isCountdown ? workout.rounds[0].intervals[0].duration! : const Duration(seconds: 0);
     status = TimerStatus.run;
     roundIndex = 0;
     intervalIndex = 0;
@@ -87,5 +112,10 @@ abstract class TimerStateBase with Store {
   void resume() {
     status = TimerStatus.run;
     timerSubscription?.resume();
+  }
+
+  @action
+  void close() {
+    timerSubscription?.cancel();
   }
 }
