@@ -83,14 +83,26 @@ class _TimerPageState extends State<TimerPage> {
                       children: [
                         Observer(
                           builder: (_) => Text(
-                            '${timerState.roundNumber}/${timerState.roundsCount}',
+                            'Set: ${timerState.setIndex + 1}/${timerState.setsCount}',
+                            style: AppFonts.header2,
+                          ),
+                        ),
+                        Observer(
+                          builder: (_) => Text(
+                            'Round: ${timerState.roundIndex + 1}/${timerState.roundsCount}',
+                            style: AppFonts.header2,
+                          ),
+                        ),
+                        Observer(
+                          builder: (_) => Text(
+                            'Interval: ${timerState.intervalIndex + 1}/${timerState.intervalsCount}',
                             style: AppFonts.header2,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            timerState.currentType == IntervalType.rest ? 'Rest' : 'Work',
+                            timerState.currentType.desc,
                             style: AppFonts.header2,
                           ),
                         ),

@@ -29,7 +29,7 @@ abstract class TabataStoreBase with Store {
 
   @computed
   Workout get workout {
-    final round = Round([workTime, restTime]);
+    final round = Round(List.from([workTime, restTime]));
     List<Round> rounds = [];
 
     for (int i = 0; i < roundsCount; i++) {

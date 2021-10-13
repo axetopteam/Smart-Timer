@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/set.dart';
 import 'package:smart_timer/models/workout.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 
@@ -12,9 +13,11 @@ part 'timer_store.g.dart';
 class TimerState = TimerStateBase with _$TimerState;
 
 abstract class TimerStateBase with Store {
-  TimerStateBase(this.workout) : time = workout.rounds[0].intervals[0].duration ?? const Duration(seconds: 0);
+  TimerStateBase(this.workout) : time = workout.sets[0].rounds[0].intervals[0].duration ?? const Duration(seconds: 0);
 
   final Workout workout;
+
+  final _oneSecond = const Duration(seconds: 1);
 
   final stream = Stream.periodic(const Duration(seconds: 1), (x) => x);
   StreamSubscription? timerSubscription;
@@ -26,78 +29,69 @@ abstract class TimerStateBase with Store {
   var status = TimerStatus.stop;
 
   @observable
+  var setIndex = 0;
+
+  @observable
   var roundIndex = 0;
 
   @observable
   var intervalIndex = 0;
 
   @computed
-  Round get currentRound => workout.rounds[roundIndex];
+  WorkoutSet get currentSet => workout.sets[setIndex];
 
   @computed
-  Interval get currentInterval => workout.rounds[roundIndex].intervals[intervalIndex];
-
-  int get roundsCount => workout.roundsCound;
+  int get setsCount => workout.sets.length;
 
   @computed
-  IntervalType get currentType => workout.rounds[roundIndex].intervals[intervalIndex].type;
+  Round get currentRound => currentSet.rounds[roundIndex];
 
   @computed
-  int get roundNumber {
-    return roundIndex == 0 ? 1 : roundIndex;
-  }
+  int get roundsCount => currentSet.rounds.length;
+
+  @computed
+  Interval get currentInterval => currentRound.intervals[intervalIndex];
+
+  @computed
+  int get intervalsCount => currentRound.intervals.length;
+
+  @computed
+  IntervalType get currentType => currentInterval.type;
 
   @action
-  void tick() {
-    //TODO: нужен рефакторинг
-    if (currentInterval.isCountdown) {
-      if (time.inSeconds > 0) {
-        time = time - const Duration(seconds: 1);
-      } else {
-        const oneSecond = Duration(seconds: 1);
-
-        if (intervalIndex < currentRound.intervals.length - 1) {
-          intervalIndex++;
-          time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
-        } else {
-          if (roundIndex < roundsCount) {
-            roundIndex++;
-            intervalIndex = 0;
-            time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
-          } else {
-            timerSubscription?.cancel();
-            status = TimerStatus.done;
-          }
-        }
-      }
+  void newTick() {
+    if (currentInterval.isCountdown && time.inSeconds > 0) {
+      time = time - _oneSecond;
+    } else if (!currentInterval.isCountdown && (currentInterval.duration == null || time < currentInterval.duration!)) {
+      time = time + _oneSecond;
     } else {
-      final duration = currentInterval.duration;
-      if (duration == null || time.inSeconds < duration.inSeconds) {
-        time = time + const Duration(seconds: 1);
+      if (intervalIndex < intervalsCount - 1) {
+        intervalIndex++;
+      } else if (roundIndex < roundsCount - 1) {
+        roundIndex++;
+        intervalIndex = 0;
+      } else if (setIndex < setsCount - 1) {
+        setIndex++;
+        roundIndex = 0;
+        intervalIndex = 0;
       } else {
-        if (roundIndex < roundsCount) {
-          roundIndex++;
-          intervalIndex = 0;
-          const oneSecond = Duration(seconds: 1);
-
-          time = currentInterval.isCountdown ? workout.rounds[roundIndex].intervals[intervalIndex].duration! - oneSecond : oneSecond;
-        } else {
-          timerSubscription?.cancel();
-          status = TimerStatus.done;
-        }
+        timerSubscription?.cancel();
+        status = TimerStatus.done;
       }
+
+      time = currentInterval.isCountdown ? currentInterval.duration! - _oneSecond : _oneSecond;
     }
   }
 
   @action
   void start() {
     timerSubscription?.cancel();
-    time = currentInterval.isCountdown ? workout.rounds[0].intervals[0].duration! : const Duration(seconds: 0);
+    time = currentInterval.isCountdown ? workout.sets[0].rounds[0].intervals[0].duration! : const Duration(seconds: 0);
     status = TimerStatus.run;
     roundIndex = 0;
     intervalIndex = 0;
     timerSubscription = stream.listen((_) {
-      tick();
+      newTick();
     });
   }
 

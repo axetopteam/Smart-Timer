@@ -9,12 +9,33 @@ part of 'timer_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$TimerState on TimerStateBase, Store {
+  Computed<WorkoutSet>? _$currentSetComputed;
+
+  @override
+  WorkoutSet get currentSet =>
+      (_$currentSetComputed ??= Computed<WorkoutSet>(() => super.currentSet,
+              name: 'TimerStateBase.currentSet'))
+          .value;
+  Computed<int>? _$setsCountComputed;
+
+  @override
+  int get setsCount =>
+      (_$setsCountComputed ??= Computed<int>(() => super.setsCount,
+              name: 'TimerStateBase.setsCount'))
+          .value;
   Computed<Round>? _$currentRoundComputed;
 
   @override
   Round get currentRound =>
       (_$currentRoundComputed ??= Computed<Round>(() => super.currentRound,
               name: 'TimerStateBase.currentRound'))
+          .value;
+  Computed<int>? _$roundsCountComputed;
+
+  @override
+  int get roundsCount =>
+      (_$roundsCountComputed ??= Computed<int>(() => super.roundsCount,
+              name: 'TimerStateBase.roundsCount'))
           .value;
   Computed<Interval>? _$currentIntervalComputed;
 
@@ -23,19 +44,19 @@ mixin _$TimerState on TimerStateBase, Store {
           Computed<Interval>(() => super.currentInterval,
               name: 'TimerStateBase.currentInterval'))
       .value;
+  Computed<int>? _$intervalsCountComputed;
+
+  @override
+  int get intervalsCount =>
+      (_$intervalsCountComputed ??= Computed<int>(() => super.intervalsCount,
+              name: 'TimerStateBase.intervalsCount'))
+          .value;
   Computed<IntervalType>? _$currentTypeComputed;
 
   @override
   IntervalType get currentType =>
       (_$currentTypeComputed ??= Computed<IntervalType>(() => super.currentType,
               name: 'TimerStateBase.currentType'))
-          .value;
-  Computed<int>? _$roundNumberComputed;
-
-  @override
-  int get roundNumber =>
-      (_$roundNumberComputed ??= Computed<int>(() => super.roundNumber,
-              name: 'TimerStateBase.roundNumber'))
           .value;
 
   final _$timeAtom = Atom(name: 'TimerStateBase.time');
@@ -65,6 +86,21 @@ mixin _$TimerState on TimerStateBase, Store {
   set status(TimerStatus value) {
     _$statusAtom.reportWrite(value, super.status, () {
       super.status = value;
+    });
+  }
+
+  final _$setIndexAtom = Atom(name: 'TimerStateBase.setIndex');
+
+  @override
+  int get setIndex {
+    _$setIndexAtom.reportRead();
+    return super.setIndex;
+  }
+
+  @override
+  set setIndex(int value) {
+    _$setIndexAtom.reportWrite(value, super.setIndex, () {
+      super.setIndex = value;
     });
   }
 
@@ -102,11 +138,11 @@ mixin _$TimerState on TimerStateBase, Store {
       ActionController(name: 'TimerStateBase');
 
   @override
-  void tick() {
+  void newTick() {
     final _$actionInfo = _$TimerStateBaseActionController.startAction(
-        name: 'TimerStateBase.tick');
+        name: 'TimerStateBase.newTick');
     try {
-      return super.tick();
+      return super.newTick();
     } finally {
       _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
@@ -161,12 +197,16 @@ mixin _$TimerState on TimerStateBase, Store {
     return '''
 time: ${time},
 status: ${status},
+setIndex: ${setIndex},
 roundIndex: ${roundIndex},
 intervalIndex: ${intervalIndex},
+currentSet: ${currentSet},
+setsCount: ${setsCount},
 currentRound: ${currentRound},
+roundsCount: ${roundsCount},
 currentInterval: ${currentInterval},
-currentType: ${currentType},
-roundNumber: ${roundNumber}
+intervalsCount: ${intervalsCount},
+currentType: ${currentType}
     ''';
   }
 }
