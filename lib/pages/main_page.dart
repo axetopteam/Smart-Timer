@@ -56,6 +56,26 @@ class MainPage extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildContainer(
+                  title: 'Custom',
+                  color: Colors.deepOrangeAccent,
+                  onPressed: () {
+                    router.showCustomSettings();
+                  },
+                ),
+                buildContainer(
+                  title: '1:1',
+                  color: Colors.purple,
+                  onPressed: () {
+                    // router.showTabata();
+                  },
+                ),
+              ],
             )
           ],
         ),

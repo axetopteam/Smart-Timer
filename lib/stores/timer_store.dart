@@ -49,7 +49,7 @@ abstract class TimerStateBase with Store {
 
   @action
   void tick() {
-    print('#TIMER# seconds: ${time.inSeconds}');
+    //TODO: нужен рефакторинг
     if (currentInterval.isCountdown) {
       if (time.inSeconds > 0) {
         time = time - const Duration(seconds: 1);

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_timer/models/workout.dart';
 import 'package:smart_timer/pages/afap_page.dart';
 import 'package:smart_timer/pages/amrap_page.dart';
+import 'package:smart_timer/pages/custom_settings_page.dart';
 import 'package:smart_timer/pages/emom_page.dart';
 import 'package:smart_timer/pages/main_page.dart';
 import 'package:smart_timer/pages/page_404.dart';
@@ -94,26 +95,32 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
 
       case PageType.emom:
         return MaterialPage(
-          key: const ValueKey('TabataPage'),
+          key: const ValueKey('EmomPage'),
           child: EmomPage(),
         );
 
       case PageType.amrap:
         return MaterialPage(
-          key: const ValueKey('TabataPage'),
+          key: const ValueKey('AmrapPage'),
           child: AmrapPage(),
         );
 
       case PageType.afap:
         return MaterialPage(
-          key: const ValueKey('TabataPage'),
+          key: const ValueKey('AfapPage'),
           child: AfapPage(),
+        );
+
+      case PageType.customSettings:
+        return MaterialPage(
+          key: const ValueKey('CustomSettingsPage'),
+          child: CustomSettingsPage(),
         );
 
       case PageType.timer:
         final data = pageData as TimerPageData;
         return MaterialPage(
-          key: const ValueKey('TabataTimer'),
+          key: const ValueKey('TimerPage'),
           child: Provider<TimerState>(
             create: (ctx) => TimerState(data.workout),
             dispose: (ctx, state) => state.close(),
@@ -163,6 +170,12 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   @override
   void showAfap() {
     currentConfiguration?.pages.add(const AfapPageData());
+    notifyListeners();
+  }
+
+  @override
+  void showCustomSettings() {
+    currentConfiguration?.pages.add(const CustomSettingsPageData());
     notifyListeners();
   }
 

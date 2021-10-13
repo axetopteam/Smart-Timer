@@ -26,6 +26,7 @@ enum PageType {
   emom,
   amrap,
   afap,
+  customSettings,
   timer,
   page404,
 }
@@ -67,6 +68,7 @@ abstract class PageData {
     PageType.emom: 'emom',
     PageType.amrap: 'amrap',
     PageType.afap: 'afap',
+    PageType.customSettings: 'customSettings',
     PageType.timer: 'timer',
     PageType.page404: 'page404',
   };
@@ -121,6 +123,13 @@ class AfapPageData extends PageData {
 
   @override
   PageType get type => PageType.afap;
+}
+
+class CustomSettingsPageData extends PageData {
+  const CustomSettingsPageData() : super();
+
+  @override
+  PageType get type => PageType.customSettings;
 }
 
 class TimerPageData extends PageData {
