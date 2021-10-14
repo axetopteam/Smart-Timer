@@ -10,9 +10,14 @@ import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-class CustomSettingsPage extends StatelessWidget {
+class CustomSettingsPage extends StatefulWidget {
   CustomSettingsPage({Key? key}) : super(key: key);
 
+  @override
+  State<CustomSettingsPage> createState() => _CustomSettingsPageState();
+}
+
+class _CustomSettingsPageState extends State<CustomSettingsPage> {
   final customSettings = CustomSettings();
 
   @override
@@ -27,7 +32,6 @@ class CustomSettingsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 120),
             const Text(
               'Custom',
               style: AppFonts.header,
@@ -38,91 +42,30 @@ class CustomSettingsPage extends StatelessWidget {
               style: AppFonts.header2,
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rounds:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedRounds = await RoundsPicker.showRoundsPicker(
-                      context,
-                      initialValue: customSettings.roundsCount,
-                      range: tabataRounds,
-                    );
-                    if (selectedRounds != null) {
-                      customSettings.setRounds(selectedRounds);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer('${customSettings.roundsCount}'),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
+
             Expanded(
               child: Observer(builder: (ctx) {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      ...customSettings.intervals.asMap().keys.map(
-                        (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Interval ${index + 1}:',
-                                  style: AppFonts.body,
-                                ),
-                                const SizedBox(width: 12),
-                                GestureDetector(
-                                  onTap: () async {
-                                    final selectedTime = await TimePicker.showTimePicker(
-                                      context,
-                                      initialValue: customSettings.intervals[index].duration!,
-                                      timeRange: tabataWorkTimes,
-                                    );
-                                    if (selectedTime != null) {
-                                      customSettings.setInterval(index, selectedTime);
-                                    }
-                                  },
-                                  child: Observer(
-                                    builder: (ctx) => ValueContainer(
-                                      durationToString2(customSettings.intervals[index].duration!),
-                                      width: 60,
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    customSettings.deleteInterval(index);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_forever,
-                                    size: 28,
-                                    color: AppColors.red,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      IconButton(
+                      ...customSettings.rounds.asMap().keys.map(
+                            (index) => buildRoundSettings(context, index),
+                          ),
+                      TextButton(
                         onPressed: () {
-                          customSettings.addInterval();
+                          customSettings.addRound();
                         },
-                        icon: const Icon(
-                          Icons.add_circle_outline,
-                          size: 34,
-                          color: AppColors.accentBlue,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.add_box_outlined,
+                              size: 28,
+                              color: AppColors.accentBlue,
+                            ),
+                            SizedBox(width: 4),
+                            Text('Add new block')
+                          ],
                         ),
                       ),
                     ],
@@ -152,6 +95,109 @@ class CustomSettingsPage extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildRoundSettings(BuildContext context, int roundIndex) {
+    final intervals = customSettings.rounds[roundIndex].intervals;
+    return Container(
+      decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Rounds:',
+                style: AppFonts.body,
+              ),
+              const SizedBox(width: 12),
+              GestureDetector(
+                onTap: () async {
+                  final selectedRounds = await RoundsPicker.showRoundsPicker(
+                    context,
+                    initialValue: customSettings.roundsCounts[roundIndex],
+                    range: tabataRounds,
+                  );
+                  if (selectedRounds != null) {
+                    customSettings.setRounds(roundIndex, selectedRounds);
+                  }
+                },
+                child: Observer(
+                  builder: (ctx) => ValueContainer('${customSettings.roundsCounts[roundIndex]}'),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...intervals.asMap().keys.map(
+            (intervalIndex) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Interval ${intervalIndex + 1}:',
+                      style: AppFonts.body,
+                    ),
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialValue: intervals[intervalIndex].duration!,
+                          timeRange: tabataWorkTimes,
+                        );
+                        if (selectedTime != null) {
+                          customSettings.setInterval(roundIndex, intervalIndex, selectedTime);
+                        }
+                      },
+                      child: Observer(
+                        builder: (ctx) => ValueContainer(
+                          durationToString2(intervals[intervalIndex].duration!),
+                          width: 60,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        customSettings.deleteInterval(roundIndex, intervalIndex);
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever,
+                        size: 28,
+                        color: AppColors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          TextButton(
+            onPressed: () {
+              customSettings.addInterval(roundIndex);
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Icon(
+                  Icons.add_circle_outline,
+                  size: 28,
+                  color: AppColors.accentBlue,
+                ),
+                SizedBox(width: 4),
+                Text('Add interval')
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

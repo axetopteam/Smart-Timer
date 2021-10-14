@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/set.dart';
 import 'package:smart_timer/models/workout.dart';
 
 part 'tabata.g.dart';
@@ -24,18 +25,42 @@ abstract class TabataStoreBase with Store {
     type: IntervalType.rest,
   );
 
+  @observable
+  var showSets = false;
+
+  @observable
+  var setsCount = 1;
+
+  @observable
+  var restBetweenSets = Interval(
+    duration: const Duration(minutes: 1),
+    type: IntervalType.rest,
+  );
+
   @computed
-  Duration get totalTime => (workTime.duration! + restTime.duration!) * roundsCount;
+  Duration get totalTime => workTime.duration! * roundsCount + restTime.duration! * (roundsCount - 1);
 
   @computed
   Workout get workout {
-    final round = Round(List.from([workTime, restTime]));
-    List<Round> rounds = [];
+    final round = Round(ObservableList.of([workTime, restTime]));
+    Round(ObservableList.of([workTime]));
+    ObservableList<Round> baseRounds = ObservableList<Round>();
 
-    for (int i = 0; i < roundsCount; i++) {
-      rounds.add(round);
+    for (int j = 0; j < roundsCount - 1; j++) {
+      baseRounds.add(round);
     }
-    return Workout.withLauchRound(rounds);
+    final rounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime, restBetweenSets])));
+    final lastRounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime])));
+
+    List<WorkoutSet> sets = [];
+
+    for (int i = 0; i < setsCount - 1; i++) {
+      sets.add(WorkoutSet(rounds));
+    }
+
+    sets.add(WorkoutSet(lastRounds));
+
+    return Workout.withCountdownInterval2(sets);
   }
 
   @action
@@ -57,5 +82,23 @@ abstract class TabataStoreBase with Store {
       duration: duration,
       type: IntervalType.rest,
     );
+  }
+
+  @action
+  void toggleShowSets() {
+    showSets = !showSets;
+  }
+
+  @action
+  void setRestBetweenSets(Duration duration) {
+    restBetweenSets = Interval(
+      duration: duration,
+      type: IntervalType.rest,
+    );
+  }
+
+  @action
+  void setSetsCount(int value) {
+    setsCount = value;
   }
 }

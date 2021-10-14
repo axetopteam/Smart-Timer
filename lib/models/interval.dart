@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'interval_type.dart';
 
+@immutable
 class Interval {
   Interval({
     required this.duration,

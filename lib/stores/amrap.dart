@@ -17,9 +17,9 @@ abstract class AmrapBase with Store {
 
   @computed
   Workout get workout {
-    final round = Round([workTime]);
+    final round = Round(ObservableList.of([workTime]));
     List<Round> rounds = [round];
-    return Workout.withLauchRound(rounds);
+    return Workout.withCountdownInterval(rounds);
   }
 
   @action

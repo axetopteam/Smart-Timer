@@ -50,7 +50,7 @@ class AppFonts {
   static const TextStyle body = TextStyle(fontFamily: 'SFProDisplay', fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.black, letterSpacing: -0.41);
   static const TextStyle time = TextStyle(fontFamily: 'SFProTextCustom', fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.gray70);
   static const TextStyle profileItem = TextStyle(fontFamily: 'SFProTextCustom', fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.gray70);
-  static const TextStyle actionButton = TextStyle(fontFamily: 'SFProTextCustom', fontSize: 17, color: AppColors.accent, letterSpacing: -0.41);
+  static const TextStyle actionButton = TextStyle(fontFamily: 'SFProTextCustom', fontSize: 17, color: AppColors.accentBlue, letterSpacing: -0.41);
   static const TextStyle segmentController = TextStyle(fontFamily: 'SFProTextCustom', fontSize: 13, color: AppColors.white);
   static const TextStyle notificationText = TextStyle(fontSize: 17, color: AppColors.white);
   static const TextStyle rateText = TextStyle(fontFamily: '.SFProText', fontSize: 17, color: AppColors.black);

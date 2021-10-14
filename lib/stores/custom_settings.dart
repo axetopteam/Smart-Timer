@@ -10,64 +10,79 @@ class CustomSettings = CustomSettingsBase with _$CustomSettings;
 
 abstract class CustomSettingsBase with Store {
   @observable
-  var roundsCount = 1;
+  var roundsCounts = ObservableList.of([1]);
 
   @observable
-  ObservableList<Interval> intervals = ObservableList.of([
-    Interval(
-      duration: const Duration(minutes: 1),
-      type: IntervalType.work,
-      isCountdown: true,
-    ),
-    Interval(
-      duration: const Duration(minutes: 2),
-      type: IntervalType.work,
-      isCountdown: true,
-    ),
-    Interval(
-      duration: const Duration(minutes: 3),
-      type: IntervalType.work,
-      isCountdown: true,
-    ),
+  ObservableList<Round> rounds = ObservableList.of([
+    Round(
+      ObservableList.of(
+        [
+          Interval(
+            duration: const Duration(minutes: 1),
+            type: IntervalType.work,
+            isCountdown: true,
+          ),
+          Interval(
+            duration: const Duration(minutes: 2),
+            type: IntervalType.work,
+            isCountdown: true,
+          ),
+          Interval(
+            duration: const Duration(minutes: 3),
+            type: IntervalType.work,
+            isCountdown: true,
+          ),
+        ],
+      ),
+    )
   ]);
 
   @computed
   Workout get workout {
-    final round = Round(intervals);
-    List<Round> rounds = [];
+    // final round = Round(intervals);
+    // List<Round> rounds = [];
 
-    for (int i = 0; i < roundsCount; i++) {
-      rounds.add(round);
-    }
-    return Workout.withLauchRound(rounds);
+    // for (int i = 0; i < roundsCount; i++) {
+    //   rounds.add(round);
+    // }
+    return Workout.withCountdownInterval(rounds);
   }
 
   @action
-  void setRounds(int value) {
-    roundsCount = value;
+  void setRounds(int roundsIndex, int value) {
+    roundsCounts[roundsIndex] = value;
   }
 
   @action
-  void setInterval(int index, Duration duration) {
-    if (index >= intervals.length) return;
+  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
+    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].intervals.length) return;
     final interval = Interval(
       duration: duration,
       type: IntervalType.work,
       isCountdown: true,
     );
-    intervals[index] = interval;
+    rounds[roundIndex].intervals[intervalIndex] = interval;
   }
 
   @action
-  void addInterval() {
-    final interval = intervals.last;
-    intervals.add(interval);
-    print(intervals.length);
+  void addRound() {
+    final intervals = ObservableList.of(rounds.last.intervals);
+    rounds.add(Round(intervals));
+    final counts = roundsCounts.last;
+    roundsCounts.add(counts);
+    // print(intervals.length);
   }
 
   @action
-  void deleteInterval(int index) {
-    if (intervals.length < 2 || index >= intervals.length) return;
-    intervals.removeAt(index);
+  void addInterval(int roundIndex) {
+    final interval = rounds.last.intervals.last;
+    rounds[roundIndex].intervals.add(interval);
+    // print(intervals.length);
+  }
+
+  @action
+  void deleteInterval(int roundIndex, int intervalIndex) {
+    if (roundIndex >= rounds.length || rounds[roundIndex].intervals.length < 2 || intervalIndex >= rounds[roundIndex].intervals.length) return;
+    rounds[roundIndex].intervals.removeAt(intervalIndex);
   }
 }

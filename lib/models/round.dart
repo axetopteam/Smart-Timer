@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart';
+import 'package:mobx/mobx.dart';
+
 import 'interval.dart';
 
 class Round {
   Round(this.intervals);
-  final List<Interval> intervals;
+  @observable
+  final ObservableList<Interval> intervals;
 }

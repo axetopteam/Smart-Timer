@@ -17,33 +17,33 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
               name: 'CustomSettingsBase.workout'))
           .value;
 
-  final _$roundsCountAtom = Atom(name: 'CustomSettingsBase.roundsCount');
+  final _$roundsCountsAtom = Atom(name: 'CustomSettingsBase.roundsCounts');
 
   @override
-  int get roundsCount {
-    _$roundsCountAtom.reportRead();
-    return super.roundsCount;
+  ObservableList<int> get roundsCounts {
+    _$roundsCountsAtom.reportRead();
+    return super.roundsCounts;
   }
 
   @override
-  set roundsCount(int value) {
-    _$roundsCountAtom.reportWrite(value, super.roundsCount, () {
-      super.roundsCount = value;
+  set roundsCounts(ObservableList<int> value) {
+    _$roundsCountsAtom.reportWrite(value, super.roundsCounts, () {
+      super.roundsCounts = value;
     });
   }
 
-  final _$intervalsAtom = Atom(name: 'CustomSettingsBase.intervals');
+  final _$roundsAtom = Atom(name: 'CustomSettingsBase.rounds');
 
   @override
-  ObservableList<Interval> get intervals {
-    _$intervalsAtom.reportRead();
-    return super.intervals;
+  ObservableList<Round> get rounds {
+    _$roundsAtom.reportRead();
+    return super.rounds;
   }
 
   @override
-  set intervals(ObservableList<Interval> value) {
-    _$intervalsAtom.reportWrite(value, super.intervals, () {
-      super.intervals = value;
+  set rounds(ObservableList<Round> value) {
+    _$roundsAtom.reportWrite(value, super.rounds, () {
+      super.rounds = value;
     });
   }
 
@@ -51,44 +51,55 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
       ActionController(name: 'CustomSettingsBase');
 
   @override
-  void setRounds(int value) {
+  void setRounds(int roundsIndex, int value) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.setRounds');
     try {
-      return super.setRounds(value);
+      return super.setRounds(roundsIndex, value);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setInterval(int index, Duration duration) {
+  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.setInterval');
     try {
-      return super.setInterval(index, duration);
+      return super.setInterval(roundIndex, intervalIndex, duration);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void addInterval() {
+  void addRound() {
+    final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
+        name: 'CustomSettingsBase.addRound');
+    try {
+      return super.addRound();
+    } finally {
+      _$CustomSettingsBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addInterval(int roundIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.addInterval');
     try {
-      return super.addInterval();
+      return super.addInterval(roundIndex);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void deleteInterval(int index) {
+  void deleteInterval(int roundIndex, int intervalIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.deleteInterval');
     try {
-      return super.deleteInterval(index);
+      return super.deleteInterval(roundIndex, intervalIndex);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
@@ -97,8 +108,8 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   @override
   String toString() {
     return '''
-roundsCount: ${roundsCount},
-intervals: ${intervals},
+roundsCounts: ${roundsCounts},
+rounds: ${rounds},
 workout: ${workout}
     ''';
   }

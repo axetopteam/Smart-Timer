@@ -69,6 +69,51 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
+  final _$showSetsAtom = Atom(name: 'TabataStoreBase.showSets');
+
+  @override
+  bool get showSets {
+    _$showSetsAtom.reportRead();
+    return super.showSets;
+  }
+
+  @override
+  set showSets(bool value) {
+    _$showSetsAtom.reportWrite(value, super.showSets, () {
+      super.showSets = value;
+    });
+  }
+
+  final _$setsCountAtom = Atom(name: 'TabataStoreBase.setsCount');
+
+  @override
+  int get setsCount {
+    _$setsCountAtom.reportRead();
+    return super.setsCount;
+  }
+
+  @override
+  set setsCount(int value) {
+    _$setsCountAtom.reportWrite(value, super.setsCount, () {
+      super.setsCount = value;
+    });
+  }
+
+  final _$restBetweenSetsAtom = Atom(name: 'TabataStoreBase.restBetweenSets');
+
+  @override
+  Interval get restBetweenSets {
+    _$restBetweenSetsAtom.reportRead();
+    return super.restBetweenSets;
+  }
+
+  @override
+  set restBetweenSets(Interval value) {
+    _$restBetweenSetsAtom.reportWrite(value, super.restBetweenSets, () {
+      super.restBetweenSets = value;
+    });
+  }
+
   final _$TabataStoreBaseActionController =
       ActionController(name: 'TabataStoreBase');
 
@@ -106,11 +151,47 @@ mixin _$TabataStore on TabataStoreBase, Store {
   }
 
   @override
+  void toggleShowSets() {
+    final _$actionInfo = _$TabataStoreBaseActionController.startAction(
+        name: 'TabataStoreBase.toggleShowSets');
+    try {
+      return super.toggleShowSets();
+    } finally {
+      _$TabataStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setRestBetweenSets(Duration duration) {
+    final _$actionInfo = _$TabataStoreBaseActionController.startAction(
+        name: 'TabataStoreBase.setRestBetweenSets');
+    try {
+      return super.setRestBetweenSets(duration);
+    } finally {
+      _$TabataStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSetsCount(int value) {
+    final _$actionInfo = _$TabataStoreBaseActionController.startAction(
+        name: 'TabataStoreBase.setSetsCount');
+    try {
+      return super.setSetsCount(value);
+    } finally {
+      _$TabataStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 roundsCount: ${roundsCount},
 workTime: ${workTime},
 restTime: ${restTime},
+showSets: ${showSets},
+setsCount: ${setsCount},
+restBetweenSets: ${restBetweenSets},
 totalTime: ${totalTime},
 workout: ${workout}
     ''';

@@ -18,9 +18,9 @@ abstract class AfapBase with Store {
 
   @computed
   Workout get workout {
-    final round = Round([workTime]);
+    final round = Round(ObservableList.of([workTime]));
 
-    return Workout.withLauchRound([round]);
+    return Workout.withCountdownInterval([round]);
   }
 
   @action

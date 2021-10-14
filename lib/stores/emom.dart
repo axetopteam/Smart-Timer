@@ -22,13 +22,13 @@ abstract class EmomBase with Store {
 
   @computed
   Workout get workout {
-    final round = Round([workTime]);
+    final round = Round(ObservableList.of([workTime]));
     List<Round> rounds = [];
 
     for (int i = 0; i < roundsCount; i++) {
       rounds.add(round);
     }
-    return Workout.withLauchRound(rounds);
+    return Workout.withCountdownInterval(rounds);
   }
 
   @action
