@@ -49,7 +49,8 @@ abstract class CustomSettingsBase with Store {
       }
       sets.add(WorkoutSet(setRounds));
     }
-    return Workout.withCountdownInterval2(sets);
+    // return Workout.withCountdownInterval2(sets);
+    return Workout(sets);
   }
 
   @action

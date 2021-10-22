@@ -15,13 +15,13 @@ abstract class TabataStoreBase with Store {
 
   @observable
   var workTime = Interval(
-    duration: const Duration(seconds: 20),
+    duration: const Duration(seconds: 10),
     type: IntervalType.work,
   );
 
   @observable
   var restTime = Interval(
-    duration: const Duration(seconds: 10),
+    duration: const Duration(seconds: 5),
     type: IntervalType.rest,
   );
 
@@ -42,11 +42,20 @@ abstract class TabataStoreBase with Store {
 
   @computed
   Workout get workout {
-    final round = Round(ObservableList.of([workTime, restTime]));
-    Round(ObservableList.of([workTime]));
     ObservableList<Round> baseRounds = ObservableList<Round>();
 
     for (int j = 0; j < roundsCount - 1; j++) {
+      final work = Interval(
+        duration: const Duration(seconds: 10),
+        type: IntervalType.work,
+      );
+
+      final rest = Interval(
+        duration: const Duration(seconds: 5),
+        type: IntervalType.rest,
+      );
+
+      final round = Round(([work, rest]));
       baseRounds.add(round);
     }
     final rounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime, restBetweenSets])));
@@ -60,7 +69,7 @@ abstract class TabataStoreBase with Store {
 
     sets.add(WorkoutSet(lastRounds));
 
-    return Workout.withCountdownInterval2(sets);
+    return Workout(sets);
   }
 
   @action

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -44,6 +46,9 @@ class _RoundsPickerState extends State<RoundsPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final safeOffset = MediaQuery.of(context).viewPadding;
+    final bottomPadding = max(safeOffset.bottom, 34.0);
+
     return Container(
       color: CupertinoColors.systemGrey5,
       child: Column(
@@ -88,6 +93,7 @@ class _RoundsPickerState extends State<RoundsPicker> {
               },
             ),
           ),
+          SizedBox(height: bottomPadding),
         ],
       ),
     );

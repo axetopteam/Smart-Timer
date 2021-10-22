@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -45,6 +47,9 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final safeOffset = MediaQuery.of(context).viewPadding;
+    final bottomPadding = max(safeOffset.bottom, 34.0);
+
     return Container(
       color: CupertinoColors.systemGrey5,
       child: Column(
@@ -88,6 +93,7 @@ class _TimePickerState extends State<TimePicker> {
               },
             ),
           ),
+          SizedBox(height: bottomPadding),
         ],
       ),
     );

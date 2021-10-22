@@ -11,7 +11,6 @@ import 'package:smart_timer/pages/splash_page.dart';
 import 'package:smart_timer/pages/tabata_page.dart';
 import 'package:smart_timer/pages/timer_page.dart';
 import 'package:smart_timer/routes/router_interface.dart';
-import 'package:smart_timer/stores/timer_store.dart';
 
 import 'main_route_path.dart';
 
@@ -121,8 +120,8 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
         final data = pageData as TimerPageData;
         return MaterialPage(
           key: const ValueKey('TimerPage'),
-          child: Provider<TimerState>(
-            create: (ctx) => TimerState(data.workout),
+          child: Provider<Workout>(
+            create: (ctx) => data.workout,
             dispose: (ctx, state) => state.close(),
             child: const TimerPage(),
           ),

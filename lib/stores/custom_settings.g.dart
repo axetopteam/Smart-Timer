@@ -84,6 +84,17 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   }
 
   @override
+  void deleteRound(int roundIndex) {
+    final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
+        name: 'CustomSettingsBase.deleteRound');
+    try {
+      return super.deleteRound(roundIndex);
+    } finally {
+      _$CustomSettingsBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void addInterval(int roundIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.addInterval');
