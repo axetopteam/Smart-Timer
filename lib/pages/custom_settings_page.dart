@@ -47,9 +47,9 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                 style: AppFonts.buttonTitle.copyWith(color: AppColors.accentBlue),
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                  return WorkoutDesc(customSettings.workout);
-                }));
+                // Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                //   // return WorkoutDesc(customSettings.workout);
+                // }));
               },
             ),
             const SizedBox(height: 12),
@@ -99,7 +99,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(customSettings.workout);
+                  // router.showTimer(customSettings.workout);
                 },
                 color: AppColors.accentBlue,
               ),
@@ -166,7 +166,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: intervals[intervalIndex].duration!,
+                              initialValue: intervals[intervalIndex].duration,
                               timeRange: tabataWorkTimes,
                             );
                             if (selectedTime != null) {
@@ -175,7 +175,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           },
                           child: Observer(
                             builder: (ctx) => ValueContainer(
-                              durationToString2(intervals[intervalIndex].duration!),
+                              durationToString2(intervals[intervalIndex].duration),
                               width: 60,
                             ),
                           ),

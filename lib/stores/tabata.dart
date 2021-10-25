@@ -2,8 +2,8 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
-import 'package:smart_timer/models/set.dart';
-import 'package:smart_timer/models/workout.dart';
+// import 'package:smart_timer/models/set.dart';
+// import 'package:smart_timer/models/workout.dart';
 
 part 'tabata.g.dart';
 
@@ -38,38 +38,47 @@ abstract class TabataStoreBase with Store {
   );
 
   @computed
-  Duration get totalTime => workTime.duration! * roundsCount + restTime.duration! * (roundsCount - 1);
+  Duration get totalTime => workTime.duration * roundsCount + restTime.duration * (roundsCount - 1);
 
   @computed
-  Workout get workout {
-    ObservableList<Round> baseRounds = ObservableList<Round>();
+  Round get workout {
+    // List<Round> baseRounds = [];
 
-    for (int j = 0; j < roundsCount - 1; j++) {
-      final work = Interval(
-        duration: const Duration(seconds: 10),
-        type: IntervalType.work,
-      );
+    // for (int j = 0; j < roundsCount - 1; j++) {
+    //   final work = Interval(
+    //     duration: const Duration(seconds: 10),
+    //     type: IntervalType.work,
+    //   );
 
-      final rest = Interval(
-        duration: const Duration(seconds: 5),
-        type: IntervalType.rest,
-      );
+    //   final rest = Interval(
+    //     duration: const Duration(seconds: 5),
+    //     type: IntervalType.rest,
+    //   );
 
-      final round = Round(([work, rest]));
-      baseRounds.add(round);
-    }
-    final rounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime, restBetweenSets])));
-    final lastRounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime])));
+    //   final round = Round(([work, rest]));
+    //   baseRounds.add(round);
+    // }
 
-    List<WorkoutSet> sets = [];
+    // final rounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime, restBetweenSets])));
+    // final lastRounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime])));
 
-    for (int i = 0; i < setsCount - 1; i++) {
-      sets.add(WorkoutSet(rounds));
-    }
+    // List<WorkoutSet> sets = [];
 
-    sets.add(WorkoutSet(lastRounds));
+    // for (int i = 0; i < setsCount - 1; i++) {
+    //   sets.add(WorkoutSet(rounds));
+    // }
 
-    return Workout(sets);
+    // sets.add(WorkoutSet(lastRounds));
+
+    return Round([
+      workTime.copy(),
+      restTime.copy(),
+      workTime.copy(),
+      restTime.copy(),
+      workTime.copy(),
+      restTime.copy(),
+    ]);
+    // Workout(sets);
   }
 
   @action

@@ -16,13 +16,12 @@ mixin _$TabataStore on TabataStoreBase, Store {
       (_$totalTimeComputed ??= Computed<Duration>(() => super.totalTime,
               name: 'TabataStoreBase.totalTime'))
           .value;
-  Computed<Workout>? _$workoutComputed;
+  Computed<Round>? _$workoutComputed;
 
   @override
-  Workout get workout =>
-      (_$workoutComputed ??= Computed<Workout>(() => super.workout,
-              name: 'TabataStoreBase.workout'))
-          .value;
+  Round get workout => (_$workoutComputed ??=
+          Computed<Round>(() => super.workout, name: 'TabataStoreBase.workout'))
+      .value;
 
   final _$roundsCountAtom = Atom(name: 'TabataStoreBase.roundsCount');
 

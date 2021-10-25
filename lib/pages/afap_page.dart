@@ -50,7 +50,7 @@ class AfapPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: afap.workTime.duration ?? const Duration(minutes: 10),
+                      initialValue: afap.workTime.duration,
                       timeRange: afapWorkTimes,
                     );
 
@@ -59,7 +59,7 @@ class AfapPage extends StatelessWidget {
                   child: Observer(builder: (ctx) {
                     final duration = afap.workTime.duration;
                     return ValueContainer(
-                      duration != null ? durationToString2(duration) : 'None',
+                      duration != const Duration(days: 14) ? durationToString2(duration) : 'None',
                       width: 60,
                     );
                   }),
@@ -82,7 +82,7 @@ class AfapPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(afap.workout);
+                  // router.showTimer(afap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

@@ -50,7 +50,7 @@ class AmrapPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: amrap.workTime.duration!,
+                      initialValue: amrap.workTime.duration,
                       timeRange: amrapWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -59,7 +59,7 @@ class AmrapPage extends StatelessWidget {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(amrap.workTime.duration!),
+                      durationToString2(amrap.workTime.duration),
                       width: 60,
                     ),
                   ),
@@ -83,7 +83,7 @@ class AmrapPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(amrap.workout);
+                  // router.showTimer(amrap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

@@ -9,13 +9,6 @@ part of 'interval.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Interval on IntervalBase, Store {
-  Computed<bool>? _$isEndedComputed;
-
-  @override
-  bool get isEnded => (_$isEndedComputed ??=
-          Computed<bool>(() => super.isEnded, name: 'IntervalBase.isEnded'))
-      .value;
-
   final _$currentTimeAtom = Atom(name: 'IntervalBase.currentTime');
 
   @override
@@ -34,11 +27,33 @@ mixin _$Interval on IntervalBase, Store {
   final _$IntervalBaseActionController = ActionController(name: 'IntervalBase');
 
   @override
-  void tick() {
+  void start(DateTime nowUtc) {
+    final _$actionInfo =
+        _$IntervalBaseActionController.startAction(name: 'IntervalBase.start');
+    try {
+      return super.start(nowUtc);
+    } finally {
+      _$IntervalBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void pause() {
+    final _$actionInfo =
+        _$IntervalBaseActionController.startAction(name: 'IntervalBase.pause');
+    try {
+      return super.pause();
+    } finally {
+      _$IntervalBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void tick(DateTime nowUtc) {
     final _$actionInfo =
         _$IntervalBaseActionController.startAction(name: 'IntervalBase.tick');
     try {
-      return super.tick();
+      return super.tick(nowUtc);
     } finally {
       _$IntervalBaseActionController.endAction(_$actionInfo);
     }
@@ -47,8 +62,7 @@ mixin _$Interval on IntervalBase, Store {
   @override
   String toString() {
     return '''
-currentTime: ${currentTime},
-isEnded: ${isEnded}
+currentTime: ${currentTime}
     ''';
   }
 }

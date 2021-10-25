@@ -5,8 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/models/interval_type.dart';
-import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/models/round.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:wakelock/wakelock.dart';
@@ -19,7 +18,7 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  late final Workout workout;
+  late final Round workout;
 
   // AudioPlayer audioPlayer = AudioPlayer();
   final player = AudioPlayer();
@@ -30,7 +29,7 @@ class _TimerPageState extends State<TimerPage> {
   void initState() {
     Wakelock.enable();
 
-    workout = Provider.of<Workout>(context, listen: false);
+    workout = Provider.of<Round>(context, listen: false);
     reactionDispose = reaction<Duration>(
       (reac) {
         return workout.currentTime;
@@ -86,18 +85,18 @@ class _TimerPageState extends State<TimerPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Observer(
-                          builder: (_) => Text(
-                            'Set: ${workout.setIndex + 1}/${workout.setsCount}',
-                            style: AppFonts.header2,
-                          ),
-                        ),
-                        Observer(
-                          builder: (_) => Text(
-                            'Round: ${workout.roundIndex + 1}/${workout.roundsCount}',
-                            style: AppFonts.header2,
-                          ),
-                        ),
+                        // Observer(
+                        //   builder: (_) => Text(
+                        //     'Set: ${workout.setIndex + 1}/${workout.setsCount}',
+                        //     style: AppFonts.header2,
+                        //   ),
+                        // ),
+                        // Observer(
+                        //   builder: (_) => Text(
+                        //     'Round: ${workout.roundIndex + 1}/${workout.roundsCount}',
+                        //     style: AppFonts.header2,
+                        //   ),
+                        // ),
                         Observer(
                           builder: (_) => Text(
                             'Interval: ${workout.intervalIndex + 1}/${workout.intervalsCount}',
@@ -147,7 +146,7 @@ class _TimerPageState extends State<TimerPage> {
                                 size: 40,
                                 color: Colors.blueAccent,
                               );
-                              onPressed = workout.resume;
+                              onPressed = workout.start;
                               break;
                             case TimerStatus.done:
                               icon = const Icon(

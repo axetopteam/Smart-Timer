@@ -1,9 +1,9 @@
-import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/models/round.dart';
 
 abstract class RouterInterface {
   void showMainPage();
   void showTabata();
-  void showTimer(Workout workout);
+  void showTimer(Round workout);
   void showEmom();
   void showAmrap();
   void showAfap();

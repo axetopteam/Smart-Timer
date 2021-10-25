@@ -1,9 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
-import 'package:smart_timer/models/round.dart';
-import 'package:smart_timer/models/set.dart';
-import 'package:smart_timer/models/workout.dart';
+// import 'package:smart_timer/models/set.dart';
+// import 'package:smart_timer/models/workout.dart';
 
 part 'afap.g.dart';
 
@@ -17,21 +16,21 @@ abstract class AfapBase with Store {
     isCountdown: false,
   );
 
-  @computed
-  Workout get workout {
-    final round = Round(ObservableList.of([workTime]));
+  // @computed
+  // Workout get workout {
+  //   final round = Round(ObservableList.of([workTime]));
 
-    return Workout(
-      [
-        WorkoutSet(ObservableList.of([round]))
-      ],
-    );
-  }
+  //   return Workout(
+  //     [
+  //       WorkoutSet(ObservableList.of([round]))
+  //     ],
+  //   );
+  // }
 
   @action
   void setTimeCap(Duration? duration) {
     workTime = Interval(
-      duration: duration,
+      duration: duration ?? const Duration(days: 14),
       type: IntervalType.work,
       isCountdown: false,
     );

@@ -26,7 +26,8 @@ String durationToString2(Duration duration) {
     return "-${-duration}";
   }
   String twoDigitMinutes = twoDigits(duration.inMinutes);
-  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(secondsPerMinute));
+  final seconds = (duration.inMicroseconds / 1000000).round();
+  String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
 
   return "$twoDigitMinutes:$twoDigitSeconds";
 }

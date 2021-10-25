@@ -9,13 +9,6 @@ part of 'afap.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Afap on AfapBase, Store {
-  Computed<Workout>? _$workoutComputed;
-
-  @override
-  Workout get workout => (_$workoutComputed ??=
-          Computed<Workout>(() => super.workout, name: 'AfapBase.workout'))
-      .value;
-
   final _$workTimeAtom = Atom(name: 'AfapBase.workTime');
 
   @override
@@ -47,8 +40,7 @@ mixin _$Afap on AfapBase, Store {
   @override
   String toString() {
     return '''
-workTime: ${workTime},
-workout: ${workout}
+workTime: ${workTime}
     ''';
   }
 }

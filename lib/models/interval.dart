@@ -12,33 +12,55 @@ abstract class IntervalBase with Store {
     required this.type,
     this.isCountdown = true,
   })  : assert(!isCountdown || duration != null),
-        currentTime = duration ?? const Duration(),
+        currentTime = duration,
+        restDuration = duration,
         reminders = [if (duration != null) Duration(seconds: duration.inSeconds ~/ 2)];
 
-  final Duration? duration;
+  final Duration duration;
   final IntervalType type;
   final bool isCountdown;
   final List<Duration> reminders;
 
+  DateTime? startTimeUtc;
+  Duration restDuration;
+
   @observable
   Duration currentTime;
 
-  @computed
-  bool get isEnded {
-    if (isCountdown) {
-      return currentTime <= const Duration();
-    } else {
-      return duration != null ? currentTime >= const Duration() : false;
+  DateTime? get finishTimeUtc {
+    if (startTimeUtc != null) {
+      return startTimeUtc!.add(restDuration);
     }
+    return null;
+  }
+
+  bool get isEnded => (isCountdown && currentTime == const Duration()) || (!isCountdown && currentTime == duration);
+
+  @action
+  void start(DateTime nowUtc) {
+    startTimeUtc = nowUtc;
   }
 
   @action
-  void tick() {
-    if (isEnded) return;
-    currentTime = isCountdown ? currentTime - const Duration(seconds: 1) : currentTime + const Duration(seconds: 1);
+  void pause() {
+    startTimeUtc = null;
+
+    restDuration = isCountdown ? currentTime : duration - currentTime;
   }
 
-  // factory IntervalBase.copy() {
-  //   return Interval(duration: this.duration, type: this.type, isCountdown: this.isCountdown);
-  // }
+  @action
+  void tick(DateTime nowUtc) {
+    if (isEnded) return;
+
+    if (isCountdown) {
+      currentTime = finishTimeUtc!.difference(nowUtc);
+    } else {
+      currentTime = nowUtc.difference(startTimeUtc!);
+    }
+    print('#Interval# current time: $currentTime');
+  }
+
+  Interval copy() {
+    return Interval(duration: duration, type: type, isCountdown: isCountdown);
+  }
 }

@@ -2,8 +2,8 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
-import 'package:smart_timer/models/set.dart';
-import 'package:smart_timer/models/workout.dart';
+// import 'package:smart_timer/models/set.dart';
+// import 'package:smart_timer/models/workout.dart';
 
 part 'custom_settings.g.dart';
 
@@ -38,20 +38,20 @@ abstract class CustomSettingsBase with Store {
     )
   ]);
 
-  @computed
-  Workout get workout {
-    ObservableList<WorkoutSet> sets = ObservableList<WorkoutSet>();
+  // @computed
+  // Workout get workout {
+  //   ObservableList<WorkoutSet> sets = ObservableList<WorkoutSet>();
 
-    for (int i = 0; i < roundsCounts.length; i++) {
-      ObservableList<Round> setRounds = ObservableList<Round>();
-      for (int j = 0; j < roundsCounts[i]; j++) {
-        setRounds.add(rounds[i]);
-      }
-      sets.add(WorkoutSet(setRounds));
-    }
-    // return Workout.withCountdownInterval2(sets);
-    return Workout(sets);
-  }
+  //   for (int i = 0; i < roundsCounts.length; i++) {
+  //     ObservableList<Round> setRounds = ObservableList<Round>();
+  //     for (int j = 0; j < roundsCounts[i]; j++) {
+  //       setRounds.add(rounds[i]);
+  //     }
+  //     sets.add(WorkoutSet(setRounds));
+  //   }
+  //   // return Workout.withCountdownInterval2(sets);
+  //   return Workout(sets);
+  // }
 
   @action
   void setRounds(int roundsIndex, int value) {

@@ -50,7 +50,7 @@ class EmomPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: emom.workTime.duration!,
+                      initialValue: emom.workTime.duration,
                       timeRange: emomWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -59,7 +59,7 @@ class EmomPage extends StatelessWidget {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(emom.workTime.duration!),
+                      durationToString2(emom.workTime.duration),
                       width: 60,
                     ),
                   ),
@@ -108,7 +108,7 @@ class EmomPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(emom.workout);
+                  // router.showTimer(emom.workout);
                 },
                 color: AppColors.accentBlue,
               ),

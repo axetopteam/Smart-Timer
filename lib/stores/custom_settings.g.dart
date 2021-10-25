@@ -9,14 +9,6 @@ part of 'custom_settings.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CustomSettings on CustomSettingsBase, Store {
-  Computed<Workout>? _$workoutComputed;
-
-  @override
-  Workout get workout =>
-      (_$workoutComputed ??= Computed<Workout>(() => super.workout,
-              name: 'CustomSettingsBase.workout'))
-          .value;
-
   final _$roundsCountsAtom = Atom(name: 'CustomSettingsBase.roundsCounts');
 
   @override
@@ -120,8 +112,7 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   String toString() {
     return '''
 roundsCounts: ${roundsCounts},
-rounds: ${rounds},
-workout: ${workout}
+rounds: ${rounds}
     ''';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_timer/models/workout.dart';
+import 'package:smart_timer/models/round.dart';
+// import 'package:smart_timer/models/workout.dart';
 import 'package:smart_timer/pages/afap_page.dart';
 import 'package:smart_timer/pages/amrap_page.dart';
 import 'package:smart_timer/pages/custom_settings_page.dart';
@@ -120,7 +121,7 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
         final data = pageData as TimerPageData;
         return MaterialPage(
           key: const ValueKey('TimerPage'),
-          child: Provider<Workout>(
+          child: Provider<Round>(
             create: (ctx) => data.workout,
             dispose: (ctx, state) => state.close(),
             child: const TimerPage(),
@@ -179,7 +180,7 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   }
 
   @override
-  void showTimer(Workout workout) {
+  void showTimer(Round workout) {
     currentConfiguration?.pages.add(TimerPageData(workout));
     notifyListeners();
   }

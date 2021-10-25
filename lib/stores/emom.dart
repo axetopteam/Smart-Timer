@@ -2,8 +2,8 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/round.dart';
-import 'package:smart_timer/models/set.dart';
-import 'package:smart_timer/models/workout.dart';
+// import 'package:smart_timer/models/set.dart';
+// import 'package:smart_timer/models/workout.dart';
 
 part 'emom.g.dart';
 
@@ -19,23 +19,23 @@ abstract class EmomBase with Store {
     type: IntervalType.work,
   );
 
-  Duration get totalTime => workTime.duration! * roundsCount;
+  Duration get totalTime => workTime.duration * roundsCount;
 
-  @computed
-  Workout get workout {
-    final round = Round(ObservableList.of([workTime]));
-    List<Round> rounds = [];
+  // @computed
+  // Workout get workout {
+  //   final round = Round(ObservableList.of([workTime]));
+  //   List<Round> rounds = [];
 
-    for (int i = 0; i < roundsCount; i++) {
-      rounds.add(round);
-    }
-    // return Workout.withCountdownInterval(rounds);
-    return Workout(
-      [
-        WorkoutSet(ObservableList.of([round]))
-      ],
-    );
-  }
+  //   for (int i = 0; i < roundsCount; i++) {
+  //     rounds.add(round);
+  //   }
+  //   // return Workout.withCountdownInterval(rounds);
+  //   return Workout(
+  //     [
+  //       WorkoutSet(ObservableList.of([round]))
+  //     ],
+  //   );
+  // }
 
   @action
   void setRounds(int value) {

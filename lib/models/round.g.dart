@@ -23,13 +23,6 @@ mixin _$Round on RoundBase, Store {
       (_$intervalsCountComputed ??= Computed<int>(() => super.intervalsCount,
               name: 'RoundBase.intervalsCount'))
           .value;
-  Computed<Interval>? _$_currentIntervalComputed;
-
-  @override
-  Interval get _currentInterval => (_$_currentIntervalComputed ??=
-          Computed<Interval>(() => super._currentInterval,
-              name: 'RoundBase._currentInterval'))
-      .value;
   Computed<Duration>? _$currentTimeComputed;
 
   @override
@@ -37,6 +30,21 @@ mixin _$Round on RoundBase, Store {
       (_$currentTimeComputed ??= Computed<Duration>(() => super.currentTime,
               name: 'RoundBase.currentTime'))
           .value;
+
+  final _$statusAtom = Atom(name: 'RoundBase.status');
+
+  @override
+  TimerStatus get status {
+    _$statusAtom.reportRead();
+    return super.status;
+  }
+
+  @override
+  set status(TimerStatus value) {
+    _$statusAtom.reportWrite(value, super.status, () {
+      super.status = value;
+    });
+  }
 
   final _$_intervalIndexAtom = Atom(name: 'RoundBase._intervalIndex');
 
@@ -53,29 +61,47 @@ mixin _$Round on RoundBase, Store {
     });
   }
 
-  final _$isEndedAtom = Atom(name: 'RoundBase.isEnded');
-
-  @override
-  bool get isEnded {
-    _$isEndedAtom.reportRead();
-    return super.isEnded;
-  }
-
-  @override
-  set isEnded(bool value) {
-    _$isEndedAtom.reportWrite(value, super.isEnded, () {
-      super.isEnded = value;
-    });
-  }
-
   final _$RoundBaseActionController = ActionController(name: 'RoundBase');
 
   @override
-  void tick() {
+  void tick(DateTime nowUtc) {
     final _$actionInfo =
         _$RoundBaseActionController.startAction(name: 'RoundBase.tick');
     try {
-      return super.tick();
+      return super.tick(nowUtc);
+    } finally {
+      _$RoundBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void start() {
+    final _$actionInfo =
+        _$RoundBaseActionController.startAction(name: 'RoundBase.start');
+    try {
+      return super.start();
+    } finally {
+      _$RoundBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void pause() {
+    final _$actionInfo =
+        _$RoundBaseActionController.startAction(name: 'RoundBase.pause');
+    try {
+      return super.pause();
+    } finally {
+      _$RoundBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void close() {
+    final _$actionInfo =
+        _$RoundBaseActionController.startAction(name: 'RoundBase.close');
+    try {
+      return super.close();
     } finally {
       _$RoundBaseActionController.endAction(_$actionInfo);
     }
@@ -84,7 +110,7 @@ mixin _$Round on RoundBase, Store {
   @override
   String toString() {
     return '''
-isEnded: ${isEnded},
+status: ${status},
 intervalIndex: ${intervalIndex},
 intervalsCount: ${intervalsCount},
 currentTime: ${currentTime}
