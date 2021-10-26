@@ -1,31 +1,14 @@
-import 'dart:async';
-
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/stores/timer_status.dart';
-import 'package:smart_timer/utils/datetime_extension.dart';
-import 'interval.dart';
+import 'package:smart_timer/models/interfaces/interval_interface.dart';
 
 part 'round.g.dart';
 
 class Round = RoundBase with _$Round;
 
-abstract class RoundBase with Store {
+abstract class RoundBase with Store implements IntervalInterface {
   RoundBase(this.intervals);
 
-  final List<Interval> intervals;
-
-  final stream = Stream.periodic(
-    const Duration(seconds: 1),
-    (x) {
-      final roundedNow = DateTime.now().toUtc().roundToSeconds();
-      return roundedNow;
-    },
-  ).asBroadcastStream();
-
-  StreamSubscription? timerSubscription;
-
-  @observable
-  var status = TimerStatus.stop;
+  final List<IntervalInterface> intervals;
 
   //interval info
   @observable
@@ -36,20 +19,34 @@ abstract class RoundBase with Store {
 
   @computed
   int get intervalsCount => intervals.length;
-  //
 
-  Interval get _currentInterval => intervals[_intervalIndex];
+  @override
+  @computed
+  Map<int, List<int>> get indexes {
+    final lastKey = _currentInterval.indexes.keys.last;
+    return _currentInterval.indexes
+      ..addAll({
+        lastKey + 1: [_intervalIndex + 1, intervalsCount]
+      });
+  }
 
-  bool isEnded(DateTime nowUtc) => intervals.last.isEnded;
+  IntervalInterface get _currentInterval => intervals[_intervalIndex];
 
+  @override
+  bool get isEnded => intervals.last.isEnded;
+
+  @override
   @computed
   Duration get currentTime => _currentInterval.currentTime;
 
+  @override
+  DateTime? get finishTimeUtc => intervals.last.finishTimeUtc;
+
+  @override
   @action
   void tick(DateTime nowUtc) {
-    if (isEnded(nowUtc)) {
-      status = TimerStatus.done;
-      close();
+    if (isEnded) {
+      return;
     }
 
     for (int i = _intervalIndex; i < intervalsCount - 1; i++) {
@@ -59,68 +56,49 @@ abstract class RoundBase with Store {
       _intervalIndex++;
     }
 
-    // while (_currentInterval.isEnded(nowUtc)) {
-    //   _intervalIndex++;
-    // }
-    // if (_currentInterval.isEnded(nowUtc)) {
-    //   _intervalIndex++;
-    //   // print('#ROUND# interval index: $_intervalIndex');
-    //   // _currentInterval.start(nowUtc);
-
-    // }
-
     _currentInterval.tick(nowUtc);
   }
 
+  @override
   @action
-  void start() {
-    timerSubscription?.cancel();
-    status = TimerStatus.run;
-
-    setStartTimes();
-
-    timerSubscription = stream.listen((nowUtc) {
-      tick(nowUtc);
-    });
-  }
-
-  void setStartTimes() {
-    final roundedNow = DateTime.now().toUtc().roundToSeconds();
-
-    intervals[0].start(roundedNow);
+  void start(DateTime nowUtc) {
+    intervals[0].start(nowUtc);
+    print('start: $nowUtc');
 
     if (intervalsCount > 1) {
       for (int i = 1; i < intervalsCount; i++) {
+        // print('last finish time: ${intervals[i - 1].finishTimeUtc!}');
         intervals[i].start((intervals[i - 1].finishTimeUtc!));
       }
     }
+
     // intervals.forEach((element) {
-    //   print('start time: ${element.startTimeUtc}');
-    //   print('rest duration: ${element.restDuration}');
+    //   print('rest duration: ${element.currentTime}');
+    //   print('finish time: ${element.finishTimeUtc}');
     // });
   }
 
-  // @action
-  // void resume() {
-  //   timerSubscription?.pause();
-
-  //   final roundedNow = DateTime.now().toUtc().roundToSeconds();
-  //   intervals.forEach((interval) => interval.pause(roundedNow));
-
-  //   status = TimerStatus.pause;
-  // }
-
+  @override
   @action
   void pause() {
-    timerSubscription?.pause();
-
     intervals.forEach((interval) => interval.pause());
-
-    status = TimerStatus.pause;
   }
 
-  @action
-  void close() {
-    timerSubscription?.cancel();
+  @override
+  Round copy() {
+    final copyList = List.generate(intervalsCount, (index) => intervals[index].copy());
+    return Round(copyList);
+  }
+
+  @override
+  String description() {
+    StringBuffer buffer = StringBuffer();
+    for (int i = 0; i < intervalsCount; i++) {
+      buffer.write('Round $i \n');
+      buffer.write(intervals[i].description());
+      buffer.write('\n');
+    }
+
+    return buffer.toString();
   }
 }

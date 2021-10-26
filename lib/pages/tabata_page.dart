@@ -10,6 +10,7 @@ import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
+import 'package:smart_timer/utils/datetime_extension.dart';
 
 class TabataPage extends StatefulWidget {
   const TabataPage({Key? key}) : super(key: key);
@@ -111,9 +112,9 @@ class _TabataPageState extends State<TabataPage> {
                 style: AppFonts.buttonTitle.copyWith(color: AppColors.accentBlue),
               ),
               onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                //   return WorkoutDesc(tabataSettings.workout);
-                // }));
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                  return WorkoutDesc(tabataSettings.workout);
+                }));
               },
             ),
             const SizedBox(height: 32),

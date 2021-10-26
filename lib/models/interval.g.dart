@@ -9,18 +9,26 @@ part of 'interval.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Interval on IntervalBase, Store {
-  final _$currentTimeAtom = Atom(name: 'IntervalBase.currentTime');
+  Computed<Map<int, List<int>>>? _$indexesComputed;
 
   @override
-  Duration get currentTime {
-    _$currentTimeAtom.reportRead();
-    return super.currentTime;
+  Map<int, List<int>> get indexes =>
+      (_$indexesComputed ??= Computed<Map<int, List<int>>>(() => super.indexes,
+              name: 'IntervalBase.indexes'))
+          .value;
+
+  final _$_currentTimeAtom = Atom(name: 'IntervalBase._currentTime');
+
+  @override
+  Duration get _currentTime {
+    _$_currentTimeAtom.reportRead();
+    return super._currentTime;
   }
 
   @override
-  set currentTime(Duration value) {
-    _$currentTimeAtom.reportWrite(value, super.currentTime, () {
-      super.currentTime = value;
+  set _currentTime(Duration value) {
+    _$_currentTimeAtom.reportWrite(value, super._currentTime, () {
+      super._currentTime = value;
     });
   }
 
@@ -62,7 +70,7 @@ mixin _$Interval on IntervalBase, Store {
   @override
   String toString() {
     return '''
-currentTime: ${currentTime}
+indexes: ${indexes}
     ''';
   }
 }

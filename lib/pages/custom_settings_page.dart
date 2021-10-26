@@ -4,15 +4,13 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
-import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/stores/custom_settings.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 class CustomSettingsPage extends StatefulWidget {
-  CustomSettingsPage({Key? key}) : super(key: key);
+  const CustomSettingsPage({Key? key}) : super(key: key);
 
   @override
   State<CustomSettingsPage> createState() => _CustomSettingsPageState();
@@ -166,7 +164,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: intervals[intervalIndex].duration,
+                              initialValue: intervals[intervalIndex].currentTime,
                               timeRange: tabataWorkTimes,
                             );
                             if (selectedTime != null) {
@@ -175,7 +173,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           },
                           child: Observer(
                             builder: (ctx) => ValueContainer(
-                              durationToString2(intervals[intervalIndex].duration),
+                              durationToString2(intervals[intervalIndex].currentTime),
                               width: 60,
                             ),
                           ),
@@ -219,7 +217,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
           onPressed: () {
             customSettings.deleteRound(roundIndex);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.close_sharp,
             color: AppColors.red,
           ),

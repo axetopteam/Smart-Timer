@@ -23,6 +23,13 @@ mixin _$Round on RoundBase, Store {
       (_$intervalsCountComputed ??= Computed<int>(() => super.intervalsCount,
               name: 'RoundBase.intervalsCount'))
           .value;
+  Computed<Map<int, List<int>>>? _$indexesComputed;
+
+  @override
+  Map<int, List<int>> get indexes =>
+      (_$indexesComputed ??= Computed<Map<int, List<int>>>(() => super.indexes,
+              name: 'RoundBase.indexes'))
+          .value;
   Computed<Duration>? _$currentTimeComputed;
 
   @override
@@ -30,21 +37,6 @@ mixin _$Round on RoundBase, Store {
       (_$currentTimeComputed ??= Computed<Duration>(() => super.currentTime,
               name: 'RoundBase.currentTime'))
           .value;
-
-  final _$statusAtom = Atom(name: 'RoundBase.status');
-
-  @override
-  TimerStatus get status {
-    _$statusAtom.reportRead();
-    return super.status;
-  }
-
-  @override
-  set status(TimerStatus value) {
-    _$statusAtom.reportWrite(value, super.status, () {
-      super.status = value;
-    });
-  }
 
   final _$_intervalIndexAtom = Atom(name: 'RoundBase._intervalIndex');
 
@@ -75,11 +67,11 @@ mixin _$Round on RoundBase, Store {
   }
 
   @override
-  void start() {
+  void start(DateTime nowUtc) {
     final _$actionInfo =
         _$RoundBaseActionController.startAction(name: 'RoundBase.start');
     try {
-      return super.start();
+      return super.start(nowUtc);
     } finally {
       _$RoundBaseActionController.endAction(_$actionInfo);
     }
@@ -97,22 +89,11 @@ mixin _$Round on RoundBase, Store {
   }
 
   @override
-  void close() {
-    final _$actionInfo =
-        _$RoundBaseActionController.startAction(name: 'RoundBase.close');
-    try {
-      return super.close();
-    } finally {
-      _$RoundBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
-status: ${status},
 intervalIndex: ${intervalIndex},
 intervalsCount: ${intervalsCount},
+indexes: ${indexes},
 currentTime: ${currentTime}
     ''';
   }

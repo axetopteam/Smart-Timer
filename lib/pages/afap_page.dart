@@ -8,8 +8,6 @@ import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-import '../main.dart';
-
 class AfapPage extends StatelessWidget {
   AfapPage({Key? key}) : super(key: key);
 

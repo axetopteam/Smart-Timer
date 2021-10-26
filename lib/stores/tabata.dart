@@ -42,43 +42,27 @@ abstract class TabataStoreBase with Store {
 
   @computed
   Round get workout {
-    // List<Round> baseRounds = [];
+    if (setsCount == 1) {
+      Round baseRound = Round([workTime, restTime]);
+      Round lastRound = Round([workTime.copy()]);
 
-    // for (int j = 0; j < roundsCount - 1; j++) {
-    //   final work = Interval(
-    //     duration: const Duration(seconds: 10),
-    //     type: IntervalType.work,
-    //   );
+      List<Round> rounds = List.generate(roundsCount - 1, (index) => baseRound);
+      rounds.add(lastRound);
 
-    //   final rest = Interval(
-    //     duration: const Duration(seconds: 5),
-    //     type: IntervalType.rest,
-    //   );
+      return Round(rounds);
+    } else {
+      Round baseRound = Round([workTime, restTime]);
+      Round lastRoundInSet = Round([workTime, restBetweenSets]);
+      Round lastRound = Round([workTime]);
 
-    //   final round = Round(([work, rest]));
-    //   baseRounds.add(round);
-    // }
+      List<Round> baseRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRoundInSet);
 
-    // final rounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime, restBetweenSets])));
-    // final lastRounds = ObservableList<Round>.of(baseRounds)..add(Round(ObservableList.of([workTime])));
+      List<Round> lastRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRound);
 
-    // List<WorkoutSet> sets = [];
-
-    // for (int i = 0; i < setsCount - 1; i++) {
-    //   sets.add(WorkoutSet(rounds));
-    // }
-
-    // sets.add(WorkoutSet(lastRounds));
-
-    return Round([
-      workTime.copy(),
-      restTime.copy(),
-      workTime.copy(),
-      restTime.copy(),
-      workTime.copy(),
-      restTime.copy(),
-    ]);
-    // Workout(sets);
+      final sets = List.generate(setsCount - 1, (index) => Round(baseRounds));
+      sets.add(Round(lastRounds));
+      return Round(sets).copy();
+    }
   }
 
   @action

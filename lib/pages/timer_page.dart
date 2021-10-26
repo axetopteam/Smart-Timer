@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/stores/timer.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:wakelock/wakelock.dart';
@@ -18,7 +19,7 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  late final Round workout;
+  late final Timer state;
 
   // AudioPlayer audioPlayer = AudioPlayer();
   final player = AudioPlayer();
@@ -29,10 +30,10 @@ class _TimerPageState extends State<TimerPage> {
   void initState() {
     Wakelock.enable();
 
-    workout = Provider.of<Round>(context, listen: false);
+    state = Provider.of<Timer>(context, listen: false);
     reactionDispose = reaction<Duration>(
       (reac) {
-        return workout.currentTime;
+        return state.workout.currentTime;
       },
       (rest) async {
         // if ((workout.currentInterval.isCountdown && rest.inSeconds == 3) ||
@@ -77,7 +78,7 @@ class _TimerPageState extends State<TimerPage> {
           body: SizedBox(
             width: double.infinity,
             child: Observer(
-              builder: (ctx) => workout.status == TimerStatus.done
+              builder: (ctx) => state.status == TimerStatus.done
                   ? const Center(
                       child: Text('Finish', style: AppFonts.header),
                     )
@@ -99,7 +100,8 @@ class _TimerPageState extends State<TimerPage> {
                         // ),
                         Observer(
                           builder: (_) => Text(
-                            'Interval: ${workout.intervalIndex + 1}/${workout.intervalsCount}',
+                            state.indexes,
+                            // 'Interval: ${workout.intervalIndex + 1}/${workout.intervalsCount}',
                             style: AppFonts.header2,
                           ),
                         ),
@@ -113,7 +115,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            durationToString2(workout.currentTime),
+                            durationToString2(state.workout.currentTime),
                             style: const TextStyle(
                               fontSize: 52,
                             ),
@@ -123,14 +125,14 @@ class _TimerPageState extends State<TimerPage> {
                         Observer(builder: (ctx) {
                           Icon icon;
                           void Function() onPressed;
-                          switch (workout.status) {
+                          switch (state.status) {
                             case TimerStatus.stop:
                               icon = const Icon(
                                 Icons.play_arrow,
                                 size: 40,
                                 color: Colors.blueAccent,
                               );
-                              onPressed = workout.start;
+                              onPressed = () => state.start();
                               break;
                             case TimerStatus.run:
                               icon = const Icon(
@@ -138,7 +140,7 @@ class _TimerPageState extends State<TimerPage> {
                                 size: 40,
                                 color: Colors.blueAccent,
                               );
-                              onPressed = workout.pause;
+                              onPressed = state.pause;
                               break;
                             case TimerStatus.pause:
                               icon = const Icon(
@@ -146,7 +148,7 @@ class _TimerPageState extends State<TimerPage> {
                                 size: 40,
                                 color: Colors.blueAccent,
                               );
-                              onPressed = workout.start;
+                              onPressed = () => state.restart();
                               break;
                             case TimerStatus.done:
                               icon = const Icon(
@@ -154,7 +156,7 @@ class _TimerPageState extends State<TimerPage> {
                                 size: 40,
                                 color: Colors.blueAccent,
                               );
-                              onPressed = workout.start;
+                              onPressed = () => state.start();
                               break;
                           }
                           return IconButton(
