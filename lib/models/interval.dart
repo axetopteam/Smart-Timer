@@ -13,7 +13,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
     required this.type,
     this.isCountdown = true,
   })  : assert(!isCountdown || duration != null),
-        _currentTime = duration,
+        _currentTime = isCountdown ? duration : Duration(),
         restDuration = duration,
         reminders = [if (duration != null) Duration(seconds: duration.inSeconds ~/ 2)];
 
@@ -72,11 +72,12 @@ abstract class IntervalBase with Store implements IntervalInterface {
     if (isCountdown) {
       _currentTime = finishTimeUtc!.difference(nowUtc);
     } else {
-      _currentTime = nowUtc.difference(startTimeUtc!);
+      _currentTime = duration - restDuration + nowUtc.difference(startTimeUtc!);
     }
     print('#Interval# current time: $currentTime');
   }
 
+  @override
   Interval copy() {
     return Interval(duration: duration, type: type, isCountdown: isCountdown);
   }

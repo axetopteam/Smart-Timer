@@ -49,7 +49,7 @@ abstract class TabataStoreBase with Store {
       List<Round> rounds = List.generate(roundsCount - 1, (index) => baseRound);
       rounds.add(lastRound);
 
-      return Round(rounds);
+      return Round(rounds).copy();
     } else {
       Round baseRound = Round([workTime, restTime]);
       Round lastRoundInSet = Round([workTime, restBetweenSets]);
