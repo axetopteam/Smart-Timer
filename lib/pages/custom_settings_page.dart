@@ -164,7 +164,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: intervals[intervalIndex].currentTime,
+                              initialValue: intervals[intervalIndex].currentTime!,
                               timeRange: tabataWorkTimes,
                             );
                             if (selectedTime != null) {
@@ -173,7 +173,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           },
                           child: Observer(
                             builder: (ctx) => ValueContainer(
-                              durationToString2(intervals[intervalIndex].currentTime),
+                              durationToString2(intervals[intervalIndex].currentTime!),
                               width: 60,
                             ),
                           ),

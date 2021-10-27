@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
+import 'package:smart_timer/models/interval.dart';
 
 part 'round.g.dart';
 
@@ -23,24 +24,49 @@ abstract class RoundBase with Store implements IntervalInterface {
   @override
   @computed
   Map<int, List<int>> get indexes {
-    final lastKey = _currentInterval.indexes.keys.last;
-    return _currentInterval.indexes
+    final lastKey = _currentRound.indexes.keys.last;
+    return _currentRound.indexes
       ..addAll({
         lastKey + 1: [_intervalIndex + 1, intervalsCount]
       });
   }
 
-  IntervalInterface get _currentInterval => intervals[_intervalIndex];
+  IntervalInterface get _currentRound => intervals[_intervalIndex];
+
+  @override
+  Interval get currentInterval => _currentRound.currentInterval as Interval;
+
+  @override
+  Interval? get nextInterval {
+    final next = _currentRound.nextInterval;
+
+    if (next != null) {
+      return next as Interval;
+    }
+
+    if (next == null && _intervalIndex < intervalsCount - 1) {
+      return intervals[_intervalIndex + 1].currentInterval as Interval;
+    }
+  }
 
   @override
   bool get isEnded => intervals.last.isEnded;
 
   @override
   @computed
-  Duration get currentTime => _currentInterval.currentTime;
+  Duration? get currentTime => _currentRound.currentTime;
 
   @override
   DateTime? get finishTimeUtc => intervals.last.finishTimeUtc;
+
+  @action
+  void setDuration() {
+    currentInterval.setDuration();
+    if (nextInterval?.isReverse ?? false) {
+      nextInterval?.setDuration(newDuration: currentInterval.duration);
+    }
+    setStartTime();
+  }
 
   @override
   @action
@@ -50,32 +76,31 @@ abstract class RoundBase with Store implements IntervalInterface {
     }
 
     for (int i = _intervalIndex; i < intervalsCount - 1; i++) {
-      if (!_currentInterval.isEnded) {
+      if (!_currentRound.isEnded) {
         break;
       }
       _intervalIndex++;
     }
 
-    _currentInterval.tick(nowUtc);
+    _currentRound.tick(nowUtc);
   }
 
   @override
   @action
   void start(DateTime nowUtc) {
     intervals[0].start(nowUtc);
-    print('start: $nowUtc');
+    setStartTime();
+  }
 
+  void setStartTime() {
     if (intervalsCount > 1) {
       for (int i = 1; i < intervalsCount; i++) {
-        // print('last finish time: ${intervals[i - 1].finishTimeUtc!}');
+        if (intervals[i - 1].finishTimeUtc == null) {
+          break;
+        }
         intervals[i].start((intervals[i - 1].finishTimeUtc!));
       }
     }
-
-    // intervals.forEach((element) {
-    //   print('rest duration: ${element.currentTime}');
-    //   print('finish time: ${element.finishTimeUtc}');
-    // });
   }
 
   @override

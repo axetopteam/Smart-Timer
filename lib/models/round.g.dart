@@ -30,11 +30,11 @@ mixin _$Round on RoundBase, Store {
       (_$indexesComputed ??= Computed<Map<int, List<int>>>(() => super.indexes,
               name: 'RoundBase.indexes'))
           .value;
-  Computed<Duration>? _$currentTimeComputed;
+  Computed<Duration?>? _$currentTimeComputed;
 
   @override
-  Duration get currentTime =>
-      (_$currentTimeComputed ??= Computed<Duration>(() => super.currentTime,
+  Duration? get currentTime =>
+      (_$currentTimeComputed ??= Computed<Duration?>(() => super.currentTime,
               name: 'RoundBase.currentTime'))
           .value;
 
@@ -54,6 +54,17 @@ mixin _$Round on RoundBase, Store {
   }
 
   final _$RoundBaseActionController = ActionController(name: 'RoundBase');
+
+  @override
+  void setDuration() {
+    final _$actionInfo =
+        _$RoundBaseActionController.startAction(name: 'RoundBase.setDuration');
+    try {
+      return super.setDuration();
+    } finally {
+      _$RoundBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void tick(DateTime nowUtc) {

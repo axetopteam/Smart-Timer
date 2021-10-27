@@ -19,7 +19,7 @@ abstract class EmomBase with Store {
     type: IntervalType.work,
   );
 
-  Duration get totalTime => workTime.duration * roundsCount;
+  Duration get totalTime => workTime.duration! * roundsCount;
 
   // @computed
   // Workout get workout {

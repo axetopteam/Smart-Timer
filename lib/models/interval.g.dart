@@ -20,19 +20,30 @@ mixin _$Interval on IntervalBase, Store {
   final _$_currentTimeAtom = Atom(name: 'IntervalBase._currentTime');
 
   @override
-  Duration get _currentTime {
+  Duration? get _currentTime {
     _$_currentTimeAtom.reportRead();
     return super._currentTime;
   }
 
   @override
-  set _currentTime(Duration value) {
+  set _currentTime(Duration? value) {
     _$_currentTimeAtom.reportWrite(value, super._currentTime, () {
       super._currentTime = value;
     });
   }
 
   final _$IntervalBaseActionController = ActionController(name: 'IntervalBase');
+
+  @override
+  void setDuration({Duration? newDuration}) {
+    final _$actionInfo = _$IntervalBaseActionController.startAction(
+        name: 'IntervalBase.setDuration');
+    try {
+      return super.setDuration(newDuration: newDuration);
+    } finally {
+      _$IntervalBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void start(DateTime nowUtc) {

@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
+import 'package:smart_timer/main.dart';
 import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -48,7 +49,7 @@ class AfapPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: afap.workTime.duration,
+                      initialValue: afap.workTime.duration!,
                       timeRange: afapWorkTimes,
                     );
 
@@ -57,7 +58,7 @@ class AfapPage extends StatelessWidget {
                   child: Observer(builder: (ctx) {
                     final duration = afap.workTime.duration;
                     return ValueContainer(
-                      duration != const Duration(days: 14) ? durationToString2(duration) : 'None',
+                      duration != null ? durationToString2(duration) : 'None',
                       width: 60,
                     );
                   }),
@@ -80,7 +81,8 @@ class AfapPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  // router.showTimer(afap.workout);
+                  final workout = afap.workout;
+                  router.showTimer(afap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

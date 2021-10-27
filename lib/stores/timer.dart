@@ -30,11 +30,12 @@ abstract class TimerBase with Store {
 
   @action
   void tick(DateTime nowUtc) {
+    workout.tick(nowUtc);
+
     if (workout.isEnded) {
       status = TimerStatus.done;
       close();
     }
-    workout.tick(nowUtc);
   }
 
   @computed

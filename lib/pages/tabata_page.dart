@@ -69,7 +69,7 @@ class _TabataPageState extends State<TabataPage> {
               onTap: () async {
                 final selectedTime = await TimePicker.showTimePicker(
                   context,
-                  initialValue: tabataSettings.restBetweenSets.duration,
+                  initialValue: tabataSettings.restBetweenSets.duration!,
                   timeRange: tabataWorkTimes,
                 );
                 if (selectedTime != null) {
@@ -78,7 +78,7 @@ class _TabataPageState extends State<TabataPage> {
               },
               child: Observer(
                 builder: (ctx) => ValueContainer(
-                  durationToString2(tabataSettings.restBetweenSets.duration),
+                  durationToString2(tabataSettings.restBetweenSets.duration!),
                   width: 60,
                 ),
               ),
@@ -162,7 +162,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: tabataSettings.workTime.duration,
+                      initialValue: tabataSettings.workTime.duration!,
                       timeRange: tabataWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -171,7 +171,7 @@ class _TabataPageState extends State<TabataPage> {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.workTime.duration),
+                      durationToString2(tabataSettings.workTime.duration!),
                       width: 60,
                     ),
                   ),
@@ -191,7 +191,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: tabataSettings.restTime.duration,
+                      initialValue: tabataSettings.restTime.duration!,
                       timeRange: tabataWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -200,7 +200,7 @@ class _TabataPageState extends State<TabataPage> {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.restTime.duration),
+                      durationToString2(tabataSettings.restTime.duration!),
                       width: 60,
                     ),
                   ),

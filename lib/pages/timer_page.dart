@@ -31,7 +31,7 @@ class _TimerPageState extends State<TimerPage> {
     Wakelock.enable();
 
     state = Provider.of<Timer>(context, listen: false);
-    reactionDispose = reaction<Duration>(
+    reactionDispose = reaction<Duration?>(
       (reac) {
         return state.workout.currentTime;
       },
@@ -115,55 +115,76 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            durationToString2(state.workout.currentTime),
+                            state.workout.currentTime != null ? durationToString2(state.workout.currentTime!) : '--',
                             style: const TextStyle(
                               fontSize: 52,
                             ),
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Observer(builder: (ctx) {
-                          Icon icon;
-                          void Function() onPressed;
-                          switch (state.status) {
-                            case TimerStatus.stop:
-                              icon = const Icon(
-                                Icons.play_arrow,
-                                size: 40,
-                                color: Colors.blueAccent,
+                        Observer(
+                          builder: (ctx) {
+                            Icon icon;
+                            void Function() onPressed;
+                            switch (state.status) {
+                              case TimerStatus.stop:
+                                icon = const Icon(
+                                  Icons.play_arrow,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                );
+                                onPressed = () => state.start();
+                                break;
+                              case TimerStatus.run:
+                                icon = const Icon(
+                                  Icons.pause,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                );
+                                onPressed = state.pause;
+                                break;
+                              case TimerStatus.pause:
+                                icon = const Icon(
+                                  Icons.play_arrow,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                );
+                                onPressed = () => state.restart();
+                                break;
+                              case TimerStatus.done:
+                                icon = const Icon(
+                                  Icons.restart_alt,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                );
+                                onPressed = () => state.start();
+                                break;
+                            }
+                            return IconButton(
+                              onPressed: onPressed,
+                              icon: icon,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 8),
+                        Observer(
+                          builder: (ctx) {
+                            if (state.workout.currentInterval.duration == null) {
+                              return IconButton(
+                                onPressed: () {
+                                  state.workout.setDuration();
+                                },
+                                icon: const Icon(
+                                  Icons.check_circle_rounded,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                ),
                               );
-                              onPressed = () => state.start();
-                              break;
-                            case TimerStatus.run:
-                              icon = const Icon(
-                                Icons.pause,
-                                size: 40,
-                                color: Colors.blueAccent,
-                              );
-                              onPressed = state.pause;
-                              break;
-                            case TimerStatus.pause:
-                              icon = const Icon(
-                                Icons.play_arrow,
-                                size: 40,
-                                color: Colors.blueAccent,
-                              );
-                              onPressed = () => state.restart();
-                              break;
-                            case TimerStatus.done:
-                              icon = const Icon(
-                                Icons.restart_alt,
-                                size: 40,
-                                color: Colors.blueAccent,
-                              );
-                              onPressed = () => state.start();
-                              break;
-                          }
-                          return IconButton(
-                            onPressed: onPressed,
-                            icon: icon,
-                          );
-                        }),
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
                       ],
                     ),
             ),
