@@ -15,6 +15,13 @@ mixin _$Timer on TimerBase, Store {
   String get indexes => (_$indexesComputed ??=
           Computed<String>(() => super.indexes, name: 'TimerBase.indexes'))
       .value;
+  Computed<Duration?>? _$currentTimeComputed;
+
+  @override
+  Duration? get currentTime =>
+      (_$currentTimeComputed ??= Computed<Duration?>(() => super.currentTime,
+              name: 'TimerBase.currentTime'))
+          .value;
 
   final _$statusAtom = Atom(name: 'TimerBase.status');
 
@@ -34,22 +41,22 @@ mixin _$Timer on TimerBase, Store {
   final _$TimerBaseActionController = ActionController(name: 'TimerBase');
 
   @override
-  void tick(DateTime nowUtc) {
+  void start() {
     final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.tick');
+        _$TimerBaseActionController.startAction(name: 'TimerBase.start');
     try {
-      return super.tick(nowUtc);
+      return super.start();
     } finally {
       _$TimerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void start() {
+  void pause() {
     final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.start');
+        _$TimerBaseActionController.startAction(name: 'TimerBase.pause');
     try {
-      return super.start();
+      return super.pause();
     } finally {
       _$TimerBaseActionController.endAction(_$actionInfo);
     }
@@ -67,11 +74,11 @@ mixin _$Timer on TimerBase, Store {
   }
 
   @override
-  void pause() {
+  void tick(DateTime nowUtc) {
     final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.pause');
+        _$TimerBaseActionController.startAction(name: 'TimerBase.tick');
     try {
-      return super.pause();
+      return super.tick(nowUtc);
     } finally {
       _$TimerBaseActionController.endAction(_$actionInfo);
     }
@@ -92,7 +99,8 @@ mixin _$Timer on TimerBase, Store {
   String toString() {
     return '''
 status: ${status},
-indexes: ${indexes}
+indexes: ${indexes},
+currentTime: ${currentTime}
     ''';
   }
 }

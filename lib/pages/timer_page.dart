@@ -115,7 +115,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(height: 20),
                         Observer(
                           builder: (_) => Text(
-                            state.workout.currentTime != null ? durationToString2(state.workout.currentTime!) : '--',
+                            state.currentTime != null ? durationToString2(state.currentTime!) : '--',
                             style: const TextStyle(
                               fontSize: 52,
                             ),

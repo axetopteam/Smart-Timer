@@ -85,6 +85,13 @@ abstract class IntervalBase with Store implements IntervalInterface {
     }
   }
 
+  @action
+  void reset() {
+    startTimeUtc = null;
+    restDuration = duration;
+    _currentTime = isCountdown ? duration : Duration();
+  }
+
   @override
   @action
   void tick(DateTime nowUtc) {

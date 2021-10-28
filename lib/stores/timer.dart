@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
@@ -13,6 +15,11 @@ abstract class TimerBase with Store {
   TimerBase(this.workout);
 
   final WorkoutSet workout;
+
+  final countdownInterval = Interval(
+    type: IntervalType.countdown,
+    duration: const Duration(seconds: 4),
+  );
 
   final stream = Stream.periodic(
     const Duration(milliseconds: 1000),
@@ -27,16 +34,6 @@ abstract class TimerBase with Store {
 
   @observable
   var status = TimerStatus.stop;
-
-  @action
-  void tick(DateTime nowUtc) {
-    workout.tick(nowUtc);
-
-    if (workout.isEnded) {
-      status = TimerStatus.done;
-      close();
-    }
-  }
 
   @computed
   String get indexes {
@@ -53,27 +50,60 @@ abstract class TimerBase with Store {
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
     status = TimerStatus.run;
-    workout.start(roundedNow);
+    countdownInterval.start(roundedNow);
+    workout.start(countdownInterval.finishTimeUtc!);
 
     timerSubscription = stream.listen((nowUtc) {
       tick(nowUtc);
     });
   }
 
-  @action
-  void restart() {
-    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
-
-    workout.start(roundedNow);
-    status = TimerStatus.run;
-    timerSubscription?.resume();
+  @computed
+  Duration? get currentTime {
+    if (!countdownInterval.isEnded) {
+      return countdownInterval.currentTime;
+    } else {
+      return workout.currentTime;
+    }
   }
 
   @action
   void pause() {
     timerSubscription?.pause();
+    if (!countdownInterval.isEnded) {
+      countdownInterval.reset();
+    }
     workout.pause();
     status = TimerStatus.pause;
+  }
+
+  @action
+  void restart() {
+    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
+
+    if (!countdownInterval.isEnded) {
+      countdownInterval.start(roundedNow);
+      workout.start(countdownInterval.finishTimeUtc!);
+    } else {
+      workout.start(roundedNow);
+    }
+
+    status = TimerStatus.run;
+    timerSubscription?.resume();
+  }
+
+  @action
+  void tick(DateTime nowUtc) {
+    if (!countdownInterval.isEnded) {
+      countdownInterval.tick(nowUtc);
+    } else {
+      workout.tick(nowUtc);
+
+      if (workout.isEnded) {
+        status = TimerStatus.done;
+        close();
+      }
+    }
   }
 
   @action
