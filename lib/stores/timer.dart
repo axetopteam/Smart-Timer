@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
@@ -12,7 +12,7 @@ class Timer = TimerBase with _$Timer;
 abstract class TimerBase with Store {
   TimerBase(this.workout);
 
-  final Round workout;
+  final WorkoutSet workout;
 
   final stream = Stream.periodic(
     const Duration(milliseconds: 1000),

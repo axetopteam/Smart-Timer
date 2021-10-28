@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
-import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout_set.dart';
 // import 'package:smart_timer/models/set.dart';
 // import 'package:smart_timer/models/workout.dart';
 
@@ -41,27 +41,27 @@ abstract class TabataStoreBase with Store {
   Duration get totalTime => workTime.duration! * roundsCount + restTime.duration! * (roundsCount - 1);
 
   @computed
-  Round get workout {
+  WorkoutSet get workout {
     if (setsCount == 1) {
-      Round baseRound = Round([workTime, restTime]);
-      Round lastRound = Round([workTime.copy()]);
+      WorkoutSet baseRound = WorkoutSet([workTime, restTime]);
+      WorkoutSet lastRound = WorkoutSet([workTime.copy()]);
 
-      List<Round> rounds = List.generate(roundsCount - 1, (index) => baseRound);
+      List<WorkoutSet> rounds = List.generate(roundsCount - 1, (index) => baseRound);
       rounds.add(lastRound);
 
-      return Round(rounds).copy();
+      return WorkoutSet(rounds).copy();
     } else {
-      Round baseRound = Round([workTime, restTime]);
-      Round lastRoundInSet = Round([workTime, restBetweenSets]);
-      Round lastRound = Round([workTime]);
+      WorkoutSet baseRound = WorkoutSet([workTime, restTime]);
+      WorkoutSet lastRoundInSet = WorkoutSet([workTime, restBetweenSets]);
+      WorkoutSet lastRound = WorkoutSet([workTime]);
 
-      List<Round> baseRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRoundInSet);
+      List<WorkoutSet> baseRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRoundInSet);
 
-      List<Round> lastRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRound);
+      List<WorkoutSet> lastRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRound);
 
-      final sets = List.generate(setsCount - 1, (index) => Round(baseRounds));
-      sets.add(Round(lastRounds));
-      return Round(sets).copy();
+      final sets = List.generate(setsCount - 1, (index) => WorkoutSet(baseRounds));
+      sets.add(WorkoutSet(lastRounds));
+      return WorkoutSet(sets).copy();
     }
   }
 

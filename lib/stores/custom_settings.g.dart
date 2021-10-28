@@ -27,13 +27,13 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   final _$roundsAtom = Atom(name: 'CustomSettingsBase.rounds');
 
   @override
-  ObservableList<Round> get rounds {
+  ObservableList<WorkoutSet> get rounds {
     _$roundsAtom.reportRead();
     return super.rounds;
   }
 
   @override
-  set rounds(ObservableList<Round> value) {
+  set rounds(ObservableList<WorkoutSet> value) {
     _$roundsAtom.reportWrite(value, super.rounds, () {
       super.rounds = value;
     });

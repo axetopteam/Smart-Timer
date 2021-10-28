@@ -1,4 +1,4 @@
-import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout_set.dart';
 // import 'package:smart_timer/models/workout.dart';
 
 /// Class is having all parameters decoded from path
@@ -135,7 +135,7 @@ class CustomSettingsPageData extends PageData {
 
 class TimerPageData extends PageData {
   TimerPageData(this.workout) : super();
-  final Round workout;
+  final WorkoutSet workout;
   @override
   PageType get type => PageType.timer;
 }

@@ -109,7 +109,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
   }
 
   Widget buildRoundSettings(BuildContext context, int roundIndex) {
-    final intervals = customSettings.rounds[roundIndex].intervals;
+    final intervals = customSettings.rounds[roundIndex].sets;
     return Stack(
       alignment: Alignment.topRight,
       children: [

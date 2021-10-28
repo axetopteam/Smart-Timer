@@ -5,7 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/stores/timer.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/string_utils.dart';

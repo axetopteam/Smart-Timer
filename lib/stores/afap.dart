@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
-import 'package:smart_timer/models/round.dart';
+import 'package:smart_timer/models/workout_set.dart';
 // import 'package:smart_timer/models/set.dart';
 // import 'package:smart_timer/models/workout.dart';
 
@@ -25,8 +25,8 @@ abstract class AfapBase with Store {
   );
 
   @computed
-  Round get workout {
-    final round = Round(
+  WorkoutSet get workout {
+    final round = WorkoutSet(
       [
         workTime,
         rest,

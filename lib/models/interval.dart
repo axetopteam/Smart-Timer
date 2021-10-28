@@ -13,8 +13,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
     required this.type,
     this.isCountdown = true,
     this.isReverse = false,
-  })  :
-        // assert(!isCountdown || duration != null || isReverse),
+  })  : assert(!isCountdown || duration != null || isReverse),
         _currentTime = isCountdown ? duration : Duration(),
         restDuration = duration,
         reminders = [if (duration != null) Duration(seconds: duration.inSeconds ~/ 2)];
@@ -30,23 +29,8 @@ abstract class IntervalBase with Store implements IntervalInterface {
 
   @observable
   Duration? _currentTime;
-
   @override
   Duration? get currentTime => _currentTime;
-
-  @override
-  IntervalInterface get currentInterval => this;
-
-  @override
-  IntervalInterface? get nextInterval => null;
-
-  @override
-  @computed
-  Map<int, List<int>> get indexes {
-    return {
-      0: [1, 1]
-    };
-  }
 
   @override
   DateTime? get finishTimeUtc {
@@ -57,8 +41,20 @@ abstract class IntervalBase with Store implements IntervalInterface {
   }
 
   @override
-  bool get isEnded => (isCountdown && currentTime == const Duration()) || (!isCountdown && currentTime == duration);
+  @computed
+  Map<int, List<int>> get indexes {
+    return {
+      0: [1, 1]
+    };
+  }
 
+  @override
+  IntervalInterface get currentInterval => this;
+
+  @override
+  IntervalInterface? get nextInterval => null;
+
+  @override
   @action
   void setDuration({Duration? newDuration}) {
     if (duration != null) return;
@@ -70,6 +66,9 @@ abstract class IntervalBase with Store implements IntervalInterface {
       restDuration = _currentTime;
     }
   }
+
+  @override
+  bool get isEnded => (isCountdown && currentTime == const Duration()) || (!isCountdown && currentTime == duration);
 
   @override
   @action
@@ -97,7 +96,6 @@ abstract class IntervalBase with Store implements IntervalInterface {
       final offset = (duration != null && restDuration != null) ? duration! - restDuration! : const Duration();
       _currentTime = offset + nowUtc.difference(startTimeUtc!);
     }
-    print('#Interval# current time: $currentTime');
   }
 
   @override
