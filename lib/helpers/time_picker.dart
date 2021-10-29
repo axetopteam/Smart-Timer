@@ -8,7 +8,7 @@ import 'package:smart_timer/widgets/main_button.dart';
 class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
-    required Duration initialValue,
+    required Duration? initialValue,
     required List<Duration?> timeRange,
   }) {
     return showCupertinoModalPopup<Duration>(
@@ -26,7 +26,7 @@ class TimePicker extends StatefulWidget {
     required this.timeRange,
   }) : super(key: key);
 
-  final Duration initialValue;
+  final Duration? initialValue;
   final List<Duration?> timeRange;
 
   @override

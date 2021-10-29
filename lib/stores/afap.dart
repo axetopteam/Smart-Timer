@@ -2,8 +2,6 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
-// import 'package:smart_timer/models/set.dart';
-// import 'package:smart_timer/models/workout.dart';
 
 part 'afap.g.dart';
 
@@ -17,21 +15,9 @@ abstract class AfapBase with Store {
     isCountdown: false,
   );
 
-  final rest = Interval(
-    duration: null,
-    type: IntervalType.rest,
-    isCountdown: true,
-    isReverse: true,
-  );
-
   @computed
   WorkoutSet get workout {
-    final round = WorkoutSet(
-      [
-        workTime,
-        rest,
-      ],
-    );
+    final round = WorkoutSet([workTime]);
     return round.copy();
   }
 

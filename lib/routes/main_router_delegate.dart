@@ -11,6 +11,7 @@ import 'package:smart_timer/pages/page_404.dart';
 import 'package:smart_timer/pages/splash_page.dart';
 import 'package:smart_timer/pages/tabata_page.dart';
 import 'package:smart_timer/pages/timer_page.dart';
+import 'package:smart_timer/pages/work_rest_page.dart';
 import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/stores/timer.dart';
 
@@ -112,6 +113,12 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
           child: AfapPage(),
         );
 
+      case PageType.workRest:
+        return MaterialPage(
+          key: const ValueKey('WorkRestPage'),
+          child: WorkRestPage(),
+        );
+
       case PageType.customSettings:
         return const MaterialPage(
           key: ValueKey('CustomSettingsPage'),
@@ -171,6 +178,12 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
   @override
   void showAfap() {
     currentConfiguration?.pages.add(const AfapPageData());
+    notifyListeners();
+  }
+
+  @override
+  void showWorkRest() {
+    currentConfiguration?.pages.add(const WorkRestPageData());
     notifyListeners();
   }
 

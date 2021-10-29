@@ -13,6 +13,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
     required this.type,
     this.isCountdown = true,
     this.isReverse = false,
+    this.reverseRatio = 1,
   })  : assert(!isCountdown || duration != null || isReverse),
         _currentTime = isCountdown ? duration : Duration(),
         restDuration = duration,
@@ -21,6 +22,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   final IntervalType type;
   final bool isCountdown;
   final bool isReverse;
+  final int reverseRatio;
   final List<Duration> reminders;
 
   DateTime? startTimeUtc;
@@ -73,6 +75,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   @override
   @action
   void start(DateTime nowUtc) {
+    if (isEnded) return;
     startTimeUtc = nowUtc;
   }
 
@@ -112,6 +115,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
       type: type,
       isCountdown: isCountdown,
       isReverse: isReverse,
+      reverseRatio: reverseRatio,
     );
   }
 

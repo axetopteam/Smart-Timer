@@ -49,7 +49,7 @@ class AfapPage extends StatelessWidget {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: afap.workTime.duration!,
+                      initialValue: afap.workTime.duration,
                       timeRange: afapWorkTimes,
                     );
 
@@ -65,13 +65,7 @@ class AfapPage extends StatelessWidget {
                 )
               ],
             ),
-
             const Spacer(),
-            // Text(
-            //   'Total time: ${durationToString2(tabataSettings.totalTime)}',
-            //   style: AppFonts.body,
-            // ),
-            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: MainButton(

@@ -58,8 +58,9 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   @action
   void setDuration({Duration? newDuration}) {
     currentInterval.setDuration();
-    if (nextInterval?.isReverse ?? false) {
-      nextInterval?.setDuration(newDuration: currentInterval.duration);
+    final next = nextInterval;
+    if (next != null && next.isReverse) {
+      next.setDuration(newDuration: currentInterval.duration! * next.reverseRatio);
     }
     setStartTime();
   }
@@ -75,6 +76,10 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   }
 
   void setStartTime() {
+    if (!sets[0].isEnded && sets[0] is WorkoutSet) {
+      (sets[0] as WorkoutSet).setStartTime();
+    }
+
     if (setsCount > 1) {
       for (int i = 1; i < setsCount; i++) {
         if (sets[i - 1].finishTimeUtc == null) {

@@ -7,5 +7,6 @@ abstract class RouterInterface {
   void showEmom();
   void showAmrap();
   void showAfap();
+  void showWorkRest();
   void showCustomSettings();
 }

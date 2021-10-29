@@ -72,7 +72,7 @@ class MainPage extends StatelessWidget {
                   title: '1:1',
                   color: Colors.purple,
                   onPressed: () {
-                    // router.showTabata();
+                    router.showWorkRest();
                   },
                 ),
               ],

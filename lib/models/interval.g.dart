@@ -68,6 +68,17 @@ mixin _$Interval on IntervalBase, Store {
   }
 
   @override
+  void reset() {
+    final _$actionInfo =
+        _$IntervalBaseActionController.startAction(name: 'IntervalBase.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$IntervalBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void tick(DateTime nowUtc) {
     final _$actionInfo =
         _$IntervalBaseActionController.startAction(name: 'IntervalBase.tick');
