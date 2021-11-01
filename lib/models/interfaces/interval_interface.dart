@@ -4,6 +4,7 @@ abstract class IntervalInterface {
   Map<int, List<int>> get indexes;
   IntervalInterface get currentInterval;
   IntervalInterface? get nextInterval;
+  bool get isLast;
   void setDuration({Duration? newDuration});
   bool get isEnded;
   void start(DateTime nowUtc);

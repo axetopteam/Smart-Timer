@@ -59,6 +59,9 @@ abstract class IntervalBase with Store implements IntervalInterface {
   IntervalInterface? get nextInterval => null;
 
   @override
+  bool get isLast => true;
+
+  @override
   @action
   void setDuration({Duration? newDuration}) {
     if (duration != null) return;

@@ -55,6 +55,12 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   }
 
   @override
+  @computed
+  bool get isLast {
+    return _setIndex == setsCount - 1 && sets[_setIndex].isLast;
+  }
+
+  @override
   @action
   void setDuration({Duration? newDuration}) {
     currentInterval.setDuration();

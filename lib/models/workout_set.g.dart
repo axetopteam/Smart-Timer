@@ -23,6 +23,12 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
       (_$indexesComputed ??= Computed<Map<int, List<int>>>(() => super.indexes,
               name: 'WorkoutSetBase.indexes'))
           .value;
+  Computed<bool>? _$isLastComputed;
+
+  @override
+  bool get isLast => (_$isLastComputed ??=
+          Computed<bool>(() => super.isLast, name: 'WorkoutSetBase.isLast'))
+      .value;
 
   final _$_setIndexAtom = Atom(name: 'WorkoutSetBase._setIndex');
 
@@ -90,7 +96,8 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
   String toString() {
     return '''
 currentTime: ${currentTime},
-indexes: ${indexes}
+indexes: ${indexes},
+isLast: ${isLast}
     ''';
   }
 }
