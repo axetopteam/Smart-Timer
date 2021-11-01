@@ -72,7 +72,14 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   @action
   void start(DateTime nowUtc) {
     sets[0].start(nowUtc);
-    setStartTime();
+    if (setsCount > 1) {
+      for (int i = 1; i < setsCount; i++) {
+        if (sets[i - 1].finishTimeUtc == null) {
+          break;
+        }
+        sets[i].start((sets[i - 1].finishTimeUtc!));
+      }
+    }
   }
 
   void setStartTime() {

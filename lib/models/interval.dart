@@ -29,6 +29,8 @@ abstract class IntervalBase with Store implements IntervalInterface {
   Duration? duration;
   Duration? restDuration;
 
+  Duration offset = const Duration();
+
   @observable
   Duration? _currentTime;
   @override
@@ -65,7 +67,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
       restDuration = newDuration;
     } else {
       duration = _currentTime;
-      restDuration = _currentTime;
+      restDuration = _currentTime! - offset;
     }
   }
 
@@ -75,7 +77,6 @@ abstract class IntervalBase with Store implements IntervalInterface {
   @override
   @action
   void start(DateTime nowUtc) {
-    if (isEnded) return;
     startTimeUtc = nowUtc;
   }
 
@@ -86,13 +87,15 @@ abstract class IntervalBase with Store implements IntervalInterface {
     if (duration != null && currentTime != null) {
       restDuration = isCountdown ? currentTime : duration! - currentTime!;
     }
+
+    offset = _currentTime ?? const Duration();
   }
 
   @action
   void reset() {
     startTimeUtc = null;
     restDuration = duration;
-    _currentTime = isCountdown ? duration : Duration();
+    _currentTime = isCountdown ? duration : const Duration();
   }
 
   @override
@@ -103,7 +106,6 @@ abstract class IntervalBase with Store implements IntervalInterface {
     if (isCountdown) {
       _currentTime = finishTimeUtc!.difference(nowUtc);
     } else {
-      final offset = (duration != null && restDuration != null) ? duration! - restDuration! : const Duration();
       _currentTime = offset + nowUtc.difference(startTimeUtc!);
     }
   }

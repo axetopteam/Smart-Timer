@@ -5,7 +5,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/stores/timer.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -31,19 +30,21 @@ class _TimerPageState extends State<TimerPage> {
     Wakelock.enable();
 
     state = Provider.of<Timer>(context, listen: false);
-    reactionDispose = reaction<Duration?>(
-      (reac) {
-        return state.workout.currentTime;
-      },
-      (rest) async {
-        // if ((workout.currentInterval.isCountdown && rest.inSeconds == 3) ||
-        //     (!workout.currentInterval.isCountdown && workout.currentInterval.duration != null && rest == workout.currentInterval.duration! - const Duration(seconds: 3))) {
-        //   await player.play();
-        //   await player.pause();
-        //   player.seek(const Duration(milliseconds: 0));
-        // }
-      },
-    );
+    // reactionDispose = reaction<Duration?>(
+    //   (reac) {
+    //     return state.currentTime;
+    //   },
+    //   (rest) async {
+    //     if (((!state.countdownInterval.isEnded || state.workout.currentInterval.isCountdown) && state.currentTime?.inSeconds == 3))
+    //     //  ||
+    //     // (!workout.currentInterval.isCountdown && workout.currentInterval.duration != null && rest == workout.currentInterval.duration! - const Duration(seconds: 3)))
+    //     {
+    //       await player.play();
+    //       await player.pause();
+    //       player.seek(const Duration(milliseconds: 0));
+    //     }
+    //   },
+    // );
     super.initState();
   }
 
@@ -52,7 +53,7 @@ class _TimerPageState extends State<TimerPage> {
     Wakelock.disable();
 
     player.stop();
-    reactionDispose();
+    // reactionDispose();
     super.dispose();
   }
 
