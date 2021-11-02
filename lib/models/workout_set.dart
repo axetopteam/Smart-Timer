@@ -7,9 +7,9 @@ part 'workout_set.g.dart';
 class WorkoutSet = WorkoutSetBase with _$WorkoutSet;
 
 abstract class WorkoutSetBase with Store implements IntervalInterface {
-  WorkoutSetBase(this.sets);
+  WorkoutSetBase(List<IntervalInterface> setsList) : sets = ObservableList.of(setsList);
 
-  final List<IntervalInterface> sets;
+  final ObservableList<IntervalInterface> sets;
 
   //interval info
   @observable

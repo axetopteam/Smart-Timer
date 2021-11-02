@@ -9,29 +9,62 @@ part of 'amrap.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Amrap on AmrapBase, Store {
-  final _$workTimeAtom = Atom(name: 'AmrapBase.workTime');
+  Computed<int>? _$roundsCoundComputed;
 
   @override
-  Interval get workTime {
-    _$workTimeAtom.reportRead();
-    return super.workTime;
+  int get roundsCound => (_$roundsCoundComputed ??=
+          Computed<int>(() => super.roundsCound, name: 'AmrapBase.roundsCound'))
+      .value;
+
+  final _$roundsAtom = Atom(name: 'AmrapBase.rounds');
+
+  @override
+  ObservableList<WorkoutSet> get rounds {
+    _$roundsAtom.reportRead();
+    return super.rounds;
   }
 
   @override
-  set workTime(Interval value) {
-    _$workTimeAtom.reportWrite(value, super.workTime, () {
-      super.workTime = value;
+  set rounds(ObservableList<WorkoutSet> value) {
+    _$roundsAtom.reportWrite(value, super.rounds, () {
+      super.rounds = value;
+    });
+  }
+
+  final _$restTimesAtom = Atom(name: 'AmrapBase.restTimes');
+
+  @override
+  ObservableList<Interval> get restTimes {
+    _$restTimesAtom.reportRead();
+    return super.restTimes;
+  }
+
+  @override
+  set restTimes(ObservableList<Interval> value) {
+    _$restTimesAtom.reportWrite(value, super.restTimes, () {
+      super.restTimes = value;
     });
   }
 
   final _$AmrapBaseActionController = ActionController(name: 'AmrapBase');
 
   @override
-  void setWorkTime(Duration duration) {
+  void addRound() {
     final _$actionInfo =
-        _$AmrapBaseActionController.startAction(name: 'AmrapBase.setWorkTime');
+        _$AmrapBaseActionController.startAction(name: 'AmrapBase.addRound');
     try {
-      return super.setWorkTime(duration);
+      return super.addRound();
+    } finally {
+      _$AmrapBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
+    final _$actionInfo =
+        _$AmrapBaseActionController.startAction(name: 'AmrapBase.setInterval');
+    try {
+      return super.setInterval(roundIndex, intervalIndex, duration);
     } finally {
       _$AmrapBaseActionController.endAction(_$actionInfo);
     }
@@ -40,7 +73,9 @@ mixin _$Amrap on AmrapBase, Store {
   @override
   String toString() {
     return '''
-workTime: ${workTime}
+rounds: ${rounds},
+restTimes: ${restTimes},
+roundsCound: ${roundsCound}
     ''';
   }
 }
