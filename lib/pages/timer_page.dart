@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
@@ -59,9 +58,10 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     Wakelock.disable();
-    // reactionDispose();
+    audio.stop();
+    audio.dispose();
     super.dispose();
   }
 
