@@ -39,6 +39,51 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
+  final _$showSetsAtom = Atom(name: 'EmomBase.showSets');
+
+  @override
+  bool get showSets {
+    _$showSetsAtom.reportRead();
+    return super.showSets;
+  }
+
+  @override
+  set showSets(bool value) {
+    _$showSetsAtom.reportWrite(value, super.showSets, () {
+      super.showSets = value;
+    });
+  }
+
+  final _$setsCountAtom = Atom(name: 'EmomBase.setsCount');
+
+  @override
+  int get setsCount {
+    _$setsCountAtom.reportRead();
+    return super.setsCount;
+  }
+
+  @override
+  set setsCount(int value) {
+    _$setsCountAtom.reportWrite(value, super.setsCount, () {
+      super.setsCount = value;
+    });
+  }
+
+  final _$restBetweenSetsAtom = Atom(name: 'EmomBase.restBetweenSets');
+
+  @override
+  Interval get restBetweenSets {
+    _$restBetweenSetsAtom.reportRead();
+    return super.restBetweenSets;
+  }
+
+  @override
+  set restBetweenSets(Interval value) {
+    _$restBetweenSetsAtom.reportWrite(value, super.restBetweenSets, () {
+      super.restBetweenSets = value;
+    });
+  }
+
   final _$EmomBaseActionController = ActionController(name: 'EmomBase');
 
   @override
@@ -64,10 +109,46 @@ mixin _$Emom on EmomBase, Store {
   }
 
   @override
+  void toggleShowSets() {
+    final _$actionInfo =
+        _$EmomBaseActionController.startAction(name: 'EmomBase.toggleShowSets');
+    try {
+      return super.toggleShowSets();
+    } finally {
+      _$EmomBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setRestBetweenSets(Duration duration) {
+    final _$actionInfo = _$EmomBaseActionController.startAction(
+        name: 'EmomBase.setRestBetweenSets');
+    try {
+      return super.setRestBetweenSets(duration);
+    } finally {
+      _$EmomBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSetsCount(int value) {
+    final _$actionInfo =
+        _$EmomBaseActionController.startAction(name: 'EmomBase.setSetsCount');
+    try {
+      return super.setSetsCount(value);
+    } finally {
+      _$EmomBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 roundsCount: ${roundsCount},
-workTime: ${workTime}
+workTime: ${workTime},
+showSets: ${showSets},
+setsCount: ${setsCount},
+restBetweenSets: ${restBetweenSets}
     ''';
   }
 }

@@ -15,6 +15,12 @@ mixin _$Amrap on AmrapBase, Store {
   int get roundsCound => (_$roundsCoundComputed ??=
           Computed<int>(() => super.roundsCound, name: 'AmrapBase.roundsCound'))
       .value;
+  Computed<WorkoutSet>? _$workoutComputed;
+
+  @override
+  WorkoutSet get workout => (_$workoutComputed ??=
+          Computed<WorkoutSet>(() => super.workout, name: 'AmrapBase.workout'))
+      .value;
 
   final _$roundsAtom = Atom(name: 'AmrapBase.rounds');
 
@@ -60,6 +66,17 @@ mixin _$Amrap on AmrapBase, Store {
   }
 
   @override
+  void deleteRound(int roundIndex) {
+    final _$actionInfo =
+        _$AmrapBaseActionController.startAction(name: 'AmrapBase.deleteRound');
+    try {
+      return super.deleteRound(roundIndex);
+    } finally {
+      _$AmrapBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setInterval(int roundIndex, int intervalIndex, Duration duration) {
     final _$actionInfo =
         _$AmrapBaseActionController.startAction(name: 'AmrapBase.setInterval');
@@ -75,7 +92,8 @@ mixin _$Amrap on AmrapBase, Store {
     return '''
 rounds: ${rounds},
 restTimes: ${restTimes},
-roundsCound: ${roundsCound}
+roundsCound: ${roundsCound},
+workout: ${workout}
     ''';
   }
 }

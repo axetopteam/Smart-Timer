@@ -10,10 +10,82 @@ import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-class EmomPage extends StatelessWidget {
+class EmomPage extends StatefulWidget {
   EmomPage({Key? key}) : super(key: key);
 
+  @override
+  State<EmomPage> createState() => _EmomPageState();
+}
+
+class _EmomPageState extends State<EmomPage> {
   final emom = Emom();
+
+  Widget buildSetsSettings(BuildContext context) {
+    return Column(
+      children: [
+        const Text(
+          "Set's setting:",
+          style: AppFonts.header2,
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Sets:',
+              style: AppFonts.body,
+            ),
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: () async {
+                final selectedRounds = await RoundsPicker.showRoundsPicker(
+                  context,
+                  initialValue: emom.setsCount,
+                  range: tabataRounds,
+                );
+                if (selectedRounds != null) {
+                  emom.setSetsCount(selectedRounds);
+                }
+              },
+              child: Observer(
+                builder: (ctx) => ValueContainer('${emom.setsCount}'),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Rest:',
+              style: AppFonts.body,
+            ),
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: () async {
+                final selectedTime = await TimePicker.showTimePicker(
+                  context,
+                  initialValue: emom.restBetweenSets.duration!,
+                  timeRange: tabataWorkTimes,
+                );
+                if (selectedTime != null) {
+                  emom.setRestBetweenSets(selectedTime);
+                }
+              },
+              child: Observer(
+                builder: (ctx) => ValueContainer(
+                  durationToString2(emom.restBetweenSets.duration!),
+                  width: 60,
+                ),
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +165,40 @@ class EmomPage extends StatelessWidget {
                 )
               ],
             ),
+            const SizedBox(height: 12),
+            Observer(builder: (ctx) {
+              return Column(
+                children: [
+                  if (emom.showSets) buildSetsSettings(context),
+                  MainButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (emom.showSets)
+                          const Icon(
+                            Icons.delete_forever,
+                            color: AppColors.red,
+                          ),
+                        if (!emom.showSets)
+                          const Icon(
+                            Icons.add_circle_outline,
+                            color: AppColors.accentBlue,
+                          ),
+                        const SizedBox(width: 4),
+                        Text(
+                          emom.showSets ? 'Delete sets' : 'Add sets (optional)',
+                          style: AppFonts.actionButton.copyWith(color: emom.showSets ? AppColors.red : AppColors.accentBlue),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      emom.toggleShowSets();
+                    },
+                    color: AppColors.transparent,
+                  ),
+                ],
+              );
+            }),
             const Spacer(),
             // Text(
             //   'Total time: ${durationToString2(tabataSettings.totalTime)}',
@@ -108,7 +214,7 @@ class EmomPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  // router.showTimer(emom.workout);
+                  router.showTimer(emom.workout);
                 },
                 color: AppColors.accentBlue,
               ),
