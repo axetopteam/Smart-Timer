@@ -9,6 +9,8 @@ import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
+import '../main.dart';
+
 class CustomSettingsPage extends StatefulWidget {
   const CustomSettingsPage({Key? key}) : super(key: key);
 
@@ -57,7 +59,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      ...customSettings.rounds.asMap().keys.map(
+                      ...customSettings.sets.asMap().keys.map(
                             (index) => buildRoundSettings(context, index),
                           ),
                       TextButton(
@@ -97,7 +99,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  // router.showTimer(customSettings.workout);
+                  router.showTimer(customSettings.workout);
                 },
                 color: AppColors.accentBlue,
               ),
@@ -108,8 +110,8 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
     );
   }
 
-  Widget buildRoundSettings(BuildContext context, int roundIndex) {
-    final intervals = customSettings.rounds[roundIndex].sets;
+  Widget buildRoundSettings(BuildContext context, int setIndex) {
+    final intervals = customSettings.sets[setIndex];
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -133,15 +135,15 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                     onTap: () async {
                       final selectedRounds = await RoundsPicker.showRoundsPicker(
                         context,
-                        initialValue: customSettings.roundsCounts[roundIndex],
+                        initialValue: customSettings.roundsCounts[setIndex],
                         range: tabataRounds,
                       );
                       if (selectedRounds != null) {
-                        customSettings.setRounds(roundIndex, selectedRounds);
+                        customSettings.setRounds(setIndex, selectedRounds);
                       }
                     },
                     child: Observer(
-                      builder: (ctx) => ValueContainer('${customSettings.roundsCounts[roundIndex]}'),
+                      builder: (ctx) => ValueContainer('${customSettings.roundsCounts[setIndex]}'),
                     ),
                   )
                 ],
@@ -168,7 +170,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                               timeRange: tabataWorkTimes,
                             );
                             if (selectedTime != null) {
-                              customSettings.setInterval(roundIndex, intervalIndex, selectedTime);
+                              customSettings.setInterval(setIndex, intervalIndex, selectedTime);
                             }
                           },
                           child: Observer(
@@ -180,7 +182,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                         ),
                         IconButton(
                           onPressed: () {
-                            customSettings.deleteInterval(roundIndex, intervalIndex);
+                            customSettings.deleteInterval(setIndex, intervalIndex);
                           },
                           icon: const Icon(
                             Icons.delete_forever,
@@ -195,7 +197,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
               ),
               TextButton(
                 onPressed: () {
-                  customSettings.addInterval(roundIndex);
+                  customSettings.addInterval(setIndex);
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -215,7 +217,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
         ),
         IconButton(
           onPressed: () {
-            customSettings.deleteRound(roundIndex);
+            customSettings.deleteRound(setIndex);
           },
           icon: const Icon(
             Icons.close_sharp,

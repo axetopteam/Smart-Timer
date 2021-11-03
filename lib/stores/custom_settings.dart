@@ -12,8 +12,8 @@ abstract class CustomSettingsBase with Store {
   var roundsCounts = ObservableList.of([1]);
 
   @observable
-  ObservableList<WorkoutSet> rounds = ObservableList.of([
-    WorkoutSet(
+  ObservableList<ObservableList<Interval>> sets = ObservableList.of(
+    [
       ObservableList.of(
         [
           Interval(
@@ -33,66 +33,63 @@ abstract class CustomSettingsBase with Store {
           ),
         ],
       ),
-    )
-  ]);
+    ],
+  );
 
-  // @computed
-  // Workout get workout {
-  //   ObservableList<WorkoutSet> sets = ObservableList<WorkoutSet>();
-
-  //   for (int i = 0; i < roundsCounts.length; i++) {
-  //     ObservableList<Round> setRounds = ObservableList<Round>();
-  //     for (int j = 0; j < roundsCounts[i]; j++) {
-  //       setRounds.add(rounds[i]);
-  //     }
-  //     sets.add(WorkoutSet(setRounds));
-  //   }
-  //   // return Workout.withCountdownInterval2(sets);
-  //   return Workout(sets);
-  // }
-
-  @action
-  void setRounds(int roundsIndex, int value) {
-    roundsCounts[roundsIndex] = value;
+  WorkoutSet get workout {
+    final List<WorkoutSet> workoutList = [];
+    for (int i = 0; i < sets.length; i++) {
+      final round = WorkoutSet(sets[i]);
+      final List<WorkoutSet> setsList = [];
+      for (int j = 0; j < roundsCounts[i]; j++) {
+        setsList.add(round);
+      }
+      final set = WorkoutSet(setsList);
+      workoutList.add(set);
+    }
+    return WorkoutSet(workoutList).copy();
   }
 
   @action
-  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
-    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].sets.length) return;
+  void setRounds(int setIndex, int value) {
+    roundsCounts[setIndex] = value;
+  }
+
+  @action
+  void setInterval(int setIndex, int intervalIndex, Duration duration) {
+    if (setIndex >= sets.length || intervalIndex >= sets[setIndex].length) return;
     final interval = Interval(
       duration: duration,
       type: IntervalType.work,
       isCountdown: true,
     );
-    rounds[roundIndex].sets[intervalIndex] = interval;
+    sets[setIndex][intervalIndex] = interval;
   }
 
   @action
   void addRound() {
-    final intervals = ObservableList.of(rounds.last.sets);
-    rounds.add(WorkoutSet(intervals));
+    final intervals = ObservableList.of(sets.last);
+    sets.add(intervals);
     final counts = roundsCounts.last;
     roundsCounts.add(counts);
+  }
+
+  @action
+  void deleteRound(int setIndex) {
+    sets.removeAt(setIndex);
+    roundsCounts.removeAt(setIndex);
     // print(intervals.length);
   }
 
   @action
-  void deleteRound(int roundIndex) {
-    rounds.removeAt(roundIndex);
-    roundsCounts.removeAt(roundIndex);
-    // print(intervals.length);
+  void addInterval(int setIndex) {
+    final interval = sets[setIndex].last.copy();
+    sets[setIndex].add(interval);
   }
 
   @action
-  void addInterval(int roundIndex) {
-    final interval = rounds.last.sets.last;
-    rounds[roundIndex].sets.add(interval);
-    // print(intervals.length);
-  }
-
-  @action
-  void deleteInterval(int roundIndex, int intervalIndex) {
-    if (roundIndex >= rounds.length || rounds[roundIndex].sets.length < 2 || intervalIndex >= rounds[roundIndex].sets.length) return;
-    rounds[roundIndex].sets.removeAt(intervalIndex);
+  void deleteInterval(int setIndex, int intervalIndex) {
+    if (setIndex >= sets.length || sets[setIndex].length < 2 || intervalIndex >= sets[setIndex].length) return;
+    sets[setIndex].removeAt(intervalIndex);
   }
 }

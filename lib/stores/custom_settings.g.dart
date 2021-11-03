@@ -24,18 +24,18 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
     });
   }
 
-  final _$roundsAtom = Atom(name: 'CustomSettingsBase.rounds');
+  final _$setsAtom = Atom(name: 'CustomSettingsBase.sets');
 
   @override
-  ObservableList<WorkoutSet> get rounds {
-    _$roundsAtom.reportRead();
-    return super.rounds;
+  ObservableList<ObservableList<Interval>> get sets {
+    _$setsAtom.reportRead();
+    return super.sets;
   }
 
   @override
-  set rounds(ObservableList<WorkoutSet> value) {
-    _$roundsAtom.reportWrite(value, super.rounds, () {
-      super.rounds = value;
+  set sets(ObservableList<ObservableList<Interval>> value) {
+    _$setsAtom.reportWrite(value, super.sets, () {
+      super.sets = value;
     });
   }
 
@@ -43,22 +43,22 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
       ActionController(name: 'CustomSettingsBase');
 
   @override
-  void setRounds(int roundsIndex, int value) {
+  void setRounds(int setIndex, int value) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.setRounds');
     try {
-      return super.setRounds(roundsIndex, value);
+      return super.setRounds(setIndex, value);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
+  void setInterval(int setIndex, int intervalIndex, Duration duration) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.setInterval');
     try {
-      return super.setInterval(roundIndex, intervalIndex, duration);
+      return super.setInterval(setIndex, intervalIndex, duration);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
@@ -76,33 +76,33 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   }
 
   @override
-  void deleteRound(int roundIndex) {
+  void deleteRound(int setIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.deleteRound');
     try {
-      return super.deleteRound(roundIndex);
+      return super.deleteRound(setIndex);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void addInterval(int roundIndex) {
+  void addInterval(int setIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.addInterval');
     try {
-      return super.addInterval(roundIndex);
+      return super.addInterval(setIndex);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void deleteInterval(int roundIndex, int intervalIndex) {
+  void deleteInterval(int setIndex, int intervalIndex) {
     final _$actionInfo = _$CustomSettingsBaseActionController.startAction(
         name: 'CustomSettingsBase.deleteInterval');
     try {
-      return super.deleteInterval(roundIndex, intervalIndex);
+      return super.deleteInterval(setIndex, intervalIndex);
     } finally {
       _$CustomSettingsBaseActionController.endAction(_$actionInfo);
     }
@@ -112,7 +112,7 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   String toString() {
     return '''
 roundsCounts: ${roundsCounts},
-rounds: ${rounds}
+sets: ${sets}
     ''';
   }
 }
