@@ -9,6 +9,12 @@ part of 'afap.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Afap on AfapBase, Store {
+  Computed<int>? _$roundsCoundComputed;
+
+  @override
+  int get roundsCound => (_$roundsCoundComputed ??=
+          Computed<int>(() => super.roundsCound, name: 'AfapBase.roundsCound'))
+      .value;
   Computed<WorkoutSet>? _$workoutComputed;
 
   @override
@@ -16,29 +22,51 @@ mixin _$Afap on AfapBase, Store {
           Computed<WorkoutSet>(() => super.workout, name: 'AfapBase.workout'))
       .value;
 
-  final _$workTimeAtom = Atom(name: 'AfapBase.workTime');
+  final _$roundsAtom = Atom(name: 'AfapBase.rounds');
 
   @override
-  Interval get workTime {
-    _$workTimeAtom.reportRead();
-    return super.workTime;
+  ObservableList<WorkoutSet> get rounds {
+    _$roundsAtom.reportRead();
+    return super.rounds;
   }
 
   @override
-  set workTime(Interval value) {
-    _$workTimeAtom.reportWrite(value, super.workTime, () {
-      super.workTime = value;
+  set rounds(ObservableList<WorkoutSet> value) {
+    _$roundsAtom.reportWrite(value, super.rounds, () {
+      super.rounds = value;
     });
   }
 
   final _$AfapBaseActionController = ActionController(name: 'AfapBase');
 
   @override
-  void setTimeCap(Duration? duration) {
+  void addRound() {
     final _$actionInfo =
-        _$AfapBaseActionController.startAction(name: 'AfapBase.setTimeCap');
+        _$AfapBaseActionController.startAction(name: 'AfapBase.addRound');
     try {
-      return super.setTimeCap(duration);
+      return super.addRound();
+    } finally {
+      _$AfapBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteRound(int roundIndex) {
+    final _$actionInfo =
+        _$AfapBaseActionController.startAction(name: 'AfapBase.deleteRound');
+    try {
+      return super.deleteRound(roundIndex);
+    } finally {
+      _$AfapBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
+    final _$actionInfo =
+        _$AfapBaseActionController.startAction(name: 'AfapBase.setInterval');
+    try {
+      return super.setInterval(roundIndex, intervalIndex, duration);
     } finally {
       _$AfapBaseActionController.endAction(_$actionInfo);
     }
@@ -47,7 +75,8 @@ mixin _$Afap on AfapBase, Store {
   @override
   String toString() {
     return '''
-workTime: ${workTime},
+rounds: ${rounds},
+roundsCound: ${roundsCound},
 workout: ${workout}
     ''';
   }

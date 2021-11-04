@@ -9,6 +9,13 @@ part of 'timer.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Timer on TimerBase, Store {
+  Computed<Interval>? _$currentIntervalComputed;
+
+  @override
+  Interval get currentInterval => (_$currentIntervalComputed ??=
+          Computed<Interval>(() => super.currentInterval,
+              name: 'TimerBase.currentInterval'))
+      .value;
   Computed<String>? _$indexesComputed;
 
   @override
@@ -99,6 +106,7 @@ mixin _$Timer on TimerBase, Store {
   String toString() {
     return '''
 status: ${status},
+currentInterval: ${currentInterval},
 indexes: ${indexes},
 currentTime: ${currentTime}
     ''';

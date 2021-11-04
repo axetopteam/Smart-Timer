@@ -3,15 +3,23 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
+import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
+import 'package:smart_timer/models/interval.dart' as m;
 
-class AfapPage extends StatelessWidget {
+import '../main.dart';
+
+class AfapPage extends StatefulWidget {
   AfapPage({Key? key}) : super(key: key);
 
+  @override
+  State<AfapPage> createState() => _AfapPageState();
+}
+
+class _AfapPageState extends State<AfapPage> {
   final afap = Afap();
 
   @override
@@ -37,35 +45,37 @@ class AfapPage extends StatelessWidget {
               style: AppFonts.header2,
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Time cap:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedTime = await TimePicker.showTimePicker(
-                      context,
-                      initialValue: afap.workTime.duration,
-                      timeRange: afapWorkTimes,
-                    );
-
-                    afap.setTimeCap(selectedTime);
-                  },
-                  child: Observer(builder: (ctx) {
-                    final duration = afap.workTime.duration;
-                    return ValueContainer(
-                      duration != null ? durationToString2(duration) : 'None',
-                      width: 60,
-                    );
-                  }),
-                )
-              ],
+            Expanded(
+              child: Observer(builder: (context) {
+                return Column(
+                  children: [
+                    ...afap.rounds.asMap().keys.map(
+                      (roundIndex) {
+                        return buildRound(roundIndex);
+                      },
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        afap.addRound();
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.add_circle_outline,
+                            size: 28,
+                            color: AppColors.accentBlue,
+                          ),
+                          SizedBox(width: 4),
+                          Text('Add another AMRAP')
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
-            const Spacer(),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: MainButton(
@@ -75,7 +85,6 @@ class AfapPage extends StatelessWidget {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  final workout = afap.workout;
                   router.showTimer(afap.workout);
                 },
                 color: AppColors.accentBlue,
@@ -84,6 +93,80 @@ class AfapPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildRound(int roundIndex) {
+    final intervals = afap.rounds[roundIndex].sets;
+    bool isLast = roundIndex == afap.roundsCound - 1;
+    bool isFirst = roundIndex == 0;
+
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Container(
+          width: 200,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          margin: const EdgeInsets.all(12),
+          decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10)),
+          child: Observer(
+            builder: (ctx) => Column(children: [
+              Text('Round ${roundIndex + 1}'),
+              SizedBox(height: 8),
+              ...intervals.asMap().keys.map(
+                (intervalIndex) {
+                  final interval = intervals[intervalIndex] as m.Interval;
+                  if (isLast && intervalIndex == 1) return Container();
+                  return Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          interval.type == IntervalType.work ? 'Time cap:' : 'Rest',
+                          style: AppFonts.body,
+                        ),
+                        const SizedBox(width: 12),
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialValue: interval.duration,
+                              timeRange: afapWorkTimes,
+                            );
+                            afap.setInterval(roundIndex, intervalIndex, selectedTime);
+                          },
+                          child: ValueContainer(
+                            interval.duration != null ? durationToString2(interval.duration!) : 'None',
+                            width: 60,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ]),
+          ),
+        ),
+        if (!isFirst)
+          Positioned(
+            right: 4,
+            top: 4,
+            child: IconButton(
+              onPressed: () {
+                afap.deleteRound(roundIndex);
+              },
+              icon: const Icon(
+                Icons.close_sharp,
+                color: AppColors.red,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

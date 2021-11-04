@@ -22,7 +22,7 @@ abstract class TimerBase with Store {
   );
 
   final stream = Stream.periodic(
-    const Duration(milliseconds: 1000),
+    const Duration(milliseconds: 200),
     (x) {
       final roundedNow = DateTime.now().toUtc().roundToSeconds();
       // print('#TIMER# stream roundedNow: $roundedNow');
@@ -34,6 +34,9 @@ abstract class TimerBase with Store {
 
   @observable
   var status = TimerStatus.stop;
+
+  @computed
+  Interval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
 
   @computed
   String get indexes {

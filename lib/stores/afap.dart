@@ -9,24 +9,67 @@ class Afap = AfapBase with _$Afap;
 
 abstract class AfapBase with Store {
   @observable
-  Interval workTime = Interval(
-    duration: null,
-    type: IntervalType.work,
-    isCountdown: false,
+  ObservableList<WorkoutSet> rounds = ObservableList.of(
+    [
+      WorkoutSet(
+        [
+          Interval(
+            duration: const Duration(minutes: 10),
+            type: IntervalType.work,
+            isCountdown: false,
+          ),
+          Interval(
+            duration: const Duration(minutes: 1),
+            type: IntervalType.rest,
+          ),
+        ],
+      ),
+    ],
   );
 
   @computed
-  WorkoutSet get workout {
-    final round = WorkoutSet([workTime]);
-    return round.copy();
+  int get roundsCound => rounds.length;
+
+  @action
+  void addRound() {
+    final lastRoundCopy = rounds.last.copy();
+    rounds.add(lastRoundCopy);
   }
 
   @action
-  void setTimeCap(Duration? duration) {
-    workTime = Interval(
-      duration: duration ?? const Duration(days: 14),
-      type: IntervalType.work,
-      isCountdown: false,
+  void deleteRound(int roundIndex) {
+    rounds.removeAt(roundIndex);
+  }
+
+  // @computed
+  // WorkoutSet get workout {
+  //   final round = WorkoutSet([workTime]);
+  //   return round.copy();
+  // }
+
+  @action
+  void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
+    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].sets.length) return;
+
+    final interval = Interval(
+      duration: duration,
+      type: intervalIndex == 0 ? IntervalType.work : IntervalType.rest,
+      isCountdown: !(intervalIndex == 0),
     );
+
+    rounds[roundIndex].sets[intervalIndex] = interval;
+  }
+
+  @computed
+  WorkoutSet get workout {
+    final lastRoundSets = rounds.last.sets;
+    final lastRound = WorkoutSet([lastRoundSets[0].copy()]);
+
+    final roundsCopy = List.of(rounds);
+
+    roundsCopy.removeLast();
+    roundsCopy.add(lastRound);
+
+    return WorkoutSet(roundsCopy);
   }
 }

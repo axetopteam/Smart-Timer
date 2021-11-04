@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
+import 'package:smart_timer/models/remiders_type.dart';
 
 import 'interval_type.dart';
 
@@ -16,18 +17,25 @@ abstract class IntervalBase with Store implements IntervalInterface {
     this.reverseRatio = 1,
   })  : assert(!isCountdown || duration != null || isReverse),
         _currentTime = isCountdown ? duration : Duration(),
-        restDuration = duration,
-        reminders = [if (duration != null) Duration(seconds: duration.inSeconds ~/ 2)];
+        restDuration = duration;
 
   final IntervalType type;
   final bool isCountdown;
   final bool isReverse;
   final int reverseRatio;
-  final List<Duration> reminders;
 
   DateTime? startTimeUtc;
+
   Duration? duration;
   Duration? restDuration;
+
+  Duration? get endReminderStart {
+    if (isCountdown) {
+      return const Duration(seconds: 3);
+    } else {
+      return duration != null ? duration! - const Duration(seconds: 3) : null;
+    }
+  }
 
   Duration offset = const Duration();
 
@@ -64,7 +72,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   @override
   @action
   void setDuration({Duration? newDuration}) {
-    if (duration != null) return;
+    // if (duration != null) return;
     if (newDuration != null) {
       duration = newDuration;
       restDuration = newDuration;

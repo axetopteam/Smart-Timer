@@ -34,11 +34,9 @@ class _TimerPageState extends State<TimerPage> {
       (reac) {
         return state.currentTime;
       },
-      (rest) async {
-        if (((!state.countdownInterval.isEnded || state.workout.currentInterval.isCountdown) && state.currentTime?.inSeconds == 3))
-        //  ||
-        // (!workout.currentInterval.isCountdown && workout.currentInterval.duration != null && rest == workout.currentInterval.duration! - const Duration(seconds: 3)))
-        {
+      (currentTime) async {
+        final endReminderStart = state.currentInterval.endReminderStart;
+        if (currentTime == endReminderStart) {
           audio.playCountdown();
         }
       },
@@ -90,7 +88,6 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     Observer(
                       builder: (_) => Text(
                         state.indexes,
@@ -98,12 +95,6 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Observer(
-                    //   builder: (_) => Text(
-                    //     workout.currentType.desc,
-                    //     style: AppFonts.header2,
-                    //   ),
-                    // ),
                     const SizedBox(height: 20),
                     Observer(
                       builder: (_) => Text(
@@ -133,7 +124,10 @@ class _TimerPageState extends State<TimerPage> {
                               size: 40,
                               color: Colors.blueAccent,
                             );
-                            onPressed = state.pause;
+                            onPressed = () {
+                              state.pause();
+                              audio.pause();
+                            };
                             break;
                           case TimerStatus.pause:
                             icon = const Icon(
@@ -141,7 +135,12 @@ class _TimerPageState extends State<TimerPage> {
                               size: 40,
                               color: Colors.blueAccent,
                             );
-                            onPressed = () => state.restart();
+                            onPressed = () {
+                              state.restart();
+                              if (state.countdownInterval.isEnded) {
+                                audio.resume();
+                              }
+                            };
                             break;
                           case TimerStatus.done:
                             icon = const Icon(
@@ -161,7 +160,7 @@ class _TimerPageState extends State<TimerPage> {
                     SizedBox(height: 8),
                     Observer(
                       builder: (ctx) {
-                        if (state.workout.currentInterval.duration == null) {
+                        if (!state.workout.currentInterval.isCountdown) {
                           return IconButton(
                             onPressed: () {
                               state.workout.setDuration();

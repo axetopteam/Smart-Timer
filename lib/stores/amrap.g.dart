@@ -37,21 +37,6 @@ mixin _$Amrap on AmrapBase, Store {
     });
   }
 
-  final _$restTimesAtom = Atom(name: 'AmrapBase.restTimes');
-
-  @override
-  ObservableList<Interval> get restTimes {
-    _$restTimesAtom.reportRead();
-    return super.restTimes;
-  }
-
-  @override
-  set restTimes(ObservableList<Interval> value) {
-    _$restTimesAtom.reportWrite(value, super.restTimes, () {
-      super.restTimes = value;
-    });
-  }
-
   final _$AmrapBaseActionController = ActionController(name: 'AmrapBase');
 
   @override
@@ -91,7 +76,6 @@ mixin _$Amrap on AmrapBase, Store {
   String toString() {
     return '''
 rounds: ${rounds},
-restTimes: ${restTimes},
 roundsCound: ${roundsCound},
 workout: ${workout}
     ''';

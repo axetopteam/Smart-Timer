@@ -27,9 +27,6 @@ abstract class AmrapBase with Store {
     ],
   );
 
-  @observable
-  ObservableList<Interval> restTimes = ObservableList();
-
   @computed
   int get roundsCound => rounds.length;
 

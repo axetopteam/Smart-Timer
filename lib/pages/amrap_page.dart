@@ -86,7 +86,7 @@ class _AmrapPageState extends State<AmrapPage> {
                   ),
                   borderRadius: 20,
                   onPressed: () {
-                    router.showTimer(amrap.workout);
+                    // router.showTimer(amrap.workout);
                   },
                   color: AppColors.accentBlue,
                 ),

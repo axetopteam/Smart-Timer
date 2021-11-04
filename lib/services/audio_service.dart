@@ -18,10 +18,20 @@ class AudioService {
     await player.play('last_round.mp3');
   }
 
-  Future<void> playHalfTime() async {}
+  Future<void> playHalfTime() async {
+    if (audioPlayer.state == PlayerState.PLAYING) return;
+  }
 
   Future<void> stop() async {
     await audioPlayer.stop();
+  }
+
+  Future<void> pause() async {
+    await audioPlayer.pause();
+  }
+
+  Future<void> resume() async {
+    await audioPlayer.resume();
   }
 
   Future<void> dispose() async {
