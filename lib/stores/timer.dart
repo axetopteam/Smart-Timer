@@ -22,10 +22,9 @@ abstract class TimerBase with Store {
   );
 
   final stream = Stream.periodic(
-    const Duration(milliseconds: 200),
+    const Duration(milliseconds: 100),
     (x) {
       final roundedNow = DateTime.now().toUtc().roundToSeconds();
-      // print('#TIMER# stream roundedNow: $roundedNow');
       return roundedNow;
     },
   );
