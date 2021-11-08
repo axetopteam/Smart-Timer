@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/main.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -25,14 +26,14 @@ class MainPage extends StatelessWidget {
                   title: 'AMRAP',
                   color: Colors.amber,
                   onPressed: () {
-                    router.showAmrap();
+                    getIt.get<RouterInterface>().showAmrap();
                   },
                 ),
                 buildContainer(
                   title: 'FOR TIME',
                   color: Colors.pink,
                   onPressed: () {
-                    router.showAfap();
+                    getIt.get<RouterInterface>().showAfap();
                   },
                 ),
               ],
@@ -45,14 +46,14 @@ class MainPage extends StatelessWidget {
                   title: 'EMOM',
                   color: Colors.indigoAccent,
                   onPressed: () {
-                    router.showEmom();
+                    getIt.get<RouterInterface>().showEmom();
                   },
                 ),
                 buildContainer(
                   title: 'TABATA',
                   color: Colors.green,
                   onPressed: () {
-                    router.showTabata();
+                    getIt.get<RouterInterface>().showTabata();
                   },
                 ),
               ],
@@ -65,14 +66,14 @@ class MainPage extends StatelessWidget {
                   title: 'Custom',
                   color: Colors.deepOrangeAccent,
                   onPressed: () {
-                    router.showCustomSettings();
+                    getIt.get<RouterInterface>().showCustomSettings();
                   },
                 ),
                 buildContainer(
                   title: '1:1',
                   color: Colors.purple,
                   onPressed: () {
-                    router.showWorkRest();
+                    getIt.get<RouterInterface>().showWorkRest();
                   },
                 ),
               ],

@@ -4,6 +4,7 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -85,7 +86,7 @@ class _AfapPageState extends State<AfapPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(afap.workout);
+                  getIt.get<RouterInterface>().showTimer(afap.workout);
                 },
                 color: AppColors.accentBlue,
               ),

@@ -5,6 +5,7 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/stores/emom.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -214,7 +215,7 @@ class _EmomPageState extends State<EmomPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(emom.workout);
+                  getIt.get<RouterInterface>().showTimer(emom.workout);
                 },
                 color: AppColors.accentBlue,
               ),

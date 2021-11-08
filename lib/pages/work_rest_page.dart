@@ -4,6 +4,7 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/main.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/stores/work_rest.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
@@ -107,7 +108,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                   ),
                   borderRadius: 20,
                   onPressed: () {
-                    router.showTimer(workRest.workout);
+                    getIt.get<RouterInterface>().showTimer(workRest.workout);
                   },
                   color: AppColors.accentBlue,
                 ),

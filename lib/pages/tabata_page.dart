@@ -6,11 +6,11 @@ import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
-import 'package:smart_timer/utils/datetime_extension.dart';
 
 class TabataPage extends StatefulWidget {
   const TabataPage({Key? key}) : super(key: key);
@@ -258,7 +258,7 @@ class _TabataPageState extends State<TabataPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  router.showTimer(tabataSettings.workout);
+                  getIt.get<RouterInterface>().showTimer(tabataSettings.workout);
                 },
                 color: AppColors.accentBlue,
               ),

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/routes/main_route_information_parser.dart';
 import 'package:smart_timer/routes/main_router_delegate.dart';
+import 'package:smart_timer/routes/router_interface.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
-final router = MainRouterDelegate(navigatorKey);
+GetIt getIt = GetIt.instance;
+
 void main() {
+  final router = MainRouterDelegate(GlobalKey<NavigatorState>());
+  getIt.registerSingleton<RouterInterface>(router);
   runApp(MyApp(router));
 }
 
