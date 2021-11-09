@@ -7,6 +7,7 @@ import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -20,7 +21,21 @@ class TabataPage extends StatefulWidget {
 }
 
 class _TabataPageState extends State<TabataPage> {
-  final tabataSettings = TabataStore();
+  late final TabataStore tabataSettings;
+
+  @override
+  void initState() {
+    final settingsJson = getIt<AppProperties>().getTabataSettings();
+    tabataSettings = TabataStore.fromJson(settingsJson);
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    final json = tabataSettings.toJson();
+    getIt<AppProperties>().setTabataSettings(json);
+    super.dispose();
+  }
 
   Widget buildSetsSettings(BuildContext context) {
     return Column(

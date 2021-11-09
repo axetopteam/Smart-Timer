@@ -3,16 +3,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/models/interval_type.dart';
-import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 import 'package:smart_timer/models/interval.dart' as m;
-
-import '../main.dart';
 
 class AmrapPage extends StatefulWidget {
   AmrapPage({Key? key}) : super(key: key);
@@ -23,6 +19,11 @@ class AmrapPage extends StatefulWidget {
 
 class _AmrapPageState extends State<AmrapPage> {
   final amrap = Amrap();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

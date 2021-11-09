@@ -3,6 +3,28 @@
 part of 'emom.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Emom _$EmomFromJson(Map<String, dynamic> json) => Emom(
+      roundsCount: json['roundsCount'] as int? ?? 10,
+      workTime: Duration(microseconds: json['workTime'] as int) ??
+          const Duration(minutes: 1),
+      showSets: json['showSets'] as bool? ?? false,
+      setsCount: json['setsCount'] as int? ?? 1,
+      restBetweenSets: Duration(microseconds: json['restBetweenSets'] as int) ??
+          const Duration(minutes: 1),
+    );
+
+Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
+      'roundsCount': instance.roundsCount,
+      'workTime': instance.workTime.inMicroseconds,
+      'showSets': instance.showSets,
+      'setsCount': instance.setsCount,
+      'restBetweenSets': instance.restBetweenSets.inMicroseconds,
+    };
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 
@@ -27,13 +49,13 @@ mixin _$Emom on EmomBase, Store {
   final _$workTimeAtom = Atom(name: 'EmomBase.workTime');
 
   @override
-  Interval get workTime {
+  Duration get workTime {
     _$workTimeAtom.reportRead();
     return super.workTime;
   }
 
   @override
-  set workTime(Interval value) {
+  set workTime(Duration value) {
     _$workTimeAtom.reportWrite(value, super.workTime, () {
       super.workTime = value;
     });
@@ -72,13 +94,13 @@ mixin _$Emom on EmomBase, Store {
   final _$restBetweenSetsAtom = Atom(name: 'EmomBase.restBetweenSets');
 
   @override
-  Interval get restBetweenSets {
+  Duration get restBetweenSets {
     _$restBetweenSetsAtom.reportRead();
     return super.restBetweenSets;
   }
 
   @override
-  set restBetweenSets(Interval value) {
+  set restBetweenSets(Duration value) {
     _$restBetweenSetsAtom.reportWrite(value, super.restBetweenSets, () {
       super.restBetweenSets = value;
     });

@@ -1,10 +1,13 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/models/interval.dart';
 
 part 'workout_set.g.dart';
 
-class WorkoutSet = WorkoutSetBase with _$WorkoutSet;
+class WorkoutSet extends WorkoutSetBase with _$WorkoutSet {
+  WorkoutSet(List<IntervalInterface> setsList) : super(setsList);
+}
 
 abstract class WorkoutSetBase with Store implements IntervalInterface {
   WorkoutSetBase(List<IntervalInterface> setsList) : sets = ObservableList.of(setsList);

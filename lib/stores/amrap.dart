@@ -1,12 +1,12 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 part 'amrap.g.dart';
 
-class Amrap = AmrapBase with _$Amrap;
+class Amrap extends AmrapBase with _$Amrap {}
 
 abstract class AmrapBase with Store {
   @observable

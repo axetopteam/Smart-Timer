@@ -2,40 +2,49 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
-// import 'package:smart_timer/models/set.dart';
-// import 'package:smart_timer/models/workout.dart';
 
 part 'tabata.g.dart';
 
 class TabataStore = TabataStoreBase with _$TabataStore;
 
 abstract class TabataStoreBase with Store {
-  @observable
-  var roundsCount = 8;
+  TabataStoreBase({
+    required this.roundsCount,
+    required Duration workDuration,
+    required Duration restDuration,
+    required this.showSets,
+    required this.setsCount,
+    required Duration restBetweenSetsDuration,
+  })  : workTime = Interval(
+          duration: workDuration,
+          type: IntervalType.work,
+        ),
+        restTime = Interval(
+          duration: restDuration,
+          type: IntervalType.rest,
+        ),
+        restBetweenSets = Interval(
+          duration: restBetweenSetsDuration,
+          type: IntervalType.rest,
+        );
 
   @observable
-  var workTime = Interval(
-    duration: const Duration(seconds: 10),
-    type: IntervalType.work,
-  );
+  int roundsCount;
 
   @observable
-  var restTime = Interval(
-    duration: const Duration(seconds: 5),
-    type: IntervalType.rest,
-  );
+  Interval workTime;
 
   @observable
-  var showSets = false;
+  Interval restTime;
 
   @observable
-  var setsCount = 1;
+  bool showSets;
 
   @observable
-  var restBetweenSets = Interval(
-    duration: const Duration(minutes: 1),
-    type: IntervalType.rest,
-  );
+  int setsCount;
+
+  @observable
+  Interval restBetweenSets;
 
   @computed
   Duration get totalTime => workTime.duration! * roundsCount + restTime.duration! * (roundsCount - 1);
@@ -103,4 +112,32 @@ abstract class TabataStoreBase with Store {
       return WorkoutSet(sets).copy();
     }
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'roundsCount': roundsCount,
+      'workSeconds': workTime.duration?.inSeconds,
+      'restSeconds': restTime.duration?.inSeconds,
+      'showSets': showSets,
+      'setsCount': setsCount,
+      'restBetweenSetsSeconds': restBetweenSets.duration?.inSeconds,
+    };
+  }
+
+  TabataStoreBase.fromJson(Map<String, dynamic>? json)
+      : roundsCount = json?['roundsCount'] ?? 8,
+        workTime = Interval(
+          type: IntervalType.work,
+          duration: Duration(seconds: json?['workSeconds'] ?? 20),
+        ),
+        restTime = Interval(
+          type: IntervalType.rest,
+          duration: Duration(seconds: json?['restSeconds'] ?? 10),
+        ),
+        showSets = json?['showSets'] ?? false,
+        setsCount = json?['setsCount'] ?? 1,
+        restBetweenSets = Interval(
+          type: IntervalType.rest,
+          duration: Duration(seconds: json?['restBetweenSetsSeconds'] ?? 60),
+        );
 }

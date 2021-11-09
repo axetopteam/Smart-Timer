@@ -1,3 +1,4 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
@@ -5,31 +6,51 @@ import 'package:smart_timer/models/workout_set.dart';
 
 part 'emom.g.dart';
 
-class Emom = EmomBase with _$Emom;
+@JsonSerializable()
+class Emom extends EmomBase with _$Emom {
+  Emom({
+    int roundsCount = 10,
+    Duration workTime = const Duration(minutes: 1),
+    bool showSets = false,
+    int setsCount = 1,
+    Duration restBetweenSets = const Duration(minutes: 1),
+  }) : super(
+          roundsCount: roundsCount,
+          workTime: workTime,
+          showSets: showSets,
+          setsCount: setsCount,
+          restBetweenSets: restBetweenSets,
+        );
+  Map<String, dynamic> toJson() => _$EmomToJson(this);
+
+  factory Emom.fromJson(Map<String, dynamic> json) => _$EmomFromJson(json);
+}
 
 abstract class EmomBase with Store {
-  @observable
-  var roundsCount = 10;
+  EmomBase({
+    required this.roundsCount,
+    required this.workTime,
+    required this.showSets,
+    required this.setsCount,
+    required this.restBetweenSets,
+  });
 
   @observable
-  var workTime = Interval(
-    duration: const Duration(minutes: 1),
-    type: IntervalType.work,
-  );
+  int roundsCount;
 
   @observable
-  var showSets = false;
+  Duration workTime;
 
   @observable
-  var setsCount = 1;
+  bool showSets;
 
   @observable
-  var restBetweenSets = Interval(
-    duration: const Duration(minutes: 1),
-    type: IntervalType.rest,
-  );
+  int setsCount;
 
-  Duration get totalTime => workTime.duration! * roundsCount;
+  @observable
+  Duration restBetweenSets;
+
+  // Duration get totalTime => workTime.duration! * roundsCount;
 
   @action
   void setRounds(int value) {
@@ -38,10 +59,7 @@ abstract class EmomBase with Store {
 
   @action
   void setWorkTime(Duration duration) {
-    workTime = Interval(
-      duration: duration,
-      type: IntervalType.work,
-    );
+    workTime = duration;
   }
 
   @action
@@ -51,10 +69,7 @@ abstract class EmomBase with Store {
 
   @action
   void setRestBetweenSets(Duration duration) {
-    restBetweenSets = Interval(
-      duration: duration,
-      type: IntervalType.rest,
-    );
+    restBetweenSets = duration;
   }
 
   @action
@@ -64,13 +79,28 @@ abstract class EmomBase with Store {
 
   WorkoutSet get workout {
     if (setsCount == 1 || !showSets) {
-      List<Interval> intervals = List.generate(roundsCount, (index) => workTime);
+      List<Interval> intervals = List.generate(
+          roundsCount,
+          (index) => Interval(
+                duration: workTime,
+                type: IntervalType.work,
+              ));
       return WorkoutSet(intervals).copy();
     } else {
-      List<Interval> intervals = List.generate(roundsCount, (index) => workTime);
+      List<Interval> intervals = List.generate(
+          roundsCount,
+          (index) => Interval(
+                duration: workTime,
+                type: IntervalType.work,
+              ));
       final round = WorkoutSet(intervals);
 
-      final betweenSetsRound = WorkoutSet([restBetweenSets]);
+      final betweenSetsRound = WorkoutSet([
+        Interval(
+          duration: restBetweenSets,
+          type: IntervalType.work,
+        )
+      ]);
 
       final set = WorkoutSet([round, betweenSetsRound]);
       final lastSet = WorkoutSet([round]);
@@ -80,4 +110,6 @@ abstract class EmomBase with Store {
       return WorkoutSet(sets).copy();
     }
   }
+
+  // Map<String, dynamic> toJson() => _$EmomBase(this);
 }

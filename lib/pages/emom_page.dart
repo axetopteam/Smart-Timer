@@ -6,6 +6,7 @@ import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/emom.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -19,7 +20,21 @@ class EmomPage extends StatefulWidget {
 }
 
 class _EmomPageState extends State<EmomPage> {
-  final emom = Emom();
+  late final emom;
+
+  @override
+  void initState() {
+    final settingsJson = getIt<AppProperties>().getEmomSettings();
+    emom = settingsJson != null ? Emom.fromJson(settingsJson) : Emom();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final json = emom.toJson();
+    getIt<AppProperties>().setEmomSettings(json);
+    super.dispose();
+  }
 
   Widget buildSetsSettings(BuildContext context) {
     return Column(
@@ -68,7 +83,7 @@ class _EmomPageState extends State<EmomPage> {
               onTap: () async {
                 final selectedTime = await TimePicker.showTimePicker(
                   context,
-                  initialValue: emom.restBetweenSets.duration!,
+                  initialValue: emom.restBetweenSets,
                   timeRange: tabataWorkTimes,
                 );
                 if (selectedTime != null) {
@@ -77,7 +92,7 @@ class _EmomPageState extends State<EmomPage> {
               },
               child: Observer(
                 builder: (ctx) => ValueContainer(
-                  durationToString2(emom.restBetweenSets.duration!),
+                  durationToString2(emom.restBetweenSets),
                   width: 60,
                 ),
               ),
@@ -123,7 +138,7 @@ class _EmomPageState extends State<EmomPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: emom.workTime.duration!,
+                      initialValue: emom.workTime,
                       timeRange: emomWorkTimes,
                     );
                     if (selectedTime != null) {
@@ -132,7 +147,7 @@ class _EmomPageState extends State<EmomPage> {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(emom.workTime.duration!),
+                      durationToString2(emom.workTime),
                       width: 60,
                     ),
                   ),

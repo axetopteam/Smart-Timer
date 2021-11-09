@@ -1,6 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
-import 'package:smart_timer/models/remiders_type.dart';
 
 import 'interval_type.dart';
 
@@ -16,7 +16,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
     this.isReverse = false,
     this.reverseRatio = 1,
   })  : assert(!isCountdown || duration != null || isReverse),
-        _currentTime = isCountdown ? duration : Duration(),
+        _currentTime = isCountdown ? duration : const Duration(),
         restDuration = duration;
 
   final IntervalType type;
