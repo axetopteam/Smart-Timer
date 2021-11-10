@@ -3,25 +3,36 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/main.dart';
+import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
-import 'package:smart_timer/models/interval.dart' as m;
 
 class AmrapPage extends StatefulWidget {
-  AmrapPage({Key? key}) : super(key: key);
+  const AmrapPage({Key? key}) : super(key: key);
 
   @override
   State<AmrapPage> createState() => _AmrapPageState();
 }
 
 class _AmrapPageState extends State<AmrapPage> {
-  final amrap = Amrap();
+  late final Amrap amrap;
+
+  @override
+  void initState() {
+    final json = getIt<AppProperties>().getAmrapSettings();
+    amrap = json != null ? Amrap.fromJson(json) : Amrap();
+
+    super.initState();
+  }
 
   @override
   void dispose() {
+    final json = amrap.toJson();
+    getIt<AppProperties>().setAmrapSettings(json);
     super.dispose();
   }
 
@@ -87,7 +98,7 @@ class _AmrapPageState extends State<AmrapPage> {
                   ),
                   borderRadius: 20,
                   onPressed: () {
-                    // router.showTimer(amrap.workout);
+                    getIt<RouterInterface>().showTimer(amrap.workout);
                   },
                   color: AppColors.accentBlue,
                 ),
@@ -100,7 +111,7 @@ class _AmrapPageState extends State<AmrapPage> {
   }
 
   Widget buildRound(int roundIndex) {
-    final intervals = amrap.rounds[roundIndex].sets;
+    final intervals = amrap.rounds[roundIndex];
     bool isLast = roundIndex == amrap.roundsCound - 1;
     bool isFirst = roundIndex == 0;
 
@@ -118,7 +129,6 @@ class _AmrapPageState extends State<AmrapPage> {
             SizedBox(height: 8),
             ...intervals.asMap().keys.map(
               (intervalIndex) {
-                final interval = intervals[intervalIndex] as m.Interval;
                 if (isLast && intervalIndex == 1) return Container();
                 return Container(
                   width: 120,
@@ -128,7 +138,7 @@ class _AmrapPageState extends State<AmrapPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        interval.type == IntervalType.work ? 'Work:' : 'Rest',
+                        intervalIndex == 0 ? 'Work:' : 'Rest',
                         style: AppFonts.body,
                       ),
                       const SizedBox(width: 12),
@@ -136,7 +146,7 @@ class _AmrapPageState extends State<AmrapPage> {
                         onTap: () async {
                           final selectedTime = await TimePicker.showTimePicker(
                             context,
-                            initialValue: interval.duration!,
+                            initialValue: intervals[intervalIndex],
                             timeRange: amrapWorkTimes,
                           );
                           if (selectedTime != null) {
@@ -144,7 +154,7 @@ class _AmrapPageState extends State<AmrapPage> {
                           }
                         },
                         child: ValueContainer(
-                          durationToString2(interval.duration!),
+                          durationToString2(intervals[intervalIndex]),
                           width: 60,
                         ),
                       )

@@ -5,41 +5,77 @@ import 'package:smart_timer/models/workout_set.dart';
 
 part 'custom_settings.g.dart';
 
-class CustomSettings = CustomSettingsBase with _$CustomSettings;
+class CustomSettings extends CustomSettingsBase with _$CustomSettings {
+  CustomSettings({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
+      : super(
+          roundsCounts: roundsCounts,
+          sets: sets,
+        );
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> setsJson = {};
+    for (int i = 0; i < sets.length; i++) {
+      final roundJson = {};
+      for (int j = 0; j < sets[i].length; j++) {
+        roundJson.addAll({'$j': sets[i][j].inSeconds});
+      }
+      setsJson.addAll({'$i': roundJson});
+    }
+
+    Map<String, dynamic> roundsCountsJson = {};
+    for (int i = 0; i < roundsCounts.length; i++) {
+      roundsCountsJson.addAll({'$i': roundsCounts[i]});
+    }
+
+    return {'sets': setsJson, 'roundsCounts': roundsCountsJson};
+  }
+
+  factory CustomSettings.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> setsJson = json['sets'];
+    Map<String, dynamic> roundsCountsJson = json['roundsCounts'];
+
+    ObservableList<ObservableList<Duration>> sets = ObservableList<ObservableList<Duration>>();
+    for (int i = 0; i < setsJson.length; i++) {
+      List<Duration> round = (setsJson['$i'] as Map<String, dynamic>).values.map((value) => Duration(seconds: value as int)).toList();
+      sets.add(ObservableList.of(round));
+    }
+
+    final roundsCounts = roundsCountsJson.values.map((e) => e as int);
+
+    return CustomSettings(sets: sets, roundsCounts: ObservableList.of(roundsCounts));
+  }
+}
 
 abstract class CustomSettingsBase with Store {
-  @observable
-  var roundsCounts = ObservableList.of([1]);
+  CustomSettingsBase({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
+      : roundsCounts = roundsCounts ?? ObservableList<int>.of([1]),
+        sets = sets ??
+            ObservableList.of(
+              [
+                ObservableList.of(
+                  [
+                    const Duration(minutes: 1),
+                    const Duration(minutes: 2),
+                    const Duration(minutes: 3),
+                  ],
+                ),
+              ],
+            );
 
   @observable
-  ObservableList<ObservableList<Interval>> sets = ObservableList.of(
-    [
-      ObservableList.of(
-        [
-          Interval(
-            duration: const Duration(minutes: 1),
-            type: IntervalType.work,
-            isCountdown: true,
-          ),
-          Interval(
-            duration: const Duration(minutes: 2),
-            type: IntervalType.work,
-            isCountdown: true,
-          ),
-          Interval(
-            duration: const Duration(minutes: 3),
-            type: IntervalType.work,
-            isCountdown: true,
-          ),
-        ],
-      ),
-    ],
-  );
+  ObservableList<int> roundsCounts;
+
+  @observable
+  ObservableList<ObservableList<Duration>> sets;
 
   WorkoutSet get workout {
     final List<WorkoutSet> workoutList = [];
     for (int i = 0; i < sets.length; i++) {
-      final round = WorkoutSet(sets[i]);
+      final round = WorkoutSet(sets[i]
+          .map(
+            (duration) => Interval(type: IntervalType.work, duration: duration),
+          )
+          .toList());
       final List<WorkoutSet> setsList = [];
       for (int j = 0; j < roundsCounts[i]; j++) {
         setsList.add(round);
@@ -58,12 +94,7 @@ abstract class CustomSettingsBase with Store {
   @action
   void setInterval(int setIndex, int intervalIndex, Duration duration) {
     if (setIndex >= sets.length || intervalIndex >= sets[setIndex].length) return;
-    final interval = Interval(
-      duration: duration,
-      type: IntervalType.work,
-      isCountdown: true,
-    );
-    sets[setIndex][intervalIndex] = interval;
+    sets[setIndex][intervalIndex] = duration;
   }
 
   @action
@@ -83,7 +114,7 @@ abstract class CustomSettingsBase with Store {
 
   @action
   void addInterval(int setIndex) {
-    final interval = sets[setIndex].last.copy();
+    final interval = sets[setIndex].last;
     sets[setIndex].add(interval);
   }
 

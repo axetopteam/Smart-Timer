@@ -27,13 +27,13 @@ mixin _$CustomSettings on CustomSettingsBase, Store {
   final _$setsAtom = Atom(name: 'CustomSettingsBase.sets');
 
   @override
-  ObservableList<ObservableList<Interval>> get sets {
+  ObservableList<ObservableList<Duration>> get sets {
     _$setsAtom.reportRead();
     return super.sets;
   }
 
   @override
-  set sets(ObservableList<ObservableList<Interval>> value) {
+  set sets(ObservableList<ObservableList<Duration>> value) {
     _$setsAtom.reportWrite(value, super.sets, () {
       super.sets = value;
     });

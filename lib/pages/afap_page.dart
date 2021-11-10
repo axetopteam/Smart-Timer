@@ -1,27 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
-import 'package:smart_timer/models/interval.dart' as m;
 
 import '../main.dart';
 
 class AfapPage extends StatefulWidget {
-  AfapPage({Key? key}) : super(key: key);
+  const AfapPage({Key? key}) : super(key: key);
 
   @override
   State<AfapPage> createState() => _AfapPageState();
 }
 
 class _AfapPageState extends State<AfapPage> {
-  final afap = Afap();
+  late final Afap afap;
+
+  @override
+  void initState() {
+    super.initState();
+    final json = getIt<AppProperties>().getAfapSettings();
+    afap = json != null ? Afap.fromJson(json) : Afap();
+  }
+
+  @override
+  void dispose() {
+    final json = afap.toJson();
+    getIt<AppProperties>().setAfapSettings(json);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +82,7 @@ class _AfapPageState extends State<AfapPage> {
                             color: AppColors.accentBlue,
                           ),
                           SizedBox(width: 4),
-                          Text('Add another AMRAP')
+                          Text('Add another AFAP')
                         ],
                       ),
                     ),
@@ -98,7 +112,7 @@ class _AfapPageState extends State<AfapPage> {
   }
 
   Widget buildRound(int roundIndex) {
-    final intervals = afap.rounds[roundIndex].sets;
+    final intervals = afap.rounds[roundIndex];
     bool isLast = roundIndex == afap.roundsCound - 1;
     bool isFirst = roundIndex == 0;
 
@@ -114,10 +128,10 @@ class _AfapPageState extends State<AfapPage> {
           child: Observer(
             builder: (ctx) => Column(children: [
               Text('Round ${roundIndex + 1}'),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ...intervals.asMap().keys.map(
                 (intervalIndex) {
-                  final interval = intervals[intervalIndex] as m.Interval;
+                  final interval = intervals[intervalIndex];
                   if (isLast && intervalIndex == 1) return Container();
                   return Container(
                     width: 150,
@@ -127,7 +141,7 @@ class _AfapPageState extends State<AfapPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          interval.type == IntervalType.work ? 'Time cap:' : 'Rest',
+                          intervalIndex == 0 ? 'Time cap:' : 'Rest',
                           style: AppFonts.body,
                         ),
                         const SizedBox(width: 12),
@@ -135,13 +149,13 @@ class _AfapPageState extends State<AfapPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: interval.duration,
+                              initialValue: interval,
                               timeRange: afapWorkTimes,
                             );
                             afap.setInterval(roundIndex, intervalIndex, selectedTime);
                           },
                           child: ValueContainer(
-                            interval.duration != null ? durationToString2(interval.duration!) : 'None',
+                            interval != null ? durationToString2(interval) : 'None',
                             width: 60,
                           ),
                         )

@@ -5,34 +5,60 @@ import 'package:smart_timer/models/workout_set.dart';
 
 part 'afap.g.dart';
 
-class Afap = AfapBase with _$Afap;
+class Afap extends AfapBase with _$Afap {
+  Afap({ObservableList<ObservableList<Duration?>>? rounds}) : super(rounds: rounds);
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    for (int i = 0; i < rounds.length; i++) {
+      final roundJson = {
+        'work': rounds[i][0]?.inSeconds,
+        'rest': rounds[i][1]?.inSeconds,
+      };
+      json.addAll({'$i': roundJson});
+    }
+    return json;
+  }
+
+  factory Afap.fromJson(Map<String, dynamic> json) {
+    ObservableList<ObservableList<Duration?>> rounds = ObservableList<ObservableList<Duration?>>();
+
+    for (int i = 0; i < json.length; i++) {
+      ObservableList<Duration?> round = ObservableList.of(
+        [
+          json['$i']['work'] != null ? Duration(seconds: json['$i']['work']) : null,
+          json['$i']['rest'] != null ? Duration(seconds: json['$i']['rest']) : null,
+        ],
+      );
+      rounds.add(round);
+    }
+    return Afap(rounds: rounds);
+  }
+}
 
 abstract class AfapBase with Store {
+  AfapBase({ObservableList<ObservableList<Duration?>>? rounds})
+      : rounds = rounds ??
+            ObservableList.of(
+              [
+                ObservableList.of(
+                  [
+                    const Duration(minutes: 10),
+                    const Duration(minutes: 1),
+                  ],
+                ),
+              ],
+            );
+
   @observable
-  ObservableList<WorkoutSet> rounds = ObservableList.of(
-    [
-      WorkoutSet(
-        [
-          Interval(
-            duration: const Duration(minutes: 10),
-            type: IntervalType.work,
-            isCountdown: false,
-          ),
-          Interval(
-            duration: const Duration(minutes: 1),
-            type: IntervalType.rest,
-          ),
-        ],
-      ),
-    ],
-  );
+  ObservableList<ObservableList<Duration?>> rounds;
 
   @computed
   int get roundsCound => rounds.length;
 
   @action
   void addRound() {
-    final lastRoundCopy = rounds.last.copy();
+    final lastRoundCopy = ObservableList.of(rounds.last);
     rounds.add(lastRoundCopy);
   }
 
@@ -41,35 +67,26 @@ abstract class AfapBase with Store {
     rounds.removeAt(roundIndex);
   }
 
-  // @computed
-  // WorkoutSet get workout {
-  //   final round = WorkoutSet([workTime]);
-  //   return round.copy();
-  // }
-
   @action
   void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
-    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].sets.length) return;
+    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].length) return;
 
-    final interval = Interval(
-      duration: duration,
-      type: intervalIndex == 0 ? IntervalType.work : IntervalType.rest,
-      isCountdown: !(intervalIndex == 0),
-    );
-
-    rounds[roundIndex].sets[intervalIndex] = interval;
+    rounds[roundIndex][intervalIndex] = duration;
   }
 
   @computed
   WorkoutSet get workout {
-    final lastRoundSets = rounds.last.sets;
-    final lastRound = WorkoutSet([lastRoundSets[0].copy()]);
+    final List<WorkoutSet> roundsSets = [];
+    for (int i = 0; i < rounds.length; i++) {
+      final round = WorkoutSet(
+        [
+          Interval(type: IntervalType.work, duration: rounds[i][0], isCountdown: false),
+          if (i != rounds.length - 1) Interval(type: IntervalType.rest, duration: rounds[i][1]),
+        ],
+      );
+      roundsSets.add(round);
+    }
 
-    final roundsCopy = List.of(rounds);
-
-    roundsCopy.removeLast();
-    roundsCopy.add(lastRound);
-
-    return WorkoutSet(roundsCopy);
+    return WorkoutSet(roundsSets).copy();
   }
 }

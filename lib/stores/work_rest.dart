@@ -1,3 +1,4 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
@@ -5,14 +6,29 @@ import 'package:smart_timer/models/workout_set.dart';
 
 part 'work_rest.g.dart';
 
-class WorkRest = WorkRestBase with _$WorkRest;
+@JsonSerializable()
+class WorkRest extends WorkRestBase with _$WorkRest {
+  WorkRest({
+    int roundsCount = 10,
+    int ratio = 1,
+  }) : super(roundsCount: roundsCount, ratio: ratio);
+
+  Map<String, dynamic> toJson() => _$WorkRestToJson(this);
+
+  factory WorkRest.fromJson(Map<String, dynamic> json) => _$WorkRestFromJson(json);
+}
 
 abstract class WorkRestBase with Store {
-  @observable
-  int roundsCount = 1;
+  WorkRestBase({
+    required this.roundsCount,
+    required this.ratio,
+  });
 
   @observable
-  int ratio = 1;
+  int roundsCount;
+
+  @observable
+  int ratio;
 
   @computed
   WorkoutSet get workout {

@@ -3,44 +3,6 @@
 part of 'interval.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-Interval _$IntervalFromJson(Map<String, dynamic> json) => Interval(
-      duration: json['duration'] == null
-          ? null
-          : Duration(microseconds: json['duration'] as int),
-      type: $enumDecode(_$IntervalTypeEnumMap, json['type']),
-      isCountdown: json['isCountdown'] as bool? ?? true,
-      isReverse: json['isReverse'] as bool? ?? false,
-      reverseRatio: json['reverseRatio'] as int? ?? 1,
-    )
-      ..startTimeUtc = json['startTimeUtc'] == null
-          ? null
-          : DateTime.parse(json['startTimeUtc'] as String)
-      ..restDuration = json['restDuration'] == null
-          ? null
-          : Duration(microseconds: json['restDuration'] as int)
-      ..offset = Duration(microseconds: json['offset'] as int);
-
-Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
-      'type': _$IntervalTypeEnumMap[instance.type],
-      'isCountdown': instance.isCountdown,
-      'isReverse': instance.isReverse,
-      'reverseRatio': instance.reverseRatio,
-      'startTimeUtc': instance.startTimeUtc?.toIso8601String(),
-      'duration': instance.duration?.inMicroseconds,
-      'restDuration': instance.restDuration?.inMicroseconds,
-      'offset': instance.offset.inMicroseconds,
-    };
-
-const _$IntervalTypeEnumMap = {
-  IntervalType.countdown: 'countdown',
-  IntervalType.work: 'work',
-  IntervalType.rest: 'rest',
-};
-
-// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

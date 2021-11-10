@@ -3,6 +3,20 @@
 part of 'work_rest.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+WorkRest _$WorkRestFromJson(Map<String, dynamic> json) => WorkRest(
+      roundsCount: json['roundsCount'] as int? ?? 10,
+      ratio: json['ratio'] as int? ?? 1,
+    );
+
+Map<String, dynamic> _$WorkRestToJson(WorkRest instance) => <String, dynamic>{
+      'roundsCount': instance.roundsCount,
+      'ratio': instance.ratio,
+    };
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

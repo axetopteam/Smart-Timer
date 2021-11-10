@@ -25,13 +25,13 @@ mixin _$Amrap on AmrapBase, Store {
   final _$roundsAtom = Atom(name: 'AmrapBase.rounds');
 
   @override
-  ObservableList<WorkoutSet> get rounds {
+  ObservableList<ObservableList<Duration>> get rounds {
     _$roundsAtom.reportRead();
     return super.rounds;
   }
 
   @override
-  set rounds(ObservableList<WorkoutSet> value) {
+  set rounds(ObservableList<ObservableList<Duration>> value) {
     _$roundsAtom.reportWrite(value, super.rounds, () {
       super.rounds = value;
     });

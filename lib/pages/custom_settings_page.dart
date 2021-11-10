@@ -5,6 +5,7 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/custom_settings.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -20,7 +21,21 @@ class CustomSettingsPage extends StatefulWidget {
 }
 
 class _CustomSettingsPageState extends State<CustomSettingsPage> {
-  final customSettings = CustomSettings();
+  late final CustomSettings customSettings;
+
+  @override
+  void initState() {
+    final json = getIt<AppProperties>().getCustomSettings();
+    customSettings = json != null ? CustomSettings.fromJson(json) : CustomSettings();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final json = customSettings.toJson();
+    getIt<AppProperties>().setCustomSettings(json);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +182,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: intervals[intervalIndex].currentTime!,
+                              initialValue: intervals[intervalIndex],
                               timeRange: tabataWorkTimes,
                             );
                             if (selectedTime != null) {
@@ -176,7 +191,7 @@ class _CustomSettingsPageState extends State<CustomSettingsPage> {
                           },
                           child: Observer(
                             builder: (ctx) => ValueContainer(
-                              durationToString2(intervals[intervalIndex].currentTime!),
+                              durationToString2(intervals[intervalIndex]),
                               width: 60,
                             ),
                           ),

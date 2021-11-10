@@ -20,7 +20,7 @@ class EmomPage extends StatefulWidget {
 }
 
 class _EmomPageState extends State<EmomPage> {
-  late final emom;
+  late final Emom emom;
 
   @override
   void initState() {

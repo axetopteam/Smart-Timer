@@ -7,14 +7,11 @@ part of 'emom.dart';
 // **************************************************************************
 
 Emom _$EmomFromJson(Map<String, dynamic> json) => Emom(
-      roundsCount: json['roundsCount'] as int? ?? 10,
-      workTime: Duration(microseconds: json['workTime'] as int) ??
-          const Duration(minutes: 1),
-      showSets: json['showSets'] as bool? ?? false,
-      setsCount: json['setsCount'] as int? ?? 1,
-      restBetweenSets: Duration(microseconds: json['restBetweenSets'] as int) ??
-          const Duration(minutes: 1),
-    );
+    roundsCount: json['roundsCount'] as int? ?? 10,
+    workTime: Duration(microseconds: json['workTime'] as int),
+    showSets: json['showSets'] as bool? ?? false,
+    setsCount: json['setsCount'] as int? ?? 1,
+    restBetweenSets: Duration(microseconds: json['restBetweenSets'] as int));
 
 Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
       'roundsCount': instance.roundsCount,
@@ -110,8 +107,7 @@ mixin _$Emom on EmomBase, Store {
 
   @override
   void setRounds(int value) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setRounds');
+    final _$actionInfo = _$EmomBaseActionController.startAction(name: 'EmomBase.setRounds');
     try {
       return super.setRounds(value);
     } finally {
@@ -121,8 +117,7 @@ mixin _$Emom on EmomBase, Store {
 
   @override
   void setWorkTime(Duration duration) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setWorkTime');
+    final _$actionInfo = _$EmomBaseActionController.startAction(name: 'EmomBase.setWorkTime');
     try {
       return super.setWorkTime(duration);
     } finally {
@@ -132,8 +127,7 @@ mixin _$Emom on EmomBase, Store {
 
   @override
   void toggleShowSets() {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.toggleShowSets');
+    final _$actionInfo = _$EmomBaseActionController.startAction(name: 'EmomBase.toggleShowSets');
     try {
       return super.toggleShowSets();
     } finally {
@@ -143,8 +137,7 @@ mixin _$Emom on EmomBase, Store {
 
   @override
   void setRestBetweenSets(Duration duration) {
-    final _$actionInfo = _$EmomBaseActionController.startAction(
-        name: 'EmomBase.setRestBetweenSets');
+    final _$actionInfo = _$EmomBaseActionController.startAction(name: 'EmomBase.setRestBetweenSets');
     try {
       return super.setRestBetweenSets(duration);
     } finally {
@@ -154,8 +147,7 @@ mixin _$Emom on EmomBase, Store {
 
   @override
   void setSetsCount(int value) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setSetsCount');
+    final _$actionInfo = _$EmomBaseActionController.startAction(name: 'EmomBase.setSetsCount');
     try {
       return super.setSetsCount(value);
     } finally {

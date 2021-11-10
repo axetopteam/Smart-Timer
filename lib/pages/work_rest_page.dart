@@ -5,19 +5,34 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/work_rest.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 class WorkRestPage extends StatefulWidget {
-  WorkRestPage({Key? key}) : super(key: key);
+  const WorkRestPage({Key? key}) : super(key: key);
 
   @override
   State<WorkRestPage> createState() => _WorkRestPageState();
 }
 
 class _WorkRestPageState extends State<WorkRestPage> {
-  final workRest = WorkRest();
+  late final WorkRest workRest;
+
+  @override
+  void initState() {
+    final settingsJson = getIt<AppProperties>().getWorkRestSettings();
+    workRest = settingsJson != null ? WorkRest.fromJson(settingsJson) : WorkRest();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final json = workRest.toJson();
+    getIt<AppProperties>().setWorkRestSettings(json);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
