@@ -96,26 +96,26 @@ class MainRouterDelegate extends RouterDelegate<MainRoutePath> with ChangeNotifi
         );
 
       case PageType.emom:
-        return MaterialPage(
-          key: const ValueKey('EmomPage'),
+        return const MaterialPage(
+          key: ValueKey('EmomPage'),
           child: EmomPage(),
         );
 
       case PageType.amrap:
-        return MaterialPage(
-          key: const ValueKey('AmrapPage'),
+        return const MaterialPage(
+          key: ValueKey('AmrapPage'),
           child: AmrapPage(),
         );
 
       case PageType.afap:
-        return MaterialPage(
-          key: const ValueKey('AfapPage'),
+        return const MaterialPage(
+          key: ValueKey('AfapPage'),
           child: AfapPage(),
         );
 
       case PageType.workRest:
-        return MaterialPage(
-          key: const ValueKey('WorkRestPage'),
+        return const MaterialPage(
+          key: ValueKey('WorkRestPage'),
           child: WorkRestPage(),
         );
 

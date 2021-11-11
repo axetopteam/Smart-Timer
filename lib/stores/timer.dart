@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/stores/timer_status.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
@@ -21,13 +22,13 @@ abstract class TimerBase with Store {
     duration: const Duration(seconds: 4),
   );
 
-  final stream = Stream.periodic(
+  final timeStream = Stream.periodic(
     const Duration(milliseconds: 100),
     (x) {
       final roundedNow = DateTime.now().toUtc().roundToSeconds();
       return roundedNow;
     },
-  );
+  ).asBroadcastStream();
 
   StreamSubscription? timerSubscription;
 
@@ -36,6 +37,10 @@ abstract class TimerBase with Store {
 
   @computed
   Interval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
+
+  Map<DateTime, SoundType> get reminders {
+    return workout.reminders..addAll(countdownInterval.reminders);
+  }
 
   @computed
   String get indexes {
@@ -55,7 +60,7 @@ abstract class TimerBase with Store {
     countdownInterval.start(roundedNow);
     workout.start(countdownInterval.finishTimeUtc!);
 
-    timerSubscription = stream.listen((nowUtc) {
+    timerSubscription = timeStream.listen((nowUtc) {
       tick(nowUtc);
     });
   }

@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
+import 'package:smart_timer/services/audio_service.dart';
 
 import 'interval_type.dart';
 
@@ -37,12 +37,27 @@ abstract class IntervalBase with Store implements IntervalInterface {
     }
   }
 
+  @computed
+  bool get isFirstSecond {
+    if (type == IntervalType.countdown) return false;
+    if (isCountdown) {
+      return duration != null ? (currentTime?.inSeconds == duration!.inSeconds - 1 || currentTime?.inSeconds == duration!.inSeconds) : false;
+    } else {
+      return currentTime?.inSeconds == 0;
+    }
+  }
+
   Duration offset = const Duration();
 
   @observable
   Duration? _currentTime;
   @override
   Duration? get currentTime => _currentTime;
+
+  @override
+  DateTime? get startLastRoundTimeUtc {
+    return startTimeUtc;
+  }
 
   @override
   DateTime? get finishTimeUtc {
@@ -67,6 +82,26 @@ abstract class IntervalBase with Store implements IntervalInterface {
   IntervalInterface? get nextInterval => null;
 
   @override
+  Map<DateTime, SoundType> get reminders {
+    Map<DateTime, SoundType> reminders = {};
+    if (finishTimeUtc != null && duration! > const Duration(seconds: 29)) {
+      reminders.addAll({
+        finishTimeUtc!.subtract(
+          Duration(seconds: (duration!.inSeconds / 2).round()),
+        ): SoundType.halfTime,
+      });
+    }
+    reminders.addAll({
+      if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown,
+    });
+    reminders.addAll({
+      if (finishTimeUtc != null && duration! > const Duration(seconds: 10)) finishTimeUtc!.subtract(const Duration(seconds: 10)): SoundType.tenSeconds,
+    });
+
+    return reminders;
+  }
+
+  @override
   bool get isLast => true;
 
   @override
@@ -83,7 +118,10 @@ abstract class IntervalBase with Store implements IntervalInterface {
   }
 
   @override
-  bool get isEnded => (isCountdown && currentTime == const Duration()) || (!isCountdown && currentTime == duration);
+  bool get isEnded {
+    if (currentTime == null) return false;
+    return (isCountdown && currentTime! <= const Duration()) || (!isCountdown && currentTime! >= duration!);
+  }
 
   @override
   @action

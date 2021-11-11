@@ -13,7 +13,7 @@ import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 class EmomPage extends StatefulWidget {
-  EmomPage({Key? key}) : super(key: key);
+  const EmomPage({Key? key}) : super(key: key);
 
   @override
   State<EmomPage> createState() => _EmomPageState();

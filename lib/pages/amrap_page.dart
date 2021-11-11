@@ -126,7 +126,7 @@ class _AmrapPageState extends State<AmrapPage> {
           decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10)),
           child: Column(children: [
             Text('AMRAP ${roundIndex + 1}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...intervals.asMap().keys.map(
               (intervalIndex) {
                 if (isLast && intervalIndex == 1) return Container();

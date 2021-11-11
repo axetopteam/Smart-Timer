@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/services/audio_service.dart';
 
 part 'workout_set.g.dart';
 
@@ -27,6 +27,11 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   @override
   @computed
   Duration? get currentTime => _currentSet.currentTime;
+
+  @override
+  DateTime? get startLastRoundTimeUtc {
+    return sets.last.startLastRoundTimeUtc;
+  }
 
   @override
   DateTime? get finishTimeUtc => sets.last.finishTimeUtc;
@@ -55,6 +60,18 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
     if (next == null && _setIndex < setsCount - 1) {
       return sets[_setIndex + 1].currentInterval as Interval;
     }
+  }
+
+  @override
+  Map<DateTime, SoundType> get reminders {
+    Map<DateTime, SoundType> reminders = {};
+    for (int i = 0; i < setsCount; i++) {
+      reminders.addAll(sets[i].reminders);
+    }
+    if (nextInterval == null && setsCount > 1 && startLastRoundTimeUtc != null) {
+      reminders.addAll({startLastRoundTimeUtc!.add(const Duration(milliseconds: 500)): SoundType.lastRound});
+    }
+    return reminders;
   }
 
   @override
@@ -119,14 +136,14 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
       return;
     }
 
+    _currentSet.tick(nowUtc);
+
     for (int i = _setIndex; i < setsCount - 1; i++) {
       if (!_currentSet.isEnded) {
         break;
       }
       _setIndex++;
     }
-
-    _currentSet.tick(nowUtc);
   }
 
   @override

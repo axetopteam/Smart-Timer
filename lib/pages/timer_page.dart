@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
+import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/stores/timer.dart';
 import 'package:smart_timer/stores/timer_status.dart';
@@ -22,7 +25,9 @@ class _TimerPageState extends State<TimerPage> {
   AudioService audio = AudioService();
 
   // AudioPlayer audioPlayer = AudioPlayer();
-  late final ReactionDisposer reactionDispose;
+  // late final ReactionDisposer reactionDispose;
+
+  StreamSubscription? timerSubscription;
 
   @override
   void initState() {
@@ -30,33 +35,46 @@ class _TimerPageState extends State<TimerPage> {
     audio.initialize();
 
     state = Provider.of<Timer>(context, listen: false);
-    reactionDispose = reaction<Duration?>(
-      (reac) {
-        return state.currentTime;
-      },
-      (currentTime) async {
-        final endReminderStart = state.currentInterval.endReminderStart;
-        if (currentTime == endReminderStart) {
-          audio.playCountdown();
+
+    timerSubscription = state.timeStream.listen(
+      (now) {
+        if (state.reminders.containsKey(now)) {
+          switch (state.reminders[now]) {
+            case SoundType.countdown:
+              audio.playCountdown();
+              break;
+            case SoundType.tenSeconds:
+              audio.play10Seconds();
+              break;
+            case SoundType.lastRound:
+              audio.playLastRound();
+              break;
+            case SoundType.halfTime:
+              audio.playHalfTime();
+              break;
+            case null:
+              break;
+          }
         }
       },
     );
 
-    reaction<bool>(
-      (reac) {
-        return state.workout.isLast;
-      },
-      (rest) async {
-        if (state.workout.isLast) {
-          audio.playLastRound();
-        }
-      },
-    );
+    // reaction<bool>(
+    //   (reac) {
+    //     return state.workout.isLast;
+    //   },
+    //   (rest) async {
+    //     if (state.workout.isLast) {
+    //       audio.playLastRound();
+    //     }
+    //   },
+    // );
     super.initState();
   }
 
   @override
   void dispose() async {
+    timerSubscription?.cancel();
     Wakelock.disable();
     audio.stop();
     audio.dispose();
@@ -96,14 +114,25 @@ class _TimerPageState extends State<TimerPage> {
                     ),
                     const SizedBox(height: 20),
                     const SizedBox(height: 20),
-                    Observer(
-                      builder: (_) => Text(
-                        state.currentTime != null ? durationToString2(state.currentTime!) : '--',
+                    Observer(builder: (_) {
+                      final currentInterval = state.currentInterval;
+                      bool isFirstSecond = currentInterval.isFirstSecond;
+                      final text = isFirstSecond
+                          ? currentInterval.type.desc
+                          : state.currentTime != null
+                              ? durationToString2(
+                                  state.currentTime!,
+                                  isCountdown: currentInterval.isCountdown,
+                                )
+                              : '--';
+
+                      return Text(
+                        text,
                         style: const TextStyle(
                           fontSize: 52,
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     const SizedBox(height: 12),
                     Observer(
                       builder: (ctx) {
@@ -157,7 +186,7 @@ class _TimerPageState extends State<TimerPage> {
                         );
                       },
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Observer(
                       builder: (ctx) {
                         if (!state.workout.currentInterval.isCountdown) {

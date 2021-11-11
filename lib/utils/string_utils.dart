@@ -16,7 +16,7 @@ String durationToString(Duration duration) {
   return "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds";
 }
 
-String durationToString2(Duration duration) {
+String durationToString2(Duration duration, {bool isCountdown = false}) {
   String twoDigits(int n) {
     if (n >= 10) return "$n";
     return "0$n";
@@ -26,7 +26,9 @@ String durationToString2(Duration duration) {
     return "-${-duration}";
   }
   String twoDigitMinutes = twoDigits(duration.inMinutes);
-  final seconds = (duration.inMicroseconds / 1000000).round();
+  final seconds = isCountdown ? duration.inSeconds + 1 : duration.inSeconds;
+
+  // (duration.inMicroseconds / 1000000).round();
   String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
 
   return "$twoDigitMinutes:$twoDigitSeconds";
