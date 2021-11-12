@@ -78,7 +78,7 @@ abstract class AmrapBase with Store {
     for (int i = 0; i < rounds.length; i++) {
       final round = WorkoutSet(
         [
-          Interval(type: IntervalType.work, duration: rounds[i][0]),
+          Interval(type: IntervalType.work, duration: rounds[i][0], isLast: i == rounds.length - 1),
           if (i != rounds.length - 1) Interval(type: IntervalType.rest, duration: rounds[i][1]),
         ],
       );

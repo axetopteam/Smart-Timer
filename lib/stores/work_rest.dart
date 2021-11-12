@@ -48,7 +48,13 @@ abstract class WorkRestBase with Store {
 
     final round = WorkoutSet([work, rest]);
 
-    final List<WorkoutSet> sets = List.generate(roundsCount, (index) => round);
+    final lastRound = WorkoutSet(
+      [
+        Interval(type: IntervalType.work, duration: null, isCountdown: false, isLast: true),
+      ],
+    );
+
+    final List<WorkoutSet> sets = List.generate(roundsCount, (index) => index != roundsCount - 1 ? round : lastRound);
 
     // return round.copy();
     return WorkoutSet(sets).copy();

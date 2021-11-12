@@ -2,13 +2,11 @@ import 'package:smart_timer/services/audio_service.dart';
 
 abstract class IntervalInterface {
   Duration? get currentTime;
-  DateTime? get startLastRoundTimeUtc;
   DateTime? get finishTimeUtc;
   Map<int, List<int>> get indexes;
   IntervalInterface get currentInterval;
   IntervalInterface? get nextInterval;
   Map<DateTime, SoundType> get reminders;
-  bool get isLast;
   void setDuration({Duration? newDuration});
   bool get isEnded;
   void start(DateTime nowUtc);

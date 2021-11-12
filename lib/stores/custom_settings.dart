@@ -71,14 +71,24 @@ abstract class CustomSettingsBase with Store {
   WorkoutSet get workout {
     final List<WorkoutSet> workoutList = [];
     for (int i = 0; i < sets.length; i++) {
-      final round = WorkoutSet(sets[i]
+      final intervals = sets[i]
           .map(
             (duration) => Interval(type: IntervalType.work, duration: duration),
           )
-          .toList());
+          .toList();
+      final round = WorkoutSet(intervals);
+
+      final lastIntervals = List.of(intervals);
+      lastIntervals.last = lastIntervals.last.copyWith(isLast: true);
+      final lastRound = WorkoutSet(lastIntervals);
+
       final List<WorkoutSet> setsList = [];
       for (int j = 0; j < roundsCounts[i]; j++) {
-        setsList.add(round);
+        if (i == sets.length - 1 && j == roundsCounts[i] - 1) {
+          setsList.add(lastRound);
+        } else {
+          setsList.add(round);
+        }
       }
       final set = WorkoutSet(setsList);
       workoutList.add(set);

@@ -90,10 +90,10 @@ abstract class TabataStoreBase with Store {
 
   @computed
   WorkoutSet get workout {
+    WorkoutSet lastRound = WorkoutSet([workTime.copyWith(isLast: true)]);
+
     if (setsCount == 1 || !showSets) {
       WorkoutSet baseRound = WorkoutSet([workTime, restTime]);
-      WorkoutSet lastRound = WorkoutSet([workTime.copy()]);
-
       List<WorkoutSet> rounds = List.generate(roundsCount - 1, (index) => baseRound);
       rounds.add(lastRound);
 
@@ -101,7 +101,6 @@ abstract class TabataStoreBase with Store {
     } else {
       WorkoutSet baseRound = WorkoutSet([workTime, restTime]);
       WorkoutSet lastRoundInSet = WorkoutSet([workTime, restBetweenSets]);
-      WorkoutSet lastRound = WorkoutSet([workTime]);
 
       List<WorkoutSet> baseRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRoundInSet);
 

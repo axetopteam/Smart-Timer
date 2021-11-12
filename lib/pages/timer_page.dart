@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/models/interval_type.dart';
@@ -99,12 +98,6 @@ class _TimerPageState extends State<TimerPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Observer(
-                      builder: (_) => Text(
-                        'Is Last: ${state.workout.isLast}',
-                        style: AppFonts.header2,
-                      ),
-                    ),
                     const SizedBox(height: 20),
                     Observer(
                       builder: (_) => Text(

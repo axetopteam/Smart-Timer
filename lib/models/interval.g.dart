@@ -9,6 +9,13 @@ part of 'interval.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Interval on IntervalBase, Store {
+  Computed<bool>? _$isFirstSecondComputed;
+
+  @override
+  bool get isFirstSecond =>
+      (_$isFirstSecondComputed ??= Computed<bool>(() => super.isFirstSecond,
+              name: 'IntervalBase.isFirstSecond'))
+          .value;
   Computed<Map<int, List<int>>>? _$indexesComputed;
 
   @override
@@ -92,6 +99,7 @@ mixin _$Interval on IntervalBase, Store {
   @override
   String toString() {
     return '''
+isFirstSecond: ${isFirstSecond},
 indexes: ${indexes}
     ''';
   }

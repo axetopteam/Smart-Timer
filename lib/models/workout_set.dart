@@ -29,11 +29,6 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   Duration? get currentTime => _currentSet.currentTime;
 
   @override
-  DateTime? get startLastRoundTimeUtc {
-    return sets.last.startLastRoundTimeUtc;
-  }
-
-  @override
   DateTime? get finishTimeUtc => sets.last.finishTimeUtc;
 
   @override
@@ -68,16 +63,7 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
     for (int i = 0; i < setsCount; i++) {
       reminders.addAll(sets[i].reminders);
     }
-    if (nextInterval == null && setsCount > 1 && startLastRoundTimeUtc != null) {
-      reminders.addAll({startLastRoundTimeUtc!.add(const Duration(milliseconds: 500)): SoundType.lastRound});
-    }
     return reminders;
-  }
-
-  @override
-  @computed
-  bool get isLast {
-    return _setIndex == setsCount - 1 && sets[_setIndex].isLast;
   }
 
   @override

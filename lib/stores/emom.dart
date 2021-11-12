@@ -9,11 +9,11 @@ part 'emom.g.dart';
 @JsonSerializable()
 class Emom extends EmomBase with _$Emom {
   Emom({
-    int roundsCount = 10,
-    Duration workTime = const Duration(minutes: 1),
-    bool showSets = false,
-    int setsCount = 1,
-    Duration restBetweenSets = const Duration(minutes: 1),
+    int? roundsCount,
+    Duration? workTime,
+    bool? showSets,
+    int? setsCount,
+    Duration? restBetweenSets,
   }) : super(
           roundsCount: roundsCount,
           workTime: workTime,
@@ -28,12 +28,16 @@ class Emom extends EmomBase with _$Emom {
 
 abstract class EmomBase with Store {
   EmomBase({
-    required this.roundsCount,
-    required this.workTime,
-    required this.showSets,
-    required this.setsCount,
-    required this.restBetweenSets,
-  });
+    int? roundsCount,
+    Duration? workTime,
+    bool? showSets,
+    int? setsCount,
+    Duration? restBetweenSets,
+  })  : roundsCount = roundsCount ?? 10,
+        workTime = workTime ?? const Duration(minutes: 1),
+        showSets = showSets ?? false,
+        setsCount = setsCount ?? 1,
+        restBetweenSets = restBetweenSets ?? const Duration(minutes: 1);
 
   @observable
   int roundsCount;
@@ -78,38 +82,40 @@ abstract class EmomBase with Store {
   }
 
   WorkoutSet get workout {
-    if (setsCount == 1 || !showSets) {
-      List<Interval> intervals = List.generate(
-          roundsCount,
-          (index) => Interval(
-                duration: workTime,
-                type: IntervalType.work,
-              ));
-      return WorkoutSet(intervals).copy();
-    } else {
-      List<Interval> intervals = List.generate(
-          roundsCount,
-          (index) => Interval(
-                duration: workTime,
-                type: IntervalType.work,
-              ));
-      final round = WorkoutSet(intervals);
+    final setsCount = showSets ? this.setsCount : 1;
 
-      final betweenSetsRound = WorkoutSet([
-        Interval(
-          duration: restBetweenSets,
-          type: IntervalType.work,
-        )
-      ]);
+    List<Interval> intervals = List.generate(
+      roundsCount,
+      (index) => Interval(
+        duration: workTime,
+        type: IntervalType.work,
+      ),
+    );
+    final round = WorkoutSet(intervals);
 
-      final set = WorkoutSet([round, betweenSetsRound]);
-      final lastSet = WorkoutSet([round]);
+    final betweenSetsRound = WorkoutSet([
+      Interval(
+        duration: restBetweenSets,
+        type: IntervalType.rest,
+      )
+    ]);
 
-      List<WorkoutSet> sets = List.generate(setsCount - 1, (index) => set)..add(lastSet);
+    final set = WorkoutSet([round, betweenSetsRound]);
 
-      return WorkoutSet(sets).copy();
-    }
+    List<Interval> lastIntervals = List.generate(
+      roundsCount,
+      (index) => Interval(
+        duration: workTime,
+        type: IntervalType.work,
+        isLast: index == roundsCount - 1,
+      ),
+    );
+    final lastRound = WorkoutSet(lastIntervals);
+
+    final lastSet = WorkoutSet([lastRound]);
+
+    List<WorkoutSet> sets = List.generate(setsCount - 1, (index) => set)..add(lastSet);
+
+    return WorkoutSet(sets).copy();
   }
-
-  // Map<String, dynamic> toJson() => _$EmomBase(this);
 }

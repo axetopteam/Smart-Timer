@@ -15,6 +15,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
     this.isCountdown = true,
     this.isReverse = false,
     this.reverseRatio = 1,
+    this.isLast = false,
   })  : assert(!isCountdown || duration != null || isReverse),
         _currentTime = isCountdown ? duration : const Duration(),
         restDuration = duration;
@@ -23,6 +24,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   final bool isCountdown;
   final bool isReverse;
   final int reverseRatio;
+  final bool isLast;
 
   DateTime? startTimeUtc;
 
@@ -53,11 +55,6 @@ abstract class IntervalBase with Store implements IntervalInterface {
   Duration? _currentTime;
   @override
   Duration? get currentTime => _currentTime;
-
-  @override
-  DateTime? get startLastRoundTimeUtc {
-    return startTimeUtc;
-  }
 
   @override
   DateTime? get finishTimeUtc {
@@ -91,18 +88,15 @@ abstract class IntervalBase with Store implements IntervalInterface {
         ): SoundType.halfTime,
       });
     }
-    reminders.addAll({
-      if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown,
-    });
+
     reminders.addAll({
       if (finishTimeUtc != null && duration! > const Duration(seconds: 10)) finishTimeUtc!.subtract(const Duration(seconds: 10)): SoundType.tenSeconds,
+      if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown,
+      if (isLast && startTimeUtc != null) startTimeUtc!.add(const Duration(milliseconds: 500)): SoundType.lastRound,
     });
 
     return reminders;
   }
-
-  @override
-  bool get isLast => true;
 
   @override
   @action
@@ -119,7 +113,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
 
   @override
   bool get isEnded {
-    if (currentTime == null) return false;
+    if (currentTime == null || duration == null) return false;
     return (isCountdown && currentTime! <= const Duration()) || (!isCountdown && currentTime! >= duration!);
   }
 
@@ -167,6 +161,18 @@ abstract class IntervalBase with Store implements IntervalInterface {
       isCountdown: isCountdown,
       isReverse: isReverse,
       reverseRatio: reverseRatio,
+      isLast: isLast,
+    );
+  }
+
+  Interval copyWith({bool? isLast}) {
+    return Interval(
+      duration: duration,
+      type: type,
+      isCountdown: isCountdown,
+      isReverse: isReverse,
+      reverseRatio: reverseRatio,
+      isLast: isLast ?? this.isLast,
     );
   }
 
