@@ -1,84 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:smart_timer/application/application_theme.dart';
+import 'package:get_it/get_it.dart';
+import 'package:smart_timer/core/app_theme/app_theme.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/routes/router_interface.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
+  AppTheme get theme => GetIt.I<AppTheme>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        // elevation: 0,
-        title: const Text('Smart Timer'),
-      ),
+      // backgroundColor: Colors.amberAccent,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildContainer(
-                  title: 'AMRAP',
-                  color: Colors.amber,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showAmrap();
-                  },
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 168),
+              Padding(
+                padding: const EdgeInsets.only(left: 18),
+                child: Text(
+                  'EASY\nTIMER',
+                  style: theme.textTheme.headline1,
                 ),
-                buildContainer(
-                  title: 'FOR TIME',
-                  color: Colors.pink,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showAfap();
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildContainer(
-                  title: 'EMOM',
-                  color: Colors.indigoAccent,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showEmom();
-                  },
-                ),
-                buildContainer(
-                  title: 'TABATA',
-                  color: Colors.green,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showTabata();
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildContainer(
-                  title: 'Custom',
-                  color: Colors.deepOrangeAccent,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showCustomSettings();
-                  },
-                ),
-                buildContainer(
-                  title: '1:1',
-                  color: Colors.purple,
-                  onPressed: () {
-                    getIt.get<RouterInterface>().showWorkRest();
-                  },
-                ),
-              ],
-            )
-          ],
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  buildContainer(
+                    title: 'AMRAP',
+                    color: theme.colorScheme.amrapColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showAmrap();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  buildContainer(
+                    title: 'FOR TIME',
+                    color: theme.colorScheme.afapColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showAfap();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  buildContainer(
+                    title: 'EMOM',
+                    color: theme.colorScheme.emomColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showEmom();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  buildContainer(
+                    title: 'TABATA',
+                    color: theme.colorScheme.tabataColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showTabata();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  buildContainer(
+                    title: '1 : 1',
+                    color: theme.colorScheme.workRestColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showWorkRest();
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  buildContainer(
+                    title: 'CUSTOM',
+                    color: theme.colorScheme.customColor,
+                    onPressed: () {
+                      getIt.get<RouterInterface>().showCustomSettings();
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );
@@ -88,20 +100,15 @@ class MainPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPressed?.call(),
       child: Container(
-        width: 120,
-        height: 120,
         alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          style: theme.textTheme.headline2,
         ),
       ),
     );

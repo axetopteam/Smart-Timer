@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
+import 'package:smart_timer/core/app_theme/app_theme.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/routes/router_interface.dart';
@@ -21,6 +23,8 @@ class AmrapPage extends StatefulWidget {
 class _AmrapPageState extends State<AmrapPage> {
   late final Amrap amrap;
 
+  AppTheme get theme => GetIt.I<AppTheme>();
+
   @override
   void initState() {
     final json = getIt<AppProperties>().getAmrapSettings();
@@ -39,27 +43,26 @@ class _AmrapPageState extends State<AmrapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        elevation: 0,
+        backgroundColor: theme.colorScheme.amrapColor,
+        title: const Text('AMRAP'),
       ),
       body: SafeArea(
         child: Observer(
           builder: (ctx) => Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 120),
-              const Text(
-                'AMRAP',
-                style: AppFonts.header,
+              Container(
+                width: double.infinity,
+                color: theme.colorScheme.amrapColor,
+                padding: const EdgeInsets.only(bottom: 30),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 94),
+                  child: Text(
+                    'Repeat as many rounds as\npossible for selected time',
+                  ),
+                ),
               ),
-              const SizedBox(height: 32),
-              const Text(
-                'As many rounds as possible in',
-                style: AppFonts.header2,
-              ),
-              const SizedBox(height: 12),
               Expanded(
                 child: Column(
                   children: [
@@ -68,7 +71,7 @@ class _AmrapPageState extends State<AmrapPage> {
                         return buildRound(roundIndex);
                       },
                     ),
-                    TextButton(
+                    ElevatedButton(
                       onPressed: () {
                         amrap.addRound();
                       },
@@ -78,7 +81,7 @@ class _AmrapPageState extends State<AmrapPage> {
                           Icon(
                             Icons.add_circle_outline,
                             size: 28,
-                            color: AppColors.accentBlue,
+                            // color: AppColors.accentBlue,
                           ),
                           SizedBox(width: 4),
                           Text('Add another AMRAP')
