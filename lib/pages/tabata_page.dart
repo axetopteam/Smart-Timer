@@ -6,7 +6,6 @@ import 'package:smart_timer/helpers/rounds_picker.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
 import 'package:smart_timer/main.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
-import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -273,7 +272,7 @@ class _TabataPageState extends State<TabataPage> {
                 ),
                 borderRadius: 20,
                 onPressed: () {
-                  getIt.get<RouterInterface>().showTimer(tabataSettings.workout);
+                  //TODO: replace with new router
                 },
                 color: AppColors.accentBlue,
               ),

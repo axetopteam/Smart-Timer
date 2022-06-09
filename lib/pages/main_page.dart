@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/app_theme/app_theme.dart';
-import 'package:smart_timer/main.dart';
-import 'package:smart_timer/routes/router_interface.dart';
+import 'package:smart_timer/routes/main_auto_router.gr.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
   AppTheme get theme => GetIt.I<AppTheme>();
+  AppRouter get router => GetIt.I<AppRouter>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class MainPage extends StatelessWidget {
                     title: 'AMRAP',
                     color: theme.colorScheme.amrapColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showAmrap();
+                      router.push(const AmrapRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -43,7 +43,7 @@ class MainPage extends StatelessWidget {
                     title: 'FOR TIME',
                     color: theme.colorScheme.afapColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showAfap();
+                      router.push(const AfapRoute());
                     },
                   ),
                 ],
@@ -55,7 +55,7 @@ class MainPage extends StatelessWidget {
                     title: 'EMOM',
                     color: theme.colorScheme.emomColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showEmom();
+                      router.push(const EmomRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -63,7 +63,7 @@ class MainPage extends StatelessWidget {
                     title: 'TABATA',
                     color: theme.colorScheme.tabataColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showTabata();
+                      router.push(const TabataRoute());
                     },
                   ),
                 ],
@@ -75,7 +75,7 @@ class MainPage extends StatelessWidget {
                     title: '1 : 1',
                     color: theme.colorScheme.workRestColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showWorkRest();
+                      router.push(const WorkRestRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -83,7 +83,7 @@ class MainPage extends StatelessWidget {
                     title: 'CUSTOM',
                     color: theme.colorScheme.customColor,
                     onPressed: () {
-                      getIt.get<RouterInterface>().showCustomSettings();
+                      router.push(const CustomSettingsRoute());
                     },
                   ),
                 ],

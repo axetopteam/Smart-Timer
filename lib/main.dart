@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/routes/main_route_information_parser.dart';
-import 'package:smart_timer/routes/main_router_delegate.dart';
-import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 import 'core/app_theme/app_theme.dart';
 import 'core/app_theme/app_theme_main.dart';
+import 'routes/main_auto_router.gr.dart';
 
 GetIt getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final router = MainRouterDelegate(GlobalKey<NavigatorState>());
   final appProperties = AppProperties();
   await appProperties.initializeProperties();
 
-  getIt.registerSingleton<RouterInterface>(router);
   getIt.registerSingleton<AppProperties>(appProperties);
   GetIt.instance.registerSingleton<AppTheme>(AppThemeMain());
+  final _appRouter = AppRouter();
+  GetIt.instance.registerSingleton<AppRouter>(_appRouter);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -30,20 +27,19 @@ void main() async {
     ),
   );
 
-  runApp(MyApp(router));
+  runApp(MyApp(_appRouter));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp(this.router, {Key? key}) : super(key: key) {
-    router.showMainPage();
-  }
+  const MyApp(this.appRouter, {Key? key}) : super(key: key);
 
-  final MainRouterDelegate router;
+  final AppRouter appRouter;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routeInformationParser: MainRouteInformationParser(),
-      routerDelegate: router,
+      routerDelegate: appRouter.delegate(),
+      routeInformationParser: appRouter.defaultRouteParser(),
       title: 'Smart Timer',
       debugShowCheckedModeBanner: false,
       theme: GetIt.instance<AppTheme>().themeData,

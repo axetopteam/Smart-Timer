@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/stores/timer.dart';
 import 'package:smart_timer/stores/timer_status.dart';
@@ -13,19 +13,20 @@ import 'package:smart_timer/utils/string_utils.dart';
 import 'package:wakelock/wakelock.dart';
 
 class TimerPage extends StatefulWidget {
-  const TimerPage({Key? key}) : super(key: key);
+  const TimerPage(this.workout, {Key? key}) : super(key: key);
+  final WorkoutSet workout;
 
   @override
   State<TimerPage> createState() => _TimerPageState();
 }
 
 class _TimerPageState extends State<TimerPage> {
-  late final Timer state;
   AudioService audio = AudioService();
 
   // AudioPlayer audioPlayer = AudioPlayer();
   // late final ReactionDisposer reactionDispose;
 
+  late final Timer state;
   StreamSubscription? timerSubscription;
 
   @override
@@ -33,7 +34,7 @@ class _TimerPageState extends State<TimerPage> {
     Wakelock.enable();
     audio.initialize();
 
-    state = Provider.of<Timer>(context, listen: false);
+    state = Timer(widget.workout);
 
     timerSubscription = state.timeStream.listen(
       (now) {
