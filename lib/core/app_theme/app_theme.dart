@@ -7,4 +7,6 @@ abstract class AppTheme {
   CustomColorScheme get colorScheme;
 
   ThemeData get themeData;
+
+  ElevatedButtonThemeData get startButtonTheme;
 }

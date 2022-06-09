@@ -74,5 +74,6 @@ class AppProperties {
       final json = jsonDecode(jsonString);
       return json;
     }
+    return null;
   }
 }

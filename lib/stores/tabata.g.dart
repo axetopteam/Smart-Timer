@@ -6,7 +6,7 @@ part of 'tabata.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TabataStore on TabataStoreBase, Store {
   Computed<Duration>? _$totalTimeComputed;
@@ -24,7 +24,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
               name: 'TabataStoreBase.workout'))
           .value;
 
-  final _$roundsCountAtom = Atom(name: 'TabataStoreBase.roundsCount');
+  late final _$roundsCountAtom =
+      Atom(name: 'TabataStoreBase.roundsCount', context: context);
 
   @override
   int get roundsCount {
@@ -39,7 +40,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$workTimeAtom = Atom(name: 'TabataStoreBase.workTime');
+  late final _$workTimeAtom =
+      Atom(name: 'TabataStoreBase.workTime', context: context);
 
   @override
   Interval get workTime {
@@ -54,7 +56,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$restTimeAtom = Atom(name: 'TabataStoreBase.restTime');
+  late final _$restTimeAtom =
+      Atom(name: 'TabataStoreBase.restTime', context: context);
 
   @override
   Interval get restTime {
@@ -69,7 +72,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$showSetsAtom = Atom(name: 'TabataStoreBase.showSets');
+  late final _$showSetsAtom =
+      Atom(name: 'TabataStoreBase.showSets', context: context);
 
   @override
   bool get showSets {
@@ -84,7 +88,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$setsCountAtom = Atom(name: 'TabataStoreBase.setsCount');
+  late final _$setsCountAtom =
+      Atom(name: 'TabataStoreBase.setsCount', context: context);
 
   @override
   int get setsCount {
@@ -99,7 +104,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$restBetweenSetsAtom = Atom(name: 'TabataStoreBase.restBetweenSets');
+  late final _$restBetweenSetsAtom =
+      Atom(name: 'TabataStoreBase.restBetweenSets', context: context);
 
   @override
   Interval get restBetweenSets {
@@ -114,8 +120,8 @@ mixin _$TabataStore on TabataStoreBase, Store {
     });
   }
 
-  final _$TabataStoreBaseActionController =
-      ActionController(name: 'TabataStoreBase');
+  late final _$TabataStoreBaseActionController =
+      ActionController(name: 'TabataStoreBase', context: context);
 
   @override
   void setRounds(int value) {

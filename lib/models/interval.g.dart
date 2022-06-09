@@ -6,7 +6,7 @@ part of 'interval.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Interval on IntervalBase, Store {
   Computed<bool>? _$isFirstSecondComputed;
@@ -24,7 +24,8 @@ mixin _$Interval on IntervalBase, Store {
               name: 'IntervalBase.indexes'))
           .value;
 
-  final _$_currentTimeAtom = Atom(name: 'IntervalBase._currentTime');
+  late final _$_currentTimeAtom =
+      Atom(name: 'IntervalBase._currentTime', context: context);
 
   @override
   Duration? get _currentTime {
@@ -39,7 +40,8 @@ mixin _$Interval on IntervalBase, Store {
     });
   }
 
-  final _$IntervalBaseActionController = ActionController(name: 'IntervalBase');
+  late final _$IntervalBaseActionController =
+      ActionController(name: 'IntervalBase', context: context);
 
   @override
   void setDuration({Duration? newDuration}) {

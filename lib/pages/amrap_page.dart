@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/core/app_theme/app_theme.dart';
 import 'package:smart_timer/helpers/time_picker.dart';
@@ -9,9 +8,8 @@ import 'package:smart_timer/main.dart';
 import 'package:smart_timer/routes/router_interface.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/stores/amrap.dart';
-import 'package:smart_timer/utils/string_utils.dart';
-import 'package:smart_timer/widgets/main_button.dart';
-import 'package:smart_timer/widgets/value_container.dart';
+import 'package:smart_timer/widgets/interval_widget.dart';
+import 'package:smart_timer/widgets/start_button.dart';
 
 class AmrapPage extends StatefulWidget {
   const AmrapPage({Key? key}) : super(key: key);
@@ -64,48 +62,43 @@ class _AmrapPageState extends State<AmrapPage> {
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: [
-                    ...amrap.rounds.asMap().keys.map(
-                      (roundIndex) {
-                        return buildRound(roundIndex);
-                      },
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        amrap.addRound();
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.add_circle_outline,
-                            size: 28,
-                            // color: AppColors.accentBlue,
-                          ),
-                          SizedBox(width: 4),
-                          Text('Add another AMRAP')
-                        ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...amrap.rounds.asMap().keys.map(
+                        (roundIndex) {
+                          return buildRound(roundIndex);
+                        },
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 26),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: ElevatedButton(
+                          onPressed: amrap.addRound,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.add_circle_outline, size: 20
+                                  // color: AppColors.accentBlue,
+                                  ),
+                              SizedBox(width: 4),
+                              Text('Add another AMRAP')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: MainButton(
-                  child: const Text(
-                    'START TIMER',
-                    style: AppFonts.buttonTitle,
-                  ),
-                  borderRadius: 20,
-                  onPressed: () {
-                    getIt<RouterInterface>().showTimer(amrap.workout);
-                  },
-                  color: AppColors.accentBlue,
+              Align(
+                alignment: Alignment.centerRight,
+                child: StartButton(
+                  backgroundColor: theme.colorScheme.amrapColor,
+                  onPressed: () => getIt<RouterInterface>().showTimer(amrap.workout),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -118,71 +111,59 @@ class _AmrapPageState extends State<AmrapPage> {
     bool isLast = roundIndex == amrap.roundsCound - 1;
     bool isFirst = roundIndex == 0;
 
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Container(
-          width: 200,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-          margin: const EdgeInsets.all(12),
-          decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10)),
-          child: Column(children: [
-            Text('AMRAP ${roundIndex + 1}'),
-            const SizedBox(height: 8),
-            ...intervals.asMap().keys.map(
-              (intervalIndex) {
-                if (isLast && intervalIndex == 1) return Container();
-                return Container(
-                  width: 120,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        intervalIndex == 0 ? 'Work:' : 'Rest',
-                        style: AppFonts.body,
-                      ),
-                      const SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: () async {
-                          final selectedTime = await TimePicker.showTimePicker(
-                            context,
-                            initialValue: intervals[intervalIndex],
-                            timeRange: amrapWorkTimes,
-                          );
-                          if (selectedTime != null) {
-                            amrap.setInterval(roundIndex, intervalIndex, selectedTime);
-                          }
-                        },
-                        child: ValueContainer(
-                          durationToString2(intervals[intervalIndex]),
-                          width: 60,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          ]),
+    return Container(
+      padding: EdgeInsets.fromLTRB(30, 30, 30, isFirst ? 34 : 20),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: theme.colorScheme.primaryVariant, width: 5),
         ),
-        if (!isFirst)
-          Positioned(
-            right: 4,
-            top: 4,
-            child: IconButton(
-              onPressed: () {
-                amrap.deleteRound(roundIndex);
-              },
-              icon: const Icon(
-                Icons.close_sharp,
-                color: AppColors.red,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('AMRAP ${roundIndex + 1}'),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ...intervals.asMap().keys.map((intervalIndex) {
+                if (isLast && intervalIndex == 1) return Container();
+                return IntervalWidget(
+                  title: intervalIndex == 0 ? 'Work:' : 'Rest',
+                  duration: intervals[intervalIndex],
+                  onTap: () async {
+                    final selectedTime = await TimePicker.showTimePicker(
+                      context,
+                      initialValue: intervals[intervalIndex],
+                      timeRange: amrapWorkTimes,
+                    );
+                    if (selectedTime != null) {
+                      amrap.setInterval(roundIndex, intervalIndex, selectedTime);
+                    }
+                  },
+                );
+              }),
+            ],
+          ),
+          if (!isFirst)
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: TextButton(
+                onPressed: () {
+                  amrap.deleteRound(roundIndex);
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      'Remove AMRAP ${roundIndex + 1}',
+                      style: TextStyle(color: theme.colorScheme.secondary),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

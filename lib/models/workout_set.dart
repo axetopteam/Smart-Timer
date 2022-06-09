@@ -55,6 +55,7 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
     if (next == null && _setIndex < setsCount - 1) {
       return sets[_setIndex + 1].currentInterval as Interval;
     }
+    return null;
   }
 
   @override

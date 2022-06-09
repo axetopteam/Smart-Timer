@@ -30,10 +30,11 @@ Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Emom on EmomBase, Store {
-  final _$roundsCountAtom = Atom(name: 'EmomBase.roundsCount');
+  late final _$roundsCountAtom =
+      Atom(name: 'EmomBase.roundsCount', context: context);
 
   @override
   int get roundsCount {
@@ -48,7 +49,7 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  final _$workTimeAtom = Atom(name: 'EmomBase.workTime');
+  late final _$workTimeAtom = Atom(name: 'EmomBase.workTime', context: context);
 
   @override
   Duration get workTime {
@@ -63,7 +64,7 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  final _$showSetsAtom = Atom(name: 'EmomBase.showSets');
+  late final _$showSetsAtom = Atom(name: 'EmomBase.showSets', context: context);
 
   @override
   bool get showSets {
@@ -78,7 +79,8 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  final _$setsCountAtom = Atom(name: 'EmomBase.setsCount');
+  late final _$setsCountAtom =
+      Atom(name: 'EmomBase.setsCount', context: context);
 
   @override
   int get setsCount {
@@ -93,7 +95,8 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  final _$restBetweenSetsAtom = Atom(name: 'EmomBase.restBetweenSets');
+  late final _$restBetweenSetsAtom =
+      Atom(name: 'EmomBase.restBetweenSets', context: context);
 
   @override
   Duration get restBetweenSets {
@@ -108,7 +111,8 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  final _$EmomBaseActionController = ActionController(name: 'EmomBase');
+  late final _$EmomBaseActionController =
+      ActionController(name: 'EmomBase', context: context);
 
   @override
   void setRounds(int value) {

@@ -20,7 +20,7 @@ class AppThemeMain implements AppTheme {
         bodyText2: maintextTheme.bodyText1?.copyWith(
           height: 20 / 14,
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
         subtitle1: const TextStyle(
           height: 19 / 15,
@@ -58,8 +58,8 @@ class AppThemeMain implements AppTheme {
           fontSize: 16,
         ),
         button: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
         ),
       );
 
@@ -69,7 +69,7 @@ class AppThemeMain implements AppTheme {
         primary: Colors.white,
         primaryVariant: Color(0xFF252527),
         primaryLight: Color(0x4C0354F1),
-        secondary: Color(0xFFFE3125),
+        secondary: Color(0xFFFF5151),
         secondaryVariant: Color(0xFFFFECEB),
         background: Colors.black,
         surface: Color(0xFFEEF4FF),
@@ -111,6 +111,7 @@ class AppThemeMain implements AppTheme {
             color: colorScheme.primary,
           ),
         ),
+        materialTapTargetSize: MaterialTapTargetSize.padded,
         bottomAppBarColor: Colors.white,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -124,7 +125,7 @@ class AppThemeMain implements AppTheme {
               ),
               foregroundColor: MaterialStateProperty.all(Colors.white),
               textStyle: MaterialStateProperty.all(
-                const TextStyle(fontSize: 18, fontFamily: 'ApercuPro'),
+                const TextStyle(fontSize: 14, fontFamily: 'Inter'),
               ),
               elevation: MaterialStateProperty.all(0),
               shape: MaterialStateProperty.all(
@@ -137,11 +138,43 @@ class AppThemeMain implements AppTheme {
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             textStyle: MaterialStateProperty.all(
-              const TextStyle(fontSize: 15, fontFamily: 'ApercuPro'),
+              const TextStyle(fontSize: 14, fontFamily: 'Inter', height: 20 / 14),
             ),
-            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 0)),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            tapTargetSize: MaterialTapTargetSize.padded,
+            minimumSize: MaterialStateProperty.all(Size.zero),
+            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 0, vertical: 0)),
           ),
         ),
         dividerColor: colorScheme.primaryLight,
+      );
+
+  @override
+  ElevatedButtonThemeData get startButtonTheme => ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return colorScheme.primaryLight;
+                }
+                return colorScheme.primaryLight;
+              },
+            ),
+            padding: MaterialStateProperty.all(
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            ),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            textStyle: MaterialStateProperty.all(
+              const TextStyle(
+                fontSize: 18,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            elevation: MaterialStateProperty.all(0),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            ),
+            minimumSize: MaterialStateProperty.all(const Size(132, 56))),
       );
 }

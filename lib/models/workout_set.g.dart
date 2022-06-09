@@ -6,7 +6,7 @@ part of 'workout_set.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$WorkoutSet on WorkoutSetBase, Store {
   Computed<Duration?>? _$currentTimeComputed;
@@ -24,7 +24,8 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
               name: 'WorkoutSetBase.indexes'))
           .value;
 
-  final _$_setIndexAtom = Atom(name: 'WorkoutSetBase._setIndex');
+  late final _$_setIndexAtom =
+      Atom(name: 'WorkoutSetBase._setIndex', context: context);
 
   @override
   int get _setIndex {
@@ -39,8 +40,8 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
     });
   }
 
-  final _$WorkoutSetBaseActionController =
-      ActionController(name: 'WorkoutSetBase');
+  late final _$WorkoutSetBaseActionController =
+      ActionController(name: 'WorkoutSetBase', context: context);
 
   @override
   void setDuration({Duration? newDuration}) {

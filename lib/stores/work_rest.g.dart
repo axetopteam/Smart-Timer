@@ -20,7 +20,7 @@ Map<String, dynamic> _$WorkRestToJson(WorkRest instance) => <String, dynamic>{
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$WorkRest on WorkRestBase, Store {
   Computed<WorkoutSet>? _$workoutComputed;
@@ -31,7 +31,8 @@ mixin _$WorkRest on WorkRestBase, Store {
               name: 'WorkRestBase.workout'))
           .value;
 
-  final _$roundsCountAtom = Atom(name: 'WorkRestBase.roundsCount');
+  late final _$roundsCountAtom =
+      Atom(name: 'WorkRestBase.roundsCount', context: context);
 
   @override
   int get roundsCount {
@@ -46,7 +47,7 @@ mixin _$WorkRest on WorkRestBase, Store {
     });
   }
 
-  final _$ratioAtom = Atom(name: 'WorkRestBase.ratio');
+  late final _$ratioAtom = Atom(name: 'WorkRestBase.ratio', context: context);
 
   @override
   int get ratio {
@@ -61,7 +62,8 @@ mixin _$WorkRest on WorkRestBase, Store {
     });
   }
 
-  final _$WorkRestBaseActionController = ActionController(name: 'WorkRestBase');
+  late final _$WorkRestBaseActionController =
+      ActionController(name: 'WorkRestBase', context: context);
 
   @override
   void setRounds(int value) {
