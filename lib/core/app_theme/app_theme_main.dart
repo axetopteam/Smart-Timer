@@ -67,10 +67,8 @@ class AppThemeMain implements AppTheme {
   CustomColorScheme get colorScheme => const CustomColorScheme(
         brightness: Brightness.dark,
         primary: Colors.white,
-        primaryVariant: Color(0xFF252527),
         primaryLight: Color(0x4C0354F1),
         secondary: Color(0xFFFF5151),
-        secondaryVariant: Color(0xFFFFECEB),
         background: Colors.black,
         surface: Color(0xFFEEF4FF),
         onBackground: Colors.white,

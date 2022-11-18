@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 class CustomColorScheme extends ColorScheme {
   const CustomColorScheme({
     required Color primary,
-    required Color primaryVariant,
     required Color secondary,
-    required Color secondaryVariant,
     required Color surface,
     required Color background,
     required Color error,
@@ -25,9 +23,7 @@ class CustomColorScheme extends ColorScheme {
     required this.accent,
   }) : super(
           primary: primary,
-          primaryVariant: primaryVariant,
           secondary: secondary,
-          secondaryVariant: secondaryVariant,
           surface: surface,
           background: background,
           error: error,
