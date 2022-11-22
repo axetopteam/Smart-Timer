@@ -4,11 +4,11 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-part 'emom.g.dart';
+part 'emom_state.g.dart';
 
 @JsonSerializable()
-class Emom extends EmomBase with _$Emom {
-  Emom({
+class EmomState extends EmomStateBase with _$EmomState {
+  EmomState({
     int? roundsCount,
     Duration? workTime,
     bool? showSets,
@@ -21,13 +21,13 @@ class Emom extends EmomBase with _$Emom {
           setsCount: setsCount,
           restBetweenSets: restBetweenSets,
         );
-  Map<String, dynamic> toJson() => _$EmomToJson(this);
+  Map<String, dynamic> toJson() => _$EmomStateToJson(this);
 
-  factory Emom.fromJson(Map<String, dynamic> json) => _$EmomFromJson(json);
+  factory EmomState.fromJson(Map<String, dynamic> json) => _$EmomStateFromJson(json);
 }
 
-abstract class EmomBase with Store {
-  EmomBase({
+abstract class EmomStateBase with Store {
+  EmomStateBase({
     int? roundsCount,
     Duration? workTime,
     bool? showSets,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';

@@ -3,9 +3,9 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-part 'tabata.g.dart';
+part 'tabata_state.g.dart';
 
-class TabataStore = TabataStoreBase with _$TabataStore;
+class TabataState = TabataStoreBase with _$TabataState;
 
 abstract class TabataStoreBase with Store {
   TabataStoreBase({

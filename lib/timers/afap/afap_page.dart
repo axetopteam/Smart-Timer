@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/helpers/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/afap.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-import '../main.dart';
+import 'afap_state.dart';
 
 class AfapPage extends StatefulWidget {
   const AfapPage({Key? key}) : super(key: key);
@@ -19,19 +19,19 @@ class AfapPage extends StatefulWidget {
 }
 
 class _AfapPageState extends State<AfapPage> {
-  late final Afap afap;
+  late final AfapState afap;
 
   @override
   void initState() {
     super.initState();
-    final json = getIt<AppProperties>().getAfapSettings();
-    afap = json != null ? Afap.fromJson(json) : Afap();
+    final json = GetIt.I<AppProperties>().getAfapSettings();
+    afap = json != null ? AfapState.fromJson(json) : AfapState();
   }
 
   @override
   void dispose() {
     final json = afap.toJson();
-    getIt<AppProperties>().setAfapSettings(json);
+    GetIt.I<AppProperties>().setAfapSettings(json);
     super.dispose();
   }
 

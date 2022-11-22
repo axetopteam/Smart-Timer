@@ -6,14 +6,12 @@ import 'package:smart_timer/services/app_properties.dart';
 import 'core/app_theme/theme.dart';
 import 'routes/main_auto_router.gr.dart';
 
-GetIt getIt = GetIt.instance;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appProperties = AppProperties();
   await appProperties.initializeProperties();
 
-  getIt.registerSingleton<AppProperties>(appProperties);
+  GetIt.I.registerSingleton<AppProperties>(appProperties);
   final _appRouter = AppRouter();
   GetIt.instance.registerSingleton<AppRouter>(_appRouter);
 

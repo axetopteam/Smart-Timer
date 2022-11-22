@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/helpers/rounds_picker.dart';
-import 'package:smart_timer/main.dart';
+import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/work_rest.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
+
+import 'work_rest_state.dart';
 
 class WorkRestPage extends StatefulWidget {
   const WorkRestPage({Key? key}) : super(key: key);
@@ -17,19 +18,19 @@ class WorkRestPage extends StatefulWidget {
 }
 
 class _WorkRestPageState extends State<WorkRestPage> {
-  late final WorkRest workRest;
+  late final WorkRestState workRest;
 
   @override
   void initState() {
-    final settingsJson = getIt<AppProperties>().getWorkRestSettings();
-    workRest = settingsJson != null ? WorkRest.fromJson(settingsJson) : WorkRest();
+    final settingsJson = GetIt.I<AppProperties>().getWorkRestSettings();
+    workRest = settingsJson != null ? WorkRestState.fromJson(settingsJson) : WorkRestState();
     super.initState();
   }
 
   @override
   void dispose() {
     final json = workRest.toJson();
-    getIt<AppProperties>().setWorkRestSettings(json);
+    GetIt.I<AppProperties>().setWorkRestSettings(json);
     super.dispose();
   }
 

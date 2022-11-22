@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'emom.dart';
+part of 'emom_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Emom _$EmomFromJson(Map<String, dynamic> json) => Emom(
+EmomState _$EmomStateFromJson(Map<String, dynamic> json) => EmomState(
       roundsCount: json['roundsCount'] as int?,
       workTime: json['workTime'] == null
           ? null
@@ -18,7 +18,7 @@ Emom _$EmomFromJson(Map<String, dynamic> json) => Emom(
           : Duration(microseconds: json['restBetweenSets'] as int),
     );
 
-Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
+Map<String, dynamic> _$EmomStateToJson(EmomState instance) => <String, dynamic>{
       'roundsCount': instance.roundsCount,
       'workTime': instance.workTime.inMicroseconds,
       'showSets': instance.showSets,
@@ -32,9 +32,9 @@ Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$Emom on EmomBase, Store {
+mixin _$EmomState on EmomStateBase, Store {
   late final _$roundsCountAtom =
-      Atom(name: 'EmomBase.roundsCount', context: context);
+      Atom(name: 'EmomStateBase.roundsCount', context: context);
 
   @override
   int get roundsCount {
@@ -49,7 +49,8 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  late final _$workTimeAtom = Atom(name: 'EmomBase.workTime', context: context);
+  late final _$workTimeAtom =
+      Atom(name: 'EmomStateBase.workTime', context: context);
 
   @override
   Duration get workTime {
@@ -64,7 +65,8 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  late final _$showSetsAtom = Atom(name: 'EmomBase.showSets', context: context);
+  late final _$showSetsAtom =
+      Atom(name: 'EmomStateBase.showSets', context: context);
 
   @override
   bool get showSets {
@@ -80,7 +82,7 @@ mixin _$Emom on EmomBase, Store {
   }
 
   late final _$setsCountAtom =
-      Atom(name: 'EmomBase.setsCount', context: context);
+      Atom(name: 'EmomStateBase.setsCount', context: context);
 
   @override
   int get setsCount {
@@ -96,7 +98,7 @@ mixin _$Emom on EmomBase, Store {
   }
 
   late final _$restBetweenSetsAtom =
-      Atom(name: 'EmomBase.restBetweenSets', context: context);
+      Atom(name: 'EmomStateBase.restBetweenSets', context: context);
 
   @override
   Duration get restBetweenSets {
@@ -111,61 +113,61 @@ mixin _$Emom on EmomBase, Store {
     });
   }
 
-  late final _$EmomBaseActionController =
-      ActionController(name: 'EmomBase', context: context);
+  late final _$EmomStateBaseActionController =
+      ActionController(name: 'EmomStateBase', context: context);
 
   @override
   void setRounds(int value) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setRounds');
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.setRounds');
     try {
       return super.setRounds(value);
     } finally {
-      _$EmomBaseActionController.endAction(_$actionInfo);
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setWorkTime(Duration duration) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setWorkTime');
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.setWorkTime');
     try {
       return super.setWorkTime(duration);
     } finally {
-      _$EmomBaseActionController.endAction(_$actionInfo);
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void toggleShowSets() {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.toggleShowSets');
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.toggleShowSets');
     try {
       return super.toggleShowSets();
     } finally {
-      _$EmomBaseActionController.endAction(_$actionInfo);
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setRestBetweenSets(Duration duration) {
-    final _$actionInfo = _$EmomBaseActionController.startAction(
-        name: 'EmomBase.setRestBetweenSets');
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.setRestBetweenSets');
     try {
       return super.setRestBetweenSets(duration);
     } finally {
-      _$EmomBaseActionController.endAction(_$actionInfo);
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setSetsCount(int value) {
-    final _$actionInfo =
-        _$EmomBaseActionController.startAction(name: 'EmomBase.setSetsCount');
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.setSetsCount');
     try {
       return super.setSetsCount(value);
     } finally {
-      _$EmomBaseActionController.endAction(_$actionInfo);
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
     }
   }
 

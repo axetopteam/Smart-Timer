@@ -3,40 +3,41 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-part 'amrap.g.dart';
+part 'afap_state.g.dart';
 
-class Amrap extends AmrapBase with _$Amrap {
-  Amrap({ObservableList<ObservableList<Duration>>? rounds}) : super(rounds: rounds);
+class AfapState extends AfapStateBase with _$AfapState {
+  AfapState({ObservableList<ObservableList<Duration?>>? rounds}) : super(rounds: rounds);
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
     for (int i = 0; i < rounds.length; i++) {
       final roundJson = {
-        'work': rounds[i][0].inSeconds,
-        'rest': rounds[i][1].inSeconds,
+        'work': rounds[i][0]?.inSeconds,
+        'rest': rounds[i][1]?.inSeconds,
       };
       json.addAll({'$i': roundJson});
     }
     return json;
   }
 
-  factory Amrap.fromJson(Map<String, dynamic> json) {
-    ObservableList<ObservableList<Duration>> rounds = ObservableList<ObservableList<Duration>>();
+  factory AfapState.fromJson(Map<String, dynamic> json) {
+    ObservableList<ObservableList<Duration?>> rounds = ObservableList<ObservableList<Duration?>>();
 
     for (int i = 0; i < json.length; i++) {
-      ObservableList<Duration> round = ObservableList.of([
-        Duration(seconds: json['$i']['work']),
-        Duration(seconds: json['$i']['rest']),
-      ]);
+      ObservableList<Duration?> round = ObservableList.of(
+        [
+          json['$i']['work'] != null ? Duration(seconds: json['$i']['work']) : null,
+          json['$i']['rest'] != null ? Duration(seconds: json['$i']['rest']) : null,
+        ],
+      );
       rounds.add(round);
     }
-
-    return Amrap(rounds: rounds);
+    return AfapState(rounds: rounds);
   }
 }
 
-abstract class AmrapBase with Store {
-  AmrapBase({ObservableList<ObservableList<Duration>>? rounds})
+abstract class AfapStateBase with Store {
+  AfapStateBase({ObservableList<ObservableList<Duration?>>? rounds})
       : rounds = rounds ??
             ObservableList.of(
               [
@@ -48,8 +49,9 @@ abstract class AmrapBase with Store {
                 ),
               ],
             );
+
   @observable
-  ObservableList<ObservableList<Duration>> rounds;
+  ObservableList<ObservableList<Duration?>> rounds;
 
   @computed
   int get roundsCound => rounds.length;
@@ -66,7 +68,7 @@ abstract class AmrapBase with Store {
   }
 
   @action
-  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
+  void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
     if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].length) return;
 
     rounds[roundIndex][intervalIndex] = duration;
@@ -78,7 +80,7 @@ abstract class AmrapBase with Store {
     for (int i = 0; i < rounds.length; i++) {
       final round = WorkoutSet(
         [
-          Interval(type: IntervalType.work, duration: rounds[i][0], isLast: i == rounds.length - 1),
+          Interval(type: IntervalType.work, duration: rounds[i][0], isCountdown: false, isLast: i == rounds.length - 1),
           if (i != rounds.length - 1) Interval(type: IntervalType.rest, duration: rounds[i][1]),
         ],
       );

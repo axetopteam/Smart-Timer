@@ -88,7 +88,7 @@ class MainPage extends StatelessWidget {
                     title: 'CUSTOM',
                     color: context.color.customColor,
                     onPressed: () {
-                      router.push(const CustomSettingsRoute());
+                      router.push(const CustomizedRoute());
                     },
                   ),
                 ],

@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'work_rest.dart';
+part of 'work_rest_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-WorkRest _$WorkRestFromJson(Map<String, dynamic> json) => WorkRest(
+WorkRestState _$WorkRestStateFromJson(Map<String, dynamic> json) =>
+    WorkRestState(
       roundsCount: json['roundsCount'] as int? ?? 10,
       ratio: json['ratio'] as int? ?? 1,
     );
 
-Map<String, dynamic> _$WorkRestToJson(WorkRest instance) => <String, dynamic>{
+Map<String, dynamic> _$WorkRestStateToJson(WorkRestState instance) =>
+    <String, dynamic>{
       'roundsCount': instance.roundsCount,
       'ratio': instance.ratio,
     };
@@ -22,17 +24,17 @@ Map<String, dynamic> _$WorkRestToJson(WorkRest instance) => <String, dynamic>{
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$WorkRest on WorkRestBase, Store {
+mixin _$WorkRestState on WorkRestStateBase, Store {
   Computed<WorkoutSet>? _$workoutComputed;
 
   @override
   WorkoutSet get workout =>
       (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'WorkRestBase.workout'))
+              name: 'WorkRestStateBase.workout'))
           .value;
 
   late final _$roundsCountAtom =
-      Atom(name: 'WorkRestBase.roundsCount', context: context);
+      Atom(name: 'WorkRestStateBase.roundsCount', context: context);
 
   @override
   int get roundsCount {
@@ -47,7 +49,8 @@ mixin _$WorkRest on WorkRestBase, Store {
     });
   }
 
-  late final _$ratioAtom = Atom(name: 'WorkRestBase.ratio', context: context);
+  late final _$ratioAtom =
+      Atom(name: 'WorkRestStateBase.ratio', context: context);
 
   @override
   int get ratio {
@@ -62,28 +65,28 @@ mixin _$WorkRest on WorkRestBase, Store {
     });
   }
 
-  late final _$WorkRestBaseActionController =
-      ActionController(name: 'WorkRestBase', context: context);
+  late final _$WorkRestStateBaseActionController =
+      ActionController(name: 'WorkRestStateBase', context: context);
 
   @override
   void setRounds(int value) {
-    final _$actionInfo = _$WorkRestBaseActionController.startAction(
-        name: 'WorkRestBase.setRounds');
+    final _$actionInfo = _$WorkRestStateBaseActionController.startAction(
+        name: 'WorkRestStateBase.setRounds');
     try {
       return super.setRounds(value);
     } finally {
-      _$WorkRestBaseActionController.endAction(_$actionInfo);
+      _$WorkRestStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setRatio(int value) {
-    final _$actionInfo = _$WorkRestBaseActionController.startAction(
-        name: 'WorkRestBase.setRatio');
+    final _$actionInfo = _$WorkRestStateBaseActionController.startAction(
+        name: 'WorkRestStateBase.setRatio');
     try {
       return super.setRatio(value);
     } finally {
-      _$WorkRestBaseActionController.endAction(_$actionInfo);
+      _$WorkRestStateBaseActionController.endAction(_$actionInfo);
     }
   }
 

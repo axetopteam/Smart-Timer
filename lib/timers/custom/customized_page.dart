@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/helpers/rounds_picker.dart';
-import 'package:smart_timer/helpers/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/custom_settings.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-import '../main.dart';
+import 'customized_state.dart';
 
-class CustomSettingsPage extends StatefulWidget {
-  const CustomSettingsPage({Key? key}) : super(key: key);
+class CustomizedPage extends StatefulWidget {
+  const CustomizedPage({Key? key}) : super(key: key);
 
   @override
-  State<CustomSettingsPage> createState() => _CustomSettingsPageState();
+  State<CustomizedPage> createState() => _CustomizedPageState();
 }
 
-class _CustomSettingsPageState extends State<CustomSettingsPage> {
-  late final CustomSettings customSettings;
+class _CustomizedPageState extends State<CustomizedPage> {
+  late final CustomizedState customSettings;
 
   @override
   void initState() {
-    final json = getIt<AppProperties>().getCustomSettings();
-    customSettings = json != null ? CustomSettings.fromJson(json) : CustomSettings();
+    final json = GetIt.I<AppProperties>().getCustomSettings();
+    customSettings = json != null ? CustomizedState.fromJson(json) : CustomizedState();
     super.initState();
   }
 
   @override
   void dispose() {
     final json = customSettings.toJson();
-    getIt<AppProperties>().setCustomSettings(json);
+    GetIt.I<AppProperties>().setCustomSettings(json);
     super.dispose();
   }
 

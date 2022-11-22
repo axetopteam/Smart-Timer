@@ -14,14 +14,14 @@ import 'package:auto_route/auto_route.dart' as _i9;
 import 'package:flutter/material.dart' as _i10;
 
 import '../models/workout_set.dart' as _i11;
-import '../pages/afap_page.dart' as _i3;
-import '../pages/amrap_page.dart' as _i2;
-import '../pages/custom_settings_page.dart' as _i7;
-import '../pages/emom_page.dart' as _i4;
 import '../pages/main_page.dart' as _i1;
-import '../pages/tabata_page.dart' as _i5;
 import '../pages/timer_page.dart' as _i8;
-import '../pages/work_rest_page.dart' as _i6;
+import '../timers/afap/afap_page.dart' as _i3;
+import '../timers/amrap/amrap_page.dart' as _i2;
+import '../timers/custom/customized_page.dart' as _i7;
+import '../timers/emom/emom_page.dart' as _i4;
+import '../timers/tabata/tabata_page.dart' as _i5;
+import '../timers/work_rest/work_rest_page.dart' as _i6;
 
 class AppRouter extends _i9.RootStackRouter {
   AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
@@ -53,9 +53,9 @@ class AppRouter extends _i9.RootStackRouter {
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i6.WorkRestPage());
     },
-    CustomSettingsRoute.name: (routeData) {
+    CustomizedRoute.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i7.CustomSettingsPage());
+          routeData: routeData, child: const _i7.CustomizedPage());
     },
     TimerRoute.name: (routeData) {
       final args = routeData.argsAs<TimerRouteArgs>();
@@ -73,8 +73,7 @@ class AppRouter extends _i9.RootStackRouter {
         _i9.RouteConfig(EmomRoute.name, path: '/emom-page'),
         _i9.RouteConfig(TabataRoute.name, path: '/tabata-page'),
         _i9.RouteConfig(WorkRestRoute.name, path: '/work-rest-page'),
-        _i9.RouteConfig(CustomSettingsRoute.name,
-            path: '/custom-settings-page'),
+        _i9.RouteConfig(CustomizedRoute.name, path: '/customized-page'),
         _i9.RouteConfig(TimerRoute.name, path: '/timer-page')
       ];
 }
@@ -128,12 +127,12 @@ class WorkRestRoute extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.CustomSettingsPage]
-class CustomSettingsRoute extends _i9.PageRouteInfo<void> {
-  const CustomSettingsRoute()
-      : super(CustomSettingsRoute.name, path: '/custom-settings-page');
+/// [_i7.CustomizedPage]
+class CustomizedRoute extends _i9.PageRouteInfo<void> {
+  const CustomizedRoute()
+      : super(CustomizedRoute.name, path: '/customized-page');
 
-  static const String name = 'CustomSettingsRoute';
+  static const String name = 'CustomizedRoute';
 }
 
 /// generated route for

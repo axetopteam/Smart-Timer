@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'amrap.dart';
+part of 'amrap_state.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,21 +8,24 @@ part of 'amrap.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$Amrap on AmrapBase, Store {
+mixin _$AmrapState on AmrapStateBase, Store {
   Computed<int>? _$roundsCoundComputed;
 
   @override
-  int get roundsCound => (_$roundsCoundComputed ??=
-          Computed<int>(() => super.roundsCound, name: 'AmrapBase.roundsCound'))
-      .value;
+  int get roundsCound =>
+      (_$roundsCoundComputed ??= Computed<int>(() => super.roundsCound,
+              name: 'AmrapStateBase.roundsCound'))
+          .value;
   Computed<WorkoutSet>? _$workoutComputed;
 
   @override
-  WorkoutSet get workout => (_$workoutComputed ??=
-          Computed<WorkoutSet>(() => super.workout, name: 'AmrapBase.workout'))
-      .value;
+  WorkoutSet get workout =>
+      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
+              name: 'AmrapStateBase.workout'))
+          .value;
 
-  late final _$roundsAtom = Atom(name: 'AmrapBase.rounds', context: context);
+  late final _$roundsAtom =
+      Atom(name: 'AmrapStateBase.rounds', context: context);
 
   @override
   ObservableList<ObservableList<Duration>> get rounds {
@@ -37,39 +40,39 @@ mixin _$Amrap on AmrapBase, Store {
     });
   }
 
-  late final _$AmrapBaseActionController =
-      ActionController(name: 'AmrapBase', context: context);
+  late final _$AmrapStateBaseActionController =
+      ActionController(name: 'AmrapStateBase', context: context);
 
   @override
   void addRound() {
-    final _$actionInfo =
-        _$AmrapBaseActionController.startAction(name: 'AmrapBase.addRound');
+    final _$actionInfo = _$AmrapStateBaseActionController.startAction(
+        name: 'AmrapStateBase.addRound');
     try {
       return super.addRound();
     } finally {
-      _$AmrapBaseActionController.endAction(_$actionInfo);
+      _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void deleteRound(int roundIndex) {
-    final _$actionInfo =
-        _$AmrapBaseActionController.startAction(name: 'AmrapBase.deleteRound');
+    final _$actionInfo = _$AmrapStateBaseActionController.startAction(
+        name: 'AmrapStateBase.deleteRound');
     try {
       return super.deleteRound(roundIndex);
     } finally {
-      _$AmrapBaseActionController.endAction(_$actionInfo);
+      _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setInterval(int roundIndex, int intervalIndex, Duration duration) {
-    final _$actionInfo =
-        _$AmrapBaseActionController.startAction(name: 'AmrapBase.setInterval');
+    final _$actionInfo = _$AmrapStateBaseActionController.startAction(
+        name: 'AmrapStateBase.setInterval');
     try {
       return super.setInterval(roundIndex, intervalIndex, duration);
     } finally {
-      _$AmrapBaseActionController.endAction(_$actionInfo);
+      _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 

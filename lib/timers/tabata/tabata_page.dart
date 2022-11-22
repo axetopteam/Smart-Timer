@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/helpers/rounds_picker.dart';
-import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
+import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/tabata.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
+
+import 'tabata_state.dart';
 
 class TabataPage extends StatefulWidget {
   const TabataPage({Key? key}) : super(key: key);
@@ -20,19 +21,19 @@ class TabataPage extends StatefulWidget {
 }
 
 class _TabataPageState extends State<TabataPage> {
-  late final TabataStore tabataSettings;
+  late final TabataState tabataSettings;
 
   @override
   void initState() {
-    final settingsJson = getIt<AppProperties>().getTabataSettings();
-    tabataSettings = TabataStore.fromJson(settingsJson);
+    final settingsJson = GetIt.I<AppProperties>().getTabataSettings();
+    tabataSettings = TabataState.fromJson(settingsJson);
     super.initState();
   }
 
   @override
   dispose() {
     final json = tabataSettings.toJson();
-    getIt<AppProperties>().setTabataSettings(json);
+    GetIt.I<AppProperties>().setTabataSettings(json);
     super.dispose();
   }
 
@@ -243,7 +244,8 @@ class _TabataPageState extends State<TabataPage> {
                         const SizedBox(width: 4),
                         Text(
                           tabataSettings.showSets ? 'Delete sets' : 'Add sets (optional)',
-                          style: AppFonts.actionButton.copyWith(color: tabataSettings.showSets ? AppColors.red : AppColors.accentBlue),
+                          style: AppFonts.actionButton
+                              .copyWith(color: tabataSettings.showSets ? AppColors.red : AppColors.accentBlue),
                         ),
                       ],
                     ),

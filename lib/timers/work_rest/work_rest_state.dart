@@ -4,22 +4,22 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-part 'work_rest.g.dart';
+part 'work_rest_state.g.dart';
 
 @JsonSerializable()
-class WorkRest extends WorkRestBase with _$WorkRest {
-  WorkRest({
+class WorkRestState extends WorkRestStateBase with _$WorkRestState {
+  WorkRestState({
     int roundsCount = 10,
     int ratio = 1,
   }) : super(roundsCount: roundsCount, ratio: ratio);
 
-  Map<String, dynamic> toJson() => _$WorkRestToJson(this);
+  Map<String, dynamic> toJson() => _$WorkRestStateToJson(this);
 
-  factory WorkRest.fromJson(Map<String, dynamic> json) => _$WorkRestFromJson(json);
+  factory WorkRestState.fromJson(Map<String, dynamic> json) => _$WorkRestStateFromJson(json);
 }
 
-abstract class WorkRestBase with Store {
-  WorkRestBase({
+abstract class WorkRestStateBase with Store {
+  WorkRestStateBase({
     required this.roundsCount,
     required this.ratio,
   });

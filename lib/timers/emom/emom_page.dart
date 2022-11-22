@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/helpers/rounds_picker.dart';
-import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
+import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/emom.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
+
+import 'emom_state.dart';
 
 class EmomPage extends StatefulWidget {
   const EmomPage({Key? key}) : super(key: key);
@@ -19,19 +20,19 @@ class EmomPage extends StatefulWidget {
 }
 
 class _EmomPageState extends State<EmomPage> {
-  late final Emom emom;
+  late final EmomState emom;
 
   @override
   void initState() {
-    final settingsJson = getIt<AppProperties>().getEmomSettings();
-    emom = settingsJson != null ? Emom.fromJson(settingsJson) : Emom();
+    final settingsJson = GetIt.I<AppProperties>().getEmomSettings();
+    emom = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
     super.initState();
   }
 
   @override
   void dispose() {
     final json = emom.toJson();
-    getIt<AppProperties>().setEmomSettings(json);
+    GetIt.I<AppProperties>().setEmomSettings(json);
     super.dispose();
   }
 
@@ -202,7 +203,8 @@ class _EmomPageState extends State<EmomPage> {
                         const SizedBox(width: 4),
                         Text(
                           emom.showSets ? 'Delete sets' : 'Add sets (optional)',
-                          style: AppFonts.actionButton.copyWith(color: emom.showSets ? AppColors.red : AppColors.accentBlue),
+                          style: AppFonts.actionButton
+                              .copyWith(color: emom.showSets ? AppColors.red : AppColors.accentBlue),
                         ),
                       ],
                     ),

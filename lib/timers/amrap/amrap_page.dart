@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/core/app_theme/theme.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/helpers/time_picker.dart';
-import 'package:smart_timer/main.dart';
+import 'package:smart_timer/bottom_sheets/time_picker.dart';
 import 'package:smart_timer/routes/main_auto_router.gr.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/stores/amrap.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/start_button.dart';
+
+import 'amrap_state.dart';
 
 class AmrapPage extends StatefulWidget {
   const AmrapPage({Key? key}) : super(key: key);
@@ -19,12 +19,12 @@ class AmrapPage extends StatefulWidget {
 }
 
 class _AmrapPageState extends State<AmrapPage> {
-  late final Amrap amrap;
+  late final AmrapState amrap;
 
   @override
   void initState() {
-    final json = getIt<AppProperties>().getAmrapSettings();
-    amrap = json != null ? Amrap.fromJson(json) : Amrap();
+    final json = GetIt.I<AppProperties>().getAmrapSettings();
+    amrap = json != null ? AmrapState.fromJson(json) : AmrapState();
 
     super.initState();
   }
@@ -32,7 +32,7 @@ class _AmrapPageState extends State<AmrapPage> {
   @override
   void dispose() {
     final json = amrap.toJson();
-    getIt<AppProperties>().setAmrapSettings(json);
+    GetIt.I<AppProperties>().setAmrapSettings(json);
     super.dispose();
   }
 
@@ -98,7 +98,7 @@ class _AmrapPageState extends State<AmrapPage> {
                   backgroundColor: context.color.amrapColor,
                   //TODO: replace with new router
 
-                  onPressed: () => getIt<AppRouter>().push(TimerRoute(workout: amrap.workout))
+                  onPressed: () => GetIt.I<AppRouter>().push(TimerRoute(workout: amrap.workout))
                   //  getIt<RouterInterface>().showTimer(amrap.workout),
                   ),
             ),

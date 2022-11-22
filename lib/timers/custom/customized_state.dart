@@ -3,10 +3,10 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-part 'custom_settings.g.dart';
+part 'customized_state.g.dart';
 
-class CustomSettings extends CustomSettingsBase with _$CustomSettings {
-  CustomSettings({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
+class CustomizedState extends CustomizedStateBase with _$CustomizedState {
+  CustomizedState({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
       : super(
           roundsCounts: roundsCounts,
           sets: sets,
@@ -30,24 +30,25 @@ class CustomSettings extends CustomSettingsBase with _$CustomSettings {
     return {'sets': setsJson, 'roundsCounts': roundsCountsJson};
   }
 
-  factory CustomSettings.fromJson(Map<String, dynamic> json) {
+  factory CustomizedState.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> setsJson = json['sets'];
     Map<String, dynamic> roundsCountsJson = json['roundsCounts'];
 
     ObservableList<ObservableList<Duration>> sets = ObservableList<ObservableList<Duration>>();
     for (int i = 0; i < setsJson.length; i++) {
-      List<Duration> round = (setsJson['$i'] as Map<String, dynamic>).values.map((value) => Duration(seconds: value as int)).toList();
+      List<Duration> round =
+          (setsJson['$i'] as Map<String, dynamic>).values.map((value) => Duration(seconds: value as int)).toList();
       sets.add(ObservableList.of(round));
     }
 
     final roundsCounts = roundsCountsJson.values.map((e) => e as int);
 
-    return CustomSettings(sets: sets, roundsCounts: ObservableList.of(roundsCounts));
+    return CustomizedState(sets: sets, roundsCounts: ObservableList.of(roundsCounts));
   }
 }
 
-abstract class CustomSettingsBase with Store {
-  CustomSettingsBase({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
+abstract class CustomizedStateBase with Store {
+  CustomizedStateBase({ObservableList<int>? roundsCounts, ObservableList<ObservableList<Duration>>? sets})
       : roundsCounts = roundsCounts ?? ObservableList<int>.of([1]),
         sets = sets ??
             ObservableList.of(
