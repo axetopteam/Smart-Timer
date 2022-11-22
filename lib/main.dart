@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
-import 'core/app_theme/app_theme.dart';
-import 'core/app_theme/app_theme_main.dart';
+import 'core/app_theme/theme.dart';
 import 'routes/main_auto_router.gr.dart';
 
 GetIt getIt = GetIt.instance;
@@ -15,7 +14,6 @@ void main() async {
   await appProperties.initializeProperties();
 
   getIt.registerSingleton<AppProperties>(appProperties);
-  GetIt.instance.registerSingleton<AppTheme>(AppThemeMain());
   final _appRouter = AppRouter();
   GetIt.instance.registerSingleton<AppRouter>(_appRouter);
 
@@ -42,7 +40,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: appRouter.defaultRouteParser(),
       title: 'Smart Timer',
       debugShowCheckedModeBanner: false,
-      theme: GetIt.instance<AppTheme>().themeData,
+      theme: createDarkTheme(),
     );
   }
 }

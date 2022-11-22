@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/core/app_theme/app_theme.dart';
+import 'package:smart_timer/core/context_extension.dart';
 
 class ValueContainer extends StatelessWidget {
-  AppTheme get theme => GetIt.I();
   const ValueContainer(
     this.value, {
     this.width = 30,
@@ -21,13 +18,13 @@ class ValueContainer extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: theme.colorScheme.primary),
+        border: Border.all(color: context.color.borderColor),
       ),
       alignment: Alignment.center,
       child: Text(
         value,
         textAlign: TextAlign.center,
-        style: theme.textTheme.headline2,
+        style: context.textTheme.bodyText1,
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:smart_timer/core/app_theme/app_theme.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
@@ -16,8 +15,6 @@ class IntervalWidget extends StatelessWidget {
   final Duration duration;
   final VoidCallback onTap;
 
-  AppTheme get theme => GetIt.I<AppTheme>();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +22,6 @@ class IntervalWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: theme.textTheme.bodyText2,
         ),
         const SizedBox(height: 8),
         GestureDetector(

@@ -6,9 +6,9 @@ import 'custom_color_scheme.dart';
 class AppThemeMain implements AppTheme {
   final maintextTheme = ThemeData.dark().textTheme.apply(
         fontFamily: 'Inter',
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
-        decorationColor: Colors.white,
+        // bodyColor: Colors.white,
+        // displayColor: Colors.white,
+        // decorationColor: Colors.white,
       );
 
   @override
@@ -91,26 +91,24 @@ class AppThemeMain implements AppTheme {
         colorScheme: colorScheme,
         textTheme: textTheme,
       ).copyWith(
-        primaryColorBrightness: Brightness.light,
         highlightColor: Colors.white.withOpacity(.25),
         splashColor: Colors.white.withOpacity(.25),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: false,
           elevation: 0,
-          toolbarHeight: 90,
+          toolbarHeight: 70,
           titleSpacing: 36,
           foregroundColor: colorScheme.primary,
           titleTextStyle: TextStyle(
             fontSize: 24,
             height: 30 / 24,
             fontWeight: FontWeight.w900,
-            fontFamily: 'ApercuPro',
+            fontFamily: 'Montserrat',
             color: colorScheme.primary,
           ),
         ),
         materialTapTargetSize: MaterialTapTargetSize.padded,
-        bottomAppBarColor: Colors.white,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -133,46 +131,36 @@ class AppThemeMain implements AppTheme {
               ),
               minimumSize: MaterialStateProperty.all(const Size(double.infinity, 56))),
         ),
-        textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            textStyle: MaterialStateProperty.all(
-              const TextStyle(fontSize: 14, fontFamily: 'Inter', height: 20 / 14),
-            ),
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-            tapTargetSize: MaterialTapTargetSize.padded,
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 0, vertical: 0)),
-          ),
-        ),
         dividerColor: colorScheme.primaryLight,
       );
 
   @override
   ElevatedButtonThemeData get startButtonTheme => ElevatedButtonThemeData(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.disabled)) {
-                  return colorScheme.primaryLight;
-                }
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
                 return colorScheme.primaryLight;
-              },
+              }
+              return colorScheme.primaryLight;
+            },
+          ),
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          ),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          textStyle: MaterialStateProperty.all(
+            const TextStyle(
+              fontSize: 18,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w900,
             ),
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            ),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            textStyle: MaterialStateProperty.all(
-              const TextStyle(
-                fontSize: 18,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            elevation: MaterialStateProperty.all(0),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            ),
-            minimumSize: MaterialStateProperty.all(const Size(132, 56))),
+          ),
+          elevation: MaterialStateProperty.all(0),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          ),
+          minimumSize: MaterialStateProperty.all(const Size(132, 56)),
+        ),
       );
 }

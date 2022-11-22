@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/core/app_theme/app_theme.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/main_auto_router.gr.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
-  AppTheme get theme => GetIt.I<AppTheme>();
   AppRouter get router => GetIt.I<AppRouter>();
 
   @override
@@ -25,23 +24,25 @@ class MainPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 18),
                 child: Text(
                   'EASY\nTIMER',
-                  style: theme.textTheme.headline1,
+                  style: context.textTheme.headline1,
                 ),
               ),
               const Spacer(),
               Row(
                 children: [
                   buildContainer(
+                    context: context,
                     title: 'AMRAP',
-                    color: theme.colorScheme.amrapColor,
+                    color: context.color.amrapColor,
                     onPressed: () {
                       router.push(const AmrapRoute());
                     },
                   ),
                   const SizedBox(width: 10),
                   buildContainer(
+                    context: context,
                     title: 'FOR TIME',
-                    color: theme.colorScheme.afapColor,
+                    color: context.color.forTimeColor,
                     onPressed: () {
                       router.push(const AfapRoute());
                     },
@@ -52,16 +53,18 @@ class MainPage extends StatelessWidget {
               Row(
                 children: [
                   buildContainer(
+                    context: context,
                     title: 'EMOM',
-                    color: theme.colorScheme.emomColor,
+                    color: context.color.emomColor,
                     onPressed: () {
                       router.push(const EmomRoute());
                     },
                   ),
                   const SizedBox(width: 10),
                   buildContainer(
+                    context: context,
                     title: 'TABATA',
-                    color: theme.colorScheme.tabataColor,
+                    color: context.color.tabataColor,
                     onPressed: () {
                       router.push(const TabataRoute());
                     },
@@ -72,16 +75,18 @@ class MainPage extends StatelessWidget {
               Row(
                 children: [
                   buildContainer(
+                    context: context,
                     title: '1 : 1',
-                    color: theme.colorScheme.workRestColor,
+                    color: context.color.workRestColor,
                     onPressed: () {
                       router.push(const WorkRestRoute());
                     },
                   ),
                   const SizedBox(width: 10),
                   buildContainer(
+                    context: context,
                     title: 'CUSTOM',
-                    color: theme.colorScheme.customColor,
+                    color: context.color.customColor,
                     onPressed: () {
                       router.push(const CustomSettingsRoute());
                     },
@@ -96,7 +101,12 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Widget buildContainer({required Color color, required String title, Function? onPressed}) {
+  Widget buildContainer({
+    required BuildContext context,
+    required Color color,
+    required String title,
+    Function? onPressed,
+  }) {
     return GestureDetector(
       onTap: () => onPressed?.call(),
       child: Container(
@@ -108,7 +118,7 @@ class MainPage extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: theme.textTheme.headline2,
+          style: context.textTheme.headline2,
         ),
       ),
     );
