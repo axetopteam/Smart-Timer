@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
-import 'package:smart_timer/bottom_sheets/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -181,8 +181,7 @@ class _CustomizedPageState extends State<CustomizedPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: intervals[intervalIndex],
-                              timeRange: tabataWorkTimes,
+                              initialDuration: intervals[intervalIndex],
                             );
                             if (selectedTime != null) {
                               customSettings.setInterval(setIndex, intervalIndex, selectedTime);

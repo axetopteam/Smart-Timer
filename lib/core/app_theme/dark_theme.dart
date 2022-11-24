@@ -6,6 +6,7 @@ ThemeData createDarkTheme() {
     textTheme: createTextTheme().apply(displayColor: AppColors.white),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.black,
+    backgroundColor: AppColors.black,
     dividerColor: AppColors.greyBlue,
     appBarTheme: const AppBarTheme(
       titleTextStyle: headline3,

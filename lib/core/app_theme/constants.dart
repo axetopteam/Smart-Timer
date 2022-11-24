@@ -38,7 +38,7 @@ const headline4 = TextStyle(
   fontFamily: 'Inter',
   height: 28 / 20,
   fontSize: 20,
-  fontWeight: FontWeight.w900,
+  fontWeight: FontWeight.w700,
 );
 
 const subtitle1 = TextStyle(

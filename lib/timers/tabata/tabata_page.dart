@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
-import 'package:smart_timer/bottom_sheets/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -84,8 +84,7 @@ class _TabataPageState extends State<TabataPage> {
               onTap: () async {
                 final selectedTime = await TimePicker.showTimePicker(
                   context,
-                  initialValue: tabataSettings.restBetweenSets.duration!,
-                  timeRange: tabataWorkTimes,
+                  initialDuration: tabataSettings.restBetweenSets.duration!,
                 );
                 if (selectedTime != null) {
                   tabataSettings.setRestBetweenSets(selectedTime);
@@ -177,8 +176,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: tabataSettings.workTime.duration!,
-                      timeRange: tabataWorkTimes,
+                      initialDuration: tabataSettings.workTime.duration!,
                     );
                     if (selectedTime != null) {
                       tabataSettings.setWorkTime(selectedTime);
@@ -206,8 +204,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: tabataSettings.restTime.duration!,
-                      timeRange: tabataWorkTimes,
+                      initialDuration: tabataSettings.restTime.duration!,
                     );
                     if (selectedTime != null) {
                       tabataSettings.setRestTime(selectedTime);

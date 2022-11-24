@@ -8,6 +8,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color workRestColor;
   final Color customColor;
   final Color borderColor;
+  final Color bottomSheetBackgroundColor;
 
   const ThemeColors({
     required this.amrapColor,
@@ -17,6 +18,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.workRestColor,
     required this.customColor,
     required this.borderColor,
+    required this.bottomSheetBackgroundColor,
   });
 
   @override
@@ -28,6 +30,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? workRestColor,
     Color? customColor,
     Color? borderColor,
+    Color? bottomSheetBackgroundColor,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -37,6 +40,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       workRestColor: workRestColor ?? this.workRestColor,
       customColor: customColor ?? this.customColor,
       borderColor: borderColor ?? this.borderColor,
+      bottomSheetBackgroundColor: bottomSheetBackgroundColor ?? this.bottomSheetBackgroundColor,
     );
   }
 
@@ -57,6 +61,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       workRestColor: Color.lerp(workRestColor, other.workRestColor, t)!,
       customColor: Color.lerp(customColor, other.customColor, t)!,
       borderColor: Color.lerp(borderColor, other.borderColor, t)!,
+      bottomSheetBackgroundColor: Color.lerp(bottomSheetBackgroundColor, other.bottomSheetBackgroundColor, t)!,
     );
   }
 
@@ -68,5 +73,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         workRestColor: AppColors.greenishBlue,
         customColor: AppColors.paleRed,
         borderColor: AppColors.grey,
+        bottomSheetBackgroundColor: AppColors.black,
       );
 }

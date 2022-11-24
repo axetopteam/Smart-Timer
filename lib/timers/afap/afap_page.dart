@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/bottom_sheets/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -147,8 +147,7 @@ class _AfapPageState extends State<AfapPage> {
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialValue: interval,
-                              timeRange: afapWorkTimes,
+                              initialDuration: interval,
                             );
                             afap.setInterval(roundIndex, intervalIndex, selectedTime);
                           },

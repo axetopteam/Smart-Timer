@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
-import 'package:smart_timer/bottom_sheets/time_picker.dart';
+import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -83,8 +83,7 @@ class _EmomPageState extends State<EmomPage> {
               onTap: () async {
                 final selectedTime = await TimePicker.showTimePicker(
                   context,
-                  initialValue: emom.restBetweenSets,
-                  timeRange: tabataWorkTimes,
+                  initialDuration: emom.restBetweenSets,
                 );
                 if (selectedTime != null) {
                   emom.setRestBetweenSets(selectedTime);
@@ -138,8 +137,7 @@ class _EmomPageState extends State<EmomPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialValue: emom.workTime,
-                      timeRange: emomWorkTimes,
+                      initialDuration: emom.workTime,
                     );
                     if (selectedTime != null) {
                       emom.setWorkTime(selectedTime);
