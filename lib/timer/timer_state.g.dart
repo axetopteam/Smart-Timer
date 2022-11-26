@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timer.dart';
+part of 'timer_state.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,29 +8,30 @@ part of 'timer.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$Timer on TimerBase, Store {
+mixin _$TimerState on TimerStateBase, Store {
   Computed<Interval>? _$currentIntervalComputed;
 
   @override
   Interval get currentInterval => (_$currentIntervalComputed ??=
           Computed<Interval>(() => super.currentInterval,
-              name: 'TimerBase.currentInterval'))
+              name: 'TimerStateBase.currentInterval'))
       .value;
   Computed<String>? _$indexesComputed;
 
   @override
   String get indexes => (_$indexesComputed ??=
-          Computed<String>(() => super.indexes, name: 'TimerBase.indexes'))
+          Computed<String>(() => super.indexes, name: 'TimerStateBase.indexes'))
       .value;
   Computed<Duration?>? _$currentTimeComputed;
 
   @override
   Duration? get currentTime =>
       (_$currentTimeComputed ??= Computed<Duration?>(() => super.currentTime,
-              name: 'TimerBase.currentTime'))
+              name: 'TimerStateBase.currentTime'))
           .value;
 
-  late final _$statusAtom = Atom(name: 'TimerBase.status', context: context);
+  late final _$statusAtom =
+      Atom(name: 'TimerStateBase.status', context: context);
 
   @override
   TimerStatus get status {
@@ -45,61 +46,61 @@ mixin _$Timer on TimerBase, Store {
     });
   }
 
-  late final _$TimerBaseActionController =
-      ActionController(name: 'TimerBase', context: context);
+  late final _$TimerStateBaseActionController =
+      ActionController(name: 'TimerStateBase', context: context);
 
   @override
   void start() {
-    final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.start');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.start');
     try {
       return super.start();
     } finally {
-      _$TimerBaseActionController.endAction(_$actionInfo);
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void pause() {
-    final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.pause');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.pause');
     try {
       return super.pause();
     } finally {
-      _$TimerBaseActionController.endAction(_$actionInfo);
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void restart() {
-    final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.restart');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.restart');
     try {
       return super.restart();
     } finally {
-      _$TimerBaseActionController.endAction(_$actionInfo);
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void tick(DateTime nowUtc) {
-    final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.tick');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.tick');
     try {
       return super.tick(nowUtc);
     } finally {
-      _$TimerBaseActionController.endAction(_$actionInfo);
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void close() {
-    final _$actionInfo =
-        _$TimerBaseActionController.startAction(name: 'TimerBase.close');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.close');
     try {
       return super.close();
     } finally {
-      _$TimerBaseActionController.endAction(_$actionInfo);
+      _$TimerStateBaseActionController.endAction(_$actionInfo);
     }
   }
 

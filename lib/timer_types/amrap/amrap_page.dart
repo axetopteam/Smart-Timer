@@ -5,6 +5,8 @@ import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/routes/main_auto_router.gr.dart';
 import 'package:smart_timer/services/app_properties.dart';
+import 'package:smart_timer/timer/timer_state.dart';
+import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/start_button.dart';
 
@@ -97,12 +99,16 @@ class _AmrapPageState extends State<AmrapPage> {
             right: 0,
             bottom: safeOffset.bottom,
             child: StartButton(
-                backgroundColor: context.color.amrapColor,
-                //TODO: replace with new router
-
-                onPressed: () => GetIt.I<AppRouter>().push(TimerRoute(workout: amrap.workout))
-                //  getIt<RouterInterface>().showTimer(amrap.workout),
+              backgroundColor: context.color.amrapColor,
+              onPressed: () => GetIt.I<AppRouter>().push(
+                TimerRoute(
+                  state: TimerState(
+                    workout: amrap.workout,
+                    timerType: TimerType.amrap,
+                  ),
                 ),
+              ),
+            ),
           ),
         ],
       ),

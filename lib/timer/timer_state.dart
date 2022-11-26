@@ -5,21 +5,27 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/services/audio_service.dart';
-import 'package:smart_timer/stores/timer_status.dart';
+import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
-part 'timer.g.dart';
+import 'timer_status.dart';
 
-class Timer = TimerBase with _$Timer;
+part 'timer_state.g.dart';
 
-abstract class TimerBase with Store {
-  TimerBase(this.workout);
+class TimerState = TimerStateBase with _$TimerState;
+
+abstract class TimerStateBase with Store {
+  TimerStateBase({
+    required this.workout,
+    required this.timerType,
+  });
 
   final WorkoutSet workout;
+  final TimerType timerType;
 
   final countdownInterval = Interval(
     type: IntervalType.countdown,
-    duration: const Duration(seconds: 4),
+    duration: const Duration(seconds: 5),
   );
 
   final timeStream = Stream.periodic(

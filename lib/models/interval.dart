@@ -41,9 +41,11 @@ abstract class IntervalBase with Store implements IntervalInterface {
 
   @computed
   bool get isFirstSecond {
-    if (type == IntervalType.countdown) return false;
+    // if (type == IntervalType.countdown) return false;
     if (isCountdown) {
-      return duration != null ? (currentTime?.inSeconds == duration!.inSeconds - 1 || currentTime?.inSeconds == duration!.inSeconds) : false;
+      return duration != null
+          ? (currentTime?.inSeconds == duration!.inSeconds - 1 || currentTime?.inSeconds == duration!.inSeconds)
+          : false;
     } else {
       return currentTime?.inSeconds == 0;
     }
@@ -90,7 +92,8 @@ abstract class IntervalBase with Store implements IntervalInterface {
     }
 
     reminders.addAll({
-      if (finishTimeUtc != null && duration! > const Duration(seconds: 10)) finishTimeUtc!.subtract(const Duration(seconds: 10)): SoundType.tenSeconds,
+      if (finishTimeUtc != null && duration! > const Duration(seconds: 10))
+        finishTimeUtc!.subtract(const Duration(seconds: 10)): SoundType.tenSeconds,
       if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown,
       if (isLast && startTimeUtc != null) startTimeUtc!.add(const Duration(milliseconds: 500)): SoundType.lastRound,
     });

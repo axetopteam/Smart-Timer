@@ -8,6 +8,8 @@ TextTheme createTextTheme() {
     headline2: headline2,
     headline3: headline3,
     headline4: headline4,
+    headline5: headline5,
     subtitle1: subtitle1,
+    subtitle2: subtitle2,
   );
 }

@@ -13,15 +13,15 @@
 import 'package:auto_route/auto_route.dart' as _i9;
 import 'package:flutter/material.dart' as _i10;
 
-import '../models/workout_set.dart' as _i11;
 import '../pages/main_page.dart' as _i1;
-import '../pages/timer_page.dart' as _i8;
-import '../timers/afap/afap_page.dart' as _i3;
-import '../timers/amrap/amrap_page.dart' as _i2;
-import '../timers/custom/customized_page.dart' as _i7;
-import '../timers/emom/emom_page.dart' as _i4;
-import '../timers/tabata/tabata_page.dart' as _i5;
-import '../timers/work_rest/work_rest_page.dart' as _i6;
+import '../timer/timer_page.dart' as _i8;
+import '../timer/timer_state.dart' as _i11;
+import '../timer_types/afap/afap_page.dart' as _i3;
+import '../timer_types/amrap/amrap_page.dart' as _i2;
+import '../timer_types/custom/customized_page.dart' as _i7;
+import '../timer_types/emom/emom_page.dart' as _i4;
+import '../timer_types/tabata/tabata_page.dart' as _i5;
+import '../timer_types/work_rest/work_rest_page.dart' as _i6;
 
 class AppRouter extends _i9.RootStackRouter {
   AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
@@ -61,7 +61,7 @@ class AppRouter extends _i9.RootStackRouter {
       final args = routeData.argsAs<TimerRouteArgs>();
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i8.TimerPage(args.workout, key: args.key));
+          child: _i8.TimerPage(args.state, key: args.key));
     }
   };
 
@@ -138,23 +138,22 @@ class CustomizedRoute extends _i9.PageRouteInfo<void> {
 /// generated route for
 /// [_i8.TimerPage]
 class TimerRoute extends _i9.PageRouteInfo<TimerRouteArgs> {
-  TimerRoute({required _i11.WorkoutSet workout, _i10.Key? key})
+  TimerRoute({required _i11.TimerState state, _i10.Key? key})
       : super(TimerRoute.name,
-            path: '/timer-page',
-            args: TimerRouteArgs(workout: workout, key: key));
+            path: '/timer-page', args: TimerRouteArgs(state: state, key: key));
 
   static const String name = 'TimerRoute';
 }
 
 class TimerRouteArgs {
-  const TimerRouteArgs({required this.workout, this.key});
+  const TimerRouteArgs({required this.state, this.key});
 
-  final _i11.WorkoutSet workout;
+  final _i11.TimerState state;
 
   final _i10.Key? key;
 
   @override
   String toString() {
-    return 'TimerRouteArgs{workout: $workout, key: $key}';
+    return 'TimerRouteArgs{state: $state, key: $key}';
   }
 }

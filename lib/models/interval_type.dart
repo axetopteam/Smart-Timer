@@ -4,7 +4,7 @@ extension IntervalTypeString on IntervalType {
   String get desc {
     switch (this) {
       case IntervalType.countdown:
-        return 'Countdown';
+        return '';
       case IntervalType.work:
         return 'Work';
       case IntervalType.rest:

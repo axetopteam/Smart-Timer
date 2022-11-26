@@ -41,6 +41,13 @@ const headline4 = TextStyle(
   fontWeight: FontWeight.w700,
 );
 
+const headline5 = TextStyle(
+  fontFamily: 'Inter',
+  height: 90 / 70,
+  fontSize: 70,
+  fontWeight: FontWeight.w900,
+);
+
 const subtitle1 = TextStyle(
   fontFamily: 'Inter',
   height: 20 / 16,
@@ -48,9 +55,18 @@ const subtitle1 = TextStyle(
   fontWeight: FontWeight.w900,
 );
 
+const subtitle2 = TextStyle(
+  fontFamily: 'Inter',
+  height: 29 / 24,
+  fontSize: 24,
+  fontWeight: FontWeight.w900,
+);
+
 abstract class AppColors {
   static const white = Colors.white;
   static const black = Color(0xFF0E0E0E);
+  static const black50 = Color(0x800E0E0E);
+  static const black70 = Color(0xB20E0E0E);
   static const red = Color(0xFFFF5151);
   static const greyBlue = Color(0xFF252527);
   static const dullGrey = Color(0xFF666666);

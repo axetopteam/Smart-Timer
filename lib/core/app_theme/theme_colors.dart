@@ -9,6 +9,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color customColor;
   final Color borderColor;
   final Color bottomSheetBackgroundColor;
+  final Color timerOverlayColor;
+  final Color playIconColor;
+  final Color pauseOverlayColor;
 
   const ThemeColors({
     required this.amrapColor,
@@ -19,6 +22,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.customColor,
     required this.borderColor,
     required this.bottomSheetBackgroundColor,
+    required this.timerOverlayColor,
+    required this.playIconColor,
+    required this.pauseOverlayColor,
   });
 
   @override
@@ -31,6 +37,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? customColor,
     Color? borderColor,
     Color? bottomSheetBackgroundColor,
+    Color? timerOverlayColor,
+    Color? playIconColor,
+    Color? pauseOverlayColor,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -41,6 +50,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       customColor: customColor ?? this.customColor,
       borderColor: borderColor ?? this.borderColor,
       bottomSheetBackgroundColor: bottomSheetBackgroundColor ?? this.bottomSheetBackgroundColor,
+      timerOverlayColor: timerOverlayColor ?? this.timerOverlayColor,
+      playIconColor: playIconColor ?? this.playIconColor,
+      pauseOverlayColor: pauseOverlayColor ?? this.pauseOverlayColor,
     );
   }
 
@@ -62,6 +74,9 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       customColor: Color.lerp(customColor, other.customColor, t)!,
       borderColor: Color.lerp(borderColor, other.borderColor, t)!,
       bottomSheetBackgroundColor: Color.lerp(bottomSheetBackgroundColor, other.bottomSheetBackgroundColor, t)!,
+      timerOverlayColor: Color.lerp(timerOverlayColor, other.timerOverlayColor, t)!,
+      playIconColor: Color.lerp(playIconColor, other.playIconColor, t)!,
+      pauseOverlayColor: Color.lerp(pauseOverlayColor, other.pauseOverlayColor, t)!,
     );
   }
 
@@ -74,5 +89,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         customColor: AppColors.paleRed,
         borderColor: AppColors.grey,
         bottomSheetBackgroundColor: AppColors.black,
+        timerOverlayColor: AppColors.black70,
+        playIconColor: AppColors.white,
+        pauseOverlayColor: AppColors.black50,
       );
 }
