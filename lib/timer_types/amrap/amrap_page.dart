@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -9,6 +11,7 @@ import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/start_button.dart';
+import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'amrap_state.dart';
 
@@ -39,79 +42,52 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   Widget build(BuildContext context) {
-    final safeOffset = MediaQuery.of(context).viewPadding;
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                centerTitle: false,
-                title: const Text('AMRAP'),
-                pinned: true,
-                backgroundColor: context.color.amrapColor,
-                expandedHeight: 140.0,
-                flexibleSpace: const FlexibleSpaceBar(
-                  background: Padding(
-                    padding: EdgeInsets.only(left: 94, top: 120),
-                    child: Text(
-                      'Repeat as many rounds as\npossible for selected time',
-                    ),
-                  ),
-                ),
-              ),
-              Observer(
-                builder: (context) {
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (ctx, index) {
-                        return buildRound(index);
-                      },
-                      childCount: amrap.rounds.length,
-                    ),
-                  );
-                },
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.only(top: 26),
-                sliver: SliverToBoxAdapter(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: ElevatedButton(
-                    onPressed: amrap.addRound,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(Icons.add_circle_outline, size: 20
-                            // color: AppColors.accentBlue,
-                            ),
-                        SizedBox(width: 4),
-                        Text('Add another AMRAP')
-                      ],
-                    ),
-                  ),
-                )),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: safeOffset.bottom + 100))
-            ],
+    return TimerSetupScaffold(
+      color: context.color.amrapColor,
+      appBarTitle: 'AMRAP',
+      subtitle: 'Repeat as many rounds as\npossible for selected time',
+      onStartPressed: () => GetIt.I<AppRouter>().push(
+        TimerRoute(
+          state: TimerState(
+            workout: amrap.workout,
+            timerType: TimerType.amrap,
           ),
-          Positioned(
-            right: 0,
-            bottom: safeOffset.bottom,
-            child: StartButton(
-              backgroundColor: context.color.amrapColor,
-              onPressed: () => GetIt.I<AppRouter>().push(
-                TimerRoute(
-                  state: TimerState(
-                    workout: amrap.workout,
-                    timerType: TimerType.amrap,
-                  ),
-                ),
+        ),
+      ),
+      slivers: [
+        Observer(
+          builder: (context) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, index) {
+                  return buildRound(index);
+                },
+                childCount: amrap.rounds.length,
+              ),
+            );
+          },
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.only(top: 26),
+          sliver: SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed: amrap.addRound,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add_circle_outline, size: 20
+                      // color: AppColors.accentBlue,
+                      ),
+                  SizedBox(width: 4),
+                  Text('Add another AMRAP')
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+          )),
+        ),
+      ],
     );
   }
 
