@@ -2,32 +2,32 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/timer_picker_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 
 final minutesList = List.generate(60, (index) => index);
-final secondsList = List.generate(60, (index) => index);
+final secondsList = List.generate(12, (index) => 5 * index);
 
 class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
     Duration? initialDuration,
   }) {
-    return showCupertinoModalPopup<Duration>(
+    return showCupertinoModalPopup<Duration?>(
       context: context,
       builder: (ctx) => TimePicker(
-        initialDuration: initialDuration,
+        initialDuration: initialDuration ?? Duration.zero,
       ),
     );
   }
 
   const TimePicker({
     Key? key,
-    Duration? initialDuration,
-  })  : initialValue = initialDuration ?? Duration.zero,
-        super(key: key);
+    required this.initialDuration,
+  }) : super(key: key);
 
-  final Duration initialValue;
+  final Duration initialDuration;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -37,16 +37,18 @@ class _TimePickerState extends State<TimePicker> {
   late final FixedExtentScrollController _minutesController;
   late final FixedExtentScrollController _secondsController;
 
-  final state = TimerPickerState();
+  late final TimerPickerState state;
 
   @override
   void initState() {
-    // selectedIndex = widget.timeRange.indexOf(widget.initialValue);
-    final minutes = widget.initialValue.inMinutes;
-    final seconds = widget.initialValue.inSeconds - minutes * 60;
+    state = TimerPickerState(
+      initialDuration: widget.initialDuration,
+      minutesList: minutesList,
+      secondsList: List.generate(12, (index) => 5 * index),
+    );
 
-    _minutesController = FixedExtentScrollController(initialItem: minutes);
-    _secondsController = FixedExtentScrollController(initialItem: seconds);
+    _minutesController = FixedExtentScrollController(initialItem: state.minutesIndex!);
+    _secondsController = FixedExtentScrollController(initialItem: state.secondsIndex!);
     super.initState();
   }
 
@@ -75,79 +77,113 @@ class _TimePickerState extends State<TimePicker> {
               child: Row(
                 children: [
                   Expanded(
-                    child: CupertinoPicker(
-                      useMagnifier: true,
-                      magnification: 1,
-                      diameterRatio: 20,
-                      scrollController: _minutesController,
-                      selectionOverlay: Center(
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 48),
-                            child: Text(
-                              'm',
-                              style: context.textTheme.headline4,
-                            ),
-                          ),
-                        ),
-                      ),
-                      children: minutesList
-                          .map(
-                            (minutes) => Center(
-                              child: Text(
-                                '$minutes',
-                                textAlign: TextAlign.center,
-                                style: context.textTheme.headline4,
+                    child: Observer(builder: (context) {
+                      return IgnorePointer(
+                        ignoring: state.noTimeCap,
+                        child: CupertinoPicker(
+                          useMagnifier: true,
+                          magnification: 1,
+                          diameterRatio: 20,
+                          scrollController: _minutesController,
+                          selectionOverlay: Center(
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 50),
+                                child: Text(
+                                  'm',
+                                  style: context.textTheme.headline4,
+                                ),
                               ),
                             ),
-                          )
-                          .toList(),
-                      onSelectedItemChanged: (value) {},
-                      itemExtent: 70,
-                    ),
-                  ),
-                  Expanded(
-                    child: CupertinoPicker(
-                      useMagnifier: true,
-                      magnification: 1,
-                      diameterRatio: 20,
-                      scrollController: _secondsController,
-                      selectionOverlay: Center(
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 42),
-                            child: Text(
-                              's',
-                              style: context.textTheme.headline4,
-                            ),
                           ),
+                          children: state.minutesList
+                              .map(
+                                (minutes) => Center(
+                                  child: Text(
+                                    '$minutes',
+                                    textAlign: TextAlign.center,
+                                    style: context.textTheme.headline4,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onSelectedItemChanged: (value) {
+                            state.minutesIndex = value;
+                          },
+                          itemExtent: 70,
                         ),
-                      ),
-                      children: secondsList
-                          .map(
-                            (seconds) => Center(
-                              child: Text(
-                                '$seconds',
-                                textAlign: TextAlign.center,
-                                style: context.textTheme.headline4,
+                      );
+                    }),
+                  ),
+                  Observer(builder: (context) {
+                    return Expanded(
+                      child: IgnorePointer(
+                        ignoring: state.noTimeCap,
+                        ignoringSemantics: false,
+                        child: CupertinoPicker(
+                          useMagnifier: true,
+                          magnification: 1,
+                          diameterRatio: 20,
+                          scrollController: _secondsController,
+                          selectionOverlay: Center(
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 44),
+                                child: Text(
+                                  's',
+                                  style: context.textTheme.headline4,
+                                ),
                               ),
                             ),
-                          )
-                          .toList(),
-                      onSelectedItemChanged: (value) {},
-                      itemExtent: 70,
-                    ),
-                  ),
+                          ),
+                          children: state.secondsList
+                              .map(
+                                (seconds) => Center(
+                                  child: Text(
+                                    '$seconds',
+                                    textAlign: TextAlign.center,
+                                    style: context.textTheme.headline4,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onSelectedItemChanged: (value) {
+                            state.secondsIndex = value;
+                          },
+                          itemExtent: 70,
+                        ),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
-            const Spacer(),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: Observer(builder: (context) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                          value: state.noTimeCap,
+                          onChanged: (value) {
+                            if (value != null) {
+                              state.noTimeCap = value;
+                            }
+                          }),
+                      Text('No time cap'),
+                    ],
+                  );
+                }),
+              ),
+            ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -158,10 +194,13 @@ class _TimePickerState extends State<TimePicker> {
                     'Confirm Time',
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop(Duration(
-                      minutes: _minutesController.selectedItem,
-                      seconds: _secondsController.selectedItem,
-                    ));
+                    final minutes = state.minutes;
+                    final seconds = state.seconds;
+
+                    final duration = minutes != null && seconds != null && !state.noTimeCap
+                        ? Duration(minutes: minutes, seconds: seconds)
+                        : null;
+                    Navigator.of(context).pop(duration);
                   },
                 ),
               ),

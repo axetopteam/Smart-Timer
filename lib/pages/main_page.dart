@@ -42,7 +42,7 @@ class MainPage extends StatelessWidget {
                   buildContainer(
                     context: context,
                     title: 'FOR TIME',
-                    color: context.color.forTimeColor,
+                    color: context.color.afapColor,
                     onPressed: () {
                       router.push(const AfapRoute());
                     },

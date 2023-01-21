@@ -11,7 +11,7 @@ class IntervalWidget extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  final Duration duration;
+  final Duration? duration;
   final VoidCallback onTap;
 
   @override
@@ -26,7 +26,7 @@ class IntervalWidget extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: ValueContainer(
-            durationToString2(duration),
+            duration != null ? durationToString2(duration!) : '--',
             width: 150,
           ),
         )

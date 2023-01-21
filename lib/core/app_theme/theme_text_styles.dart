@@ -51,7 +51,7 @@ class ThemeTextStyles extends ThemeExtension<ThemeTextStyles> {
     );
   }
 
-  static get dark => ThemeTextStyles(
+  static ThemeTextStyles get dark => ThemeTextStyles(
         appTitle: headline1.copyWith(
           // color: AppColors.lighterGrey,
           fontWeight: FontWeight.w700,

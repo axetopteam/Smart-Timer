@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
-import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/routes/main_auto_router.gr.dart';
 import 'package:smart_timer/services/app_properties.dart';
+import 'package:smart_timer/timer/timer_state.dart';
+import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/main_button.dart';
+import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 import 'afap_state.dart';
@@ -37,6 +42,53 @@ class _AfapPageState extends State<AfapPage> {
 
   @override
   Widget build(BuildContext context) {
+    return TimerSetupScaffold(
+      color: context.color.afapColor,
+      appBarTitle: 'For Time',
+      subtitle: 'Repeat rounds as fast as possible for selected time',
+      onStartPressed: () => GetIt.I<AppRouter>().push(
+        TimerRoute(
+          state: TimerState(
+            workout: afap.workout,
+            timerType: TimerType.afap,
+          ),
+        ),
+      ),
+      slivers: [
+        Observer(
+          builder: (context) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, index) {
+                  return buildRound(index);
+                },
+                childCount: afap.rounds.length,
+              ),
+            );
+          },
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.only(top: 26),
+          sliver: SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed: afap.addRound,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add_circle_outline, size: 20
+                      // color: AppColors.accentBlue,
+                      ),
+                  SizedBox(width: 4),
+                  Text('Add another round')
+                ],
+              ),
+            ),
+          )),
+        ),
+      ],
+    );
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -110,75 +162,73 @@ class _AfapPageState extends State<AfapPage> {
   }
 
   Widget buildRound(int roundIndex) {
-    final intervals = afap.rounds[roundIndex];
-    bool isLast = roundIndex == afap.roundsCound - 1;
-    bool isFirst = roundIndex == 0;
+    return Observer(
+      builder: (context) {
+        final intervals = afap.rounds[roundIndex];
+        bool isLast = roundIndex == afap.roundsCound - 1;
+        bool isFirst = roundIndex == 0;
 
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Container(
-          width: 200,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-          margin: const EdgeInsets.all(12),
-          decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10)),
-          child: Observer(
-            builder: (ctx) => Column(children: [
-              Text('Round ${roundIndex + 1}'),
-              const SizedBox(height: 8),
-              ...intervals.asMap().keys.map(
-                (intervalIndex) {
-                  final interval = intervals[intervalIndex];
-                  if (isLast && intervalIndex == 1) return Container();
-                  return Container(
-                    width: 150,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          intervalIndex == 0 ? 'Time cap:' : 'Rest',
-                          style: AppFonts.body,
-                        ),
-                        const SizedBox(width: 12),
-                        GestureDetector(
+        return Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 30, 30, isFirst ? 34 : 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'AFAP ${roundIndex + 1}',
+                    style: context.textTheme.subtitle1,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ...intervals.asMap().keys.map((intervalIndex) {
+                        if (isLast && intervalIndex == 1) return Container();
+                        return IntervalWidget(
+                          title: intervalIndex == 0 ? 'Time cap:' : 'Rest time',
+                          duration: intervals[intervalIndex],
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialDuration: interval,
+                              initialDuration: intervals[intervalIndex],
                             );
                             afap.setInterval(roundIndex, intervalIndex, selectedTime);
                           },
-                          child: ValueContainer(
-                            interval != null ? durationToString2(interval) : 'None',
-                            width: 60,
+                        );
+                      }),
+                    ],
+                  ),
+                  if (!isFirst)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Row(
+                        children: [
+                          TextButtonTheme(
+                            data: context.buttonThemes.deleteButtonTheme,
+                            child: TextButton(
+                              onPressed: () {
+                                afap.deleteRound(roundIndex);
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Remove AFAP ${roundIndex + 1}',
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  );
-                },
-              ),
-            ]),
-          ),
-        ),
-        if (!isFirst)
-          Positioned(
-            right: 4,
-            top: 4,
-            child: IconButton(
-              onPressed: () {
-                afap.deleteRound(roundIndex);
-              },
-              icon: const Icon(
-                Icons.close_sharp,
-                color: AppColors.red,
+                ],
               ),
             ),
-          ),
-      ],
+            const Divider(thickness: 5, height: 5),
+          ],
+        );
+      },
     );
   }
 }
