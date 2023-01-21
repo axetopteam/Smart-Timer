@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 import 'core/app_theme/theme.dart';
-import 'routes/main_auto_router.gr.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +13,6 @@ void main() async {
 
   GetIt.I.registerSingleton<AppProperties>(appProperties);
   final _appRouter = AppRouter();
-  GetIt.instance.registerSingleton<AppRouter>(_appRouter);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

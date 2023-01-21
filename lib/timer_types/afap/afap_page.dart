@@ -1,18 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/routes/main_auto_router.gr.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
-import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
-import 'package:smart_timer/widgets/value_container.dart';
 
 import 'afap_state.dart';
 
@@ -46,7 +45,7 @@ class _AfapPageState extends State<AfapPage> {
       color: context.color.afapColor,
       appBarTitle: 'For Time',
       subtitle: 'Repeat rounds as fast as possible for selected time',
-      onStartPressed: () => GetIt.I<AppRouter>().push(
+      onStartPressed: () => context.pushRoute(
         TimerRoute(
           state: TimerState(
             workout: afap.workout,

@@ -1,11 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/routes/main_auto_router.gr.dart';
+import 'package:smart_timer/routes/router.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
-  AppRouter get router => GetIt.I<AppRouter>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class MainPage extends StatelessWidget {
                     title: 'AMRAP',
                     color: context.color.amrapColor,
                     onPressed: () {
-                      router.push(const AmrapRoute());
+                      context.router.push(const AmrapRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -44,7 +43,7 @@ class MainPage extends StatelessWidget {
                     title: 'FOR TIME',
                     color: context.color.afapColor,
                     onPressed: () {
-                      router.push(const AfapRoute());
+                      context.router.push(const AfapRoute());
                     },
                   ),
                 ],
@@ -57,7 +56,7 @@ class MainPage extends StatelessWidget {
                     title: 'EMOM',
                     color: context.color.emomColor,
                     onPressed: () {
-                      router.push(const EmomRoute());
+                      context.router.push(const EmomRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -66,7 +65,7 @@ class MainPage extends StatelessWidget {
                     title: 'TABATA',
                     color: context.color.tabataColor,
                     onPressed: () {
-                      router.push(const TabataRoute());
+                      context.router.push(const TabataRoute());
                     },
                   ),
                 ],
@@ -79,7 +78,7 @@ class MainPage extends StatelessWidget {
                     title: '1 : 1',
                     color: context.color.workRestColor,
                     onPressed: () {
-                      router.push(const WorkRestRoute());
+                      context.router.push(const WorkRestRoute());
                     },
                   ),
                   const SizedBox(width: 10),
@@ -88,7 +87,7 @@ class MainPage extends StatelessWidget {
                     title: 'CUSTOM',
                     color: context.color.customColor,
                     onPressed: () {
-                      router.push(const CustomizedRoute());
+                      context.router.push(const CustomizedRoute());
                     },
                   ),
                 ],
