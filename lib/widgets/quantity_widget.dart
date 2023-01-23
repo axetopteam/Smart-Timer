@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
-class IntervalWidget extends StatelessWidget {
-  const IntervalWidget({
+class QuantityWidget extends StatelessWidget {
+  const QuantityWidget({
     Key? key,
     required this.title,
-    required this.duration,
+    required this.quantity,
     required this.onTap,
   }) : super(key: key);
 
   final String title;
-  final Duration? duration;
+  final int quantity;
   final VoidCallback onTap;
 
   @override
@@ -26,7 +26,7 @@ class IntervalWidget extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: ValueContainer(
-            duration != null ? durationToString2(duration!) : 'No cap',
+            quantity.toString(),
             width: 150,
           ),
         )
