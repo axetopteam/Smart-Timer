@@ -94,12 +94,11 @@ class _AmrapPageState extends State<AmrapPage> {
       builder: (context) {
         final intervals = amrap.rounds[roundIndex];
         bool isLast = roundIndex == amrap.roundsCound - 1;
-        bool isFirst = roundIndex == 0;
 
         return Column(
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(30, 30, 30, isFirst ? 34 : 20),
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -129,9 +128,9 @@ class _AmrapPageState extends State<AmrapPage> {
                       }),
                     ],
                   ),
-                  if (!isFirst)
+                  if (amrap.rounds.length > 1)
                     Padding(
-                      padding: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 30),
                       child: Row(
                         children: [
                           TextButtonTheme(

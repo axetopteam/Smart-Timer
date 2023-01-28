@@ -36,18 +36,19 @@ class AmrapState extends AmrapStateBase with _$AmrapState {
 }
 
 abstract class AmrapStateBase with Store {
-  AmrapStateBase({ObservableList<ObservableList<Duration>>? rounds})
-      : rounds = rounds ??
-            ObservableList.of(
-              [
-                ObservableList.of(
-                  [
-                    const Duration(minutes: 10),
-                    const Duration(minutes: 1),
-                  ],
-                ),
-              ],
-            );
+  static final initialRound = ObservableList.of(
+    [
+      ObservableList.of(
+        [
+          const Duration(minutes: 10),
+          const Duration(minutes: 1),
+        ],
+      ),
+    ],
+  );
+
+  AmrapStateBase({ObservableList<ObservableList<Duration>>? rounds}) : rounds = rounds ?? initialRound;
+
   @observable
   ObservableList<ObservableList<Duration>> rounds;
 
@@ -56,8 +57,8 @@ abstract class AmrapStateBase with Store {
 
   @action
   void addRound() {
-    final lastRoundCopy = ObservableList.of(rounds.last);
-    rounds.add(lastRoundCopy);
+    final ObservableList<Duration> newRound = rounds.isNotEmpty ? ObservableList.of(rounds.last) : initialRound.first;
+    rounds.add(newRound);
   }
 
   @action

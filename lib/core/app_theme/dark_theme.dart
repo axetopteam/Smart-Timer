@@ -2,9 +2,9 @@ part of 'theme.dart';
 
 ThemeData createDarkTheme() {
   return ThemeData(
+    brightness: Brightness.dark,
     fontFamily: 'Montserrat',
     textTheme: createTextTheme().apply(displayColor: AppColors.white),
-    brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.black,
     backgroundColor: AppColors.black,
     dividerColor: AppColors.greyBlue,

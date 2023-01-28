@@ -9,6 +9,7 @@ import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
+import 'package:smart_timer/utils/constans.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
@@ -95,12 +96,11 @@ class _AfapPageState extends State<AfapPage> {
       builder: (context) {
         final intervals = afap.rounds[roundIndex];
         bool isLast = roundIndex == afap.roundsCound - 1;
-        bool isFirst = roundIndex == 0;
 
         return Column(
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(30, 30, 30, isFirst ? 34 : 20),
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,36 +121,42 @@ class _AfapPageState extends State<AfapPage> {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
                               initialDuration: intervals[intervalIndex],
+                              showNoCap: intervalIndex == 0,
                             );
-                            afap.setInterval(roundIndex, intervalIndex, selectedTime);
+                            if (selectedTime != null) {
+                              afap.setInterval(
+                                roundIndex,
+                                intervalIndex,
+                                selectedTime == noTimeCapDuration ? null : selectedTime,
+                              );
+                            }
                           },
                         );
                       }),
                     ],
                   ),
-                  if (!isFirst)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        children: [
-                          TextButtonTheme(
-                            data: context.buttonThemes.deleteButtonTheme,
-                            child: TextButton(
-                              onPressed: () {
-                                afap.deleteRound(roundIndex);
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Remove AFAP ${roundIndex + 1}',
-                                  )
-                                ],
-                              ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      children: [
+                        TextButtonTheme(
+                          data: context.buttonThemes.deleteButtonTheme,
+                          child: TextButton(
+                            onPressed: () {
+                              afap.deleteRound(roundIndex);
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Remove AFAP ${roundIndex + 1}',
+                                )
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
