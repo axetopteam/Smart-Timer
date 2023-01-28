@@ -39,7 +39,7 @@ abstract class TimerStateBase with Store {
   StreamSubscription? timerSubscription;
 
   @observable
-  var status = TimerStatus.stop;
+  var status = TimerStatus.ready;
 
   @computed
   Interval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
@@ -83,15 +83,17 @@ abstract class TimerStateBase with Store {
   @action
   void pause() {
     timerSubscription?.pause();
+    workout.pause();
     if (!countdownInterval.isEnded) {
       countdownInterval.reset();
+      status = TimerStatus.ready;
+    } else {
+      status = TimerStatus.pause;
     }
-    workout.pause();
-    status = TimerStatus.pause;
   }
 
   @action
-  void restart() {
+  void resume() {
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
     if (!countdownInterval.isEnded) {

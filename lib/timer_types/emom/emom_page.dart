@@ -13,7 +13,6 @@ import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
-import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/quantity_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import 'package:smart_timer/widgets/value_container.dart';

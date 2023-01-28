@@ -1,5 +1,5 @@
 enum TimerStatus {
-  stop,
+  ready,
   run,
   pause,
   done,

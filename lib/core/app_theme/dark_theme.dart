@@ -14,6 +14,7 @@ ThemeData createDarkTheme() {
       elevation: 0,
       toolbarHeight: 70,
       titleSpacing: 36,
+      backgroundColor: AppColors.black,
     ),
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     elevatedButtonTheme: ElevatedButtonThemeData(

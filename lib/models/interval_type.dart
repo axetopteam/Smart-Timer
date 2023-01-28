@@ -1,6 +1,8 @@
-enum IntervalType { countdown, work, rest }
+enum IntervalType {
+  countdown,
+  work,
+  rest;
 
-extension IntervalTypeString on IntervalType {
   String get desc {
     switch (this) {
       case IntervalType.countdown:

@@ -72,11 +72,11 @@ mixin _$TimerState on TimerStateBase, Store {
   }
 
   @override
-  void restart() {
+  void resume() {
     final _$actionInfo = _$TimerStateBaseActionController.startAction(
-        name: 'TimerStateBase.restart');
+        name: 'TimerStateBase.resume');
     try {
-      return super.restart();
+      return super.resume();
     } finally {
       _$TimerStateBaseActionController.endAction(_$actionInfo);
     }

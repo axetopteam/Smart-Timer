@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
+import 'package:smart_timer/timer/timer_type.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class MainPage extends StatelessWidget {
                 children: [
                   buildContainer(
                     context: context,
-                    title: 'AMRAP',
+                    title: TimerType.amrap.readbleName.toUpperCase(),
                     color: context.color.amrapColor,
                     onPressed: () {
                       context.router.push(const AmrapRoute());
@@ -40,7 +41,7 @@ class MainPage extends StatelessWidget {
                   const SizedBox(width: 10),
                   buildContainer(
                     context: context,
-                    title: 'FOR TIME',
+                    title: TimerType.afap.readbleName.toUpperCase(),
                     color: context.color.afapColor,
                     onPressed: () {
                       context.router.push(const AfapRoute());
@@ -53,7 +54,7 @@ class MainPage extends StatelessWidget {
                 children: [
                   buildContainer(
                     context: context,
-                    title: 'EMOM',
+                    title: TimerType.emom.readbleName.toUpperCase(),
                     color: context.color.emomColor,
                     onPressed: () {
                       context.router.push(const EmomRoute());
@@ -62,10 +63,10 @@ class MainPage extends StatelessWidget {
                   const SizedBox(width: 10),
                   buildContainer(
                     context: context,
-                    title: 'TABATA',
-                    color: context.color.tabataColor,
+                    title: TimerType.workRest.readbleName.toUpperCase(),
+                    color: context.color.workRestColor,
                     onPressed: () {
-                      context.router.push(const TabataRoute());
+                      context.router.push(const WorkRestRoute());
                     },
                   ),
                 ],
@@ -75,16 +76,16 @@ class MainPage extends StatelessWidget {
                 children: [
                   buildContainer(
                     context: context,
-                    title: '1 : 1',
-                    color: context.color.workRestColor,
+                    title: TimerType.tabata.readbleName.toUpperCase(),
+                    color: context.color.tabataColor,
                     onPressed: () {
-                      context.router.push(const WorkRestRoute());
+                      context.router.push(const TabataRoute());
                     },
                   ),
                   const SizedBox(width: 10),
                   buildContainer(
                     context: context,
-                    title: 'CUSTOM',
+                    title: TimerType.custom.readbleName.toUpperCase(),
                     color: context.color.customColor,
                     onPressed: () {
                       context.router.push(const CustomizedRoute());

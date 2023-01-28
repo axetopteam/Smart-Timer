@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/application/application_theme.dart';
@@ -85,214 +86,181 @@ class _TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(state.timerType.readbleName),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Observer(
-                builder: (ctx) => state.status == TimerStatus.done
-                    ? const Center(
-                        child: Text('Finish', style: AppFonts.header),
-                      )
-                    : Column(
-                        children: [
-                          const Spacer(),
-                          Expanded(
-                            flex: 4,
-                            child: Observer(builder: (context) {
-                              final currentInterval = state.currentInterval;
-                              final currentTime = state.currentTime;
-                              final currentIntervalDurationInSeconds = currentInterval.duration?.inSeconds;
-                              return GestureDetector(
-                                onTap: () {
-                                  switch (state.status) {
-                                    case TimerStatus.stop:
-                                      state.start();
-                                      break;
-                                    case TimerStatus.run:
-                                      state.pause();
-                                      audio.pause();
-
-                                      break;
-                                    case TimerStatus.pause:
-                                      state.restart();
-                                      if (state.countdownInterval.isEnded) {
-                                        audio.resume();
-                                      }
-
-                                      break;
-                                    case TimerStatus.done:
-                                      state.start();
-                                      break;
-                                  }
-                                },
-                                child: TimerBackgroundContainer(
-                                  color: context.color.amrapColor,
-                                  timerStatus: state.status,
-                                  partOfHeight: currentIntervalDurationInSeconds != null
-                                      ? (currentIntervalDurationInSeconds - (currentTime?.inSeconds ?? 0)) /
-                                          currentIntervalDurationInSeconds
-                                      : 0,
-                                  child: SizedBox.expand(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Observer(builder: (_) {
-                                          final currentInterval = state.currentInterval;
-
-                                          return Text(
-                                            currentInterval.type.desc,
-                                            style: context.textTheme.subtitle2,
-                                          );
-                                        }),
-                                        const SizedBox(height: 10),
-                                        Observer(builder: (_) {
-                                          final currentInterval = state.currentInterval;
-                                          bool isFirstSecond = currentInterval.isFirstSecond;
-                                          if (currentInterval.type == IntervalType.countdown) {
-                                            if (isFirstSecond && state.status != TimerStatus.run) {
-                                              return const PlayIcon();
-                                            } else {
-                                              return Text(
-                                                state.currentTime != null
-                                                    ? durationToString2(
-                                                        state.currentTime!,
-                                                        isCountdown: currentInterval.isCountdown,
-                                                      )
-                                                    : '--',
-                                                style: context.textTheme.headline5,
-                                              );
-                                            }
-                                          }
-                                          final text = isFirstSecond
-                                              ? currentInterval.type.desc
-                                              : state.currentTime != null
-                                                  ? durationToString2(
-                                                      state.currentTime!,
-                                                      isCountdown: currentInterval.isCountdown,
-                                                    )
-                                                  : '--';
-                                          print('#TIME: $text');
-                                          return Text(
-                                            text,
-                                            style: context.textTheme.headline5,
-                                          );
-                                        }),
-                                        const SizedBox(height: 10),
-                                        _buildRoudsInfo(),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Observer(builder: (context) {
-                                switch (state.status) {
-                                  case TimerStatus.run:
-                                    return Text('Tap to pause');
-                                  case TimerStatus.pause:
-                                    return Text('Tap to resume');
-                                  case TimerStatus.done:
-                                  case TimerStatus.stop:
-                                    return Container();
-                                }
-                              }),
-                            ),
-                          ),
-                        ],
-                      )
-
-                //  Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                // const SizedBox(height: 12),
-                // Observer(
-                //   builder: (ctx) {
-                //     Icon icon;
-                //     void Function() onPressed;
-                //     switch (state.status) {
-                //       case TimerStatus.stop:
-                //         icon = const Icon(
-                //           Icons.play_arrow,
-                //           size: 40,
-                //           color: Colors.blueAccent,
-                //         );
-                //         onPressed = () => state.start();
-                //         break;
-                //       case TimerStatus.run:
-                //         icon = const Icon(
-                //           Icons.pause,
-                //           size: 40,
-                //           color: Colors.blueAccent,
-                //         );
-                //         onPressed = () {
-                //           state.pause();
-                //           audio.pause();
-                //         };
-                //         break;
-                //       case TimerStatus.pause:
-                //         icon = const Icon(
-                //           Icons.play_arrow,
-                //           size: 40,
-                //           color: Colors.blueAccent,
-                //         );
-                //         onPressed = () {
-                //           state.restart();
-                //           if (state.countdownInterval.isEnded) {
-                //             audio.resume();
-                //           }
-                //         };
-                //         break;
-                //       case TimerStatus.done:
-                //         icon = const Icon(
-                //           Icons.restart_alt,
-                //           size: 40,
-                //           color: Colors.blueAccent,
-                //         );
-                //         onPressed = () => state.start();
-                //         break;
-                //     }
-                //     return IconButton(
-                //       onPressed: onPressed,
-                //       icon: icon,
-                //     );
-                //   },
-                // ),
-                //       const SizedBox(height: 8),
-                //       Observer(
-                //         builder: (ctx) {
-                //           if (!state.workout.currentInterval.isCountdown) {
-                //             return IconButton(
-                //               onPressed: () {
-                //                 state.workout.setDuration();
-                //               },
-                //               icon: const Icon(
-                //                 Icons.check_circle_rounded,
-                //                 size: 40,
-                //                 color: Colors.blueAccent,
-                //               ),
-                //             );
-                //           } else {
-                //             return Container();
-                //           }
-                //         },
-                //       ),
-                //     ],
-                //   ),
-                ),
+            child:
+                Observer(builder: (ctx) => state.status == TimerStatus.done ? _buildFinish() : _buildTimerContainer()),
           ),
         ),
       ),
     );
   }
 
-  _buildRoudsInfo() {
+  Column _buildTimerContainer() {
+    return Column(
+      children: [
+        const Spacer(),
+        Expanded(
+          flex: 4,
+          child: Observer(builder: (context) {
+            final currentInterval = state.currentInterval;
+            final currentTime = state.currentTime;
+            final currentIntervalDurationInSeconds = currentInterval.duration?.inSeconds;
+            return GestureDetector(
+              onTap: () {
+                switch (state.status) {
+                  case TimerStatus.ready:
+                    state.start();
+                    break;
+                  case TimerStatus.run:
+                    state.pause();
+                    audio.pause();
+                    break;
+                  case TimerStatus.pause:
+                    state.resume();
+                    if (state.countdownInterval.isEnded) {
+                      audio.resume();
+                    }
+                    break;
+                  case TimerStatus.done:
+                    state.start();
+                    break;
+                }
+              },
+              child: TimerBackgroundContainer(
+                color: workoutColor(),
+                timerStatus: state.status,
+                partOfHeight: currentIntervalDurationInSeconds != null
+                    ? (currentIntervalDurationInSeconds - (currentTime?.inSeconds ?? 0)) /
+                        currentIntervalDurationInSeconds
+                    : 0,
+                child: SizedBox.expand(
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Observer(builder: (_) {
+                            final currentInterval = state.currentInterval;
+                            return Text(
+                              currentInterval.type.desc,
+                              style: context.textTheme.subtitle2,
+                            );
+                          }),
+                          const SizedBox(height: 10),
+                          Observer(builder: (_) {
+                            final currentInterval = state.currentInterval;
+                            bool isFirstSecond = currentInterval.isFirstSecond;
+                            if (currentInterval.type == IntervalType.countdown) {
+                              if (isFirstSecond && state.status != TimerStatus.run) {
+                                return const PlayIcon();
+                              } else {
+                                return Text(
+                                  state.currentTime != null
+                                      ? durationToString2(
+                                          state.currentTime!,
+                                          isCountdown: currentInterval.isCountdown,
+                                        )
+                                      : '--',
+                                  style: context.textTheme.headline5,
+                                );
+                              }
+                            }
+                            final text = isFirstSecond
+                                ? currentInterval.type.desc
+                                : state.currentTime != null
+                                    ? durationToString2(
+                                        state.currentTime!,
+                                        isCountdown: currentInterval.isCountdown,
+                                      )
+                                    : '--';
+                            return Text(
+                              text,
+                              style: context.textTheme.headline5,
+                            );
+                          }),
+                          const SizedBox(height: 10),
+                          _buildRoudsInfo(),
+                        ],
+                      ),
+                      Expanded(
+                        child: !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
+                            ? GestureDetector(
+                                onHorizontalDragEnd: (details) {
+                                  state.workout.setDuration();
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.swipe_right,
+                                        size: 30,
+                                      ),
+                                      SizedBox(width: 12),
+                                      Text(
+                                        'Slide to complete round',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+        Expanded(
+          child: Center(
+            child: Observer(builder: (context) {
+              switch (state.status) {
+                case TimerStatus.run:
+                  return const Text('Tap to pause');
+                case TimerStatus.pause:
+                  return const Text('Tap to resume');
+                case TimerStatus.done:
+                case TimerStatus.ready:
+                  return Container();
+              }
+            }),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color workoutColor() {
+    switch (state.timerType) {
+      case TimerType.amrap:
+        return context.color.amrapColor;
+      case TimerType.afap:
+        return context.color.afapColor;
+      case TimerType.emom:
+        return context.color.emomColor;
+      case TimerType.tabata:
+        return context.color.tabataColor;
+      case TimerType.workRest:
+        return context.color.workRestColor;
+      case TimerType.custom:
+        return context.color.customColor;
+    }
+  }
+
+  Widget _buildRoudsInfo() {
     return Observer(builder: (_) {
       StringBuffer buffer = StringBuffer();
       final workout = state.workout;
@@ -301,8 +269,11 @@ class _TimerPageState extends State<TimerPage> {
           buffer.write('AMRAP ${workout.indexes[2]![0]}/${workout.indexes[2]![1]}');
           break;
         case TimerType.afap:
+          buffer.write('For Time ${workout.indexes[2]![0]}/${workout.indexes[2]![1]}');
+          break;
         case TimerType.emom:
         case TimerType.tabata:
+        case TimerType.workRest:
         case TimerType.custom:
           for (int i = workout.indexes.length - 1; i > 0; i--) {
             final index = workout.indexes.length - i;
@@ -314,6 +285,33 @@ class _TimerPageState extends State<TimerPage> {
         style: context.textTheme.headline2,
       );
     });
+  }
+
+  Widget _buildFinish() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 160,
+          width: 160,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: workoutColor(),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            CupertinoIcons.check_mark,
+            size: 120,
+          ),
+        ),
+        const SizedBox(height: 40),
+        Text(
+          'Well Done',
+          textAlign: TextAlign.center,
+          style: context.textTheme.headline1,
+        ),
+      ],
+    );
   }
 }
 
@@ -344,7 +342,7 @@ class TimerBackgroundContainer extends StatelessWidget {
             ),
           ),
           AnimatedContainer(
-            duration: Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 1000),
             height: height * partOfHeight,
             decoration: BoxDecoration(
               color: context.color.timerOverlayColor,
