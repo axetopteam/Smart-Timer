@@ -149,7 +149,16 @@ class _EmomPageState extends State<EmomPage> {
                     QuantityWidget(
                       title: 'Rounds:',
                       quantity: emom.roundsCount,
-                      onTap: () {},
+                      onTap: () async {
+                        final rounds = await RoundsPicker.showRoundsPicker(
+                          context,
+                          initialValue: emom.roundsCount,
+                          range: tabataRounds,
+                        );
+                        if (rounds != null) {
+                          emom.setRounds(rounds);
+                        }
+                      },
                     ),
                   ],
                 ),

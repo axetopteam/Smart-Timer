@@ -18,29 +18,37 @@ class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     MainRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const MainPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const MainPage());
     },
     AmrapRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const AmrapPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const AmrapPage());
     },
     AfapRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const AfapPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const AfapPage());
     },
     EmomRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const EmomPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const EmomPage());
     },
     TabataRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const TabataPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const TabataPage());
     },
     WorkRestRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const WorkRestPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const WorkRestPage());
     },
     CustomizedRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(routeData: routeData, child: const CustomizedPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CustomizedPage());
     },
     TimerRoute.name: (routeData) {
       final args = routeData.argsAs<TimerRouteArgs>();
-      return MaterialPageX<dynamic>(routeData: routeData, child: TimerPage(args.state, key: args.key));
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: TimerPage(args.state, key: args.key));
     }
   };
 
@@ -108,7 +116,8 @@ class WorkRestRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [CustomizedPage]
 class CustomizedRoute extends PageRouteInfo<void> {
-  const CustomizedRoute() : super(CustomizedRoute.name, path: '/customized-page');
+  const CustomizedRoute()
+      : super(CustomizedRoute.name, path: '/customized-page');
 
   static const String name = 'CustomizedRoute';
 }
@@ -117,7 +126,8 @@ class CustomizedRoute extends PageRouteInfo<void> {
 /// [TimerPage]
 class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
   TimerRoute({required TimerState state, Key? key})
-      : super(TimerRoute.name, path: '/timer-page', args: TimerRouteArgs(state: state, key: key));
+      : super(TimerRoute.name,
+            path: '/timer-page', args: TimerRouteArgs(state: state, key: key));
 
   static const String name = 'TimerRoute';
 }

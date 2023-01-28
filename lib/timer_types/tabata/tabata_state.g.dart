@@ -44,13 +44,13 @@ mixin _$TabataState on TabataStoreBase, Store {
       Atom(name: 'TabataStoreBase.workTime', context: context);
 
   @override
-  Interval get workTime {
+  Duration get workTime {
     _$workTimeAtom.reportRead();
     return super.workTime;
   }
 
   @override
-  set workTime(Interval value) {
+  set workTime(Duration value) {
     _$workTimeAtom.reportWrite(value, super.workTime, () {
       super.workTime = value;
     });
@@ -60,13 +60,13 @@ mixin _$TabataState on TabataStoreBase, Store {
       Atom(name: 'TabataStoreBase.restTime', context: context);
 
   @override
-  Interval get restTime {
+  Duration get restTime {
     _$restTimeAtom.reportRead();
     return super.restTime;
   }
 
   @override
-  set restTime(Interval value) {
+  set restTime(Duration value) {
     _$restTimeAtom.reportWrite(value, super.restTime, () {
       super.restTime = value;
     });

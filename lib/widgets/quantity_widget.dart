@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 class QuantityWidget extends StatelessWidget {

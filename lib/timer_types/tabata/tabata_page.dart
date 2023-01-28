@@ -5,10 +5,14 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/main_button.dart';
+import 'package:smart_timer/widgets/quantity_widget.dart';
+import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 import 'tabata_state.dart';
@@ -105,7 +109,56 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return TimerSetupScaffold(
+      color: context.color.tabataColor,
+      appBarTitle: 'TABATA',
+      subtitle: 'Repeat several rounds every minute on minute',
+      onStartPressed: () {},
+      slivers: [
+        Observer(
+          builder: (context) {
+            return SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    QuantityWidget(
+                      title: 'Rounds:',
+                      quantity: tabataSettings.roundsCount,
+                      onTap: () async {
+                        final rounds = await RoundsPicker.showRoundsPicker(
+                          context,
+                          initialValue: tabataSettings.roundsCount,
+                          range: tabataRounds,
+                        );
+                        if (rounds != null) {
+                          tabataSettings.setRounds(rounds);
+                        }
+                      },
+                    ),
+                    IntervalWidget(
+                      title: 'Work time:',
+                      duration: tabataSettings.workTime,
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialDuration: tabataSettings.workTime,
+                        );
+                        if (selectedTime != null) {
+                          tabataSettings.setWorkTime(selectedTime);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+    Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
@@ -176,7 +229,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialDuration: tabataSettings.workTime.duration!,
+                      initialDuration: tabataSettings.workTime,
                     );
                     if (selectedTime != null) {
                       tabataSettings.setWorkTime(selectedTime);
@@ -184,7 +237,7 @@ class _TabataPageState extends State<TabataPage> {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.workTime.duration!),
+                      durationToString2(tabataSettings.workTime),
                       width: 60,
                     ),
                   ),
@@ -204,7 +257,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedTime = await TimePicker.showTimePicker(
                       context,
-                      initialDuration: tabataSettings.restTime.duration!,
+                      initialDuration: tabataSettings.restTime,
                     );
                     if (selectedTime != null) {
                       tabataSettings.setRestTime(selectedTime);
@@ -212,7 +265,7 @@ class _TabataPageState extends State<TabataPage> {
                   },
                   child: Observer(
                     builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.restTime.duration!),
+                      durationToString2(tabataSettings.restTime),
                       width: 60,
                     ),
                   ),

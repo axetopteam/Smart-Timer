@@ -3,5 +3,6 @@ enum TimerType {
   afap,
   emom,
   tabata,
+  workRest,
   custom,
 }
