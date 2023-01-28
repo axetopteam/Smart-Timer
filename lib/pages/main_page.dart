@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.only(left: 30, right: 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,66 +28,59 @@ class MainPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Row(
+              Wrap(
+                alignment: WrapAlignment.start,
+                runAlignment: WrapAlignment.center,
+                direction: Axis.horizontal,
+                runSpacing: 15,
+                spacing: 10,
+                verticalDirection: VerticalDirection.down,
                 children: [
                   buildContainer(
                     context: context,
                     title: TimerType.amrap.readbleName.toUpperCase(),
                     color: context.color.amrapColor,
-                    onPressed: () {
+                    onTap: () {
                       context.router.push(const AmrapRoute());
                     },
                   ),
-                  const SizedBox(width: 10),
                   buildContainer(
                     context: context,
                     title: TimerType.afap.readbleName.toUpperCase(),
                     color: context.color.afapColor,
-                    onPressed: () {
+                    onTap: () {
                       context.router.push(const AfapRoute());
                     },
                   ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
                   buildContainer(
                     context: context,
                     title: TimerType.emom.readbleName.toUpperCase(),
                     color: context.color.emomColor,
-                    onPressed: () {
+                    onTap: () {
                       context.router.push(const EmomRoute());
                     },
                   ),
-                  const SizedBox(width: 10),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.workRest.readbleName.toUpperCase(),
-                    color: context.color.workRestColor,
-                    onPressed: () {
-                      context.router.push(const WorkRestRoute());
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
                   buildContainer(
                     context: context,
                     title: TimerType.tabata.readbleName.toUpperCase(),
                     color: context.color.tabataColor,
-                    onPressed: () {
+                    onTap: () {
                       context.router.push(const TabataRoute());
                     },
                   ),
-                  const SizedBox(width: 10),
+                  buildContainer(
+                    context: context,
+                    title: TimerType.workRest.readbleName.toUpperCase(),
+                    color: context.color.workRestColor,
+                    onTap: () {
+                      context.router.push(const WorkRestRoute());
+                    },
+                  ),
                   buildContainer(
                     context: context,
                     title: TimerType.custom.readbleName.toUpperCase(),
                     color: context.color.customColor,
-                    onPressed: () {
+                    onTap: () {
                       context.router.push(const CustomizedRoute());
                     },
                   ),
@@ -105,21 +98,16 @@ class MainPage extends StatelessWidget {
     required BuildContext context,
     required Color color,
     required String title,
-    Function? onPressed,
+    required void Function() onTap,
   }) {
     return GestureDetector(
-      onTap: () => onPressed?.call(),
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Text(
-          title,
-          style: context.textTheme.headline2,
-        ),
+      onTap: onTap,
+      child: Chip(
+        label: Text(title),
+        labelStyle: context.textTheme.headline2,
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
     );
   }
