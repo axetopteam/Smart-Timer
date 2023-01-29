@@ -97,7 +97,6 @@ class _TabataPageState extends State<TabataPage> {
               child: Observer(
                 builder: (ctx) => ValueContainer(
                   durationToString2(tabataSettings.restBetweenSets.duration!),
-                  width: 60,
                 ),
               ),
             )
@@ -121,9 +120,10 @@ class _TabataPageState extends State<TabataPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     QuantityWidget(
+                      flex: 1,
                       title: 'Rounds:',
                       quantity: tabataSettings.roundsCount,
                       onTap: () async {
@@ -137,7 +137,9 @@ class _TabataPageState extends State<TabataPage> {
                         }
                       },
                     ),
+                    const SizedBox(width: 10),
                     IntervalWidget(
+                      flex: 2,
                       title: 'Work time:',
                       duration: tabataSettings.workTime,
                       onTap: () async {
@@ -147,6 +149,21 @@ class _TabataPageState extends State<TabataPage> {
                         );
                         if (selectedTime != null) {
                           tabataSettings.setWorkTime(selectedTime);
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 10),
+                    IntervalWidget(
+                      flex: 2,
+                      title: 'Rest time:',
+                      duration: tabataSettings.restTime,
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialDuration: tabataSettings.workTime,
+                        );
+                        if (selectedTime != null) {
+                          tabataSettings.setRestTime(selectedTime);
                         }
                       },
                     ),
@@ -238,7 +255,6 @@ class _TabataPageState extends State<TabataPage> {
                   child: Observer(
                     builder: (ctx) => ValueContainer(
                       durationToString2(tabataSettings.workTime),
-                      width: 60,
                     ),
                   ),
                 )
@@ -266,7 +282,6 @@ class _TabataPageState extends State<TabataPage> {
                   child: Observer(
                     builder: (ctx) => ValueContainer(
                       durationToString2(tabataSettings.restTime),
-                      width: 60,
                     ),
                   ),
                 )

@@ -8,29 +8,33 @@ class IntervalWidget extends StatelessWidget {
     required this.title,
     required this.duration,
     required this.onTap,
+    this.flex = 1,
   }) : super(key: key);
 
   final String title;
   final Duration? duration;
   final VoidCallback onTap;
+  final int flex;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-        ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: onTap,
-          child: ValueContainer(
-            duration != null ? durationToString2(duration!) : 'No cap',
-            width: 150,
+    return Expanded(
+      flex: flex,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
           ),
-        )
-      ],
+          const SizedBox(height: 8),
+          GestureDetector(
+            onTap: onTap,
+            child: ValueContainer(
+              duration != null ? durationToString2(duration!) : 'No cap',
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/constans.dart';
+import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
@@ -112,27 +113,29 @@ class _AfapPageState extends State<AfapPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ...intervals.asMap().keys.map((intervalIndex) {
-                        if (isLast && intervalIndex == 1) return Container();
-                        return IntervalWidget(
-                          title: intervalIndex == 0 ? 'Time cap:' : 'Rest time',
-                          duration: intervals[intervalIndex],
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: intervals[intervalIndex],
-                              showNoCap: intervalIndex == 0,
-                            );
-                            if (selectedTime != null) {
-                              afap.setInterval(
-                                roundIndex,
-                                intervalIndex,
-                                selectedTime == noTimeCapDuration ? null : selectedTime,
+                      ...intervals.asMap().keys.map(
+                        (intervalIndex) {
+                          if (isLast && intervalIndex == 1) return Container();
+                          return IntervalWidget(
+                            title: intervalIndex == 0 ? 'Time cap:' : 'Rest time',
+                            duration: intervals[intervalIndex],
+                            onTap: () async {
+                              final selectedTime = await TimePicker.showTimePicker(
+                                context,
+                                initialDuration: intervals[intervalIndex],
+                                showNoCap: intervalIndex == 0,
                               );
-                            }
-                          },
-                        );
-                      }),
+                              if (selectedTime != null) {
+                                afap.setInterval(
+                                  roundIndex,
+                                  intervalIndex,
+                                  selectedTime == noTimeCapDuration ? null : selectedTime,
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ).addSeparator(!isLast ? const SizedBox(width: 10) : const SizedBox()),
                     ],
                   ),
                   Padding(

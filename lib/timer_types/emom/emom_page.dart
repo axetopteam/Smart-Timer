@@ -11,6 +11,7 @@ import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
+import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/quantity_widget.dart';
@@ -43,7 +44,7 @@ class _EmomPageState extends State<EmomPage> {
     super.dispose();
   }
 
-  Widget buildSetsSettings(BuildContext context) {
+  Widget _buildSetsSettings(BuildContext context) {
     return Column(
       children: [
         const Text(
@@ -99,7 +100,6 @@ class _EmomPageState extends State<EmomPage> {
               child: Observer(
                 builder: (ctx) => ValueContainer(
                   durationToString2(emom.restBetweenSets),
-                  width: 60,
                 ),
               ),
             )
@@ -159,7 +159,7 @@ class _EmomPageState extends State<EmomPage> {
                         }
                       },
                     ),
-                  ],
+                  ].addSeparator(const SizedBox(width: 10)).toList(),
                 ),
               ),
             );

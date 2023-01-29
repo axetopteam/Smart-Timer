@@ -79,6 +79,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                         }
                       },
                     ),
+                    const SizedBox(width: 10),
                     QuantityWidget(
                       title: 'Ratio:',
                       quantity: workRest.ratio,

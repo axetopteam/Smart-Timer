@@ -8,6 +8,7 @@ import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
+import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
@@ -108,24 +109,25 @@ class _AmrapPageState extends State<AmrapPage> {
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ...intervals.asMap().keys.map((intervalIndex) {
-                        if (isLast && intervalIndex == 1) return Container();
-                        return IntervalWidget(
-                          title: intervalIndex == 0 ? 'Work:' : 'Rest',
-                          duration: intervals[intervalIndex],
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: intervals[intervalIndex],
-                            );
-                            if (selectedTime != null) {
-                              amrap.setInterval(roundIndex, intervalIndex, selectedTime);
-                            }
-                          },
-                        );
-                      }),
+                      ...intervals.asMap().keys.map(
+                        (intervalIndex) {
+                          if (isLast && intervalIndex == 1) return Container();
+                          return IntervalWidget(
+                            title: intervalIndex == 0 ? 'Work:' : 'Rest',
+                            duration: intervals[intervalIndex],
+                            onTap: () async {
+                              final selectedTime = await TimePicker.showTimePicker(
+                                context,
+                                initialDuration: intervals[intervalIndex],
+                              );
+                              if (selectedTime != null) {
+                                amrap.setInterval(roundIndex, intervalIndex, selectedTime);
+                              }
+                            },
+                          );
+                        },
+                      ).addSeparator(!isLast ? const SizedBox(width: 10) : const SizedBox()),
                     ],
                   ),
                   if (amrap.rounds.length > 1)

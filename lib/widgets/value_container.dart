@@ -4,17 +4,14 @@ import 'package:smart_timer/core/context_extension.dart';
 class ValueContainer extends StatelessWidget {
   const ValueContainer(
     this.value, {
-    this.width = 30,
     Key? key,
   }) : super(key: key);
 
-  final double width;
   final String value;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
       height: 56,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
