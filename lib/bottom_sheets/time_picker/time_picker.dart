@@ -105,6 +105,10 @@ class _TimePickerState extends State<TimePicker> {
                             ),
                           ),
                         ),
+                        onSelectedItemChanged: (value) {
+                          state.minutesIndex = value;
+                        },
+                        itemExtent: 70,
                         children: state.minutesList
                             .map(
                               (minutes) => Center(
@@ -116,10 +120,6 @@ class _TimePickerState extends State<TimePicker> {
                               ),
                             )
                             .toList(),
-                        onSelectedItemChanged: (value) {
-                          state.minutesIndex = value;
-                        },
-                        itemExtent: 70,
                       ),
                     );
                   }),
@@ -148,6 +148,10 @@ class _TimePickerState extends State<TimePicker> {
                             ),
                           ),
                         ),
+                        onSelectedItemChanged: (value) {
+                          state.secondsIndex = value;
+                        },
+                        itemExtent: 70,
                         children: state.secondsList
                             .map(
                               (seconds) => Center(
@@ -159,10 +163,6 @@ class _TimePickerState extends State<TimePicker> {
                               ),
                             )
                             .toList(),
-                        onSelectedItemChanged: (value) {
-                          state.secondsIndex = value;
-                        },
-                        itemExtent: 70,
                       ),
                     ),
                   );

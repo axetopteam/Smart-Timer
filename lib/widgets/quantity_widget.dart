@@ -24,6 +24,7 @@ class QuantityWidget extends StatelessWidget {
         children: [
           Text(
             title,
+            maxLines: 1,
           ),
           const SizedBox(height: 8),
           GestureDetector(

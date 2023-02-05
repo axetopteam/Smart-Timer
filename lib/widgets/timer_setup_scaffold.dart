@@ -35,8 +35,9 @@ class TimerSetupScaffold extends StatelessWidget {
                 backgroundColor: color,
                 expandedHeight: 140.0,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: const EdgeInsets.only(left: 94, top: 120),
+                  background: Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.only(left: 94, bottom: 20),
                     child: Text(subtitle),
                   ),
                 ),
