@@ -36,7 +36,7 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void initState() {
     Wakelock.enable();
-    audio.initialize();
+    // audio.initialize();
 
     timerSubscription = state.timeStream.listen(
       (now) {

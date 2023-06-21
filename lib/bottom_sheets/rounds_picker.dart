@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smart_timer/application/application_theme.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/widgets/main_button.dart';
 
 class RoundsPicker extends StatefulWidget {
@@ -63,6 +65,10 @@ class _RoundsPickerState extends State<RoundsPicker> {
               magnification: 1.2,
               backgroundColor: CupertinoColors.systemGrey5,
               scrollController: _controller,
+              onSelectedItemChanged: (value) {
+                selectedIndex = value;
+              },
+              itemExtent: 40,
               children: widget.range
                   .map(
                     (round) => Center(
@@ -73,26 +79,24 @@ class _RoundsPickerState extends State<RoundsPicker> {
                     ),
                   )
                   .toList(),
-              onSelectedItemChanged: (value) {
-                selectedIndex = value;
-              },
-              itemExtent: 40,
             ),
           ),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: MainButton(
-              child: const Text(
-                'Ok',
-                style: AppFonts.buttonTitle,
+            child: ElevatedButtonTheme(
+              data: context.buttonThemes.popupButtonTheme,
+              child: ElevatedButton(
+                child: const Text(
+                  'Confirm Time',
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              color: CupertinoColors.activeBlue,
-              onPressed: () {
-                Navigator.of(context).pop(widget.range[selectedIndex]);
-              },
             ),
           ),
+          SizedBox(height: bottomPadding),
           SizedBox(height: bottomPadding),
         ],
       ),

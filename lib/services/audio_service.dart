@@ -9,28 +9,27 @@ enum SoundType {
 
 class AudioService {
   AudioPlayer audioPlayer = AudioPlayer();
-  late final AudioCache player;
 
-  Future<void> initialize() async {
-    player = AudioCache(prefix: 'assets/sounds/', fixedPlayer: audioPlayer);
-    await player.loadAll(['countdown2.mp3', 'last_round.mp3', 'half_time.mp3', 'ten_seconds.mp3']);
-  }
+  // Future<void> initialize() async {
+  //   player = AudioCache(prefix: 'assets/sounds/');
+  //   await player.loadAll(['assets/sounds/countdown2.mp3', 'last_round.mp3', 'half_time.mp3', 'ten_seconds.mp3']);
+  // }
 
   Future<void> playCountdown() async {
-    await player.play('countdown2.mp3');
+    await audioPlayer.play(AssetSource('sounds/countdown2.mp3'));
   }
 
   Future<void> play10Seconds() async {
-    await player.play('ten_seconds.mp3');
+    await audioPlayer.play(AssetSource('sounds/ten_seconds.mp3'));
   }
 
   Future<void> playLastRound() async {
-    await player.play('last_round.mp3');
+    await audioPlayer.play(AssetSource('sounds/last_round.mp3'));
   }
 
   Future<void> playHalfTime() async {
-    if (audioPlayer.state == PlayerState.PLAYING) return;
-    await player.play('half_time.mp3');
+    if (audioPlayer.state == PlayerState.playing) return; //TODO: refactoring, убрать отсюда логику
+    await audioPlayer.play(AssetSource('sounds/half_time.mp3'));
   }
 
   Future<void> stop() async {
@@ -46,7 +45,6 @@ class AudioService {
   }
 
   Future<void> dispose() async {
-    await player.clearAll();
     await audioPlayer.dispose();
   }
 }
