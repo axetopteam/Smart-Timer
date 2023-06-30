@@ -65,6 +65,7 @@ class _EmomPageState extends State<EmomPage> {
               onTap: () async {
                 final selectedRounds = await RoundsPicker.showRoundsPicker(
                   context,
+                  title: 'Sets',
                   initialValue: emom.setsCount,
                   range: tabataRounds,
                 );
@@ -151,6 +152,7 @@ class _EmomPageState extends State<EmomPage> {
                       onTap: () async {
                         final rounds = await RoundsPicker.showRoundsPicker(
                           context,
+                          title: 'Rounds',
                           initialValue: emom.roundsCount,
                           range: tabataRounds,
                         );

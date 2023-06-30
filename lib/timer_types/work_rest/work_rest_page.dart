@@ -71,6 +71,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                       onTap: () async {
                         final ratio = await RoundsPicker.showRoundsPicker(
                           context,
+                          title: 'Rounds',
                           initialValue: workRest.ratio,
                           range: tabataRounds, //TODO: set rounds range
                         );
@@ -85,7 +86,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                       quantity: workRest.ratio,
                       onTap: () async {
                         final ratio = await RoundsPicker.showRoundsPicker(
-                          context,
+                          context, title: 'Work-Rest Ratio',
                           initialValue: workRest.ratio,
                           range: tabataRounds, //TODO: set ratio range
                         );
@@ -139,6 +140,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                     onTap: () async {
                       final selectedRounds = await RoundsPicker.showRoundsPicker(
                         context,
+                        title: '',
                         initialValue: workRest.roundsCount,
                         range: tabataRounds,
                       );
@@ -166,6 +168,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                     onTap: () async {
                       final selectedRatio = await RoundsPicker.showRoundsPicker(
                         context,
+                        title: 'Work-Rest Ratio',
                         initialValue: workRest.ratio,
                         range: tabataRounds,
                       );

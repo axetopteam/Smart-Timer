@@ -150,6 +150,7 @@ class _CustomizedPageState extends State<CustomizedPage> {
                     onTap: () async {
                       final selectedRounds = await RoundsPicker.showRoundsPicker(
                         context,
+                        title: 'Rounds',
                         initialValue: customSettings.roundsCounts[setIndex],
                         range: tabataRounds,
                       );

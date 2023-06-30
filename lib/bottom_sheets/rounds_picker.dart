@@ -2,19 +2,21 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_timer/application/application_theme.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/widgets/main_button.dart';
 
 class RoundsPicker extends StatefulWidget {
   static Future<int?> showRoundsPicker(
     BuildContext context, {
+    required String title,
     required int initialValue,
     required List<int> range,
   }) {
-    return showCupertinoModalPopup<int>(
+    return showCupertinoModalBottomSheet<int>(
       context: context,
+      topRadius: const Radius.circular(20),
       builder: (ctx) => RoundsPicker(
+        title: title,
         initialValue: initialValue,
         range: range,
       ),
@@ -23,10 +25,12 @@ class RoundsPicker extends StatefulWidget {
 
   const RoundsPicker({
     Key? key,
+    required this.title,
     required this.initialValue,
     required this.range,
   }) : super(key: key);
 
+  final String title;
   final int initialValue;
   final List<int> range;
 
@@ -48,22 +52,31 @@ class _RoundsPickerState extends State<RoundsPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final safeOffset = MediaQuery.of(context).viewPadding;
+    final mq = MediaQuery.of(context);
+    final safeOffset = mq.viewPadding;
     final bottomPadding = max(safeOffset.bottom, 34.0);
 
     return Container(
-      color: CupertinoColors.systemGrey5,
+      height: mq.size.height * 0.8,
+      decoration: BoxDecoration(
+        color: context.color.bottomSheetBackgroundColor,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 200,
+          const SizedBox(height: 20),
+          Text(
+            'Rounds',
+            style: context.textTheme.headline3,
+          ),
+          const SizedBox(height: 20),
+          Expanded(
             child: CupertinoPicker(
               looping: true,
               useMagnifier: true,
               magnification: 1.2,
-              backgroundColor: CupertinoColors.systemGrey5,
+              backgroundColor: context.color.bottomSheetBackgroundColor,
               scrollController: _controller,
               onSelectedItemChanged: (value) {
                 selectedIndex = value;
@@ -88,7 +101,7 @@ class _RoundsPickerState extends State<RoundsPicker> {
               data: context.buttonThemes.popupButtonTheme,
               child: ElevatedButton(
                 child: const Text(
-                  'Confirm Time',
+                  'Confirm',
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();

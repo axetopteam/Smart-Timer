@@ -62,6 +62,7 @@ class _TabataPageState extends State<TabataPage> {
               onTap: () async {
                 final selectedRounds = await RoundsPicker.showRoundsPicker(
                   context,
+                  title: 'Sets',
                   initialValue: tabataSettings.setsCount,
                   range: tabataRounds,
                 );
@@ -129,6 +130,7 @@ class _TabataPageState extends State<TabataPage> {
                       onTap: () async {
                         final rounds = await RoundsPicker.showRoundsPicker(
                           context,
+                          title: 'Rounds',
                           initialValue: tabataSettings.roundsCount,
                           range: tabataRounds,
                         );
@@ -220,6 +222,7 @@ class _TabataPageState extends State<TabataPage> {
                   onTap: () async {
                     final selectedRounds = await RoundsPicker.showRoundsPicker(
                       context,
+                      title: 'Rounds',
                       initialValue: tabataSettings.roundsCount,
                       range: tabataRounds,
                     );
