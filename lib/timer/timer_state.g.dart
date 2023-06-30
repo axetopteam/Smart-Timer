@@ -30,19 +30,19 @@ mixin _$TimerState on TimerStateBase, Store {
               name: 'TimerStateBase.currentTime'))
           .value;
 
-  late final _$statusAtom =
-      Atom(name: 'TimerStateBase.status', context: context);
+  late final _$currentStateAtom =
+      Atom(name: 'TimerStateBase.currentState', context: context);
 
   @override
-  TimerStatus get status {
-    _$statusAtom.reportRead();
-    return super.status;
+  TimerStatus get currentState {
+    _$currentStateAtom.reportRead();
+    return super.currentState;
   }
 
   @override
-  set status(TimerStatus value) {
-    _$statusAtom.reportWrite(value, super.status, () {
-      super.status = value;
+  set currentState(TimerStatus value) {
+    _$currentStateAtom.reportWrite(value, super.currentState, () {
+      super.currentState = value;
     });
   }
 
@@ -107,7 +107,7 @@ mixin _$TimerState on TimerStateBase, Store {
   @override
   String toString() {
     return '''
-status: ${status},
+currentState: ${currentState},
 currentInterval: ${currentInterval},
 indexes: ${indexes},
 currentTime: ${currentTime}

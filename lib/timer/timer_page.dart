@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/services/audio_service.dart';
@@ -43,6 +42,7 @@ class _TimerPageState extends State<TimerPage> {
         if (state.reminders.containsKey(now)) {
           switch (state.reminders[now]) {
             case SoundType.countdown:
+              print('playCountdown');
               audio.playCountdown();
               break;
             case SoundType.tenSeconds:
@@ -61,16 +61,6 @@ class _TimerPageState extends State<TimerPage> {
       },
     );
 
-    // reaction<bool>(
-    //   (reac) {
-    //     return state.workout.isLast;
-    //   },
-    //   (rest) async {
-    //     if (state.workout.isLast) {
-    //       audio.playLastRound();
-    //     }
-    //   },
-    // );
     super.initState();
   }
 
@@ -95,8 +85,9 @@ class _TimerPageState extends State<TimerPage> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child:
-                Observer(builder: (ctx) => state.status == TimerStatus.done ? _buildFinish() : _buildTimerContainer()),
+            child: Observer(
+              builder: (ctx) => state.currentState == TimerStatus.done ? _buildFinish() : _buildTimerContainer(),
+            ),
           ),
         ),
       ),
@@ -106,28 +97,26 @@ class _TimerPageState extends State<TimerPage> {
   Column _buildTimerContainer() {
     return Column(
       children: [
-        const Spacer(),
+        const Spacer(flex: 1),
         Expanded(
-          flex: 4,
+          flex: 12,
           child: Observer(builder: (context) {
             final currentInterval = state.currentInterval;
             final currentTime = state.currentTime;
             final currentIntervalDurationInSeconds = currentInterval.duration?.inSeconds;
             return GestureDetector(
               onTap: () {
-                switch (state.status) {
+                switch (state.currentState) {
                   case TimerStatus.ready:
                     state.start();
                     break;
                   case TimerStatus.run:
                     state.pause();
-                    audio.pause();
+                    audio.pauseIfNeeded();
                     break;
                   case TimerStatus.pause:
                     state.resume();
-                    if (state.countdownInterval.isEnded) {
-                      audio.resume();
-                    }
+                    audio.resumeIfNeeded();
                     break;
                   case TimerStatus.done:
                     state.start();
@@ -135,8 +124,8 @@ class _TimerPageState extends State<TimerPage> {
                 }
               },
               child: TimerBackgroundContainer(
-                color: workoutColor(),
-                timerStatus: state.status,
+                color: workoutColor,
+                timerStatus: state.currentState,
                 partOfHeight: currentIntervalDurationInSeconds != null
                     ? (currentIntervalDurationInSeconds - (currentTime?.inSeconds ?? 0)) /
                         currentIntervalDurationInSeconds
@@ -161,7 +150,7 @@ class _TimerPageState extends State<TimerPage> {
                             final currentInterval = state.currentInterval;
                             bool isFirstSecond = currentInterval.isFirstSecond;
                             if (currentInterval.type == IntervalType.countdown) {
-                              if (isFirstSecond && state.status != TimerStatus.run) {
+                              if (isFirstSecond && state.currentState != TimerStatus.run) {
                                 return const PlayIcon();
                               } else {
                                 return Text(
@@ -225,9 +214,10 @@ class _TimerPageState extends State<TimerPage> {
           }),
         ),
         Expanded(
+          flex: 2,
           child: Center(
             child: Observer(builder: (context) {
-              switch (state.status) {
+              switch (state.currentState) {
                 case TimerStatus.run:
                   return const Text('Tap to pause');
                 case TimerStatus.pause:
@@ -243,7 +233,8 @@ class _TimerPageState extends State<TimerPage> {
     );
   }
 
-  Color workoutColor() {
+//TODO: возможно вынести более глобально
+  Color get workoutColor {
     switch (state.timerType) {
       case TimerType.amrap:
         return context.color.amrapColor;
@@ -296,7 +287,7 @@ class _TimerPageState extends State<TimerPage> {
           width: 160,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: workoutColor(),
+            color: workoutColor,
             shape: BoxShape.circle,
           ),
           child: const Icon(

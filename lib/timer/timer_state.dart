@@ -39,13 +39,13 @@ abstract class TimerStateBase with Store {
   StreamSubscription? timerSubscription;
 
   @observable
-  var status = TimerStatus.ready;
+  var currentState = TimerStatus.ready;
 
   @computed
   Interval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
 
   Map<DateTime, SoundType> get reminders {
-    return workout.reminders..addAll(countdownInterval.reminders);
+    return workout.reminders..addAll(!countdownInterval.isEnded ? countdownInterval.reminders : {});
   }
 
   @computed
@@ -62,7 +62,7 @@ abstract class TimerStateBase with Store {
   void start() {
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
-    status = TimerStatus.run;
+    currentState = TimerStatus.run;
     countdownInterval.start(roundedNow);
     workout.start(countdownInterval.finishTimeUtc!);
 
@@ -86,9 +86,9 @@ abstract class TimerStateBase with Store {
     workout.pause();
     if (!countdownInterval.isEnded) {
       countdownInterval.reset();
-      status = TimerStatus.ready;
+      currentState = TimerStatus.ready;
     } else {
-      status = TimerStatus.pause;
+      currentState = TimerStatus.pause;
     }
   }
 
@@ -103,7 +103,7 @@ abstract class TimerStateBase with Store {
       workout.start(roundedNow);
     }
 
-    status = TimerStatus.run;
+    currentState = TimerStatus.run;
     timerSubscription?.resume();
   }
 
@@ -115,7 +115,7 @@ abstract class TimerStateBase with Store {
       workout.tick(nowUtc);
 
       if (workout.isEnded) {
-        status = TimerStatus.done;
+        currentState = TimerStatus.done;
         close();
       }
     }

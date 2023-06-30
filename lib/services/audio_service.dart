@@ -16,6 +16,7 @@ class AudioService {
   // }
 
   Future<void> playCountdown() async {
+    await audioPlayer.stop();
     await audioPlayer.play(AssetSource('sounds/countdown2.mp3'));
   }
 
@@ -36,12 +37,16 @@ class AudioService {
     await audioPlayer.stop();
   }
 
-  Future<void> pause() async {
-    await audioPlayer.pause();
+  Future<void> pauseIfNeeded() async {
+    if (audioPlayer.state == PlayerState.playing) {
+      await audioPlayer.pause();
+    }
   }
 
-  Future<void> resume() async {
-    await audioPlayer.resume();
+  Future<void> resumeIfNeeded() async {
+    if (audioPlayer.state == PlayerState.paused) {
+      await audioPlayer.resume();
+    }
   }
 
   Future<void> dispose() async {
