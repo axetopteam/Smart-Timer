@@ -43,7 +43,6 @@ class _TimerPageState extends State<TimerPage> {
         if (state.reminders.containsKey(now)) {
           switch (state.reminders[now]) {
             case SoundType.countdown:
-              print('playCountdown');
               audio.playCountdown();
               break;
             case SoundType.tenSeconds:
