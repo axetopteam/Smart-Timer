@@ -4,117 +4,82 @@ import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
+import 'emom.dart';
+
 part 'emom_state.g.dart';
 
 @JsonSerializable()
 class EmomState extends EmomStateBase with _$EmomState {
   EmomState({
-    int? roundsCount,
+    super.emoms,
     Duration? workTime,
-    bool? showSets,
-    int? setsCount,
-    Duration? restBetweenSets,
-  }) : super(
-          roundsCount: roundsCount,
-          workTime: workTime,
-          showSets: showSets,
-          setsCount: setsCount,
-          restBetweenSets: restBetweenSets,
-        );
+  });
   Map<String, dynamic> toJson() => _$EmomStateToJson(this);
 
   factory EmomState.fromJson(Map<String, dynamic> json) => _$EmomStateFromJson(json);
 }
 
 abstract class EmomStateBase with Store {
-  EmomStateBase({
-    int? roundsCount,
-    Duration? workTime,
-    bool? showSets,
-    int? setsCount,
-    Duration? restBetweenSets,
-  })  : roundsCount = roundsCount ?? 10,
-        workTime = workTime ?? const Duration(minutes: 1),
-        showSets = showSets ?? false,
-        setsCount = setsCount ?? 1,
-        restBetweenSets = restBetweenSets ?? const Duration(minutes: 1);
+  static final initialEmom = Emom(
+    workTime: const Duration(minutes: 1),
+    roundsCount: 10,
+    restAfterSet: const Duration(minutes: 2),
+  );
 
-  @observable
-  int roundsCount;
+  EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [initialEmom]);
 
-  @observable
-  Duration workTime;
-
-  @observable
-  bool showSets;
-
-  @observable
-  int setsCount;
-
-  @observable
-  Duration restBetweenSets;
+  final ObservableList<Emom> emoms;
 
   // Duration get totalTime => workTime.duration! * roundsCount;
 
   @action
-  void setRounds(int value) {
-    roundsCount = value;
+  void setRounds(int emomIndex, int value) {
+    final emom = emoms[emomIndex];
+    emoms[emomIndex] = emom.copyWith(rounds: value);
   }
 
   @action
-  void setWorkTime(Duration duration) {
-    workTime = duration;
+  void setWorkTime(int emomIndex, Duration duration) {
+    final emom = emoms[emomIndex];
+    emoms[emomIndex] = emom.copyWith(workTime: duration);
   }
 
   @action
-  void toggleShowSets() {
-    showSets = !showSets;
+  void setRestAfterSet(int emomIndex, Duration duration) {
+    final emom = emoms[emomIndex];
+    emoms[emomIndex] = emom.copyWith(restAfterSet: duration);
   }
 
-  @action
-  void setRestBetweenSets(Duration duration) {
-    restBetweenSets = duration;
+  void addEmom() {
+    final newEmom = emoms.last.copyWith();
+    emoms.add(newEmom);
   }
 
-  @action
-  void setSetsCount(int value) {
-    setsCount = value;
+  void deleteEmom(int emomIndex) {
+    emoms.removeAt(emomIndex);
   }
 
   WorkoutSet get workout {
-    final setsCount = showSets ? this.setsCount : 1;
+    List<WorkoutSet> sets = [];
+    for (var i = 0; i < emoms.length; i++) {
+      final emom = emoms[i];
+      List<Interval> intervals = List.generate(
+        emom.roundsCount,
+        (index) => Interval(
+          duration: emom.workTime,
+          type: IntervalType.work,
+        ),
+      );
+      if (i != emoms.length - 1) {
+        intervals.add(Interval(
+          duration: emom.restAfterSet,
+          type: IntervalType.rest,
+        ));
+      }
+      final set = WorkoutSet(intervals);
 
-    List<Interval> intervals = List.generate(
-      roundsCount,
-      (index) => Interval(
-        duration: workTime,
-        type: IntervalType.work,
-      ),
-    );
-    final round = WorkoutSet(intervals);
-
-    final betweenSetsRound = WorkoutSet([
-      Interval(
-        duration: restBetweenSets,
-        type: IntervalType.rest,
-      )
-    ]);
-
-    final set = WorkoutSet([round, betweenSetsRound]);
-
-    List<Interval> lastIntervals = List.generate(
-      roundsCount,
-      (index) => Interval(
-        duration: workTime,
-        type: IntervalType.work,
-        isLast: index == roundsCount - 1,
-      ),
-    );
-    final lastRound = WorkoutSet(lastIntervals);
-
-    final lastSet = WorkoutSet([lastRound]);
-
-    List<WorkoutSet> sets = List.generate(setsCount - 1, (index) => set)..add(lastSet);
+      sets.add(set);
+    }
 
     return WorkoutSet(sets).copy();
   }

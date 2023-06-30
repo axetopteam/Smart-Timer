@@ -59,7 +59,7 @@ class _AmrapPageState extends State<AmrapPage> {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (ctx, index) {
-                  return buildRound(index);
+                  return _buildRound(index);
                 },
                 childCount: amrap.rounds.length,
               ),
@@ -90,7 +90,7 @@ class _AmrapPageState extends State<AmrapPage> {
     );
   }
 
-  Widget buildRound(int roundIndex) {
+  Widget _buildRound(int roundIndex) {
     return Observer(
       builder: (context) {
         final intervals = amrap.rounds[roundIndex];
@@ -98,7 +98,7 @@ class _AmrapPageState extends State<AmrapPage> {
 
         return Column(
           children: [
-            Container(
+            Padding(
               padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

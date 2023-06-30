@@ -104,7 +104,7 @@ class _RoundsPickerState extends State<RoundsPicker> {
                   'Confirm',
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(widget.range[selectedIndex]);
                 },
               ),
             ),

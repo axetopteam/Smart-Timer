@@ -28,86 +28,20 @@ class EmomPage extends StatefulWidget {
 }
 
 class _EmomPageState extends State<EmomPage> {
-  late final EmomState emom;
+  late final EmomState emomState;
 
   @override
   void initState() {
     final settingsJson = GetIt.I<AppProperties>().getEmomSettings();
-    emom = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
+    emomState = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
     super.initState();
   }
 
   @override
   void dispose() {
-    final json = emom.toJson();
+    final json = emomState.toJson();
     GetIt.I<AppProperties>().setEmomSettings(json);
     super.dispose();
-  }
-
-  Widget _buildSetsSettings(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          "Set's setting:",
-          style: AppFonts.header2,
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Sets:',
-              style: AppFonts.body,
-            ),
-            const SizedBox(width: 12),
-            GestureDetector(
-              onTap: () async {
-                final selectedRounds = await RoundsPicker.showRoundsPicker(
-                  context,
-                  title: 'Sets',
-                  initialValue: emom.setsCount,
-                  range: tabataRounds,
-                );
-                if (selectedRounds != null) {
-                  emom.setSetsCount(selectedRounds);
-                }
-              },
-              child: Observer(
-                builder: (ctx) => ValueContainer('${emom.setsCount}'),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Rest:',
-              style: AppFonts.body,
-            ),
-            const SizedBox(width: 12),
-            GestureDetector(
-              onTap: () async {
-                final selectedTime = await TimePicker.showTimePicker(
-                  context,
-                  initialDuration: emom.restBetweenSets,
-                );
-                if (selectedTime != null) {
-                  emom.setRestBetweenSets(selectedTime);
-                }
-              },
-              child: Observer(
-                builder: (ctx) => ValueContainer(
-                  durationToString2(emom.restBetweenSets),
-                ),
-              ),
-            )
-          ],
-        ),
-      ],
-    );
   }
 
   @override
@@ -119,7 +53,7 @@ class _EmomPageState extends State<EmomPage> {
       onStartPressed: () => context.router.push(
         TimerRoute(
           state: TimerState(
-            workout: emom.workout,
+            workout: emomState.workout,
             timerType: TimerType.emom,
           ),
         ),
@@ -127,46 +61,137 @@ class _EmomPageState extends State<EmomPage> {
       slivers: [
         Observer(
           builder: (context) {
-            return SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IntervalWidget(
-                      title: 'Work time:',
-                      duration: emom.workTime,
-                      onTap: () async {
-                        final selectedTime = await TimePicker.showTimePicker(
-                          context,
-                          initialDuration: emom.workTime,
-                        );
-                        if (selectedTime != null) {
-                          emom.setWorkTime(selectedTime);
-                        }
-                      },
-                    ),
-                    QuantityWidget(
-                      title: 'Rounds:',
-                      quantity: emom.roundsCount,
-                      onTap: () async {
-                        final rounds = await RoundsPicker.showRoundsPicker(
-                          context,
-                          title: 'Rounds',
-                          initialValue: emom.roundsCount,
-                          range: tabataRounds,
-                        );
-                        if (rounds != null) {
-                          emom.setRounds(rounds);
-                        }
-                      },
-                    ),
-                  ].addSeparator(const SizedBox(width: 10)).toList(),
-                ),
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, index) {
+                  return _buildEmom(index);
+                },
+                childCount: emomState.emoms.length,
               ),
             );
           },
         ),
+        SliverPadding(
+          padding: const EdgeInsets.only(top: 26),
+          sliver: SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed: emomState.addEmom,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add_circle_outline, size: 20
+                      // color: AppColors.accentBlue,
+                      ),
+                  SizedBox(width: 4),
+                  Text('Add another EMOM')
+                ],
+              ),
+            ),
+          )),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmom(int emomIndex) {
+    final emom = emomState.emoms[emomIndex];
+    bool isLast = emomIndex == emomState.emoms.length - 1;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'EMOM ${emomIndex + 1}',
+                style: context.textTheme.subtitle1,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IntervalWidget(
+                    title: 'Work time:',
+                    duration: emom.workTime,
+                    onTap: () async {
+                      final selectedTime = await TimePicker.showTimePicker(
+                        context,
+                        initialDuration: emom.workTime,
+                      );
+                      if (selectedTime != null) {
+                        emomState.setWorkTime(emomIndex, selectedTime);
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  QuantityWidget(
+                    title: 'Rounds:',
+                    quantity: emom.roundsCount,
+                    onTap: () async {
+                      final rounds = await RoundsPicker.showRoundsPicker(
+                        context,
+                        title: 'Rounds',
+                        initialValue: emom.roundsCount,
+                        range: tabataRounds,
+                      );
+                      if (rounds != null) {
+                        emomState.setRounds(emomIndex, rounds);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              if (!isLast)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      IntervalWidget(
+                        title: 'Rest after EMOM ${emomIndex + 1}:',
+                        duration: emom.restAfterSet,
+                        onTap: () async {
+                          final selectedTime = await TimePicker.showTimePicker(
+                            context,
+                            initialDuration: emom.restAfterSet,
+                          );
+                          if (selectedTime != null) {
+                            emomState.setRestAfterSet(emomIndex, selectedTime);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              if (emomState.emoms.length > 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Row(
+                    children: [
+                      TextButtonTheme(
+                        data: context.buttonThemes.deleteButtonTheme,
+                        child: TextButton(
+                          onPressed: () {
+                            emomState.deleteEmom(emomIndex);
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Remove EMOM ${emomIndex + 1}',
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const Divider(thickness: 5, height: 5),
       ],
     );
   }
