@@ -8,12 +8,12 @@ part of 'emom.dart';
 
 Emom _$EmomFromJson(Map<String, dynamic> json) => Emom(
       workTime: Duration(microseconds: json['workTime'] as int),
-      roundsCount: json['rounds'] as int,
+      roundsCount: json['roundsCount'] as int,
       restAfterSet: Duration(microseconds: json['restAfterSet'] as int),
     );
 
 Map<String, dynamic> _$EmomToJson(Emom instance) => <String, dynamic>{
       'workTime': instance.workTime.inMicroseconds,
-      'rounds': instance.roundsCount,
+      'roundsCount': instance.roundsCount,
       'restAfterSet': instance.restAfterSet.inMicroseconds,
     };

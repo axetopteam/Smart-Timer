@@ -54,28 +54,11 @@ mixin _$TimerPickerState on TimerPickerStateBase, Store {
     });
   }
 
-  late final _$noTimeCapAtom =
-      Atom(name: 'TimerPickerStateBase.noTimeCap', context: context);
-
-  @override
-  bool get noTimeCap {
-    _$noTimeCapAtom.reportRead();
-    return super.noTimeCap;
-  }
-
-  @override
-  set noTimeCap(bool value) {
-    _$noTimeCapAtom.reportWrite(value, super.noTimeCap, () {
-      super.noTimeCap = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
 minutesIndex: ${minutesIndex},
 secondsIndex: ${secondsIndex},
-noTimeCap: ${noTimeCap},
 minutes: ${minutes},
 seconds: ${seconds}
     ''';

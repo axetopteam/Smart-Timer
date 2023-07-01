@@ -3,18 +3,32 @@
 part of 'afap_state.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+AfapState _$AfapStateFromJson(Map<String, dynamic> json) => AfapState(
+      afaps: (json['afaps'] as List<dynamic>?)
+          ?.map((e) => Afap.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AfapStateToJson(AfapState instance) => <String, dynamic>{
+      'afaps': instance.afaps,
+    };
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AfapState on AfapStateBase, Store {
-  Computed<int>? _$roundsCoundComputed;
+  Computed<int>? _$afapsCoundComputed;
 
   @override
-  int get roundsCound =>
-      (_$roundsCoundComputed ??= Computed<int>(() => super.roundsCound,
-              name: 'AfapStateBase.roundsCound'))
+  int get afapsCound =>
+      (_$afapsCoundComputed ??= Computed<int>(() => super.afapsCound,
+              name: 'AfapStateBase.afapsCound'))
           .value;
   Computed<WorkoutSet>? _$workoutComputed;
 
@@ -24,53 +38,59 @@ mixin _$AfapState on AfapStateBase, Store {
               name: 'AfapStateBase.workout'))
           .value;
 
-  late final _$roundsAtom =
-      Atom(name: 'AfapStateBase.rounds', context: context);
-
-  @override
-  ObservableList<ObservableList<Duration?>> get rounds {
-    _$roundsAtom.reportRead();
-    return super.rounds;
-  }
-
-  @override
-  set rounds(ObservableList<ObservableList<Duration?>> value) {
-    _$roundsAtom.reportWrite(value, super.rounds, () {
-      super.rounds = value;
-    });
-  }
-
   late final _$AfapStateBaseActionController =
       ActionController(name: 'AfapStateBase', context: context);
 
   @override
-  void addRound() {
+  void setTimeCap(int afapIndex, Duration duration) {
     final _$actionInfo = _$AfapStateBaseActionController.startAction(
-        name: 'AfapStateBase.addRound');
+        name: 'AfapStateBase.setTimeCap');
     try {
-      return super.addRound();
+      return super.setTimeCap(afapIndex, duration);
     } finally {
       _$AfapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void deleteRound(int roundIndex) {
+  void setRestTime(int afapIndex, Duration duration) {
     final _$actionInfo = _$AfapStateBaseActionController.startAction(
-        name: 'AfapStateBase.deleteRound');
+        name: 'AfapStateBase.setRestTime');
     try {
-      return super.deleteRound(roundIndex);
+      return super.setRestTime(afapIndex, duration);
     } finally {
       _$AfapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
+  void setNoTimeCap(int afapIndex, bool noTimeCap) {
     final _$actionInfo = _$AfapStateBaseActionController.startAction(
-        name: 'AfapStateBase.setInterval');
+        name: 'AfapStateBase.setNoTimeCap');
     try {
-      return super.setInterval(roundIndex, intervalIndex, duration);
+      return super.setNoTimeCap(afapIndex, noTimeCap);
+    } finally {
+      _$AfapStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addAfap() {
+    final _$actionInfo = _$AfapStateBaseActionController.startAction(
+        name: 'AfapStateBase.addAfap');
+    try {
+      return super.addAfap();
+    } finally {
+      _$AfapStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteAfap(int afapIndex) {
+    final _$actionInfo = _$AfapStateBaseActionController.startAction(
+        name: 'AfapStateBase.deleteAfap');
+    try {
+      return super.deleteAfap(afapIndex);
     } finally {
       _$AfapStateBaseActionController.endAction(_$actionInfo);
     }
@@ -79,8 +99,7 @@ mixin _$AfapState on AfapStateBase, Store {
   @override
   String toString() {
     return '''
-rounds: ${rounds},
-roundsCound: ${roundsCound},
+afapsCound: ${afapsCound},
 workout: ${workout}
     ''';
   }

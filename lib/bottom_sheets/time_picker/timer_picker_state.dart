@@ -34,7 +34,4 @@ abstract class TimerPickerStateBase with Store {
 
   @computed
   int? get seconds => secondsIndex != null ? secondsList[secondsIndex!] : null;
-
-  @observable
-  bool noTimeCap = false;
 }

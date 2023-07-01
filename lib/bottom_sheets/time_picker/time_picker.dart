@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/timer_picker_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/utils/constans.dart';
 
 final minutesList = List.generate(60, (index) => index);
 final secondsList = List.generate(12, (index) => 5 * index);
@@ -15,14 +14,12 @@ class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
     Duration? initialDuration,
-    bool showNoCap = false,
   }) {
     return showCupertinoModalBottomSheet<Duration?>(
       context: context,
       topRadius: const Radius.circular(20),
       builder: (ctx) => TimePicker(
         initialDuration: initialDuration ?? Duration.zero,
-        showNoCap: showNoCap,
       ),
     );
   }
@@ -30,11 +27,9 @@ class TimePicker extends StatefulWidget {
   const TimePicker({
     Key? key,
     required this.initialDuration,
-    this.showNoCap = false,
   }) : super(key: key);
 
   final Duration initialDuration;
-  final bool showNoCap;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -84,119 +79,86 @@ class _TimePickerState extends State<TimePicker> {
               children: [
                 Expanded(
                   child: Observer(builder: (context) {
-                    return IgnorePointer(
-                      ignoring: state.noTimeCap,
-                      child: CupertinoPicker(
-                        useMagnifier: true,
-                        magnification: 1,
-                        diameterRatio: 20,
-                        scrollController: _minutesController,
-                        selectionOverlay: Center(
-                          child: Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 50),
-                              child: Text(
-                                'm',
-                                style: context.textTheme.headline4,
-                              ),
+                    return CupertinoPicker(
+                      useMagnifier: true,
+                      magnification: 1,
+                      diameterRatio: 20,
+                      scrollController: _minutesController,
+                      selectionOverlay: Center(
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Text(
+                              'm',
+                              style: context.textTheme.headline4,
                             ),
                           ),
                         ),
-                        onSelectedItemChanged: (value) {
-                          state.minutesIndex = value;
-                        },
-                        itemExtent: 70,
-                        children: state.minutesList
-                            .map(
-                              (minutes) => Center(
-                                child: Text(
-                                  '$minutes',
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.headline4,
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
+                      onSelectedItemChanged: (value) {
+                        state.minutesIndex = value;
+                      },
+                      itemExtent: 70,
+                      children: state.minutesList
+                          .map(
+                            (minutes) => Center(
+                              child: Text(
+                                '$minutes',
+                                textAlign: TextAlign.center,
+                                style: context.textTheme.headline4,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     );
                   }),
                 ),
                 Observer(builder: (context) {
                   return Expanded(
-                    child: IgnorePointer(
-                      ignoring: state.noTimeCap,
-                      ignoringSemantics: false,
-                      child: CupertinoPicker(
-                        useMagnifier: true,
-                        magnification: 1,
-                        diameterRatio: 20,
-                        scrollController: _secondsController,
-                        selectionOverlay: Center(
-                          child: Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 44),
-                              child: Text(
-                                's',
-                                style: context.textTheme.headline4,
-                              ),
+                    child: CupertinoPicker(
+                      useMagnifier: true,
+                      magnification: 1,
+                      diameterRatio: 20,
+                      scrollController: _secondsController,
+                      selectionOverlay: Center(
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 44),
+                            child: Text(
+                              's',
+                              style: context.textTheme.headline4,
                             ),
                           ),
                         ),
-                        onSelectedItemChanged: (value) {
-                          state.secondsIndex = value;
-                        },
-                        itemExtent: 70,
-                        children: state.secondsList
-                            .map(
-                              (seconds) => Center(
-                                child: Text(
-                                  '$seconds',
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.headline4,
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
+                      onSelectedItemChanged: (value) {
+                        state.secondsIndex = value;
+                      },
+                      itemExtent: 70,
+                      children: state.secondsList
+                          .map(
+                            (seconds) => Center(
+                              child: Text(
+                                '$seconds',
+                                textAlign: TextAlign.center,
+                                style: context.textTheme.headline4,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   );
                 }),
               ],
             ),
           ),
-          if (widget.showNoCap)
-            Expanded(
-              child: Material(
-                color: context.color.bottomSheetBackgroundColor,
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Observer(builder: (context) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                            value: state.noTimeCap,
-                            onChanged: (value) {
-                              if (value != null) {
-                                state.noTimeCap = value;
-                              }
-                            }),
-                        const Text('No time cap'),
-                      ],
-                    );
-                  }),
-                ),
-              ),
-            ),
-          if (!widget.showNoCap) const Spacer(),
-          const SizedBox(height: 20),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ElevatedButtonTheme(
@@ -207,16 +169,12 @@ class _TimePickerState extends State<TimePicker> {
                 ),
                 onPressed: () {
                   final Duration? duration;
-                  if (!state.noTimeCap) {
-                    final minutes = state.minutes;
-                    final seconds = state.seconds;
-                    if (minutes != null && seconds != null) {
-                      duration = Duration(minutes: minutes, seconds: seconds);
-                    } else {
-                      duration = null;
-                    }
+                  final minutes = state.minutes;
+                  final seconds = state.seconds;
+                  if (minutes != null && seconds != null) {
+                    duration = Duration(minutes: minutes, seconds: seconds);
                   } else {
-                    duration = noTimeCapDuration;
+                    duration = null;
                   }
 
                   Navigator.of(context).pop(duration);

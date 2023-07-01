@@ -3,7 +3,7 @@ part 'emom.g.dart';
 
 @JsonSerializable()
 class Emom {
-  Emom({
+  const Emom({
     required this.workTime,
     required this.roundsCount,
     required this.restAfterSet,
@@ -12,6 +12,12 @@ class Emom {
   final Duration workTime;
   final int roundsCount;
   final Duration restAfterSet;
+
+  static const defaultValue = Emom(
+    workTime: Duration(minutes: 1),
+    roundsCount: 10,
+    restAfterSet: Duration(minutes: 2),
+  );
 
   Emom copyWith({Duration? workTime, int? rounds, Duration? restAfterSet}) {
     return Emom(

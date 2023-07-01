@@ -2,17 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
-import 'package:smart_timer/utils/constans.dart';
-import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
-import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'afap_state.dart';
@@ -25,18 +21,18 @@ class AfapPage extends StatefulWidget {
 }
 
 class _AfapPageState extends State<AfapPage> {
-  late final AfapState afap;
+  late final AfapState afapState;
 
   @override
   void initState() {
     super.initState();
     final json = GetIt.I<AppProperties>().getAfapSettings();
-    afap = json != null ? AfapState.fromJson(json) : AfapState();
+    afapState = json != null ? AfapState.fromJson(json) : AfapState();
   }
 
   @override
   void dispose() {
-    final json = afap.toJson();
+    final json = afapState.toJson();
     GetIt.I<AppProperties>().setAfapSettings(json);
     super.dispose();
   }
@@ -50,7 +46,7 @@ class _AfapPageState extends State<AfapPage> {
       onStartPressed: () => context.pushRoute(
         TimerRoute(
           state: TimerState(
-            workout: afap.workout,
+            workout: afapState.workout,
             timerType: TimerType.afap,
           ),
         ),
@@ -61,9 +57,9 @@ class _AfapPageState extends State<AfapPage> {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (ctx, index) {
-                  return buildRound(index);
+                  return buildAfap(index);
                 },
-                childCount: afap.rounds.length,
+                childCount: afapState.afapsCound,
               ),
             );
           },
@@ -74,10 +70,10 @@ class _AfapPageState extends State<AfapPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: afap.addRound,
-              child: Row(
+              onPressed: afapState.addAfap,
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(Icons.add_circle_outline, size: 20
                       // color: AppColors.accentBlue,
                       ),
@@ -92,11 +88,11 @@ class _AfapPageState extends State<AfapPage> {
     );
   }
 
-  Widget buildRound(int roundIndex) {
+  Widget buildAfap(int afapIndex) {
     return Observer(
       builder: (context) {
-        final intervals = afap.rounds[roundIndex];
-        bool isLast = roundIndex == afap.roundsCound - 1;
+        final afap = afapState.afaps[afapIndex];
+        bool isLast = afapIndex == afapState.afapsCound - 1;
 
         return Column(
           children: [
@@ -106,60 +102,79 @@ class _AfapPageState extends State<AfapPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AFAP ${roundIndex + 1}',
+                    'AFAP ${afapIndex + 1}',
                     style: context.textTheme.subtitle1,
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...intervals.asMap().keys.map(
-                        (intervalIndex) {
-                          if (isLast && intervalIndex == 1) return Container();
-                          return IntervalWidget(
-                            title: intervalIndex == 0 ? 'Time cap:' : 'Rest time',
-                            duration: intervals[intervalIndex],
-                            onTap: () async {
-                              final selectedTime = await TimePicker.showTimePicker(
-                                context,
-                                initialDuration: intervals[intervalIndex],
-                                showNoCap: intervalIndex == 0,
-                              );
-                              if (selectedTime != null) {
-                                afap.setInterval(
-                                  roundIndex,
-                                  intervalIndex,
-                                  selectedTime == noTimeCapDuration ? null : selectedTime,
+                      IntervalWidget(
+                        title: 'Time cap:',
+                        duration: afap.noTimeCap ? null : afap.timeCap,
+                        canBeUnlimited: true,
+                        onTap: !afap.noTimeCap
+                            ? () async {
+                                final selectedTime = await TimePicker.showTimePicker(
+                                  context,
+                                  initialDuration: afap.timeCap,
                                 );
+                                if (selectedTime != null) {
+                                  afapState.setTimeCap(afapIndex, selectedTime);
+                                }
                               }
-                            },
-                          );
+                            : null,
+                        onNoTimeCapChanged: (newValue) {
+                          if (newValue != null) {
+                            afapState.setNoTimeCap(
+                              afapIndex,
+                              newValue,
+                            );
+                          }
                         },
-                      ).addSeparator(!isLast ? const SizedBox(width: 10) : const SizedBox()),
+                      ),
+                      if (!isLast) const SizedBox(width: 10),
+                      if (!isLast)
+                        IntervalWidget(
+                          title: 'Rest time',
+                          duration: afap.restTime,
+                          canBeUnlimited: false,
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialDuration: afap.restTime,
+                            );
+                            if (selectedTime != null) {
+                              afapState.setRestTime(afapIndex, selectedTime);
+                            }
+                          },
+                        ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Row(
-                      children: [
-                        TextButtonTheme(
-                          data: context.buttonThemes.deleteButtonTheme,
-                          child: TextButton(
-                            onPressed: () {
-                              afap.deleteRound(roundIndex);
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Remove AFAP ${roundIndex + 1}',
-                                )
-                              ],
+                  if (afapState.afapsCound > 1)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Row(
+                        children: [
+                          TextButtonTheme(
+                            data: context.buttonThemes.deleteButtonTheme,
+                            child: TextButton(
+                              onPressed: () {
+                                afapState.deleteAfap(afapIndex);
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Remove AFAP ${afapIndex + 1}',
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

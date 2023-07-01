@@ -1,92 +1,81 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
+import 'afap.dart';
+
 part 'afap_state.g.dart';
 
+@JsonSerializable()
 class AfapState extends AfapStateBase with _$AfapState {
-  AfapState({ObservableList<ObservableList<Duration?>>? rounds}) : super(rounds: rounds);
+  AfapState({List<Afap>? afaps}) : super(afaps: afaps);
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {};
-    for (int i = 0; i < rounds.length; i++) {
-      final roundJson = {
-        'work': rounds[i][0]?.inSeconds,
-        'rest': rounds[i][1]?.inSeconds,
-      };
-      json.addAll({'$i': roundJson});
-    }
-    return json;
-  }
+  Map<String, dynamic> toJson() => _$AfapStateToJson(this);
 
-  factory AfapState.fromJson(Map<String, dynamic> json) {
-    ObservableList<ObservableList<Duration?>> rounds = ObservableList<ObservableList<Duration?>>();
-
-    for (int i = 0; i < json.length; i++) {
-      ObservableList<Duration?> round = ObservableList.of(
-        [
-          json['$i']['work'] != null ? Duration(seconds: json['$i']['work']) : null,
-          json['$i']['rest'] != null ? Duration(seconds: json['$i']['rest']) : null,
-        ],
-      );
-      rounds.add(round);
-    }
-    return AfapState(rounds: rounds);
-  }
+  factory AfapState.fromJson(Map<String, dynamic> json) => _$AfapStateFromJson(json);
 }
 
 abstract class AfapStateBase with Store {
-  AfapStateBase({ObservableList<ObservableList<Duration?>>? rounds})
-      : rounds = rounds ??
-            ObservableList.of(
-              [
-                ObservableList.of(
-                  [
-                    const Duration(minutes: 10),
-                    const Duration(minutes: 1),
-                  ],
-                ),
-              ],
-            );
+  AfapStateBase({List<Afap>? afaps}) : afaps = ObservableList.of(afaps ?? [Afap.defaultValue]);
 
-  @observable
-  ObservableList<ObservableList<Duration?>> rounds;
+  ObservableList<Afap> afaps;
 
   @computed
-  int get roundsCound => rounds.length;
+  int get afapsCound => afaps.length;
 
   @action
-  void addRound() {
-    final lastRoundCopy = ObservableList.of(rounds.last);
-    rounds.add(lastRoundCopy);
+  void setTimeCap(int afapIndex, Duration duration) {
+    if (afapIndex < 0 || afapIndex >= afapsCound) return;
+
+    afaps[afapIndex] = afaps[afapIndex].copyWith(timeCap: duration);
   }
 
   @action
-  void deleteRound(int roundIndex) {
-    rounds.removeAt(roundIndex);
+  void setRestTime(int afapIndex, Duration duration) {
+    if (afapIndex < 0 || afapIndex >= afapsCound) return;
+
+    afaps[afapIndex] = afaps[afapIndex].copyWith(restTime: duration);
   }
 
   @action
-  void setInterval(int roundIndex, int intervalIndex, Duration? duration) {
-    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].length) return;
+  void setNoTimeCap(int afapIndex, bool noTimeCap) {
+    if (afapIndex < 0 || afapIndex >= afapsCound) return;
 
-    rounds[roundIndex][intervalIndex] = duration;
+    afaps[afapIndex] = afaps[afapIndex].copyWith(noTimeCap: noTimeCap);
+  }
+
+  @action
+  void addAfap() {
+    final lastAfapCopy = afaps.last.copyWith();
+    afaps.add(lastAfapCopy);
+  }
+
+  @action
+  void deleteAfap(int afapIndex) {
+    afaps.removeAt(afapIndex);
   }
 
   @computed
   WorkoutSet get workout {
-    final List<WorkoutSet> roundsSets = [];
-    for (int i = 0; i < rounds.length; i++) {
-      final round = WorkoutSet(
+    final List<WorkoutSet> sets = [];
+    for (int i = 0; i < afapsCound; i++) {
+      final afap = afaps[i];
+      final set = WorkoutSet(
         [
-          Interval(type: IntervalType.work, duration: rounds[i][0], isCountdown: false, isLast: i == rounds.length - 1),
-          if (i != rounds.length - 1) Interval(type: IntervalType.rest, duration: rounds[i][1]),
+          Interval(
+            type: IntervalType.work,
+            duration: afap.noTimeCap ? null : afap.timeCap,
+            isCountdown: false,
+            isLast: i == afapsCound - 1,
+          ),
+          if (i != afapsCound - 1) Interval(type: IntervalType.rest, duration: afap.restTime),
         ],
       );
-      roundsSets.add(round);
+      sets.add(set);
     }
 
-    return WorkoutSet(roundsSets).copy();
+    return WorkoutSet(sets);
   }
 }

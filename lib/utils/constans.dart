@@ -1,1 +1,3 @@
-const noTimeCapDuration = Duration(seconds: -1);
+import 'package:flutter/rendering.dart';
+
+const EdgeInsets deleteButtonPadding = EdgeInsets.only(top: 20);

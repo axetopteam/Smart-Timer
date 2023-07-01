@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
@@ -7,14 +7,18 @@ class IntervalWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.duration,
-    required this.onTap,
+    this.onTap,
+    this.canBeUnlimited = false,
+    this.onNoTimeCapChanged,
     this.flex = 1,
   }) : super(key: key);
 
   final String title;
   final Duration? duration;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final int flex;
+  final bool canBeUnlimited;
+  final ValueChanged<bool?>? onNoTimeCapChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,25 @@ class IntervalWidget extends StatelessWidget {
             child: ValueContainer(
               duration != null ? durationToString2(duration!) : 'No cap',
             ),
-          )
+          ),
+          if (canBeUnlimited)
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Transform.translate(
+                offset: const Offset(-10, 0),
+                child: GestureDetector(
+                  child: Row(
+                    children: [
+                      CupertinoCheckbox(
+                        value: duration == null,
+                        onChanged: onNoTimeCapChanged,
+                      ),
+                      const Text('No time cap'),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

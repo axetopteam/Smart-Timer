@@ -10,23 +10,15 @@ part 'emom_state.g.dart';
 
 @JsonSerializable()
 class EmomState extends EmomStateBase with _$EmomState {
-  EmomState({
-    super.emoms,
-    Duration? workTime,
-  });
+  EmomState({super.emoms});
+
   Map<String, dynamic> toJson() => _$EmomStateToJson(this);
 
   factory EmomState.fromJson(Map<String, dynamic> json) => _$EmomStateFromJson(json);
 }
 
 abstract class EmomStateBase with Store {
-  static final initialEmom = Emom(
-    workTime: const Duration(minutes: 1),
-    roundsCount: 10,
-    restAfterSet: const Duration(minutes: 2),
-  );
-
-  EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [initialEmom]);
+  EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [Emom.defaultValue]);
 
   final ObservableList<Emom> emoms;
 
