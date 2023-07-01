@@ -1,3 +1,4 @@
+import 'package:jiffy/jiffy.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/services/audio_service.dart';
@@ -181,6 +182,11 @@ abstract class IntervalBase with Store implements IntervalInterface {
 
   @override
   String description() {
-    return 'Interval. Start: $startTimeUtc\nDuration: $duration\nFinish: $finishTimeUtc';
+    return '''
+    Interval. 
+    Start: ${Jiffy(startTimeUtc).Hms}
+    Duration: $duration
+    Finish: ${Jiffy(finishTimeUtc).Hms}${isLast ? '\nisLast: $isLast' : ''}
+    ''';
   }
 }

@@ -1,19 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/pages/workout_desc.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/timer/timer_state.dart';
+import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
-import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/quantity_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
-import 'package:smart_timer/widgets/value_container.dart';
 
 import 'tabata_state.dart';
 
@@ -25,86 +24,21 @@ class TabataPage extends StatefulWidget {
 }
 
 class _TabataPageState extends State<TabataPage> {
-  late final TabataState tabataSettings;
+  late final TabataState tabataState;
 
   @override
   void initState() {
     final settingsJson = GetIt.I<AppProperties>().getTabataSettings();
-    tabataSettings = TabataState.fromJson(settingsJson);
+    tabataState = settingsJson != null ? TabataState.fromJson(settingsJson) : TabataState();
+
     super.initState();
   }
 
   @override
   dispose() {
-    final json = tabataSettings.toJson();
+    final json = tabataState.toJson();
     GetIt.I<AppProperties>().setTabataSettings(json);
     super.dispose();
-  }
-
-  Widget buildSetsSettings(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          "Set's setting:",
-          style: AppFonts.header2,
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Sets:',
-              style: AppFonts.body,
-            ),
-            const SizedBox(width: 12),
-            GestureDetector(
-              onTap: () async {
-                final selectedRounds = await RoundsPicker.showRoundsPicker(
-                  context,
-                  title: 'Sets',
-                  initialValue: tabataSettings.setsCount,
-                  range: tabataRounds,
-                );
-                if (selectedRounds != null) {
-                  tabataSettings.setSetsCount(selectedRounds);
-                }
-              },
-              child: Observer(
-                builder: (ctx) => ValueContainer('${tabataSettings.setsCount}'),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Rest:',
-              style: AppFonts.body,
-            ),
-            const SizedBox(width: 12),
-            GestureDetector(
-              onTap: () async {
-                final selectedTime = await TimePicker.showTimePicker(
-                  context,
-                  initialDuration: tabataSettings.restBetweenSets.duration!,
-                );
-                if (selectedTime != null) {
-                  tabataSettings.setRestBetweenSets(selectedTime);
-                }
-              },
-              child: Observer(
-                builder: (ctx) => ValueContainer(
-                  durationToString2(tabataSettings.restBetweenSets.duration!),
-                ),
-              ),
-            )
-          ],
-        ),
-      ],
-    );
   }
 
   @override
@@ -113,29 +47,82 @@ class _TabataPageState extends State<TabataPage> {
       color: context.color.tabataColor,
       appBarTitle: 'TABATA',
       subtitle: 'Repeat several rounds every minute on minute',
-      onStartPressed: () {},
+      workout: () => tabataState.workout,
+      onStartPressed: () => context.router.push(
+        TimerRoute(
+          state: TimerState(
+            workout: tabataState.workout,
+            timerType: TimerType.emom,
+          ),
+        ),
+      ),
       slivers: [
         Observer(
           builder: (context) {
-            return SliverToBoxAdapter(
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, index) {
+                  return _buildTabata(index);
+                },
+                childCount: tabataState.tabatsCount,
+              ),
+            );
+          },
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.only(top: 26),
+          sliver: SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed: tabataState.addTabata,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add_circle_outline, size: 20),
+                  SizedBox(width: 4),
+                  Text('Add another tabata')
+                ],
+              ),
+            ),
+          )),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTabata(int tabataIndex) {
+    return Observer(builder: (context) {
+      final tabata = tabataState.tabats[tabataIndex];
+      bool isLast = tabataIndex == tabataState.tabatsCount - 1;
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'TABATA ${tabataIndex + 1}',
+                  style: context.textTheme.subtitle1,
+                ),
+                const SizedBox(height: 8),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     QuantityWidget(
                       flex: 1,
                       title: 'Rounds:',
-                      quantity: tabataSettings.roundsCount,
+                      quantity: tabata.roundsCount,
                       onTap: () async {
                         final rounds = await RoundsPicker.showRoundsPicker(
                           context,
                           title: 'Rounds',
-                          initialValue: tabataSettings.roundsCount,
+                          initialValue: tabata.roundsCount,
                           range: tabataRounds,
                         );
                         if (rounds != null) {
-                          tabataSettings.setRounds(rounds);
+                          tabataState.setRounds(tabataIndex, rounds);
                         }
                       },
                     ),
@@ -143,14 +130,14 @@ class _TabataPageState extends State<TabataPage> {
                     IntervalWidget(
                       flex: 2,
                       title: 'Work time:',
-                      duration: tabataSettings.workTime,
+                      duration: tabata.workTime,
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
                           context,
-                          initialDuration: tabataSettings.workTime,
+                          initialDuration: tabata.workTime,
                         );
                         if (selectedTime != null) {
-                          tabataSettings.setWorkTime(selectedTime);
+                          tabataState.setWorkTime(tabataIndex, selectedTime);
                         }
                       },
                     ),
@@ -158,198 +145,69 @@ class _TabataPageState extends State<TabataPage> {
                     IntervalWidget(
                       flex: 2,
                       title: 'Rest time:',
-                      duration: tabataSettings.restTime,
+                      duration: tabata.restTime,
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
                           context,
-                          initialDuration: tabataSettings.workTime,
+                          initialDuration: tabata.restTime,
                         );
                         if (selectedTime != null) {
-                          tabataSettings.setRestTime(selectedTime);
+                          tabataState.setRestTime(tabataIndex, selectedTime);
                         }
                       },
                     ),
                   ],
                 ),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-    Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 120),
-            const Text(
-              'TABATA',
-              style: AppFonts.header,
-            ),
-            TextButton(
-              child: Text(
-                'Show description',
-                style: AppFonts.buttonTitle.copyWith(color: AppColors.accentBlue),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                  return WorkoutDesc(tabataSettings.workout);
-                }));
-              },
-            ),
-            const SizedBox(height: 32),
-            const Text(
-              'Set your Tabata Timer',
-              style: AppFonts.header2,
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rounds:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedRounds = await RoundsPicker.showRoundsPicker(
-                      context,
-                      title: 'Rounds',
-                      initialValue: tabataSettings.roundsCount,
-                      range: tabataRounds,
-                    );
-                    if (selectedRounds != null) {
-                      tabataSettings.setRounds(selectedRounds);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer('${tabataSettings.roundsCount}'),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Work:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedTime = await TimePicker.showTimePicker(
-                      context,
-                      initialDuration: tabataSettings.workTime,
-                    );
-                    if (selectedTime != null) {
-                      tabataSettings.setWorkTime(selectedTime);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.workTime),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rest:',
-                  style: AppFonts.body,
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () async {
-                    final selectedTime = await TimePicker.showTimePicker(
-                      context,
-                      initialDuration: tabataSettings.restTime,
-                    );
-                    if (selectedTime != null) {
-                      tabataSettings.setRestTime(selectedTime);
-                    }
-                  },
-                  child: Observer(
-                    builder: (ctx) => ValueContainer(
-                      durationToString2(tabataSettings.restTime),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            Observer(builder: (ctx) {
-              return Column(
-                children: [
-                  if (tabataSettings.showSets) buildSetsSettings(context),
-                  MainButton(
+                if (!isLast)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (tabataSettings.showSets)
-                          const Icon(
-                            Icons.delete_forever,
-                            color: AppColors.red,
-                          ),
-                        if (!tabataSettings.showSets)
-                          const Icon(
-                            Icons.add_circle_outline,
-                            color: AppColors.accentBlue,
-                          ),
-                        const SizedBox(width: 4),
-                        Text(
-                          tabataSettings.showSets ? 'Delete sets' : 'Add sets (optional)',
-                          style: AppFonts.actionButton
-                              .copyWith(color: tabataSettings.showSets ? AppColors.red : AppColors.accentBlue),
+                        IntervalWidget(
+                          title: 'Rest after TABATA ${tabataIndex + 1}:',
+                          duration: tabata.restAfterSet,
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialDuration: tabata.restAfterSet,
+                            );
+                            if (selectedTime != null) {
+                              tabataState.setRestAfterSet(tabataIndex, selectedTime);
+                            }
+                          },
                         ),
                       ],
                     ),
-                    onPressed: () {
-                      tabataSettings.toggleShowSets();
-                    },
-                    color: AppColors.transparent,
                   ),
-                ],
-              );
-            }),
-            const Spacer(),
-            Observer(
-              builder: (ctx) => Text(
-                'Total time: ${durationToString2(tabataSettings.totalTime)}',
-                style: AppFonts.body,
-              ),
+                if (tabataState.tabatsCount > 1)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      children: [
+                        TextButtonTheme(
+                          data: context.buttonThemes.deleteButtonTheme,
+                          child: TextButton(
+                            onPressed: () {
+                              tabataState.deleteTabata(tabataIndex);
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Remove EMOM ${tabataIndex + 1}',
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: MainButton(
-                child: const Text(
-                  'START TIMER',
-                  style: AppFonts.buttonTitle,
-                ),
-                borderRadius: 20,
-                onPressed: () {
-                  //TODO: replace with new router
-                },
-                color: AppColors.accentBlue,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+          ),
+          const Divider(thickness: 5, height: 5),
+        ],
+      );
+    });
   }
 }

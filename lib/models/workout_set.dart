@@ -143,8 +143,11 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   String description() {
     StringBuffer buffer = StringBuffer();
     for (int i = 0; i < setsCount; i++) {
-      buffer.write('Round $i \n');
+      buffer.write('Round ${i + 1} \n');
+      final set = sets[i];
+      if ((set is! Interval)) buffer.write('\n');
       buffer.write(sets[i].description());
+
       buffer.write('\n');
     }
 

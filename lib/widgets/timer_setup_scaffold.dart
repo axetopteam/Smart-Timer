@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_timer/models/workout_set.dart';
+import '../pages/workout_desc.dart';
 import 'start_button.dart';
 
 class TimerSetupScaffold extends StatelessWidget {
@@ -10,6 +13,7 @@ class TimerSetupScaffold extends StatelessWidget {
     required this.subtitle,
     required this.onStartPressed,
     required this.slivers,
+    this.workout,
     Key? key,
   }) : super(key: key);
 
@@ -18,6 +22,7 @@ class TimerSetupScaffold extends StatelessWidget {
   final String subtitle;
   final List<Widget> slivers;
   final void Function() onStartPressed;
+  final WorkoutSet Function()? workout;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,17 @@ class TimerSetupScaffold extends StatelessWidget {
                 pinned: true,
                 backgroundColor: color,
                 expandedHeight: 140.0,
+                actions: [
+                  if (kDebugMode && workout != null)
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                          return WorkoutDesc(workout!());
+                        }));
+                      },
+                      icon: const Icon(Icons.description_outlined),
+                    ),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
                     alignment: Alignment.bottomCenter,

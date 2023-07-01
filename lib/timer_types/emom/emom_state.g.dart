@@ -60,6 +60,28 @@ mixin _$EmomState on EmomStateBase, Store {
   }
 
   @override
+  void addEmom() {
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.addEmom');
+    try {
+      return super.addEmom();
+    } finally {
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteEmom(int emomIndex) {
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.deleteEmom');
+    try {
+      return super.deleteEmom(emomIndex);
+    } finally {
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 

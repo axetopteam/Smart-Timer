@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_timer/application/application_theme.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/models/workout_set.dart';
 // import 'package:smart_timer/models/workout.dart';
 
@@ -12,16 +12,19 @@ class WorkoutDesc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      // backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
+        // backgroundColor: AppColors.backgroundColor,
         elevation: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(workout.description()),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              workout.description(),
+              style: context.textTheme.bodyText1,
+            ),
             // child: Column(
             //   crossAxisAlignment: CrossAxisAlignment.center,
             //   children: workout.sets.asMap().keys.map((setIndex) {

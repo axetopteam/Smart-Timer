@@ -1,132 +1,86 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interval.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
+import 'tabata.dart';
+
 part 'tabata_state.g.dart';
 
-class TabataState = TabataStoreBase with _$TabataState;
+@JsonSerializable()
+class TabataState extends TabataStoreBase with _$TabataState {
+  TabataState({super.tabats});
+
+  Map<String, dynamic> toJson() => _$TabataStateToJson(this);
+
+  factory TabataState.fromJson(Map<String, dynamic> json) => _$TabataStateFromJson(json);
+}
 
 abstract class TabataStoreBase with Store {
-  TabataStoreBase({
-    required this.roundsCount,
-    required this.workTime,
-    required this.restTime,
-    required this.showSets,
-    required this.setsCount,
-    required Duration restBetweenSetsDuration,
-  }) : restBetweenSets = Interval(
-          duration: restBetweenSetsDuration,
-          type: IntervalType.rest,
-        );
+  TabataStoreBase({List<Tabata>? tabats}) : tabats = ObservableList.of(tabats ?? [Tabata.defaultValue]);
 
-  @observable
-  int roundsCount;
-
-  @observable
-  Duration workTime;
-
-  @observable
-  Duration restTime;
-
-  @observable
-  bool showSets;
-
-  @observable
-  int setsCount;
-
-  @observable
-  Interval restBetweenSets;
+  final ObservableList<Tabata> tabats;
 
   @computed
-  Duration get totalTime => workTime * roundsCount + restTime * (roundsCount - 1);
+  int get tabatsCount => tabats.length;
 
+  // @computed
+  // Duration get totalTime => workTime * roundsCount + restTime * (roundsCount - 1);
   @action
-  void setRounds(int value) {
-    roundsCount = value;
+  void setRounds(int tabataIndex, int value) {
+    final tabata = tabats[tabataIndex];
+
+    tabats[tabataIndex] = tabata.copyWith(roundsCount: value);
   }
 
   @action
-  void setWorkTime(Duration duration) {
-    workTime = duration;
+  void setWorkTime(int tabataIndex, Duration duration) {
+    tabats[tabataIndex] = tabats[tabataIndex].copyWith(workTime: duration);
   }
 
   @action
-  void setRestTime(Duration duration) {
-    restTime = duration;
+  void setRestTime(int tabataIndex, Duration duration) {
+    tabats[tabataIndex] = tabats[tabataIndex].copyWith(restTime: duration);
   }
 
   @action
-  void toggleShowSets() {
-    showSets = !showSets;
+  void setRestAfterSet(int tabataIndex, Duration duration) {
+    tabats[tabataIndex] = tabats[tabataIndex].copyWith(restAfterSet: duration);
   }
 
   @action
-  void setRestBetweenSets(Duration duration) {
-    restBetweenSets = Interval(
-      duration: duration,
-      type: IntervalType.rest,
-    );
+  void addTabata() {
+    final newEmom = tabats.last.copyWith();
+    tabats.add(newEmom);
   }
 
   @action
-  void setSetsCount(int value) {
-    setsCount = value;
+  void deleteTabata(int tabataIndex) {
+    tabats.removeAt(tabataIndex);
   }
 
-  @computed
   WorkoutSet get workout {
-    final workInterval = Interval(
-      duration: workTime,
-      type: IntervalType.work,
-    );
+    final sets = <WorkoutSet>[];
+    for (var i = 0; i < tabatsCount; i++) {
+      final tabata = tabats[i];
 
-    final restInterval = Interval(
-      duration: restTime,
-      type: IntervalType.work,
-    );
+      final workInterval = Interval(duration: tabata.workTime, type: IntervalType.work);
+      final restInterval = Interval(duration: tabata.restTime, type: IntervalType.rest);
+      final restAfterSet = Interval(duration: tabata.restAfterSet, type: IntervalType.rest);
 
-    WorkoutSet lastRound = WorkoutSet([workInterval.copyWith(isLast: true)]);
-
-    if (setsCount == 1 || !showSets) {
-      WorkoutSet baseRound = WorkoutSet([workInterval, restInterval]);
-      List<WorkoutSet> rounds = List.generate(roundsCount - 1, (index) => baseRound);
-      rounds.add(lastRound);
-
-      return WorkoutSet(rounds).copy();
-    } else {
-      WorkoutSet baseRound = WorkoutSet([workInterval, restInterval]);
-      WorkoutSet lastRoundInSet = WorkoutSet([workInterval, restBetweenSets]);
-
-      List<WorkoutSet> baseRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRoundInSet);
-
-      List<WorkoutSet> lastRounds = List.generate(roundsCount - 1, (index) => baseRound)..add(lastRound);
-
-      final sets = List.generate(setsCount - 1, (index) => WorkoutSet(baseRounds));
-      sets.add(WorkoutSet(lastRounds));
-      return WorkoutSet(sets).copy();
+      final rounds = <WorkoutSet>[];
+      for (var j = 0; j < tabata.roundsCount; j++) {
+        final round = WorkoutSet([
+          workInterval.copyWith(isLast: j == tabata.roundsCount - 1),
+          if (j != tabata.roundsCount - 1) restInterval.copy(),
+          if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet.copy(),
+        ]);
+        rounds.add(round);
+      }
+      sets.add(WorkoutSet(rounds));
     }
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'roundsCount': roundsCount,
-      'workSeconds': workTime.inSeconds,
-      'restSeconds': restTime.inSeconds,
-      'showSets': showSets,
-      'setsCount': setsCount,
-      'restBetweenSetsSeconds': restBetweenSets.duration?.inSeconds,
-    };
+    return WorkoutSet(sets);
   }
-
-  TabataStoreBase.fromJson(Map<String, dynamic>? json)
-      : roundsCount = json?['roundsCount'] ?? 8,
-        workTime = Duration(seconds: json?['workSeconds'] ?? 20),
-        restTime = Duration(seconds: json?['restSeconds'] ?? 10),
-        showSets = json?['showSets'] ?? false,
-        setsCount = json?['setsCount'] ?? 1,
-        restBetweenSets = Interval(
-          type: IntervalType.rest,
-          duration: Duration(seconds: json?['restBetweenSetsSeconds'] ?? 60),
-        );
 }

@@ -3,187 +3,99 @@
 part of 'tabata_state.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+TabataState _$TabataStateFromJson(Map<String, dynamic> json) => TabataState(
+      tabats: (json['tabats'] as List<dynamic>?)
+          ?.map((e) => Tabata.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$TabataStateToJson(TabataState instance) =>
+    <String, dynamic>{
+      'tabats': instance.tabats,
+    };
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TabataState on TabataStoreBase, Store {
-  Computed<Duration>? _$totalTimeComputed;
+  Computed<int>? _$tabatsCountComputed;
 
   @override
-  Duration get totalTime =>
-      (_$totalTimeComputed ??= Computed<Duration>(() => super.totalTime,
-              name: 'TabataStoreBase.totalTime'))
+  int get tabatsCount =>
+      (_$tabatsCountComputed ??= Computed<int>(() => super.tabatsCount,
+              name: 'TabataStoreBase.tabatsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
-
-  @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'TabataStoreBase.workout'))
-          .value;
-
-  late final _$roundsCountAtom =
-      Atom(name: 'TabataStoreBase.roundsCount', context: context);
-
-  @override
-  int get roundsCount {
-    _$roundsCountAtom.reportRead();
-    return super.roundsCount;
-  }
-
-  @override
-  set roundsCount(int value) {
-    _$roundsCountAtom.reportWrite(value, super.roundsCount, () {
-      super.roundsCount = value;
-    });
-  }
-
-  late final _$workTimeAtom =
-      Atom(name: 'TabataStoreBase.workTime', context: context);
-
-  @override
-  Duration get workTime {
-    _$workTimeAtom.reportRead();
-    return super.workTime;
-  }
-
-  @override
-  set workTime(Duration value) {
-    _$workTimeAtom.reportWrite(value, super.workTime, () {
-      super.workTime = value;
-    });
-  }
-
-  late final _$restTimeAtom =
-      Atom(name: 'TabataStoreBase.restTime', context: context);
-
-  @override
-  Duration get restTime {
-    _$restTimeAtom.reportRead();
-    return super.restTime;
-  }
-
-  @override
-  set restTime(Duration value) {
-    _$restTimeAtom.reportWrite(value, super.restTime, () {
-      super.restTime = value;
-    });
-  }
-
-  late final _$showSetsAtom =
-      Atom(name: 'TabataStoreBase.showSets', context: context);
-
-  @override
-  bool get showSets {
-    _$showSetsAtom.reportRead();
-    return super.showSets;
-  }
-
-  @override
-  set showSets(bool value) {
-    _$showSetsAtom.reportWrite(value, super.showSets, () {
-      super.showSets = value;
-    });
-  }
-
-  late final _$setsCountAtom =
-      Atom(name: 'TabataStoreBase.setsCount', context: context);
-
-  @override
-  int get setsCount {
-    _$setsCountAtom.reportRead();
-    return super.setsCount;
-  }
-
-  @override
-  set setsCount(int value) {
-    _$setsCountAtom.reportWrite(value, super.setsCount, () {
-      super.setsCount = value;
-    });
-  }
-
-  late final _$restBetweenSetsAtom =
-      Atom(name: 'TabataStoreBase.restBetweenSets', context: context);
-
-  @override
-  Interval get restBetweenSets {
-    _$restBetweenSetsAtom.reportRead();
-    return super.restBetweenSets;
-  }
-
-  @override
-  set restBetweenSets(Interval value) {
-    _$restBetweenSetsAtom.reportWrite(value, super.restBetweenSets, () {
-      super.restBetweenSets = value;
-    });
-  }
 
   late final _$TabataStoreBaseActionController =
       ActionController(name: 'TabataStoreBase', context: context);
 
   @override
-  void setRounds(int value) {
+  void setRounds(int tabataIndex, int value) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
         name: 'TabataStoreBase.setRounds');
     try {
-      return super.setRounds(value);
+      return super.setRounds(tabataIndex, value);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setWorkTime(Duration duration) {
+  void setWorkTime(int tabataIndex, Duration duration) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
         name: 'TabataStoreBase.setWorkTime');
     try {
-      return super.setWorkTime(duration);
+      return super.setWorkTime(tabataIndex, duration);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setRestTime(Duration duration) {
+  void setRestTime(int tabataIndex, Duration duration) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
         name: 'TabataStoreBase.setRestTime');
     try {
-      return super.setRestTime(duration);
+      return super.setRestTime(tabataIndex, duration);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void toggleShowSets() {
+  void setRestAfterSet(int tabataIndex, Duration duration) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
-        name: 'TabataStoreBase.toggleShowSets');
+        name: 'TabataStoreBase.setRestAfterSet');
     try {
-      return super.toggleShowSets();
+      return super.setRestAfterSet(tabataIndex, duration);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setRestBetweenSets(Duration duration) {
+  void addTabata() {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
-        name: 'TabataStoreBase.setRestBetweenSets');
+        name: 'TabataStoreBase.addTabata');
     try {
-      return super.setRestBetweenSets(duration);
+      return super.addTabata();
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setSetsCount(int value) {
+  void deleteTabata(int tabataIndex) {
     final _$actionInfo = _$TabataStoreBaseActionController.startAction(
-        name: 'TabataStoreBase.setSetsCount');
+        name: 'TabataStoreBase.deleteTabata');
     try {
-      return super.setSetsCount(value);
+      return super.deleteTabata(tabataIndex);
     } finally {
       _$TabataStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -192,14 +104,7 @@ mixin _$TabataState on TabataStoreBase, Store {
   @override
   String toString() {
     return '''
-roundsCount: ${roundsCount},
-workTime: ${workTime},
-restTime: ${restTime},
-showSets: ${showSets},
-setsCount: ${setsCount},
-restBetweenSets: ${restBetweenSets},
-totalTime: ${totalTime},
-workout: ${workout}
+tabatsCount: ${tabatsCount}
     ''';
   }
 }

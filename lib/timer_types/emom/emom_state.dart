@@ -27,7 +27,7 @@ abstract class EmomStateBase with Store {
   @action
   void setRounds(int emomIndex, int value) {
     final emom = emoms[emomIndex];
-    emoms[emomIndex] = emom.copyWith(rounds: value);
+    emoms[emomIndex] = emom.copyWith(roundsCount: value);
   }
 
   @action
@@ -42,11 +42,13 @@ abstract class EmomStateBase with Store {
     emoms[emomIndex] = emom.copyWith(restAfterSet: duration);
   }
 
+  @action
   void addEmom() {
     final newEmom = emoms.last.copyWith();
     emoms.add(newEmom);
   }
 
+  @action
   void deleteEmom(int emomIndex) {
     emoms.removeAt(emomIndex);
   }
@@ -73,6 +75,6 @@ abstract class EmomStateBase with Store {
       sets.add(set);
     }
 
-    return WorkoutSet(sets).copy();
+    return WorkoutSet(sets);
   }
 }

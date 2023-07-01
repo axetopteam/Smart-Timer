@@ -19,10 +19,10 @@ class Emom {
     restAfterSet: Duration(minutes: 2),
   );
 
-  Emom copyWith({Duration? workTime, int? rounds, Duration? restAfterSet}) {
+  Emom copyWith({Duration? workTime, int? roundsCount, Duration? restAfterSet}) {
     return Emom(
       workTime: workTime ?? this.workTime,
-      roundsCount: rounds ?? this.roundsCount,
+      roundsCount: roundsCount ?? this.roundsCount,
       restAfterSet: restAfterSet ?? this.restAfterSet,
     );
   }

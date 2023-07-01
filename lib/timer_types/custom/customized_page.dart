@@ -5,6 +5,7 @@ import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/main_button.dart';
@@ -62,9 +63,9 @@ class _CustomizedPageState extends State<CustomizedPage> {
                 style: AppFonts.buttonTitle.copyWith(color: AppColors.accentBlue),
               ),
               onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                //   // return WorkoutDesc(customSettings.workout);
-                // }));
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                  return WorkoutDesc(customSettings.workout);
+                }));
               },
             ),
             const SizedBox(height: 12),
