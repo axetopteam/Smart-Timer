@@ -104,7 +104,7 @@ class _TabataPageState extends State<TabataPage> {
               children: [
                 Text(
                   'TABATA ${tabataIndex + 1}',
-                  style: context.textTheme.subtitle1,
+                  style: context.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
                 Row(

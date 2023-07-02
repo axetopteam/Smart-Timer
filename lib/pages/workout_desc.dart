@@ -23,7 +23,7 @@ class WorkoutDesc extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               workout.description(),
-              style: context.textTheme.bodyText1,
+              style: context.textTheme.bodyLarge,
             ),
             // child: Column(
             //   crossAxisAlignment: CrossAxisAlignment.center,

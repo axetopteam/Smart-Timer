@@ -12,7 +12,7 @@ void main() async {
   await appProperties.initializeProperties();
 
   GetIt.I.registerSingleton<AppProperties>(appProperties);
-  final _appRouter = AppRouter();
+  final appRouter = AppRouter();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -22,7 +22,7 @@ void main() async {
     ),
   );
 
-  runApp(MyApp(_appRouter));
+  runApp(MyApp(appRouter));
 }
 
 class MyApp extends StatelessWidget {

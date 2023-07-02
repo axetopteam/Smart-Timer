@@ -13,9 +13,9 @@ class StartButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 30),
         child: ElevatedButton(
-          child: const Text('Start'),
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(backgroundColor)),
           onPressed: onPressed,
+          child: const Text('Start'),
         ),
       ),
     );

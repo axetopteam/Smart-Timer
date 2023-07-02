@@ -105,7 +105,7 @@ class _AmrapPageState extends State<AmrapPage> {
                 children: [
                   Text(
                     'AMRAP ${roundIndex + 1}',
-                    style: context.textTheme.subtitle1,
+                    style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Row(

@@ -1,61 +1,61 @@
 part of 'theme.dart';
 
-const bodyText1 = TextStyle(
+const bodyLarge = TextStyle(
   fontFamily: 'Inter',
   height: 20 / 18,
   fontSize: 18,
   fontWeight: FontWeight.w700,
 );
 
-const bodyText2 = TextStyle(
+const bodyMedium = TextStyle(
   fontFamily: 'Inter',
   height: 20 / 14,
   fontSize: 14,
   fontWeight: FontWeight.w600,
 );
 
-const headline1 = TextStyle(
+const displayLarge = TextStyle(
   height: 47 / 60,
   fontSize: 60,
   fontFamily: 'Montserrat',
   fontWeight: FontWeight.w900,
 );
-const headline2 = TextStyle(
+const displayMedium = TextStyle(
   height: 22 / 18,
   fontSize: 18,
   fontFamily: 'Montserrat',
   fontWeight: FontWeight.w900,
 );
 
-const headline3 = TextStyle(
+const displaySmall = TextStyle(
   fontFamily: 'Montserrat',
   height: 29 / 24,
   fontSize: 24,
   fontWeight: FontWeight.w900,
 );
 
-const headline4 = TextStyle(
+const headlineMedium = TextStyle(
   fontFamily: 'Inter',
   height: 28 / 20,
   fontSize: 20,
   fontWeight: FontWeight.w700,
 );
 
-const headline5 = TextStyle(
+const headlineSmall = TextStyle(
   fontFamily: 'Inter',
   height: 90 / 70,
   fontSize: 70,
   fontWeight: FontWeight.w900,
 );
 
-const subtitle1 = TextStyle(
+const titleMedium = TextStyle(
   fontFamily: 'Inter',
   height: 20 / 16,
   fontSize: 16,
   fontWeight: FontWeight.w900,
 );
 
-const subtitle2 = TextStyle(
+const titleSmall = TextStyle(
   fontFamily: 'Inter',
   height: 29 / 24,
   fontSize: 24,

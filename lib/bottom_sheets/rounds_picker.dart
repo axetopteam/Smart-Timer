@@ -68,7 +68,7 @@ class _RoundsPickerState extends State<RoundsPicker> {
           const SizedBox(height: 20),
           Text(
             'Rounds',
-            style: context.textTheme.headline3,
+            style: context.textTheme.displaySmall,
           ),
           const SizedBox(height: 20),
           Expanded(

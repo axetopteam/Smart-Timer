@@ -24,7 +24,7 @@ class MainPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 18),
                 child: Text(
                   'EASY\nTIMER',
-                  style: context.textTheme.headline1,
+                  style: context.textTheme.displayLarge,
                 ),
               ),
               const Spacer(),
@@ -104,7 +104,7 @@ class MainPage extends StatelessWidget {
       onTap: onTap,
       child: Chip(
         label: Text(title),
-        labelStyle: context.textTheme.headline2,
+        labelStyle: context.textTheme.displayMedium,
         backgroundColor: color,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),

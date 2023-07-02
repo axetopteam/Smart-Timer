@@ -44,7 +44,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
         startButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all(AppColors.white),
-            textStyle: MaterialStateProperty.all(headline2),
+            textStyle: MaterialStateProperty.all(displayMedium),
             elevation: MaterialStateProperty.all(0),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
@@ -58,7 +58,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
           style: ButtonStyle(
               padding: MaterialStateProperty.all(EdgeInsets.zero),
               foregroundColor: MaterialStateProperty.all(AppColors.red),
-              textStyle: MaterialStateProperty.all(bodyText2),
+              textStyle: MaterialStateProperty.all(bodyMedium),
               minimumSize: MaterialStateProperty.all(const Size(0, 24)),
               overlayColor: MaterialStateProperty.all(Colors.transparent)),
         ),
@@ -66,7 +66,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all(AppColors.black),
             backgroundColor: MaterialStateProperty.all(AppColors.white),
-            textStyle: MaterialStateProperty.all(headline2),
+            textStyle: MaterialStateProperty.all(displayMedium),
             elevation: MaterialStateProperty.all(0),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(

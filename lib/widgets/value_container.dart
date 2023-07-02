@@ -21,7 +21,7 @@ class ValueContainer extends StatelessWidget {
       child: Text(
         value,
         textAlign: TextAlign.center,
-        style: context.textTheme.bodyText1,
+        style: context.textTheme.bodyLarge,
       ),
     );
   }

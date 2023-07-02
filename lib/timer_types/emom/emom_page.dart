@@ -103,7 +103,7 @@ class _EmomPageState extends State<EmomPage> {
               children: [
                 Text(
                   'EMOM ${emomIndex + 1}',
-                  style: context.textTheme.subtitle1,
+                  style: context.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
                 Row(

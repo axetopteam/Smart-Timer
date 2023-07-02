@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/application_theme.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
-import 'package:smart_timer/widgets/main_button.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
 import 'customized_state.dart';
@@ -40,13 +38,10 @@ class _CustomizedPageState extends State<CustomizedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
         elevation: 0,
         title: const Text(
           'Custom',
-          style: AppFonts.header2,
         ),
       ),
       body: SafeArea(
@@ -55,12 +50,10 @@ class _CustomizedPageState extends State<CustomizedPage> {
           children: [
             const Text(
               'Set your Custom Timer',
-              style: AppFonts.header2,
             ),
             TextButton(
               child: Text(
                 'Show description',
-                style: AppFonts.buttonTitle.copyWith(color: AppColors.accentBlue),
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
@@ -88,7 +81,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
                             Icon(
                               Icons.add_box_outlined,
                               size: 28,
-                              color: AppColors.accentBlue,
                             ),
                             SizedBox(width: 4),
                             Text('Add new block')
@@ -106,20 +98,20 @@ class _CustomizedPageState extends State<CustomizedPage> {
             //   style: AppFonts.body,
             // ),
             const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: MainButton(
-                child: const Text(
-                  'START TIMER',
-                  style: AppFonts.buttonTitle,
-                ),
-                borderRadius: 20,
-                onPressed: () {
-                  //TODO: replace with new router
-                },
-                color: AppColors.accentBlue,
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 40),
+            //   child: MainButton(
+            //     child: const Text(
+            //       'START TIMER',
+            //       style: AppFonts.buttonTitle,
+            //     ),
+            //     borderRadius: 20,
+            //     onPressed: () {
+            //       //TODO: replace with new router
+            //     },
+            //     color: AppColors.accentBlue,
+            //   ),
+            // )
           ],
         ),
       ),
@@ -144,7 +136,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
                 children: [
                   const Text(
                     'Rounds:',
-                    style: AppFonts.body,
                   ),
                   const SizedBox(width: 12),
                   GestureDetector(
@@ -176,7 +167,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
                       children: [
                         Text(
                           'Interval ${intervalIndex + 1}:',
-                          style: AppFonts.body,
                         ),
                         const SizedBox(width: 12),
                         GestureDetector(
@@ -202,7 +192,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
                           icon: const Icon(
                             Icons.delete_forever,
                             size: 28,
-                            color: AppColors.red,
                           ),
                         ),
                       ],
@@ -220,7 +209,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
                     Icon(
                       Icons.add_circle_outline,
                       size: 28,
-                      color: AppColors.accentBlue,
                     ),
                     SizedBox(width: 4),
                     Text('Add interval')
@@ -236,7 +224,6 @@ class _CustomizedPageState extends State<CustomizedPage> {
           },
           icon: const Icon(
             Icons.close_sharp,
-            color: AppColors.red,
           ),
         ),
       ],

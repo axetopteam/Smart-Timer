@@ -103,7 +103,7 @@ class _AfapPageState extends State<AfapPage> {
                 children: [
                   Text(
                     'AFAP ${afapIndex + 1}',
-                    style: context.textTheme.subtitle1,
+                    style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Row(

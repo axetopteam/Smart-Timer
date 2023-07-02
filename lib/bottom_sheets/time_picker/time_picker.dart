@@ -70,7 +70,7 @@ class _TimePickerState extends State<TimePicker> {
           const SizedBox(height: 20),
           Text(
             'Work',
-            style: context.textTheme.headline3,
+            style: context.textTheme.displaySmall,
           ),
           const Spacer(),
           Expanded(
@@ -93,7 +93,7 @@ class _TimePickerState extends State<TimePicker> {
                             padding: const EdgeInsets.only(left: 50),
                             child: Text(
                               'm',
-                              style: context.textTheme.headline4,
+                              style: context.textTheme.headlineMedium,
                             ),
                           ),
                         ),
@@ -108,7 +108,7 @@ class _TimePickerState extends State<TimePicker> {
                               child: Text(
                                 '$minutes',
                                 textAlign: TextAlign.center,
-                                style: context.textTheme.headline4,
+                                style: context.textTheme.headlineMedium,
                               ),
                             ),
                           )
@@ -132,7 +132,7 @@ class _TimePickerState extends State<TimePicker> {
                             padding: const EdgeInsets.only(left: 44),
                             child: Text(
                               's',
-                              style: context.textTheme.headline4,
+                              style: context.textTheme.headlineMedium,
                             ),
                           ),
                         ),
@@ -147,7 +147,7 @@ class _TimePickerState extends State<TimePicker> {
                               child: Text(
                                 '$seconds',
                                 textAlign: TextAlign.center,
-                                style: context.textTheme.headline4,
+                                style: context.textTheme.headlineMedium,
                               ),
                             ),
                           )

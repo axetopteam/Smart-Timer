@@ -150,7 +150,7 @@ class _TimerPageState extends State<TimerPage> {
                             final currentInterval = state.currentInterval;
                             return Text(
                               currentInterval.type.desc,
-                              style: context.textTheme.subtitle2,
+                              style: context.textTheme.titleSmall,
                             );
                           }),
                           const SizedBox(height: 10),
@@ -168,7 +168,7 @@ class _TimerPageState extends State<TimerPage> {
                                           isCountdown: currentInterval.isCountdown,
                                         )
                                       : '--',
-                                  style: context.textTheme.headline5,
+                                  style: context.textTheme.headlineSmall,
                                 );
                               }
                             }
@@ -182,7 +182,7 @@ class _TimerPageState extends State<TimerPage> {
                                     : '--';
                             return Text(
                               text,
-                              style: context.textTheme.headline5,
+                              style: context.textTheme.headlineSmall,
                             );
                           }),
                           const SizedBox(height: 10),
@@ -281,7 +281,7 @@ class _TimerPageState extends State<TimerPage> {
       }
       return Text(
         buffer.toString(),
-        style: context.textTheme.headline2,
+        style: context.textTheme.displayMedium,
       );
     });
   }
@@ -307,7 +307,7 @@ class _TimerPageState extends State<TimerPage> {
         Text(
           'Well Done',
           textAlign: TextAlign.center,
-          style: context.textTheme.headline1,
+          style: context.textTheme.displayLarge,
         ),
 
         //TODO: нужна кнопка завершить
