@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -8,6 +9,8 @@ import 'core/app_theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   final appProperties = AppProperties();
   await appProperties.initializeProperties();
 
@@ -22,7 +25,14 @@ void main() async {
     ),
   );
 
-  runApp(MyApp(appRouter));
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: MyApp(appRouter),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +45,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerDelegate: appRouter.delegate(),
       routeInformationParser: appRouter.defaultRouteParser(),
-      title: 'Smart Timer',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
       theme: createDarkTheme(),
     );

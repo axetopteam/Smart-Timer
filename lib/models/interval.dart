@@ -184,9 +184,9 @@ abstract class IntervalBase with Store implements IntervalInterface {
   String description() {
     return '''
     Interval. 
-    Start: ${Jiffy(startTimeUtc).Hms}
+    Start: ${startTimeUtc != null ? Jiffy.parseFromDateTime(startTimeUtc!).Hms : 'Unknown'}
     Duration: $duration
-    Finish: ${Jiffy(finishTimeUtc).Hms}${isLast ? '\nisLast: $isLast' : ''}
+    Finish: ${finishTimeUtc != null ? Jiffy.parseFromDateTime(finishTimeUtc!).Hms : 'Unknown'}${isLast ? '\nisLast: $isLast' : ''}
     ''';
   }
 }

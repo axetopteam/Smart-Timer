@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
@@ -41,8 +43,8 @@ class _AfapPageState extends State<AfapPage> {
   Widget build(BuildContext context) {
     return TimerSetupScaffold(
       color: context.color.afapColor,
-      appBarTitle: 'For Time',
-      subtitle: 'Repeat rounds as fast as possible for selected time',
+      appBarTitle: LocaleKeys.afap_title.tr(),
+      subtitle: LocaleKeys.afap_description.tr(),
       onStartPressed: () => context.pushRoute(
         TimerRoute(
           state: TimerState(
@@ -71,14 +73,12 @@ class _AfapPageState extends State<AfapPage> {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
               onPressed: afapState.addAfap,
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.add_circle_outline, size: 20
-                      // color: AppColors.accentBlue,
-                      ),
-                  SizedBox(width: 4),
-                  Text('Add another round')
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.afap_add_button_title.tr())
                 ],
               ),
             ),
@@ -102,7 +102,7 @@ class _AfapPageState extends State<AfapPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AFAP ${afapIndex + 1}',
+                    '${LocaleKeys.afap_name.tr()} ${afapIndex + 1}',
                     style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -111,7 +111,7 @@ class _AfapPageState extends State<AfapPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       IntervalWidget(
-                        title: 'Time cap:',
+                        title: '${LocaleKeys.time_cap.tr()}:',
                         duration: afap.noTimeCap ? null : afap.timeCap,
                         canBeUnlimited: true,
                         onTap: !afap.noTimeCap
@@ -137,7 +137,7 @@ class _AfapPageState extends State<AfapPage> {
                       if (!isLast) const SizedBox(width: 10),
                       if (!isLast)
                         IntervalWidget(
-                          title: 'Rest time',
+                          title: LocaleKeys.rest_time.tr(),
                           duration: afap.restTime,
                           canBeUnlimited: false,
                           onTap: () async {
@@ -166,7 +166,7 @@ class _AfapPageState extends State<AfapPage> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Remove AFAP ${afapIndex + 1}',
+                                    LocaleKeys.afap_delete_button_title.tr(args: ['${afapIndex + 1}']),
                                   )
                                 ],
                               ),

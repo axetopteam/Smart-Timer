@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -6,6 +7,7 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
@@ -45,8 +47,8 @@ class _TabataPageState extends State<TabataPage> {
   Widget build(BuildContext context) {
     return TimerSetupScaffold(
       color: context.color.tabataColor,
-      appBarTitle: 'TABATA',
-      subtitle: 'Repeat several rounds every minute on minute',
+      appBarTitle: LocaleKeys.tabata_title.tr(),
+      subtitle: LocaleKeys.tabata_description.tr(),
       workout: () => tabataState.workout,
       onStartPressed: () => context.router.push(
         TimerRoute(
@@ -78,10 +80,10 @@ class _TabataPageState extends State<TabataPage> {
               onPressed: tabataState.addTabata,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add_circle_outline, size: 20),
-                  SizedBox(width: 4),
-                  Text('Add another tabata')
+                children: [
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.tabata_add_button_title.tr())
                 ],
               ),
             ),
@@ -103,7 +105,7 @@ class _TabataPageState extends State<TabataPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'TABATA ${tabataIndex + 1}',
+                  '${LocaleKeys.tabata_title.tr()} ${tabataIndex + 1}',
                   style: context.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
@@ -112,12 +114,12 @@ class _TabataPageState extends State<TabataPage> {
                   children: [
                     QuantityWidget(
                       flex: 1,
-                      title: 'Rounds:',
+                      title: '${LocaleKeys.rounds.tr()}:',
                       quantity: tabata.roundsCount,
                       onTap: () async {
                         final rounds = await RoundsPicker.showRoundsPicker(
                           context,
-                          title: 'Rounds',
+                          title: LocaleKeys.rounds.tr(),
                           initialValue: tabata.roundsCount,
                           range: tabataRounds,
                         );
@@ -129,7 +131,7 @@ class _TabataPageState extends State<TabataPage> {
                     const SizedBox(width: 10),
                     IntervalWidget(
                       flex: 2,
-                      title: 'Work time:',
+                      title: LocaleKeys.work_time.tr(),
                       duration: tabata.workTime,
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
@@ -144,7 +146,7 @@ class _TabataPageState extends State<TabataPage> {
                     const SizedBox(width: 10),
                     IntervalWidget(
                       flex: 2,
-                      title: 'Rest time:',
+                      title: LocaleKeys.rest_time.tr(),
                       duration: tabata.restTime,
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
@@ -164,7 +166,8 @@ class _TabataPageState extends State<TabataPage> {
                     child: Row(
                       children: [
                         IntervalWidget(
-                          title: 'Rest after TABATA ${tabataIndex + 1}:',
+                          title: LocaleKeys.rest_after_time
+                              .tr(args: ['${LocaleKeys.tabata_title.tr()} ${tabataIndex + 1}:']),
                           duration: tabata.restAfterSet,
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(
@@ -193,7 +196,7 @@ class _TabataPageState extends State<TabataPage> {
                             child: Row(
                               children: [
                                 Text(
-                                  'Remove EMOM ${tabataIndex + 1}',
+                                  LocaleKeys.tabata_delete_button_title.tr(args: ['${tabataIndex + 1}']),
                                 )
                               ],
                             ),

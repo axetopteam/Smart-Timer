@@ -1,0 +1,42 @@
+{
+    "work_time": "Работа:",
+    "rest_time": "Отдых:",
+    "rest_after_time": "Отдых после {}:",
+    "rounds": "Раунды",
+    "start": "Начать",
+    "time_cap": "Лимит времени:",
+    "rest_ratio": "Коэффициент времени отдыха:",
+    "amrap": {
+        "title": "AMRAP",
+        "description": "Выполните как можно больше повторений за определенное время",
+        "add_button_title": "Добавить другой AMRAP",
+        "delete_button_title": "Удалить AMRAP {}"
+    },
+    "afap": {
+        "name": "AFAP",
+        "title": "НА ВРЕМЯ",
+        "description": "Выполните задание как можно быстрее",
+        "add_button_title": "Добавить другой AFAP",
+        "delete_button_title": "Удалить AFAP {}"
+    },
+    "emom": {
+        "title": "EMOM",
+        "description": "Выполняйте один раунд и отдыхайте до конца времени",
+        "add_button_title": "Добавить другой EMOM",
+        "delete_button_title": "Удалить EMOM {}"
+    },
+    "tabata": {
+        "title": "ТАБАТА",
+        "description": "Выполняйте упражнение чередуя работу и отдых",
+        "add_button_title": "Добавить другую ТАБАТА",
+        "delete_button_title": "Удалить ТАБАТА {}"
+    },
+    "work_rest": {
+        "title": "РАБОТА:ОТДЫХ",
+        "description": "Настройте соотношение между временем работы и временем отдыха"
+    },
+    "timer": {
+        "work": "Работа",
+        "rest": "Отдых"
+    }
+}

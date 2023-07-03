@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
@@ -43,8 +45,8 @@ class _AmrapPageState extends State<AmrapPage> {
   Widget build(BuildContext context) {
     return TimerSetupScaffold(
       color: context.color.amrapColor,
-      appBarTitle: 'AMRAP',
-      subtitle: 'Repeat as many rounds as\npossible for selected time',
+      appBarTitle: LocaleKeys.amrap_title.tr(),
+      subtitle: LocaleKeys.amrap_description.tr(),
       onStartPressed: () => context.router.push(
         TimerRoute(
           state: TimerState(
@@ -75,12 +77,10 @@ class _AmrapPageState extends State<AmrapPage> {
               onPressed: amrap.addRound,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add_circle_outline, size: 20
-                      // color: AppColors.accentBlue,
-                      ),
-                  SizedBox(width: 4),
-                  Text('Add another AMRAP')
+                children: [
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.amrap_add_button_title.tr())
                 ],
               ),
             ),
@@ -104,7 +104,7 @@ class _AmrapPageState extends State<AmrapPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AMRAP ${roundIndex + 1}',
+                    '${LocaleKeys.amrap_title.tr()} ${roundIndex + 1}',
                     style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -114,7 +114,7 @@ class _AmrapPageState extends State<AmrapPage> {
                         (intervalIndex) {
                           if (isLast && intervalIndex == 1) return Container();
                           return IntervalWidget(
-                            title: intervalIndex == 0 ? 'Work:' : 'Rest',
+                            title: intervalIndex == 0 ? LocaleKeys.work_time.tr() : LocaleKeys.rest_time.tr(),
                             duration: intervals[intervalIndex],
                             onTap: () async {
                               final selectedTime = await TimePicker.showTimePicker(
@@ -144,7 +144,7 @@ class _AmrapPageState extends State<AmrapPage> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Remove AMRAP ${roundIndex + 1}',
+                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${roundIndex + 1}']),
                                   )
                                 ],
                               ),

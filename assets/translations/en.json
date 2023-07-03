@@ -1,0 +1,38 @@
+{
+    "work_time": "Work:",
+    "rest_time": "Rest:",
+    "rest_after_time": "Rest after {}:",
+    "rounds": "Rounds:",
+    "start": "Start",
+    "time_cap": "Time cap",
+    "rest_ratio": "Ratio for rest time",
+    "amrap": {
+        "title": "AMRAP",
+        "description": "Repeat as many rounds as\npossible for selected time",
+        "add_button_title": "Add another AMRAP",
+        "delete_button_title": "Remove AMRAP {}"
+    },
+    "afap": {
+        "name": "AFAP",
+        "title": "FOR TIME",
+        "description": "Repeat rounds as fast as possible for selected time",
+        "add_button_title": "Add another AFAP",
+        "delete_button_title": "Remove AFAP {}"
+    },
+    "emom": {
+        "title": "EMOM",
+        "description": "Complete one round and rest until the end of time",
+        "add_button_title": "Add another EMOM",
+        "delete_button_title": "Remove EMOM {}"
+    },
+    "tabata": {
+        "title": "TABATA",
+        "description": "Do the exercise alternating work and rest",
+        "add_button_title": "Add another TABATA",
+        "delete_button_title": "Remove TABATA {}"
+    },
+    "work_rest": {
+        "title": "РАБОТА:ОТДЫХ",
+        "description": "Adjust the ratio between work time and rest time"
+    }
+}
