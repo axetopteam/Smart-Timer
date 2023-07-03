@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
@@ -35,7 +37,7 @@ class IntervalWidget extends StatelessWidget {
           GestureDetector(
             onTap: onTap,
             child: ValueContainer(
-              duration != null ? durationToString2(duration!) : 'No cap',
+              duration != null ? durationToString2(duration!) : LocaleKeys.no_cap.tr(),
             ),
           ),
           if (canBeUnlimited)
@@ -50,7 +52,7 @@ class IntervalWidget extends StatelessWidget {
                         value: duration == null,
                         onChanged: onNoTimeCapChanged,
                       ),
-                      const Text('No time cap'),
+                      Expanded(child: Text(LocaleKeys.no_time_cap.tr())),
                     ],
                   ),
                 ),

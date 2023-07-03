@@ -1,3 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
+
 enum TimerType {
   amrap,
   afap,
@@ -9,17 +14,34 @@ enum TimerType {
   String get readbleName {
     switch (this) {
       case TimerType.amrap:
-        return 'Amrap';
+        return LocaleKeys.amrap_title.tr();
       case TimerType.afap:
-        return 'For Time';
+        return LocaleKeys.afap_title.tr();
       case TimerType.emom:
-        return 'Emom';
+        return LocaleKeys.emom_title.tr();
       case TimerType.tabata:
-        return 'Tabata';
+        return LocaleKeys.tabata_title.tr();
       case TimerType.workRest:
-        return 'Work : Rest';
+        return LocaleKeys.work_rest_title.tr();
       case TimerType.custom:
         return 'Custom';
+    }
+  }
+
+  Color workoutColor(BuildContext context) {
+    switch (this) {
+      case TimerType.amrap:
+        return context.color.amrapColor;
+      case TimerType.afap:
+        return context.color.afapColor;
+      case TimerType.emom:
+        return context.color.emomColor;
+      case TimerType.tabata:
+        return context.color.tabataColor;
+      case TimerType.workRest:
+        return context.color.workRestColor;
+      case TimerType.custom:
+        return context.color.customColor;
     }
   }
 }

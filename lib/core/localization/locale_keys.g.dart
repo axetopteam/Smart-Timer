@@ -8,6 +8,11 @@ abstract class  LocaleKeys {
   static const start = 'start';
   static const time_cap = 'time_cap';
   static const rest_ratio = 'rest_ratio';
+  static const no_time_cap = 'no_time_cap';
+  static const no_cap = 'no_cap';
+  static const yes = 'yes';
+  static const no = 'no';
+  static const cancel = 'cancel';
   static const amrap_title = 'amrap.title';
   static const amrap_description = 'amrap.description';
   static const amrap_add_button_title = 'amrap.add_button_title';
@@ -32,5 +37,14 @@ abstract class  LocaleKeys {
   static const work_rest_title = 'work_rest.title';
   static const work_rest_description = 'work_rest.description';
   static const work_rest = 'work_rest';
+  static const timer_work = 'timer.work';
+  static const timer_rest = 'timer.rest';
+  static const timer_complete_round = 'timer.complete_round';
+  static const timer_pause = 'timer.pause';
+  static const timer_resume = 'timer.resume';
+  static const timer_confirm_exit_alert_title = 'timer.confirm_exit_alert.title';
+  static const timer_confirm_exit_alert_content = 'timer.confirm_exit_alert.content';
+  static const timer_confirm_exit_alert = 'timer.confirm_exit_alert';
+  static const timer = 'timer';
 
 }

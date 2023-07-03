@@ -167,7 +167,7 @@ class _TabataPageState extends State<TabataPage> {
                       children: [
                         IntervalWidget(
                           title: LocaleKeys.rest_after_time
-                              .tr(args: ['${LocaleKeys.tabata_title.tr()} ${tabataIndex + 1}:']),
+                              .tr(args: ['${LocaleKeys.tabata_title.tr()} ${tabataIndex + 1}']),
                           duration: tabata.restAfterSet,
                           onTap: () async {
                             final selectedTime = await TimePicker.showTimePicker(

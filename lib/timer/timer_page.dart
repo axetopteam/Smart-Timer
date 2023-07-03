@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/models/interval_type.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
@@ -132,7 +134,7 @@ class _TimerPageState extends State<TimerPage> {
                 }
               },
               child: TimerProgressContainer(
-                color: workoutColor,
+                color: state.timerType.workoutColor(context),
                 timerStatus: state.currentState,
                 partOfHeight: currentIntervalDurationInSeconds != null
                     ? (currentIntervalDurationInSeconds - (currentTime?.inSeconds ?? 0)) /
@@ -149,7 +151,7 @@ class _TimerPageState extends State<TimerPage> {
                           Observer(builder: (_) {
                             final currentInterval = state.currentInterval;
                             return Text(
-                              currentInterval.type.desc,
+                              currentInterval.type.redableName,
                               style: context.textTheme.titleSmall,
                             );
                           }),
@@ -173,7 +175,7 @@ class _TimerPageState extends State<TimerPage> {
                               }
                             }
                             final text = isFirstSecond
-                                ? currentInterval.type.desc
+                                ? currentInterval.type.redableName
                                 : state.currentTime != null
                                     ? durationToString2(
                                         state.currentTime!,
@@ -199,14 +201,11 @@ class _TimerPageState extends State<TimerPage> {
                                   color: Colors.transparent,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.swipe_right,
-                                        size: 30,
-                                      ),
-                                      SizedBox(width: 12),
+                                    children: [
+                                      const Icon(Icons.swipe_right, size: 30),
+                                      const SizedBox(width: 12),
                                       Text(
-                                        'Slide to complete round',
+                                        LocaleKeys.timer_complete_round.tr(),
                                       ),
                                     ],
                                   ),
@@ -227,9 +226,9 @@ class _TimerPageState extends State<TimerPage> {
             child: Observer(builder: (context) {
               switch (state.currentState) {
                 case TimerStatus.run:
-                  return const Text('Tap to pause');
+                  return Text(LocaleKeys.timer_pause.tr());
                 case TimerStatus.pause:
-                  return const Text('Tap to resume');
+                  return Text(LocaleKeys.timer_resume.tr());
                 case TimerStatus.done:
                 case TimerStatus.ready:
                   return Container();
@@ -239,24 +238,6 @@ class _TimerPageState extends State<TimerPage> {
         ),
       ],
     );
-  }
-
-//TODO: возможно вынести более глобально
-  Color get workoutColor {
-    switch (state.timerType) {
-      case TimerType.amrap:
-        return context.color.amrapColor;
-      case TimerType.afap:
-        return context.color.afapColor;
-      case TimerType.emom:
-        return context.color.emomColor;
-      case TimerType.tabata:
-        return context.color.tabataColor;
-      case TimerType.workRest:
-        return context.color.workRestColor;
-      case TimerType.custom:
-        return context.color.customColor;
-    }
   }
 
   Widget _buildRoudsInfo() {
@@ -295,7 +276,7 @@ class _TimerPageState extends State<TimerPage> {
           width: 160,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: workoutColor,
+            color: state.timerType.workoutColor(context),
             shape: BoxShape.circle,
           ),
           child: const Icon(
@@ -321,15 +302,15 @@ class _TimerPageState extends State<TimerPage> {
         barrierDismissible: true,
         builder: (ctx) {
           return CupertinoAlertDialog(
-            title: Text('Вы уверены что ходите выйти?'),
-            content: Text('Ваш прогресс не будет сохранен'),
+            title: Text(LocaleKeys.timer_confirm_exit_alert_title.tr()),
+            content: Text(LocaleKeys.timer_confirm_exit_alert_content.tr()),
             actions: [
               CupertinoDialogAction(
-                child: Text('Нет'),
+                child: Text(LocaleKeys.cancel.tr()),
                 onPressed: () => Navigator.of(ctx).pop(false),
               ),
               CupertinoDialogAction(
-                child: Text('Да'),
+                child: Text(LocaleKeys.yes.tr()),
                 onPressed: () => Navigator.of(ctx).pop(true),
               ),
             ],

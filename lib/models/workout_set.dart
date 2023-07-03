@@ -113,7 +113,9 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   @override
   @action
   void pause() {
-    sets.forEach((interval) => interval.pause());
+    for (var interval in sets) {
+      interval.pause();
+    }
   }
 
   @override
