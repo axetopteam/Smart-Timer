@@ -22,6 +22,11 @@ dependencies:
   easy_localization: ^3.0.2
   auto_route: ^5.0.4
 
+  #analytics
+  firebase_core: ^2.14.0
+  firebase_crashlytics: ^3.3.3
+  firebase_analytics: ^10.4.3
+
   #UI
   modal_bottom_sheet: ^3.0.0-pre
 
