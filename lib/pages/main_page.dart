@@ -11,84 +11,82 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.amberAccent,
-      body: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 168),
-              Padding(
-                padding: const EdgeInsets.only(left: 18),
-                child: Text(
-                  'EASY\nTIMER',
-                  style: context.textTheme.displayLarge,
+      resizeToAvoidBottomInset: false,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 30, right: 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 168),
+            Padding(
+              padding: const EdgeInsets.only(left: 18),
+              child: Text(
+                'EASY\nTIMER',
+                style: context.textTheme.displayLarge,
+              ),
+            ),
+            const Spacer(),
+            Wrap(
+              alignment: WrapAlignment.start,
+              runAlignment: WrapAlignment.center,
+              direction: Axis.horizontal,
+              runSpacing: 15,
+              spacing: 10,
+              verticalDirection: VerticalDirection.down,
+              children: [
+                buildContainer(
+                  context: context,
+                  title: TimerType.amrap.readbleName.toUpperCase(),
+                  color: context.color.amrapColor,
+                  onTap: () {
+                    context.router.push(const AmrapRoute());
+                  },
                 ),
-              ),
-              const Spacer(),
-              Wrap(
-                alignment: WrapAlignment.start,
-                runAlignment: WrapAlignment.center,
-                direction: Axis.horizontal,
-                runSpacing: 15,
-                spacing: 10,
-                verticalDirection: VerticalDirection.down,
-                children: [
-                  buildContainer(
-                    context: context,
-                    title: TimerType.amrap.readbleName.toUpperCase(),
-                    color: context.color.amrapColor,
-                    onTap: () {
-                      context.router.push(const AmrapRoute());
-                    },
-                  ),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.afap.readbleName.toUpperCase(),
-                    color: context.color.afapColor,
-                    onTap: () {
-                      context.router.push(const AfapRoute());
-                    },
-                  ),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.emom.readbleName.toUpperCase(),
-                    color: context.color.emomColor,
-                    onTap: () {
-                      context.router.push(const EmomRoute());
-                    },
-                  ),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.tabata.readbleName.toUpperCase(),
-                    color: context.color.tabataColor,
-                    onTap: () {
-                      context.router.push(const TabataRoute());
-                    },
-                  ),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.workRest.readbleName.toUpperCase(),
-                    color: context.color.workRestColor,
-                    onTap: () {
-                      context.router.push(const WorkRestRoute());
-                    },
-                  ),
-                  buildContainer(
-                    context: context,
-                    title: TimerType.custom.readbleName.toUpperCase(),
-                    color: context.color.customColor,
-                    onTap: () {
-                      context.router.push(const CustomizedRoute());
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-            ],
-          ),
+                buildContainer(
+                  context: context,
+                  title: TimerType.afap.readbleName.toUpperCase(),
+                  color: context.color.afapColor,
+                  onTap: () {
+                    context.router.push(const AfapRoute());
+                  },
+                ),
+                buildContainer(
+                  context: context,
+                  title: TimerType.emom.readbleName.toUpperCase(),
+                  color: context.color.emomColor,
+                  onTap: () {
+                    context.router.push(const EmomRoute());
+                  },
+                ),
+                buildContainer(
+                  context: context,
+                  title: TimerType.tabata.readbleName.toUpperCase(),
+                  color: context.color.tabataColor,
+                  onTap: () {
+                    context.router.push(const TabataRoute());
+                  },
+                ),
+                buildContainer(
+                  context: context,
+                  title: TimerType.workRest.readbleName.toUpperCase(),
+                  color: context.color.workRestColor,
+                  onTap: () {
+                    context.router.push(const WorkRestRoute());
+                  },
+                ),
+                // buildContainer(
+                //   context: context,
+                //   title: TimerType.custom.readbleName.toUpperCase(),
+                //   color: context.color.customColor,
+                //   onTap: () {
+                //     context.router.push(const CustomizedRoute());
+                //   },
+                // ),
+              ],
+            ),
+            const SizedBox(height: 56),
+          ],
         ),
       ),
     );

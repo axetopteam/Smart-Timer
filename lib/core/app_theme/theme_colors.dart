@@ -7,6 +7,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color tabataColor;
   final Color workRestColor;
   final Color customColor;
+  final Color mainText;
   final Color borderColor;
   final Color bottomSheetBackgroundColor;
   final Color timerOverlayColor;
@@ -20,6 +21,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.tabataColor,
     required this.workRestColor,
     required this.customColor,
+    required this.mainText,
     required this.borderColor,
     required this.bottomSheetBackgroundColor,
     required this.timerOverlayColor,
@@ -35,6 +37,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? tabataColor,
     Color? workRestColor,
     Color? customColor,
+    Color? mainText,
     Color? borderColor,
     Color? bottomSheetBackgroundColor,
     Color? timerOverlayColor,
@@ -48,6 +51,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       tabataColor: tabataColor ?? this.tabataColor,
       workRestColor: workRestColor ?? this.workRestColor,
       customColor: customColor ?? this.customColor,
+      mainText: mainText ?? this.mainText,
       borderColor: borderColor ?? this.borderColor,
       bottomSheetBackgroundColor: bottomSheetBackgroundColor ?? this.bottomSheetBackgroundColor,
       timerOverlayColor: timerOverlayColor ?? this.timerOverlayColor,
@@ -72,6 +76,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       tabataColor: Color.lerp(tabataColor, other.tabataColor, t)!,
       workRestColor: Color.lerp(workRestColor, other.workRestColor, t)!,
       customColor: Color.lerp(customColor, other.customColor, t)!,
+      mainText: Color.lerp(mainText, other.mainText, t)!,
       borderColor: Color.lerp(borderColor, other.borderColor, t)!,
       bottomSheetBackgroundColor: Color.lerp(bottomSheetBackgroundColor, other.bottomSheetBackgroundColor, t)!,
       timerOverlayColor: Color.lerp(timerOverlayColor, other.timerOverlayColor, t)!,
@@ -87,6 +92,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         tabataColor: AppColors.ochre,
         workRestColor: AppColors.greenishBlue,
         customColor: AppColors.paleRed,
+        mainText: AppColors.white,
         borderColor: AppColors.grey,
         bottomSheetBackgroundColor: AppColors.black,
         timerOverlayColor: AppColors.black70,
