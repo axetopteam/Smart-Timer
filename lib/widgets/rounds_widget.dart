@@ -93,8 +93,11 @@ class _RoundsWidgetState extends State<RoundsWidget> {
                     textAlign: TextAlign.center,
                     style: context.textTheme.bodyLarge,
                     cursorColor: context.color.mainText,
-                    onChanged: (_) {
-                      widget.onValueChanged(currentValue);
+                    onChanged: (str) {
+                      if (str.isNotEmpty) widget.onValueChanged(currentValue);
+                    },
+                    onTapOutside: (_) {
+                      if (_controller.text.isEmpty) _controller.text = widget.initialValue.toString();
                     },
                     maxLength: 3,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
