@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 class RoundsPicker extends StatefulWidget {
   static Future<int?> showRoundsPicker(
@@ -67,7 +69,7 @@ class _RoundsPickerState extends State<RoundsPicker> {
         children: [
           const SizedBox(height: 20),
           Text(
-            'Rounds',
+            LocaleKeys.rounds.tr(),
             style: context.textTheme.displaySmall,
           ),
           const SizedBox(height: 20),
@@ -109,7 +111,6 @@ class _RoundsPickerState extends State<RoundsPicker> {
               ),
             ),
           ),
-          SizedBox(height: bottomPadding),
           SizedBox(height: bottomPadding),
         ],
       ),

@@ -88,7 +88,7 @@ class _TimePickerState extends State<TimePicker> {
                         child: Container(
                           height: 50,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                          color: context.color.pickerOverlay,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 50),
                             child: Text(

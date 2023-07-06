@@ -106,27 +106,31 @@ class _EmomPageState extends State<EmomPage> {
                   style: context.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    IntervalWidget(
-                      title: LocaleKeys.work_time.tr(),
-                      duration: emom.workTime,
-                      onTap: () async {
-                        final selectedTime = await TimePicker.showTimePicker(
-                          context,
-                          initialDuration: emom.workTime,
-                        );
-                        if (selectedTime != null) {
-                          emomState.setWorkTime(emomIndex, selectedTime);
-                        }
-                      },
-                    ),
-                    const SizedBox(width: 10),
-                    RoundsWidget(
-                      title: '${LocaleKeys.rounds.tr()}:',
-                      initialValue: emom.roundsCount,
-                      onValueChanged: (value) => emomState.setRounds(emomIndex, value),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RoundsWidget(
+                          title: '${LocaleKeys.rounds.tr()}:',
+                          initialValue: emom.roundsCount,
+                          onValueChanged: (value) => emomState.setRounds(emomIndex, value),
+                        ),
+                        const SizedBox(width: 10),
+                        IntervalWidget(
+                          title: LocaleKeys.work_time.tr(),
+                          duration: emom.workTime,
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialDuration: emom.workTime,
+                            );
+                            if (selectedTime != null) {
+                              emomState.setWorkTime(emomIndex, selectedTime);
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

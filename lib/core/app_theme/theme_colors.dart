@@ -13,6 +13,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color timerOverlayColor;
   final Color playIconColor;
   final Color pauseOverlayColor;
+  final Color pickerOverlay;
 
   const ThemeColors({
     required this.amrapColor,
@@ -27,6 +28,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.timerOverlayColor,
     required this.playIconColor,
     required this.pauseOverlayColor,
+    required this.pickerOverlay,
   });
 
   @override
@@ -43,6 +45,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? timerOverlayColor,
     Color? playIconColor,
     Color? pauseOverlayColor,
+    Color? pickerOverlay,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -57,6 +60,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       timerOverlayColor: timerOverlayColor ?? this.timerOverlayColor,
       playIconColor: playIconColor ?? this.playIconColor,
       pauseOverlayColor: pauseOverlayColor ?? this.pauseOverlayColor,
+      pickerOverlay: pickerOverlay ?? this.pickerOverlay,
     );
   }
 
@@ -82,21 +86,22 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       timerOverlayColor: Color.lerp(timerOverlayColor, other.timerOverlayColor, t)!,
       playIconColor: Color.lerp(playIconColor, other.playIconColor, t)!,
       pauseOverlayColor: Color.lerp(pauseOverlayColor, other.pauseOverlayColor, t)!,
+      pickerOverlay: Color.lerp(pickerOverlay, other.pickerOverlay, t)!,
     );
   }
 
-  static get dark => const ThemeColors(
-        amrapColor: AppColors.denimBlue,
-        afapColor: AppColors.darkGreen,
-        emomColor: AppColors.brightPurple,
-        tabataColor: AppColors.ochre,
-        workRestColor: AppColors.greenishBlue,
-        customColor: AppColors.paleRed,
-        mainText: AppColors.white,
-        borderColor: AppColors.grey,
-        bottomSheetBackgroundColor: AppColors.black,
-        timerOverlayColor: AppColors.black70,
-        playIconColor: AppColors.white,
-        pauseOverlayColor: AppColors.black50,
-      );
+  static get dark => ThemeColors(
+      amrapColor: AppColors.denimBlue,
+      afapColor: AppColors.darkGreen,
+      emomColor: AppColors.brightPurple,
+      tabataColor: AppColors.ochre,
+      workRestColor: AppColors.greenishBlue,
+      customColor: AppColors.paleRed,
+      mainText: AppColors.white,
+      borderColor: AppColors.grey,
+      bottomSheetBackgroundColor: AppColors.black,
+      timerOverlayColor: AppColors.black70,
+      playIconColor: AppColors.white,
+      pauseOverlayColor: AppColors.black50,
+      pickerOverlay: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15));
 }
