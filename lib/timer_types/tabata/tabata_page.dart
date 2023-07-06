@@ -14,6 +14,7 @@ import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/quantity_widget.dart';
+import 'package:smart_timer/widgets/rounds_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'tabata_state.dart';
@@ -110,25 +111,18 @@ class _TabataPageState extends State<TabataPage> {
                 ),
                 const SizedBox(height: 8),
                 Row(
+                  children: [
+                    RoundsWidget(
+                      title: '${LocaleKeys.rounds.tr()}:',
+                      initialValue: tabata.roundsCount,
+                      onValueChanged: (rounds) => tabataState.setRounds(tabataIndex, rounds),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    QuantityWidget(
-                      flex: 1,
-                      title: '${LocaleKeys.rounds.tr()}:',
-                      quantity: tabata.roundsCount,
-                      onTap: () async {
-                        final rounds = await RoundsPicker.showRoundsPicker(
-                          context,
-                          title: LocaleKeys.rounds.tr(),
-                          initialValue: tabata.roundsCount,
-                          range: tabataRounds,
-                        );
-                        if (rounds != null) {
-                          tabataState.setRounds(tabataIndex, rounds);
-                        }
-                      },
-                    ),
-                    const SizedBox(width: 10),
                     IntervalWidget(
                       flex: 2,
                       title: LocaleKeys.work_time.tr(),
