@@ -9,7 +9,7 @@ part of 'work_rest_state.dart';
 WorkRestState _$WorkRestStateFromJson(Map<String, dynamic> json) =>
     WorkRestState(
       roundsCount: json['roundsCount'] as int? ?? 10,
-      ratio: json['ratio'] as int? ?? 1,
+      ratio: (json['ratio'] as num?)?.toDouble() ?? 1,
     );
 
 Map<String, dynamic> _$WorkRestStateToJson(WorkRestState instance) =>
@@ -53,13 +53,13 @@ mixin _$WorkRestState on WorkRestStateBase, Store {
       Atom(name: 'WorkRestStateBase.ratio', context: context);
 
   @override
-  int get ratio {
+  double get ratio {
     _$ratioAtom.reportRead();
     return super.ratio;
   }
 
   @override
-  set ratio(int value) {
+  set ratio(double value) {
     _$ratioAtom.reportWrite(value, super.ratio, () {
       super.ratio = value;
     });
@@ -80,7 +80,7 @@ mixin _$WorkRestState on WorkRestStateBase, Store {
   }
 
   @override
-  void setRatio(int value) {
+  void setRatio(double value) {
     final _$actionInfo = _$WorkRestStateBaseActionController.startAction(
         name: 'WorkRestStateBase.setRatio');
     try {

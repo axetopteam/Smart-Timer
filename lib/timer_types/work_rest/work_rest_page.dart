@@ -3,15 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:smart_timer/application/constants.dart';
-import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
-import 'package:smart_timer/widgets/quantity_widget.dart';
+import 'package:smart_timer/widgets/ratio_widget.dart';
+import 'package:smart_timer/widgets/rounds_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'work_rest_state.dart';
@@ -63,35 +62,18 @@ class _WorkRestPageState extends State<WorkRestPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    QuantityWidget(
+                    RoundsWidget(
                       title: '${LocaleKeys.rounds.tr()}:',
-                      quantity: workRest.roundsCount,
-                      onTap: () async {
-                        final ratio = await RoundsPicker.showRoundsPicker(
-                          context,
-                          title: LocaleKeys.rounds.tr(),
-                          initialValue: workRest.ratio,
-                          range: tabataRounds, //TODO: set rounds range
-                        );
-                        if (ratio != null) {
-                          workRest.setRounds(ratio);
-                        }
+                      initialValue: workRest.roundsCount,
+                      onValueChanged: (value) {
+                        workRest.setRounds(value);
                       },
                     ),
                     const SizedBox(width: 10),
-                    QuantityWidget(
+                    RatioWidget(
                       title: '${LocaleKeys.rest_ratio.tr()}:',
-                      quantity: workRest.ratio,
-                      onTap: () async {
-                        final ratio = await RoundsPicker.showRoundsPicker(
-                          context, title: LocaleKeys.rest_ratio.tr(),
-                          initialValue: workRest.ratio,
-                          range: tabataRounds, //TODO: set ratio range
-                        );
-                        if (ratio != null) {
-                          workRest.setRatio(ratio);
-                        }
-                      },
+                      initialValue: workRest.ratio,
+                      onValueChanged: (value) => workRest.setRatio(value),
                     ),
                   ],
                 ),

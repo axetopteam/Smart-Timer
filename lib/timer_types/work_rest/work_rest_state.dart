@@ -10,7 +10,7 @@ part 'work_rest_state.g.dart';
 class WorkRestState extends WorkRestStateBase with _$WorkRestState {
   WorkRestState({
     int roundsCount = 10,
-    int ratio = 1,
+    double ratio = 1,
   }) : super(roundsCount: roundsCount, ratio: ratio);
 
   Map<String, dynamic> toJson() => _$WorkRestStateToJson(this);
@@ -28,7 +28,7 @@ abstract class WorkRestStateBase with Store {
   int roundsCount;
 
   @observable
-  int ratio;
+  double ratio;
 
   @computed
   WorkoutSet get workout {
@@ -66,7 +66,7 @@ abstract class WorkRestStateBase with Store {
   }
 
   @action
-  void setRatio(int value) {
+  void setRatio(double value) {
     ratio = value;
   }
 }

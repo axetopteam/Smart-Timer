@@ -24,7 +24,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   final IntervalType type;
   final bool isCountdown;
   final bool isReverse;
-  final int reverseRatio;
+  final double reverseRatio;
   final bool isLast;
 
   DateTime? startTimeUtc;
