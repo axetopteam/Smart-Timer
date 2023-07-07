@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'tabata.dart';
@@ -65,9 +65,9 @@ abstract class TabataStoreBase with Store {
     for (var i = 0; i < tabatsCount; i++) {
       final tabata = tabats[i];
 
-      final workInterval = Interval(duration: tabata.workTime, type: IntervalType.work);
-      final restInterval = Interval(duration: tabata.restTime, type: IntervalType.rest);
-      final restAfterSet = Interval(duration: tabata.restAfterSet, type: IntervalType.rest);
+      final workInterval = WorkoutInterval(duration: tabata.workTime, type: WorkoutIntervalType.work);
+      final restInterval = WorkoutInterval(duration: tabata.restTime, type: WorkoutIntervalType.rest);
+      final restAfterSet = WorkoutInterval(duration: tabata.restAfterSet, type: WorkoutIntervalType.rest);
 
       final rounds = <WorkoutSet>[];
       for (var j = 0; j < tabata.roundsCount; j++) {

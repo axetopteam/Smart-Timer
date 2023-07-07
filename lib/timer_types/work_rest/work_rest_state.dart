@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 part 'work_rest_state.g.dart';
@@ -32,15 +32,15 @@ abstract class WorkRestStateBase with Store {
 
   @computed
   WorkoutSet get workout {
-    Interval work = Interval(
+    WorkoutInterval work = WorkoutInterval(
       duration: null,
-      type: IntervalType.work,
+      type: WorkoutIntervalType.work,
       isCountdown: false,
     );
 
-    Interval rest = Interval(
+    WorkoutInterval rest = WorkoutInterval(
       duration: null,
-      type: IntervalType.rest,
+      type: WorkoutIntervalType.rest,
       isCountdown: true,
       isReverse: true,
       reverseRatio: ratio,
@@ -50,14 +50,14 @@ abstract class WorkRestStateBase with Store {
 
     final lastRound = WorkoutSet(
       [
-        Interval(type: IntervalType.work, duration: null, isCountdown: false, isLast: true),
+        WorkoutInterval(type: WorkoutIntervalType.work, duration: null, isCountdown: false, isLast: true),
       ],
     );
 
     final List<WorkoutSet> sets = List.generate(roundsCount, (index) => index != roundsCount - 1 ? round : lastRound);
 
     // return round.copy();
-    return WorkoutSet(sets).copy();
+    return WorkoutSet(sets);
   }
 
   @action

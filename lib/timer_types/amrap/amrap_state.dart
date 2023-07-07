@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 part 'amrap_state.g.dart';
@@ -79,13 +79,17 @@ abstract class AmrapStateBase with Store {
     for (int i = 0; i < rounds.length; i++) {
       final round = WorkoutSet(
         [
-          Interval(type: IntervalType.work, duration: rounds[i][0], isLast: i == rounds.length - 1),
-          if (i != rounds.length - 1) Interval(type: IntervalType.rest, duration: rounds[i][1]),
+          WorkoutInterval(type: WorkoutIntervalType.work, duration: rounds[i][0], isLast: i == rounds.length - 1),
+          if (i != rounds.length - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: rounds[i][1]),
         ],
       );
       roundsSets.add(round);
     }
 
-    return WorkoutSet(roundsSets).copy();
+    return WorkoutSet(roundsSets, descriptionSolver: _descriptionSolver);
+  }
+
+  String _descriptionSolver(int currentAmrapIndex) {
+    return 'AMRAP $currentAmrapIndex/${rounds.length}';
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_type.dart';
@@ -23,8 +23,8 @@ abstract class TimerStateBase with Store {
   final WorkoutSet workout;
   final TimerType timerType;
 
-  final countdownInterval = Interval(
-    type: IntervalType.countdown,
+  final countdownInterval = WorkoutInterval(
+    type: WorkoutIntervalType.countdown,
     duration: const Duration(seconds: 5),
   );
 
@@ -42,20 +42,10 @@ abstract class TimerStateBase with Store {
   var currentState = TimerStatus.ready;
 
   @computed
-  Interval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
+  WorkoutInterval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
 
   Map<DateTime, SoundType> get reminders {
     return workout.reminders..addAll(!countdownInterval.isEnded ? countdownInterval.reminders : {});
-  }
-
-  @computed
-  String get indexes {
-    StringBuffer buffer = StringBuffer();
-    for (int i = workout.indexes.length - 1; i > 0; i--) {
-      final index = workout.indexes.length - i;
-      buffer.write('$index: ${workout.indexes[i]![0]}/${workout.indexes[i]![1]}\n');
-    }
-    return buffer.toString();
   }
 
   @action

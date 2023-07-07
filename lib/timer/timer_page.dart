@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -159,7 +159,7 @@ class _TimerPageState extends State<TimerPage> {
                           Observer(builder: (_) {
                             final currentInterval = state.currentInterval;
                             bool isFirstSecond = currentInterval.isFirstSecond;
-                            if (currentInterval.type == IntervalType.countdown) {
+                            if (currentInterval.type == WorkoutIntervalType.countdown) {
                               if (isFirstSecond && state.currentState != TimerStatus.run) {
                                 return const PlayIcon();
                               } else {
@@ -242,27 +242,13 @@ class _TimerPageState extends State<TimerPage> {
 
   Widget _buildRoudsInfo() {
     return Observer(builder: (_) {
-      StringBuffer buffer = StringBuffer();
-      final workout = state.workout;
-      switch (state.timerType) {
-        case TimerType.amrap:
-          buffer.write('AMRAP ${workout.indexes[2]![0]}/${workout.indexes[2]![1]}');
-          break;
-        case TimerType.afap:
-          buffer.write('For Time ${workout.indexes[2]![0]}/${workout.indexes[2]![1]}');
-          break;
-        case TimerType.emom:
-        case TimerType.tabata:
-        case TimerType.workRest:
-        case TimerType.custom:
-          for (int i = workout.indexes.length - 1; i > 0; i--) {
-            final index = workout.indexes.length - i;
-            buffer.write('$index: ${workout.indexes[i]![0]}/${workout.indexes[i]![1]}\n');
-          }
+      if (!state.countdownInterval.isEnded) {
+        return const SizedBox();
       }
       return Text(
-        buffer.toString(),
+        state.workout.currentStateDescription,
         style: context.textTheme.displayMedium,
+        textAlign: TextAlign.center,
       );
     });
   }

@@ -3,14 +3,14 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
-import 'interval_type.dart';
+import 'workout_interval_type.dart';
 
-part 'interval.g.dart';
+part 'workout_interval.g.dart';
 
-class Interval = IntervalBase with _$Interval;
+class WorkoutInterval = WorkoutIntervalBase with _$WorkoutInterval;
 
-abstract class IntervalBase with Store implements IntervalInterface {
-  IntervalBase({
+abstract class WorkoutIntervalBase with Store implements IntervalInterface {
+  WorkoutIntervalBase({
     this.duration,
     required this.type,
     this.isCountdown = true,
@@ -21,7 +21,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
         _currentTime = isCountdown ? duration : const Duration(),
         restDuration = duration;
 
-  final IntervalType type;
+  final WorkoutIntervalType type;
   final bool isCountdown;
   final bool isReverse;
   final double reverseRatio;
@@ -65,14 +65,6 @@ abstract class IntervalBase with Store implements IntervalInterface {
       return startTimeUtc!.add(restDuration!);
     }
     return null;
-  }
-
-  @override
-  @computed
-  Map<int, List<int>> get indexes {
-    return {
-      0: [1, 1]
-    };
   }
 
   @override
@@ -158,8 +150,8 @@ abstract class IntervalBase with Store implements IntervalInterface {
   }
 
   @override
-  Interval copy() {
-    return Interval(
+  WorkoutInterval copy() {
+    return WorkoutInterval(
       duration: duration,
       type: type,
       isCountdown: isCountdown,
@@ -169,8 +161,8 @@ abstract class IntervalBase with Store implements IntervalInterface {
     );
   }
 
-  Interval copyWith({bool? isLast}) {
-    return Interval(
+  WorkoutInterval copyWith({bool? isLast}) {
+    return WorkoutInterval(
       duration: duration,
       type: type,
       isCountdown: isCountdown,
@@ -181,7 +173,7 @@ abstract class IntervalBase with Store implements IntervalInterface {
   }
 
   @override
-  String description() {
+  String toString() {
     return '''
     Interval. 
     Start: ${startTimeUtc != null ? Jiffy.parseFromDateTime(startTimeUtc!).Hms : 'Unknown'}

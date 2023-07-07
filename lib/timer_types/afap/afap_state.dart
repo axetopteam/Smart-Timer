@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'afap.dart';
@@ -64,18 +64,22 @@ abstract class AfapStateBase with Store {
       final afap = afaps[i];
       final set = WorkoutSet(
         [
-          Interval(
-            type: IntervalType.work,
+          WorkoutInterval(
+            type: WorkoutIntervalType.work,
             duration: afap.noTimeCap ? null : afap.timeCap,
             isCountdown: false,
             isLast: i == afapsCound - 1,
           ),
-          if (i != afapsCound - 1) Interval(type: IntervalType.rest, duration: afap.restTime),
+          if (i != afapsCound - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: afap.restTime),
         ],
       );
       sets.add(set);
     }
 
-    return WorkoutSet(sets);
+    return WorkoutSet(sets, descriptionSolver: _despriptionSolver);
+  }
+
+  String _despriptionSolver(int currentIndex) {
+    return 'AFAP $currentIndex/$afapsCound';
   }
 }

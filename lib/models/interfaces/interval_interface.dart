@@ -3,7 +3,6 @@ import 'package:smart_timer/services/audio_service.dart';
 abstract class IntervalInterface {
   Duration? get currentTime;
   DateTime? get finishTimeUtc;
-  Map<int, List<int>> get indexes;
   IntervalInterface get currentInterval;
   IntervalInterface? get nextInterval;
   Map<DateTime, SoundType> get reminders;
@@ -13,5 +12,4 @@ abstract class IntervalInterface {
   void pause();
   void tick(DateTime nowUtc);
   IntervalInterface copy();
-  String description();
 }

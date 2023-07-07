@@ -1,28 +1,29 @@
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/models/interfaces/descriptionable.dart';
 import 'package:smart_timer/models/interfaces/interval_interface.dart';
-import 'package:smart_timer/models/interval.dart';
+import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
 part 'workout_set.g.dart';
 
-class WorkoutSet extends WorkoutSetBase with _$WorkoutSet {
-  WorkoutSet(List<IntervalInterface> setsList) : super(setsList);
-}
+class WorkoutSet = WorkoutSetBase with _$WorkoutSet;
 
-abstract class WorkoutSetBase with Store implements IntervalInterface {
-  WorkoutSetBase(List<IntervalInterface> setsList) : sets = ObservableList.of(setsList);
+abstract class WorkoutSetBase with Store implements IntervalInterface, Descriptionable {
+  WorkoutSetBase(List<IntervalInterface> setsList, {this.descriptionSolver}) : sets = ObservableList.of(setsList);
 
   final ObservableList<IntervalInterface> sets;
 
+  final String Function(int)? descriptionSolver;
+
   //interval info
   @observable
-  int _setIndex = 0;
+  int _currentSetIndex = 0;
 
-  int get setIndex => _setIndex;
+  int get currentSetIndex => _currentSetIndex;
 
   int get setsCount => sets.length;
 
-  IntervalInterface get _currentSet => sets[_setIndex];
+  IntervalInterface get _currentSet => sets[_currentSetIndex];
 
   @override
   @computed
@@ -32,28 +33,18 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
   DateTime? get finishTimeUtc => sets.last.finishTimeUtc;
 
   @override
-  @computed
-  Map<int, List<int>> get indexes {
-    final lastKey = _currentSet.indexes.keys.last;
-    return _currentSet.indexes
-      ..addAll({
-        lastKey + 1: [_setIndex + 1, setsCount]
-      });
-  }
+  WorkoutInterval get currentInterval => _currentSet.currentInterval as WorkoutInterval;
 
   @override
-  Interval get currentInterval => _currentSet.currentInterval as Interval;
-
-  @override
-  Interval? get nextInterval {
+  WorkoutInterval? get nextInterval {
     final next = _currentSet.nextInterval;
 
     if (next != null) {
-      return next as Interval;
+      return next as WorkoutInterval;
     }
 
-    if (next == null && _setIndex < setsCount - 1) {
-      return sets[_setIndex + 1].currentInterval as Interval;
+    if (next == null && _currentSetIndex < setsCount - 1) {
+      return sets[_currentSetIndex + 1].currentInterval as WorkoutInterval;
     }
     return null;
   }
@@ -127,32 +118,42 @@ abstract class WorkoutSetBase with Store implements IntervalInterface {
 
     _currentSet.tick(nowUtc);
 
-    for (int i = _setIndex; i < setsCount - 1; i++) {
+    for (int i = _currentSetIndex; i < setsCount - 1; i++) {
       if (!_currentSet.isEnded) {
         break;
       }
-      _setIndex++;
+      _currentSetIndex++;
     }
   }
 
   @override
   WorkoutSet copy() {
     final copyList = List.generate(setsCount, (index) => sets[index].copy());
-    return WorkoutSet(copyList);
+    return WorkoutSet(copyList, descriptionSolver: descriptionSolver);
   }
 
   @override
-  String description() {
+  String toString() {
     StringBuffer buffer = StringBuffer();
     for (int i = 0; i < setsCount; i++) {
       buffer.write('Round ${i + 1} \n');
       final set = sets[i];
-      if ((set is! Interval)) buffer.write('\n');
-      buffer.write(sets[i].description());
+      if ((set is! WorkoutInterval)) buffer.write('\n');
+      buffer.write(set.toString());
 
       buffer.write('\n');
     }
 
+    return buffer.toString();
+  }
+
+  @override
+  String get currentStateDescription {
+    StringBuffer buffer = StringBuffer();
+    buffer.write(descriptionSolver?.call(_currentSetIndex + 1) ?? '');
+    final childDescription =
+        _currentSet is Descriptionable ? (_currentSet as Descriptionable).currentStateDescription : null;
+    if (childDescription != null) buffer.write('\n$childDescription');
     return buffer.toString();
   }
 }

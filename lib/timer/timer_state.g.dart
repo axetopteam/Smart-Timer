@@ -9,18 +9,12 @@ part of 'timer_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TimerState on TimerStateBase, Store {
-  Computed<Interval>? _$currentIntervalComputed;
+  Computed<WorkoutInterval>? _$currentIntervalComputed;
 
   @override
-  Interval get currentInterval => (_$currentIntervalComputed ??=
-          Computed<Interval>(() => super.currentInterval,
+  WorkoutInterval get currentInterval => (_$currentIntervalComputed ??=
+          Computed<WorkoutInterval>(() => super.currentInterval,
               name: 'TimerStateBase.currentInterval'))
-      .value;
-  Computed<String>? _$indexesComputed;
-
-  @override
-  String get indexes => (_$indexesComputed ??=
-          Computed<String>(() => super.indexes, name: 'TimerStateBase.indexes'))
       .value;
   Computed<Duration?>? _$currentTimeComputed;
 
@@ -109,7 +103,6 @@ mixin _$TimerState on TimerStateBase, Store {
     return '''
 currentState: ${currentState},
 currentInterval: ${currentInterval},
-indexes: ${indexes},
 currentTime: ${currentTime}
     ''';
   }

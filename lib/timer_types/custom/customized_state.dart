@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 part 'customized_state.g.dart';
@@ -74,7 +74,7 @@ abstract class CustomizedStateBase with Store {
     for (int i = 0; i < sets.length; i++) {
       final intervals = sets[i]
           .map(
-            (duration) => Interval(type: IntervalType.work, duration: duration),
+            (duration) => WorkoutInterval(type: WorkoutIntervalType.work, duration: duration),
           )
           .toList();
       final round = WorkoutSet(intervals);

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interval.dart';
-import 'package:smart_timer/models/interval_type.dart';
+import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'emom.dart';
@@ -57,24 +57,30 @@ abstract class EmomStateBase with Store {
     List<WorkoutSet> sets = [];
     for (var i = 0; i < emoms.length; i++) {
       final emom = emoms[i];
-      List<Interval> intervals = List.generate(
+      List<WorkoutInterval> intervals = List.generate(
         emom.roundsCount,
-        (index) => Interval(
+        (index) => WorkoutInterval(
           duration: emom.workTime,
-          type: IntervalType.work,
+          type: WorkoutIntervalType.work,
         ),
       );
       if (i != emoms.length - 1) {
-        intervals.add(Interval(
+        intervals.add(WorkoutInterval(
           duration: emom.restAfterSet,
-          type: IntervalType.rest,
+          type: WorkoutIntervalType.rest,
         ));
       }
-      final set = WorkoutSet(intervals);
+      String roundDescriptionSolver(int currentIndex) => 'ROUND $currentIndex/${emom.roundsCount}';
+
+      final set = WorkoutSet(intervals, descriptionSolver: roundDescriptionSolver);
 
       sets.add(set);
     }
 
-    return WorkoutSet(sets);
+    return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
+  }
+
+  String _setDescriptionSolver(int currentIndex) {
+    return 'SET $currentIndex/${emoms.length}';
   }
 }

@@ -16,27 +16,20 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
       (_$currentTimeComputed ??= Computed<Duration?>(() => super.currentTime,
               name: 'WorkoutSetBase.currentTime'))
           .value;
-  Computed<Map<int, List<int>>>? _$indexesComputed;
+
+  late final _$_currentSetIndexAtom =
+      Atom(name: 'WorkoutSetBase._currentSetIndex', context: context);
 
   @override
-  Map<int, List<int>> get indexes =>
-      (_$indexesComputed ??= Computed<Map<int, List<int>>>(() => super.indexes,
-              name: 'WorkoutSetBase.indexes'))
-          .value;
-
-  late final _$_setIndexAtom =
-      Atom(name: 'WorkoutSetBase._setIndex', context: context);
-
-  @override
-  int get _setIndex {
-    _$_setIndexAtom.reportRead();
-    return super._setIndex;
+  int get _currentSetIndex {
+    _$_currentSetIndexAtom.reportRead();
+    return super._currentSetIndex;
   }
 
   @override
-  set _setIndex(int value) {
-    _$_setIndexAtom.reportWrite(value, super._setIndex, () {
-      super._setIndex = value;
+  set _currentSetIndex(int value) {
+    _$_currentSetIndexAtom.reportWrite(value, super._currentSetIndex, () {
+      super._currentSetIndex = value;
     });
   }
 
@@ -90,8 +83,7 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
   @override
   String toString() {
     return '''
-currentTime: ${currentTime},
-indexes: ${indexes}
+currentTime: ${currentTime}
     ''';
   }
 }
