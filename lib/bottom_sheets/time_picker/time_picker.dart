@@ -2,24 +2,26 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/timer_picker_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 
 final minutesList = List.generate(60, (index) => index);
 final secondsList = List.generate(12, (index) => 5 * index);
+const timeStep = Duration(seconds: 5);
 
 class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
     Duration? initialDuration,
+    Duration? minDuration = const Duration(seconds: 5),
   }) {
     return showCupertinoModalBottomSheet<Duration?>(
       context: context,
       topRadius: const Radius.circular(20),
       builder: (ctx) => TimePicker(
         initialDuration: initialDuration ?? Duration.zero,
+        minDuration: minDuration,
       ),
     );
   }
@@ -27,9 +29,11 @@ class TimePicker extends StatefulWidget {
   const TimePicker({
     Key? key,
     required this.initialDuration,
+    this.minDuration,
   }) : super(key: key);
 
   final Duration initialDuration;
+  final Duration? minDuration;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -46,12 +50,42 @@ class _TimePickerState extends State<TimePicker> {
     state = TimerPickerState(
       initialDuration: widget.initialDuration,
       minutesList: minutesList,
-      secondsList: List.generate(12, (index) => 5 * index),
+      secondsList: secondsList,
     );
 
-    _minutesController = FixedExtentScrollController(initialItem: state.minutesIndex!);
-    _secondsController = FixedExtentScrollController(initialItem: state.secondsIndex!);
+    _minutesController = FixedExtentScrollController(initialItem: state.minutesIndex);
+    _secondsController = FixedExtentScrollController(initialItem: state.secondsIndex);
+    _minutesController.addListener(_checkMinimulDuration);
+    _secondsController.addListener(_checkMinimulDuration);
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _minutesController.removeListener(_checkMinimulDuration);
+    _secondsController.removeListener(_checkMinimulDuration);
+    _minutesController.dispose();
+    _secondsController.dispose();
+
+    super.dispose();
+  }
+
+  void _checkMinimulDuration() {
+    final minDuration = widget.minDuration;
+    if (minDuration == null) return;
+    final minutes = state.minutes;
+    final seconds = state.seconds;
+    final currentDuration = Duration(minutes: minutes, seconds: seconds);
+    if (currentDuration < minDuration) {
+      final newDuration = minDuration;
+      state.setDuration(newDuration);
+      _minutesController.animateToItem(state.minutes,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+
+      _secondsController.animateToItem(state.secondsIndex,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
   }
 
   @override
@@ -78,83 +112,79 @@ class _TimePickerState extends State<TimePicker> {
             child: Row(
               children: [
                 Expanded(
-                  child: Observer(builder: (context) {
-                    return CupertinoPicker(
-                      useMagnifier: true,
-                      magnification: 1,
-                      diameterRatio: 20,
-                      scrollController: _minutesController,
-                      selectionOverlay: Center(
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          color: context.color.pickerOverlay,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 50),
-                            child: Text(
-                              'm',
-                              style: context.textTheme.headlineMedium,
-                            ),
+                  child: CupertinoPicker(
+                    useMagnifier: true,
+                    magnification: 1,
+                    diameterRatio: 20,
+                    scrollController: _minutesController,
+                    selectionOverlay: Center(
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        color: context.color.pickerOverlay,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Text(
+                            'm',
+                            style: context.textTheme.headlineMedium,
                           ),
                         ),
                       ),
-                      onSelectedItemChanged: (value) {
-                        state.minutesIndex = value;
-                      },
-                      itemExtent: 70,
-                      children: state.minutesList
-                          .map(
-                            (minutes) => Center(
-                              child: Text(
-                                '$minutes',
-                                textAlign: TextAlign.center,
-                                style: context.textTheme.headlineMedium,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    );
-                  }),
-                ),
-                Observer(builder: (context) {
-                  return Expanded(
-                    child: CupertinoPicker(
-                      useMagnifier: true,
-                      magnification: 1,
-                      diameterRatio: 20,
-                      scrollController: _secondsController,
-                      selectionOverlay: Center(
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 44),
-                            child: Text(
-                              's',
-                              style: context.textTheme.headlineMedium,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onSelectedItemChanged: (value) {
-                        state.secondsIndex = value;
-                      },
-                      itemExtent: 70,
-                      children: state.secondsList
-                          .map(
-                            (seconds) => Center(
-                              child: Text(
-                                '$seconds',
-                                textAlign: TextAlign.center,
-                                style: context.textTheme.headlineMedium,
-                              ),
-                            ),
-                          )
-                          .toList(),
                     ),
-                  );
-                }),
+                    onSelectedItemChanged: (value) {
+                      state.minutesIndex = value;
+                    },
+                    itemExtent: 70,
+                    children: state.minutesList
+                        .map(
+                          (minutes) => Center(
+                            child: Text(
+                              '$minutes',
+                              textAlign: TextAlign.center,
+                              style: context.textTheme.headlineMedium,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                Expanded(
+                  child: CupertinoPicker(
+                    useMagnifier: true,
+                    magnification: 1,
+                    diameterRatio: 20,
+                    scrollController: _secondsController,
+                    selectionOverlay: Center(
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 44),
+                          child: Text(
+                            's',
+                            style: context.textTheme.headlineMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onSelectedItemChanged: (value) {
+                      state.secondsIndex = value;
+                    },
+                    itemExtent: 70,
+                    children: state.secondsList
+                        .map(
+                          (seconds) => Center(
+                            child: Text(
+                              '$seconds',
+                              textAlign: TextAlign.center,
+                              style: context.textTheme.headlineMedium,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
               ],
             ),
           ),
@@ -171,11 +201,7 @@ class _TimePickerState extends State<TimePicker> {
                   final Duration? duration;
                   final minutes = state.minutes;
                   final seconds = state.seconds;
-                  if (minutes != null && seconds != null) {
-                    duration = Duration(minutes: minutes, seconds: seconds);
-                  } else {
-                    duration = null;
-                  }
+                  duration = Duration(minutes: minutes, seconds: seconds);
 
                   Navigator.of(context).pop(duration);
                 },

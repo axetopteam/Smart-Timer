@@ -9,29 +9,27 @@ abstract class TimerPickerStateBase with Store {
     required this.minutesList,
     required this.secondsList,
     required Duration initialDuration,
-  }) {
-    setInitialValues(initialDuration);
-  }
-
-  void setInitialValues(Duration initialDuration) {
-    final initialMinutes = initialDuration.inMinutes;
-    final initialSeconds = initialDuration.inSeconds - initialMinutes * 60;
-    minutesIndex = minutesList.indexWhere((element) => element == initialMinutes, 0);
-    secondsIndex = secondsList.indexWhere((element) => element == initialSeconds, 0);
-  }
+  })  : minutesIndex = minutesList.indexWhere((element) => element == initialDuration.inMinutes, 0),
+        secondsIndex = secondsList.indexWhere(
+            (element) => element == (initialDuration.inSeconds - initialDuration.inMinutes * 60), 0);
 
   final List<int> minutesList;
   final List<int> secondsList;
 
   @observable
-  int? minutesIndex;
+  late int minutesIndex;
 
   @observable
-  int? secondsIndex;
+  late int secondsIndex;
 
   @computed
-  int? get minutes => minutesIndex != null ? minutesList[minutesIndex!] : null;
+  int get minutes => minutesList[minutesIndex];
 
   @computed
-  int? get seconds => secondsIndex != null ? secondsList[secondsIndex!] : null;
+  int get seconds => secondsList[secondsIndex];
+
+  void setDuration(Duration duration) {
+    minutesIndex = minutesList.indexWhere((element) => element == duration.inMinutes, 0);
+    secondsIndex = secondsList.indexWhere((element) => element == (duration.inSeconds - duration.inMinutes * 60), 0);
+  }
 }
