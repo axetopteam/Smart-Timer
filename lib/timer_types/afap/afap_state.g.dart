@@ -23,12 +23,12 @@ Map<String, dynamic> _$AfapStateToJson(AfapState instance) => <String, dynamic>{
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AfapState on AfapStateBase, Store {
-  Computed<int>? _$afapsCoundComputed;
+  Computed<int>? _$afapsCountComputed;
 
   @override
-  int get afapsCound =>
-      (_$afapsCoundComputed ??= Computed<int>(() => super.afapsCound,
-              name: 'AfapStateBase.afapsCound'))
+  int get afapsCount =>
+      (_$afapsCountComputed ??= Computed<int>(() => super.afapsCount,
+              name: 'AfapStateBase.afapsCount'))
           .value;
   Computed<WorkoutSet>? _$workoutComputed;
 
@@ -99,7 +99,7 @@ mixin _$AfapState on AfapStateBase, Store {
   @override
   String toString() {
     return '''
-afapsCound: ${afapsCound},
+afapsCount: ${afapsCount},
 workout: ${workout}
     ''';
   }

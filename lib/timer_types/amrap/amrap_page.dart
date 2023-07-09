@@ -24,19 +24,19 @@ class AmrapPage extends StatefulWidget {
 }
 
 class _AmrapPageState extends State<AmrapPage> {
-  late final AmrapState amrap;
+  late final AmrapState amrapState;
 
   @override
   void initState() {
     final json = GetIt.I<AppProperties>().getAmrapSettings();
-    amrap = json != null ? AmrapState.fromJson(json) : AmrapState();
+    amrapState = json != null ? AmrapState.fromJson(json) : AmrapState();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    final json = amrap.toJson();
+    final json = amrapState.toJson();
     GetIt.I<AppProperties>().setAmrapSettings(json);
     super.dispose();
   }
@@ -50,7 +50,7 @@ class _AmrapPageState extends State<AmrapPage> {
       onStartPressed: () => context.router.push(
         TimerRoute(
           state: TimerState(
-            workout: amrap.workout,
+            workout: amrapState.workout,
             timerType: TimerType.amrap,
           ),
         ),
@@ -61,9 +61,9 @@ class _AmrapPageState extends State<AmrapPage> {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (ctx, index) {
-                  return _buildRound(index);
+                  return _buildAmrap(index);
                 },
-                childCount: amrap.rounds.length,
+                childCount: amrapState.amrapsCount,
               ),
             );
           },
@@ -74,7 +74,7 @@ class _AmrapPageState extends State<AmrapPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: amrap.addRound,
+              onPressed: amrapState.addAmrap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -90,61 +90,73 @@ class _AmrapPageState extends State<AmrapPage> {
     );
   }
 
-  Widget _buildRound(int roundIndex) {
+  Widget _buildAmrap(int amrapIndex) {
     return Observer(
       builder: (context) {
-        final intervals = amrap.rounds[roundIndex];
-        bool isLast = roundIndex == amrap.roundsCound - 1;
+        final amrap = amrapState.amraps[amrapIndex];
+        bool isLast = amrapIndex == amrapState.amrapsCount - 1;
 
         return Column(
           children: [
-            Padding(
+            Container(
               padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${LocaleKeys.amrap_title.tr()} ${roundIndex + 1}',
+                    '${LocaleKeys.amrap_title.tr()} ${amrapIndex + 1}',
                     style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ...intervals.asMap().keys.map(
-                        (intervalIndex) {
-                          if (isLast && intervalIndex == 1) return Container();
-                          return IntervalWidget(
-                            title: intervalIndex == 0 ? LocaleKeys.work_time.tr() : LocaleKeys.rest_time.tr(),
-                            duration: intervals[intervalIndex],
-                            onTap: () async {
-                              final selectedTime = await TimePicker.showTimePicker(
-                                context,
-                                initialDuration: intervals[intervalIndex],
-                              );
-                              if (selectedTime != null) {
-                                amrap.setInterval(roundIndex, intervalIndex, selectedTime);
-                              }
-                            },
-                          );
-                        },
-                      ).addSeparator(!isLast ? const SizedBox(width: 10) : const SizedBox()),
+                      IntervalWidget(
+                          title: LocaleKeys.work_time.tr(),
+                          duration: amrap.workTime,
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialDuration: amrap.workTime,
+                            );
+                            if (selectedTime != null) {
+                              amrapState.setWorkTime(amrapIndex, selectedTime);
+                            }
+                          }),
+                      if (!isLast) const SizedBox(width: 10),
+                      if (!isLast)
+                        IntervalWidget(
+                          title: LocaleKeys.rest_time.tr(),
+                          duration: amrap.restTime,
+                          canBeUnlimited: false,
+                          onTap: () async {
+                            final selectedTime = await TimePicker.showTimePicker(
+                              context,
+                              initialDuration: amrap.restTime,
+                            );
+                            if (selectedTime != null) {
+                              amrapState.setRestTime(amrapIndex, selectedTime);
+                            }
+                          },
+                        ),
                     ],
                   ),
-                  if (amrap.rounds.length > 1)
+                  if (amrapState.amrapsCount > 1)
                     Padding(
-                      padding: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Row(
                         children: [
                           TextButtonTheme(
                             data: context.buttonThemes.deleteButtonTheme,
                             child: TextButton(
                               onPressed: () {
-                                amrap.deleteRound(roundIndex);
+                                amrapState.deleteAmrap(amrapIndex);
                               },
                               child: Row(
                                 children: [
                                   Text(
-                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${roundIndex + 1}']),
+                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${amrapIndex + 1}']),
                                   )
                                 ],
                               ),

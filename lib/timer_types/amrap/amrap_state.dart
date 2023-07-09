@@ -1,95 +1,72 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
+import 'amrap.dart';
+
 part 'amrap_state.g.dart';
 
+@JsonSerializable()
 class AmrapState extends AmrapStateBase with _$AmrapState {
-  AmrapState({ObservableList<ObservableList<Duration>>? rounds}) : super(rounds: rounds);
+  AmrapState({List<Amrap>? amraps}) : super(amraps: amraps);
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {};
-    for (int i = 0; i < rounds.length; i++) {
-      final roundJson = {
-        'work': rounds[i][0].inSeconds,
-        'rest': rounds[i][1].inSeconds,
-      };
-      json.addAll({'$i': roundJson});
-    }
-    return json;
-  }
+  Map<String, dynamic> toJson() => _$AmrapStateToJson(this);
 
-  factory AmrapState.fromJson(Map<String, dynamic> json) {
-    ObservableList<ObservableList<Duration>> rounds = ObservableList<ObservableList<Duration>>();
-
-    for (int i = 0; i < json.length; i++) {
-      ObservableList<Duration> round = ObservableList.of([
-        Duration(seconds: json['$i']['work']),
-        Duration(seconds: json['$i']['rest']),
-      ]);
-      rounds.add(round);
-    }
-
-    return AmrapState(rounds: rounds);
-  }
+  factory AmrapState.fromJson(Map<String, dynamic> json) => _$AmrapStateFromJson(json);
 }
 
 abstract class AmrapStateBase with Store {
-  static final initialRound = ObservableList.of(
-    [
-      ObservableList.of(
-        [
-          const Duration(minutes: 10),
-          const Duration(minutes: 1),
-        ],
-      ),
-    ],
-  );
+  AmrapStateBase({List<Amrap>? amraps}) : amraps = ObservableList.of(amraps ?? [Amrap.defaultValue]);
 
-  AmrapStateBase({ObservableList<ObservableList<Duration>>? rounds}) : rounds = rounds ?? initialRound;
-
-  @observable
-  ObservableList<ObservableList<Duration>> rounds;
+  ObservableList<Amrap> amraps;
 
   @computed
-  int get roundsCound => rounds.length;
+  int get amrapsCount => amraps.length;
 
   @action
-  void addRound() {
-    final ObservableList<Duration> newRound = rounds.isNotEmpty ? ObservableList.of(rounds.last) : initialRound.first;
-    rounds.add(newRound);
+  void setWorkTime(int amrapIndex, Duration duration) {
+    if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
+
+    amraps[amrapIndex] = amraps[amrapIndex].copyWith(workTime: duration);
   }
 
   @action
-  void deleteRound(int roundIndex) {
-    rounds.removeAt(roundIndex);
+  void setRestTime(int amrapIndex, Duration duration) {
+    if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
+
+    amraps[amrapIndex] = amraps[amrapIndex].copyWith(restTime: duration);
   }
 
   @action
-  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
-    if (roundIndex >= rounds.length || intervalIndex >= rounds[roundIndex].length) return;
+  void addAmrap() {
+    final lastAmrapCopy = amraps.last.copyWith();
+    amraps.add(lastAmrapCopy);
+  }
 
-    rounds[roundIndex][intervalIndex] = duration;
+  @action
+  void deleteAmrap(int amrapIndex) {
+    amraps.removeAt(amrapIndex);
   }
 
   @computed
   WorkoutSet get workout {
-    final List<WorkoutSet> roundsSets = [];
-    for (int i = 0; i < rounds.length; i++) {
-      final round = WorkoutSet(
+    final List<WorkoutSet> sets = [];
+    for (int i = 0; i < amrapsCount; i++) {
+      final amrap = WorkoutSet(
         [
-          WorkoutInterval(type: WorkoutIntervalType.work, duration: rounds[i][0], isLast: i == rounds.length - 1),
-          if (i != rounds.length - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: rounds[i][1]),
+          WorkoutInterval(type: WorkoutIntervalType.work, duration: amraps[i].workTime, isLast: i == amrapsCount - 1),
+          if (i != amrapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: amraps[i].restTime),
         ],
       );
-      roundsSets.add(round);
+      sets.add(amrap);
     }
 
-    return WorkoutSet(roundsSets, descriptionSolver: _descriptionSolver);
+    return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
   }
 
   String _descriptionSolver(int currentAmrapIndex) {
-    return 'AMRAP $currentAmrapIndex/${rounds.length}';
+    return 'AMRAP $currentAmrapIndex/$amrapsCount';
   }
 }

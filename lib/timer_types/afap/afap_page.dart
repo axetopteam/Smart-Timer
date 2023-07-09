@@ -59,9 +59,9 @@ class _AfapPageState extends State<AfapPage> {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (ctx, index) {
-                  return buildAfap(index);
+                  return _buildAfap(index);
                 },
-                childCount: afapState.afapsCound,
+                childCount: afapState.afapsCount,
               ),
             );
           },
@@ -88,11 +88,11 @@ class _AfapPageState extends State<AfapPage> {
     );
   }
 
-  Widget buildAfap(int afapIndex) {
+  Widget _buildAfap(int afapIndex) {
     return Observer(
       builder: (context) {
         final afap = afapState.afaps[afapIndex];
-        bool isLast = afapIndex == afapState.afapsCound - 1;
+        bool isLast = afapIndex == afapState.afapsCount - 1;
 
         return Column(
           children: [
@@ -152,7 +152,7 @@ class _AfapPageState extends State<AfapPage> {
                         ),
                     ],
                   ),
-                  if (afapState.afapsCound > 1)
+                  if (afapState.afapsCount > 1)
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Row(

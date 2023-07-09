@@ -23,25 +23,25 @@ abstract class AfapStateBase with Store {
   ObservableList<Afap> afaps;
 
   @computed
-  int get afapsCound => afaps.length;
+  int get afapsCount => afaps.length;
 
   @action
   void setTimeCap(int afapIndex, Duration duration) {
-    if (afapIndex < 0 || afapIndex >= afapsCound) return;
+    if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
     afaps[afapIndex] = afaps[afapIndex].copyWith(timeCap: duration);
   }
 
   @action
   void setRestTime(int afapIndex, Duration duration) {
-    if (afapIndex < 0 || afapIndex >= afapsCound) return;
+    if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
     afaps[afapIndex] = afaps[afapIndex].copyWith(restTime: duration);
   }
 
   @action
   void setNoTimeCap(int afapIndex, bool noTimeCap) {
-    if (afapIndex < 0 || afapIndex >= afapsCound) return;
+    if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
     afaps[afapIndex] = afaps[afapIndex].copyWith(noTimeCap: noTimeCap);
   }
@@ -60,7 +60,7 @@ abstract class AfapStateBase with Store {
   @computed
   WorkoutSet get workout {
     final List<WorkoutSet> sets = [];
-    for (int i = 0; i < afapsCound; i++) {
+    for (int i = 0; i < afapsCount; i++) {
       final afap = afaps[i];
       final set = WorkoutSet(
         [
@@ -68,9 +68,9 @@ abstract class AfapStateBase with Store {
             type: WorkoutIntervalType.work,
             duration: afap.noTimeCap ? null : afap.timeCap,
             isCountdown: false,
-            isLast: i == afapsCound - 1,
+            isLast: i == afapsCount - 1,
           ),
-          if (i != afapsCound - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: afap.restTime),
+          if (i != afapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: afap.restTime),
         ],
       );
       sets.add(set);
@@ -80,6 +80,6 @@ abstract class AfapStateBase with Store {
   }
 
   String _despriptionSolver(int currentIndex) {
-    return 'AFAP $currentIndex/$afapsCound';
+    return 'AFAP $currentIndex/$afapsCount';
   }
 }

@@ -3,18 +3,33 @@
 part of 'amrap_state.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+AmrapState _$AmrapStateFromJson(Map<String, dynamic> json) => AmrapState(
+      amraps: (json['amraps'] as List<dynamic>?)
+          ?.map((e) => Amrap.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AmrapStateToJson(AmrapState instance) =>
+    <String, dynamic>{
+      'amraps': instance.amraps,
+    };
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AmrapState on AmrapStateBase, Store {
-  Computed<int>? _$roundsCoundComputed;
+  Computed<int>? _$amrapsCountComputed;
 
   @override
-  int get roundsCound =>
-      (_$roundsCoundComputed ??= Computed<int>(() => super.roundsCound,
-              name: 'AmrapStateBase.roundsCound'))
+  int get amrapsCount =>
+      (_$amrapsCountComputed ??= Computed<int>(() => super.amrapsCount,
+              name: 'AmrapStateBase.amrapsCount'))
           .value;
   Computed<WorkoutSet>? _$workoutComputed;
 
@@ -24,53 +39,48 @@ mixin _$AmrapState on AmrapStateBase, Store {
               name: 'AmrapStateBase.workout'))
           .value;
 
-  late final _$roundsAtom =
-      Atom(name: 'AmrapStateBase.rounds', context: context);
-
-  @override
-  ObservableList<ObservableList<Duration>> get rounds {
-    _$roundsAtom.reportRead();
-    return super.rounds;
-  }
-
-  @override
-  set rounds(ObservableList<ObservableList<Duration>> value) {
-    _$roundsAtom.reportWrite(value, super.rounds, () {
-      super.rounds = value;
-    });
-  }
-
   late final _$AmrapStateBaseActionController =
       ActionController(name: 'AmrapStateBase', context: context);
 
   @override
-  void addRound() {
+  void setWorkTime(int amrapIndex, Duration duration) {
     final _$actionInfo = _$AmrapStateBaseActionController.startAction(
-        name: 'AmrapStateBase.addRound');
+        name: 'AmrapStateBase.setWorkTime');
     try {
-      return super.addRound();
+      return super.setWorkTime(amrapIndex, duration);
     } finally {
       _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void deleteRound(int roundIndex) {
+  void setRestTime(int amrapIndex, Duration duration) {
     final _$actionInfo = _$AmrapStateBaseActionController.startAction(
-        name: 'AmrapStateBase.deleteRound');
+        name: 'AmrapStateBase.setRestTime');
     try {
-      return super.deleteRound(roundIndex);
+      return super.setRestTime(amrapIndex, duration);
     } finally {
       _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setInterval(int roundIndex, int intervalIndex, Duration duration) {
+  void addAmrap() {
     final _$actionInfo = _$AmrapStateBaseActionController.startAction(
-        name: 'AmrapStateBase.setInterval');
+        name: 'AmrapStateBase.addAmrap');
     try {
-      return super.setInterval(roundIndex, intervalIndex, duration);
+      return super.addAmrap();
+    } finally {
+      _$AmrapStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteAmrap(int amrapIndex) {
+    final _$actionInfo = _$AmrapStateBaseActionController.startAction(
+        name: 'AmrapStateBase.deleteAmrap');
+    try {
+      return super.deleteAmrap(amrapIndex);
     } finally {
       _$AmrapStateBaseActionController.endAction(_$actionInfo);
     }
@@ -79,8 +89,7 @@ mixin _$AmrapState on AmrapStateBase, Store {
   @override
   String toString() {
     return '''
-rounds: ${rounds},
-roundsCound: ${roundsCound},
+amrapsCount: ${amrapsCount},
 workout: ${workout}
     ''';
   }
