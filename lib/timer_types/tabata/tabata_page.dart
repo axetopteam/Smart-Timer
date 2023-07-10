@@ -16,6 +16,7 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'tabata_state.dart';
 
+@RoutePage()
 class TabataPage extends StatefulWidget {
   const TabataPage({Key? key}) : super(key: key);
 

@@ -15,6 +15,7 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'work_rest_state.dart';
 
+@RoutePage()
 class WorkRestPage extends StatefulWidget {
   const WorkRestPage({Key? key}) : super(key: key);
 

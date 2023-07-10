@@ -16,6 +16,7 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'amrap_state.dart';
 
+@RoutePage()
 class AmrapPage extends StatefulWidget {
   const AmrapPage({Key? key}) : super(key: key);
 

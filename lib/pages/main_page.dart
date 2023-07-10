@@ -4,6 +4,7 @@ import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 
+@RoutePage()
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 

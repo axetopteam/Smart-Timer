@@ -15,6 +15,7 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'afap_state.dart';
 
+@RoutePage()
 class AfapPage extends StatefulWidget {
   const AfapPage({Key? key}) : super(key: key);
 

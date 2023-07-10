@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/annotations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:wakelock/wakelock.dart';
 import 'timer_progress_container.dart';
 import 'timer_status.dart';
 
+@RoutePage()
 class TimerPage extends StatefulWidget {
   const TimerPage(this.state, {Key? key}) : super(key: key);
   final TimerState state;

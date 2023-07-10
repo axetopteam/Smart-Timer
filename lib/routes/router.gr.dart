@@ -1,67 +1,59 @@
-// **************************************************************************
-// AutoRouteGenerator
-// **************************************************************************
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// AutoRouteGenerator
+// AutoRouterGenerator
 // **************************************************************************
-//
+
 // ignore_for_file: type=lint
+// coverage:ignore-file
 
 part of 'router.dart';
 
-class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+abstract class _$AppRouter extends RootStackRouter {
+  // ignore: unused_element
+  _$AppRouter({super.navigatorKey});
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    MainRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+    SettingsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MainPage(),
-      );
-    },
-    AmrapRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const AmrapPage(),
-      );
-    },
-    AfapRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const AfapPage(),
-      );
-    },
-    EmomRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const EmomPage(),
+        child: const SettingsPage(),
       );
     },
     TabataRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TabataPage(),
       );
     },
     WorkRestRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const WorkRestPage(),
       );
     },
-    CustomizedRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+    AfapRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CustomizedPage(),
+        child: const AfapPage(),
+      );
+    },
+    AmrapRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AmrapPage(),
+      );
+    },
+    EmomRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EmomPage(),
       );
     },
     TimerRoute.name: (routeData) {
       final args = routeData.argsAs<TimerRouteArgs>();
-      return MaterialPageX<dynamic>(
+      return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: TimerPage(
           args.state,
@@ -69,127 +61,97 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    MainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MainPage(),
+      );
+    },
   };
-
-  @override
-  List<RouteConfig> get routes => [
-        RouteConfig(
-          MainRoute.name,
-          path: '/',
-        ),
-        RouteConfig(
-          AmrapRoute.name,
-          path: '/amrap-page',
-        ),
-        RouteConfig(
-          AfapRoute.name,
-          path: '/afap-page',
-        ),
-        RouteConfig(
-          EmomRoute.name,
-          path: '/emom-page',
-        ),
-        RouteConfig(
-          TabataRoute.name,
-          path: '/tabata-page',
-        ),
-        RouteConfig(
-          WorkRestRoute.name,
-          path: '/work-rest-page',
-        ),
-        RouteConfig(
-          CustomizedRoute.name,
-          path: '/customized-page',
-        ),
-        RouteConfig(
-          TimerRoute.name,
-          path: '/timer-page',
-        ),
-      ];
 }
 
 /// generated route for
-/// [MainPage]
-class MainRoute extends PageRouteInfo<void> {
-  const MainRoute()
+/// [SettingsPage]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
       : super(
-          MainRoute.name,
-          path: '/',
+          SettingsRoute.name,
+          initialChildren: children,
         );
 
-  static const String name = 'MainRoute';
-}
+  static const String name = 'SettingsRoute';
 
-/// generated route for
-/// [AmrapPage]
-class AmrapRoute extends PageRouteInfo<void> {
-  const AmrapRoute()
-      : super(
-          AmrapRoute.name,
-          path: '/amrap-page',
-        );
-
-  static const String name = 'AmrapRoute';
-}
-
-/// generated route for
-/// [AfapPage]
-class AfapRoute extends PageRouteInfo<void> {
-  const AfapRoute()
-      : super(
-          AfapRoute.name,
-          path: '/afap-page',
-        );
-
-  static const String name = 'AfapRoute';
-}
-
-/// generated route for
-/// [EmomPage]
-class EmomRoute extends PageRouteInfo<void> {
-  const EmomRoute()
-      : super(
-          EmomRoute.name,
-          path: '/emom-page',
-        );
-
-  static const String name = 'EmomRoute';
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
 /// [TabataPage]
 class TabataRoute extends PageRouteInfo<void> {
-  const TabataRoute()
+  const TabataRoute({List<PageRouteInfo>? children})
       : super(
           TabataRoute.name,
-          path: '/tabata-page',
+          initialChildren: children,
         );
 
   static const String name = 'TabataRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
 /// [WorkRestPage]
 class WorkRestRoute extends PageRouteInfo<void> {
-  const WorkRestRoute()
+  const WorkRestRoute({List<PageRouteInfo>? children})
       : super(
           WorkRestRoute.name,
-          path: '/work-rest-page',
+          initialChildren: children,
         );
 
   static const String name = 'WorkRestRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [CustomizedPage]
-class CustomizedRoute extends PageRouteInfo<void> {
-  const CustomizedRoute()
+/// [AfapPage]
+class AfapRoute extends PageRouteInfo<void> {
+  const AfapRoute({List<PageRouteInfo>? children})
       : super(
-          CustomizedRoute.name,
-          path: '/customized-page',
+          AfapRoute.name,
+          initialChildren: children,
         );
 
-  static const String name = 'CustomizedRoute';
+  static const String name = 'AfapRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AmrapPage]
+class AmrapRoute extends PageRouteInfo<void> {
+  const AmrapRoute({List<PageRouteInfo>? children})
+      : super(
+          AmrapRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AmrapRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EmomPage]
+class EmomRoute extends PageRouteInfo<void> {
+  const EmomRoute({List<PageRouteInfo>? children})
+      : super(
+          EmomRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmomRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -198,16 +160,19 @@ class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
   TimerRoute({
     required TimerState state,
     Key? key,
+    List<PageRouteInfo>? children,
   }) : super(
           TimerRoute.name,
-          path: '/timer-page',
           args: TimerRouteArgs(
             state: state,
             key: key,
           ),
+          initialChildren: children,
         );
 
   static const String name = 'TimerRoute';
+
+  static const PageInfo<TimerRouteArgs> page = PageInfo<TimerRouteArgs>(name);
 }
 
 class TimerRouteArgs {
@@ -224,4 +189,18 @@ class TimerRouteArgs {
   String toString() {
     return 'TimerRouteArgs{state: $state, key: $key}';
   }
+}
+
+/// generated route for
+/// [MainPage]
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
+      : super(
+          MainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

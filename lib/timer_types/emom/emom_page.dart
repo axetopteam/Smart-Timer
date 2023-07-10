@@ -16,6 +16,7 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'emom_state.dart';
 
+@RoutePage()
 class EmomPage extends StatefulWidget {
   const EmomPage({Key? key}) : super(key: key);
 
