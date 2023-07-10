@@ -40,12 +40,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: context.color.containerBackground,
               ),
               children: [
-                CupertinoListTile(
+                CupertinoListTile.notched(
                   title: Text('Rate Us'),
                   leading: const Icon(CupertinoIcons.star_fill),
                   // onTap: () {},
                 ),
-                CupertinoListTile(
+                CupertinoListTile.notched(
                   title: const Text('Contact Us'),
                   leading: const Icon(CupertinoIcons.at),
                   onTap: () => ApplicationSupport.showSupportDialog(context),
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: context.color.containerBackground,
               ),
               children: [
-                CupertinoListTile(
+                CupertinoListTile.notched(
                   title: Text('Sound On'),
                   leading: const Icon(CupertinoIcons.speaker_3_fill),
                   trailing: Observer(
@@ -97,12 +97,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: context.color.containerBackground,
               ),
               children: [
-                CupertinoListTile(
+                CupertinoListTile.notched(
                   title: Text('Privacy Policy'),
                   leading: const Icon(CupertinoIcons.checkmark_shield_fill),
                   onTap: () => AppUtils.tryLaunchUrl('https://axetop.dev/privacy'),
                 ),
-                CupertinoListTile(
+                CupertinoListTile.notched(
                   title: Text('Terms of Use'),
                   leading: const Icon(CupertinoIcons.doc_plaintext),
                   onTap: () => AppUtils.tryLaunchUrl('https://axetop.dev/terms'),
