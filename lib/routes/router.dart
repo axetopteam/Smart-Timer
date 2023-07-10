@@ -29,5 +29,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(path: '/tabata', page: TabataRoute.page),
         AutoRoute(path: '/workRest', page: WorkRestRoute.page),
         AutoRoute(path: '/timer', page: TimerRoute.page),
+        AutoRoute(path: '/settings', page: SettingsRoute.page),
       ];
 }

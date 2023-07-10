@@ -2,6 +2,7 @@ part of 'theme.dart';
 
 ThemeData createDarkTheme() {
   return ThemeData(
+    primaryColor: AppColors.white,
     brightness: Brightness.dark,
     fontFamily: 'Montserrat',
     textTheme: createTextTheme().apply(displayColor: AppColors.white),
@@ -15,6 +16,7 @@ ThemeData createDarkTheme() {
       titleSpacing: 36,
       backgroundColor: AppColors.black,
     ),
+    canvasColor: AppColors.black,
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -38,6 +40,10 @@ ThemeData createDarkTheme() {
           const Size(double.infinity, 56),
         ),
       ),
+    ),
+    cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
+      primaryColor: AppColors.white,
+      textTheme: CupertinoTextThemeData(),
     ),
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.dark,

@@ -12,7 +12,7 @@ import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/play_icon.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'timer_progress_container.dart';
 import 'timer_status.dart';
@@ -38,7 +38,7 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void initState() {
-    Wakelock.enable();
+    WakelockPlus.enable();
     // audio.initialize();
 
     timerSubscription = state.timeStream.listen(
@@ -70,7 +70,7 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void dispose() async {
     timerSubscription?.cancel();
-    Wakelock.disable();
+    WakelockPlus.disable();
     audio.stop();
     audio.dispose();
     super.dispose();

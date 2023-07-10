@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProperties {
-  late SharedPreferences preferences;
+  late SharedPreferences _preferences;
+  final String _userIdKey = 'userId';
   final String _amrapSettingsKey = 'amrapSettings';
   final String _afapSettingsKey = 'afapSettings';
   final String _tabataSettingsKey = 'tabataSettings';
@@ -12,9 +13,18 @@ class AppProperties {
   final String _workRestSettingsKey = 'workRestSettings';
 
   Future<bool> initializeProperties() async {
-    preferences = await SharedPreferences.getInstance();
+    _preferences = await SharedPreferences.getInstance();
     return true;
   }
+
+  String? get userId => () {
+        return _preferences.getString(_userIdKey);
+      }();
+
+  set userId(String? value) => () {
+        if (value == null) return;
+        _preferences.setString(_userIdKey, value);
+      }();
 
   Future<bool> setAmrapSettings(Map<String, dynamic> json) {
     return setJson(_amrapSettingsKey, json);
@@ -65,11 +75,11 @@ class AppProperties {
   }
 
   Future<bool> setJson(String key, Map<String, dynamic> json) {
-    return preferences.setString(key, jsonEncode(json));
+    return _preferences.setString(key, jsonEncode(json));
   }
 
   Map<String, dynamic>? getJson(String key) {
-    final jsonString = preferences.getString(key);
+    final jsonString = _preferences.getString(key);
     if (jsonString != null) {
       final json = jsonDecode(jsonString);
       return json;

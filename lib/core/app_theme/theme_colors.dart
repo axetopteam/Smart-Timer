@@ -14,6 +14,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color playIconColor;
   final Color pauseOverlayColor;
   final Color pickerOverlay;
+  final Color containerBackground;
 
   const ThemeColors({
     required this.amrapColor,
@@ -29,6 +30,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.playIconColor,
     required this.pauseOverlayColor,
     required this.pickerOverlay,
+    required this.containerBackground,
   });
 
   @override
@@ -46,6 +48,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? playIconColor,
     Color? pauseOverlayColor,
     Color? pickerOverlay,
+    Color? containerBackground,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -61,6 +64,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       playIconColor: playIconColor ?? this.playIconColor,
       pauseOverlayColor: pauseOverlayColor ?? this.pauseOverlayColor,
       pickerOverlay: pickerOverlay ?? this.pickerOverlay,
+      containerBackground: containerBackground ?? this.containerBackground,
     );
   }
 
@@ -87,6 +91,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       playIconColor: Color.lerp(playIconColor, other.playIconColor, t)!,
       pauseOverlayColor: Color.lerp(pauseOverlayColor, other.pauseOverlayColor, t)!,
       pickerOverlay: Color.lerp(pickerOverlay, other.pickerOverlay, t)!,
+      containerBackground: Color.lerp(containerBackground, other.containerBackground, t)!,
     );
   }
 
@@ -103,5 +108,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       timerOverlayColor: AppColors.black70,
       playIconColor: AppColors.white,
       pauseOverlayColor: AppColors.black50,
-      pickerOverlay: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15));
+      pickerOverlay: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
+      containerBackground: AppColors.greyBlue);
 }

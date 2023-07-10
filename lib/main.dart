@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
+import 'package:unique_ids/unique_ids.dart';
 
 import 'core/app_theme/theme.dart';
 import 'firebase_options.dart';
@@ -38,6 +39,17 @@ void main() async {
       statusBarColor: Colors.transparent,
     ),
   );
+
+  if (appProperties.userId == null) {
+    try {
+      final uuid = await UniqueIds.uuid;
+      appProperties.userId = uuid;
+    } catch (e) {
+      if (kDebugMode) {
+        print('#main# Failed to get uuid');
+      }
+    }
+  }
 
   runApp(
     EasyLocalization(

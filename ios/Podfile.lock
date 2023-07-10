@@ -70,6 +70,8 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
+  - flutter_mailer (0.0.1):
+    - Flutter
   - GoogleAppMeasurement (10.10.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -118,6 +120,8 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -127,7 +131,11 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - wakelock (0.0.1):
+  - unique_ids (0.0.1):
+    - Flutter
+  - url_launcher_ios (0.0.1):
+    - Flutter
+  - wakelock_plus (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -136,9 +144,13 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
+  - flutter_mailer (from `.symlinks/plugins/flutter_mailer/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - unique_ids (from `.symlinks/plugins/unique_ids/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
 
 SPEC REPOS:
   trunk:
@@ -168,12 +180,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   Flutter:
     :path: Flutter
+  flutter_mailer:
+    :path: ".symlinks/plugins/flutter_mailer/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  wakelock:
-    :path: ".symlinks/plugins/wakelock/ios"
+  unique_ids:
+    :path: ".symlinks/plugins/unique_ids/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  wakelock_plus:
+    :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
@@ -189,15 +209,19 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 52153982b057d3afcb4e1fbb3eb0b6d00611e681
   FirebaseSessions: 5f9e62cd4096e24d2011cbd845b0efceffaee1ec
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_mailer: 2ef5a67087bc8c6c4cefd04a178bf1ae2c94cd83
   GoogleAppMeasurement: bbbfd4bcb2b40ae9b772c3b0823a58c1e3d618f9
   GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
-  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  unique_ids: af43dfe3e491210975f4c61c57251dfbaf0031e3
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
+  wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 
