@@ -54,11 +54,13 @@ abstract class WorkRestStateBase with Store {
       ],
     );
 
-    final List<WorkoutSet> sets = List.generate(roundsCount, (index) => index != roundsCount - 1 ? round : lastRound);
+    final List<WorkoutSet> sets =
+        List.generate(roundsCount, (index) => index != roundsCount - 1 ? round.copy() : lastRound);
 
-    // return round.copy();
-    return WorkoutSet(sets);
+    return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
   }
+
+  String _setDescriptionSolver(int currentIndex) => 'ROUND $currentIndex/$roundsCount';
 
   @action
   void setRounds(int value) {

@@ -194,7 +194,7 @@ class _TimerPageState extends State<TimerPage> {
                         child: !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
                             ? GestureDetector(
                                 onHorizontalDragEnd: (details) {
-                                  state.workout.setDuration();
+                                  state.endCurrentInterval();
                                 },
                                 child: Container(
                                   color: Colors.transparent,

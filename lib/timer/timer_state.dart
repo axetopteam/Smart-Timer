@@ -97,6 +97,10 @@ abstract class TimerStateBase with Store {
     timerSubscription?.resume();
   }
 
+  void endCurrentInterval() {
+    workout.setDuration();
+  }
+
   @action
   void tick(DateTime nowUtc) {
     if (!countdownInterval.isEnded) {
