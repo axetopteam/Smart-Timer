@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
@@ -22,6 +24,8 @@ abstract class TimerStateBase with Store {
 
   final WorkoutSet workout;
   final TimerType timerType;
+
+  final _audio = AudioService();
 
   final countdownInterval = WorkoutInterval(
     type: WorkoutIntervalType.countdown,
@@ -74,6 +78,7 @@ abstract class TimerStateBase with Store {
   void pause() {
     timerSubscription?.pause();
     workout.pause();
+    _audio.pauseIfNeeded();
     if (!countdownInterval.isEnded) {
       countdownInterval.reset();
       currentState = TimerStatus.ready;
@@ -85,7 +90,7 @@ abstract class TimerStateBase with Store {
   @action
   void resume() {
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
-
+    _audio.resumeIfNeeded();
     if (!countdownInterval.isEnded) {
       countdownInterval.start(roundedNow);
       workout.start(countdownInterval.finishTimeUtc!);
@@ -118,5 +123,41 @@ abstract class TimerStateBase with Store {
   @action
   void close() {
     timerSubscription?.cancel();
+  }
+
+  void dispose() {
+    _audio.stop();
+    _audio.dispose();
+  }
+  //sound
+
+  void playCountdown() {
+    _audio.playCountdown();
+  }
+
+  void play10Seconds() {
+    _audio.play10Seconds();
+  }
+
+  void playLastRound() {
+    _audio.playLastRound();
+  }
+
+  void playHalfTime() {
+    _audio.playHalfTime();
+  }
+
+  AppProperties get _properties => GetIt.I();
+
+  @observable
+  bool soundOn = true;
+
+  @action
+  Future<void> switchSoundOnOff() async {
+    try {
+      soundOn = !soundOn;
+      await _audio.switchSoundOnOff(soundOn);
+      _properties.saveSoundOn(soundOn);
+    } catch (_) {}
   }
 }

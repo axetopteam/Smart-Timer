@@ -10,10 +10,9 @@ enum SoundType {
 class AudioService {
   AudioPlayer audioPlayer = AudioPlayer();
 
-  // Future<void> initialize() async {
-  //   player = AudioCache(prefix: 'assets/sounds/');
-  //   await player.loadAll(['assets/sounds/countdown2.mp3', 'last_round.mp3', 'half_time.mp3', 'ten_seconds.mp3']);
-  // }
+  Future<void> switchSoundOnOff(bool value) async {
+    await audioPlayer.setVolume(value ? 1 : 0);
+  }
 
   Future<void> playCountdown() async {
     await audioPlayer.stop();

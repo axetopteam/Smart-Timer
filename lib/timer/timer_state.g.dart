@@ -40,6 +40,30 @@ mixin _$TimerState on TimerStateBase, Store {
     });
   }
 
+  late final _$soundOnAtom =
+      Atom(name: 'TimerStateBase.soundOn', context: context);
+
+  @override
+  bool get soundOn {
+    _$soundOnAtom.reportRead();
+    return super.soundOn;
+  }
+
+  @override
+  set soundOn(bool value) {
+    _$soundOnAtom.reportWrite(value, super.soundOn, () {
+      super.soundOn = value;
+    });
+  }
+
+  late final _$switchSoundOnOffAsyncAction =
+      AsyncAction('TimerStateBase.switchSoundOnOff', context: context);
+
+  @override
+  Future<void> switchSoundOnOff() {
+    return _$switchSoundOnOffAsyncAction.run(() => super.switchSoundOnOff());
+  }
+
   late final _$TimerStateBaseActionController =
       ActionController(name: 'TimerStateBase', context: context);
 
@@ -102,6 +126,7 @@ mixin _$TimerState on TimerStateBase, Store {
   String toString() {
     return '''
 currentState: ${currentState},
+soundOn: ${soundOn},
 currentInterval: ${currentInterval},
 currentTime: ${currentTime}
     ''';

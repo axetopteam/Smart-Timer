@@ -11,20 +11,21 @@ class AppProperties {
   final String _emomSettingsKey = 'emomSettings';
   final String _customSettingsKey = 'customSettings';
   final String _workRestSettingsKey = 'workRestSettings';
+  final String _soundOnKey = 'soundOn';
 
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
     return true;
   }
 
-  String? get userId => () {
-        return _preferences.getString(_userIdKey);
-      }();
+  String? get userId {
+    return _preferences.getString(_userIdKey);
+  }
 
-  set userId(String? value) => () {
-        if (value == null) return;
-        _preferences.setString(_userIdKey, value);
-      }();
+  set userId(String? value) {
+    if (value == null) return;
+    _preferences.setString(_userIdKey, value);
+  }
 
   Future<bool> setAmrapSettings(Map<String, dynamic> json) {
     return setJson(_amrapSettingsKey, json);
@@ -72,6 +73,14 @@ class AppProperties {
 
   Map<String, dynamic>? getWorkRestSettings() {
     return getJson(_workRestSettingsKey);
+  }
+
+  bool get soundOn {
+    return _preferences.getBool(_soundOnKey) ?? true;
+  }
+
+  Future<bool> saveSoundOn(bool value) {
+    return _preferences.setBool(_soundOnKey, value);
   }
 
   Future<bool> setJson(String key, Map<String, dynamic> json) {

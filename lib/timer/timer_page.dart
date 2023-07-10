@@ -5,9 +5,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -27,17 +29,16 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  AudioService audio = AudioService();
-
-  // AudioPlayer audioPlayer = AudioPlayer();
-  // late final ReactionDisposer reactionDispose;
-
   StreamSubscription? timerSubscription;
 
   TimerState get state => widget.state;
 
   @override
   void initState() {
+    final soundOn = GetIt.I<AppProperties>().soundOn;
+
+    state.soundOn = soundOn;
+
     WakelockPlus.enable();
     // audio.initialize();
 
@@ -46,16 +47,16 @@ class _TimerPageState extends State<TimerPage> {
         if (state.reminders.containsKey(now)) {
           switch (state.reminders[now]) {
             case SoundType.countdown:
-              audio.playCountdown();
+              state.playCountdown();
               break;
             case SoundType.tenSeconds:
-              audio.play10Seconds();
+              state.play10Seconds();
               break;
             case SoundType.lastRound:
-              audio.playLastRound();
+              state.playLastRound();
               break;
             case SoundType.halfTime:
-              audio.playHalfTime();
+              state.playHalfTime();
               break;
             case null:
               break;
@@ -71,8 +72,6 @@ class _TimerPageState extends State<TimerPage> {
   void dispose() async {
     timerSubscription?.cancel();
     WakelockPlus.disable();
-    audio.stop();
-    audio.dispose();
     super.dispose();
   }
 
@@ -90,6 +89,16 @@ class _TimerPageState extends State<TimerPage> {
         appBar: AppBar(
           title: Text(state.timerType.readbleName),
           centerTitle: true,
+          actions: [
+            Observer(builder: (context) {
+              return IconButton(
+                onPressed: state.switchSoundOnOff,
+                icon: state.soundOn
+                    ? const Icon(CupertinoIcons.speaker_3_fill)
+                    : const Icon(CupertinoIcons.speaker_slash_fill),
+              );
+            })
+          ],
         ),
         body: SafeArea(
           child: SizedBox(
@@ -124,11 +133,9 @@ class _TimerPageState extends State<TimerPage> {
                     break;
                   case TimerStatus.run:
                     state.pause();
-                    audio.pauseIfNeeded();
                     break;
                   case TimerStatus.pause:
                     state.resume();
-                    audio.resumeIfNeeded();
                     break;
                   case TimerStatus.done:
                     break;
