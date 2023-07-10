@@ -13,7 +13,7 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
 
   final ObservableList<IntervalInterface> sets;
 
-  final String Function(int)? descriptionSolver;
+  final String? Function(int)? descriptionSolver;
 
   //interval info
   @observable
@@ -148,9 +148,10 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
   }
 
   @override
-  String get currentStateDescription {
+  String? get currentStateDescription {
     StringBuffer buffer = StringBuffer();
-    buffer.write(descriptionSolver?.call(_currentSetIndex + 1) ?? '');
+    final description = descriptionSolver?.call(_currentSetIndex + 1);
+    if (description != null) buffer.write(descriptionSolver?.call(_currentSetIndex + 1));
     final childDescription =
         _currentSet is Descriptionable ? (_currentSet as Descriptionable).currentStateDescription : null;
     if (childDescription != null) buffer.write('\n$childDescription');

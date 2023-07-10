@@ -78,9 +78,14 @@ abstract class TabataStoreBase with Store {
         ]);
         rounds.add(round);
       }
-      sets.add(WorkoutSet(rounds));
+      String? roundDescriptionSolver(int currentIndex) =>
+          (currentIndex <= tabata.roundsCount) ? 'ROUND $currentIndex/${tabata.roundsCount}' : null;
+
+      sets.add(WorkoutSet(rounds, descriptionSolver: roundDescriptionSolver));
     }
 
-    return WorkoutSet(sets);
+    String setDescriptionSolver(int currentIndex) => 'SET $currentIndex/$tabatsCount';
+
+    return WorkoutSet(sets, descriptionSolver: setDescriptionSolver);
   }
 }

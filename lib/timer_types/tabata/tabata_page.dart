@@ -52,7 +52,7 @@ class _TabataPageState extends State<TabataPage> {
         TimerRoute(
           state: TimerState(
             workout: tabataState.workout,
-            timerType: TimerType.emom,
+            timerType: TimerType.tabata,
           ),
         ),
       ),

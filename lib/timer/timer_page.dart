@@ -15,7 +15,6 @@ import 'package:wakelock/wakelock.dart';
 
 import 'timer_progress_container.dart';
 import 'timer_status.dart';
-import 'timer_type.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage(this.state, {Key? key}) : super(key: key);
@@ -246,7 +245,7 @@ class _TimerPageState extends State<TimerPage> {
         return const SizedBox();
       }
       return Text(
-        state.workout.currentStateDescription,
+        state.workout.currentStateDescription ?? '',
         style: context.textTheme.displayMedium,
         textAlign: TextAlign.center,
       );

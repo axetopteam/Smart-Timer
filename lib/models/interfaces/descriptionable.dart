@@ -1,3 +1,3 @@
 abstract class Descriptionable {
-  String get currentStateDescription;
+  String? get currentStateDescription;
 }

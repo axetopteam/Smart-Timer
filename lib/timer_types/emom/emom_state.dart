@@ -62,6 +62,7 @@ abstract class EmomStateBase with Store {
         (index) => WorkoutInterval(
           duration: emom.workTime,
           type: WorkoutIntervalType.work,
+          isLast: index == emom.roundsCount - 1,
         ),
       );
       if (i != emoms.length - 1) {
@@ -70,7 +71,8 @@ abstract class EmomStateBase with Store {
           type: WorkoutIntervalType.rest,
         ));
       }
-      String roundDescriptionSolver(int currentIndex) => 'ROUND $currentIndex/${emom.roundsCount}';
+      String? roundDescriptionSolver(int currentIndex) =>
+          (currentIndex <= emom.roundsCount) ? 'ROUND $currentIndex/${emom.roundsCount}' : null;
 
       final set = WorkoutSet(intervals, descriptionSolver: roundDescriptionSolver);
 
