@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/timer/timer_type.dart';

@@ -41,7 +41,7 @@ ThemeData createDarkTheme() {
         ),
       ),
     ),
-    cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
+    cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
       primaryColor: AppColors.white,
       textTheme: CupertinoTextThemeData(),
     ),

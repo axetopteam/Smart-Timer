@@ -132,7 +132,7 @@ class _RatioWidgetState extends State<RatioWidget> {
 }
 
 class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter({required this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+  DecimalTextInputFormatter({required this.decimalRange}) : assert(decimalRange > 0);
 
   final int decimalRange;
 
