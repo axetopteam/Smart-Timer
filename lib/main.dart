@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
-import 'package:unique_ids/unique_ids.dart';
+import 'package:uuid/uuid.dart';
 
 import 'core/app_theme/theme.dart';
 import 'firebase_options.dart';
@@ -42,7 +42,7 @@ void main() async {
 
   if (appProperties.userId == null) {
     try {
-      final uuid = await UniqueIds.uuid;
+      final uuid = const Uuid().v1();
       appProperties.userId = uuid;
     } catch (e) {
       if (kDebugMode) {

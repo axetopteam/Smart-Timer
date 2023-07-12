@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "655642439960",
-    "project_id": "easy-timer-app",
-    "storage_bucket": "easy-timer-app.appspot.com"
+    "project_number": "296423810503",
+    "project_id": "timer-c0bce",
+    "storage_bucket": "timer-c0bce.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:655642439960:android:b15e34f39f52f430d3ae6d",
+        "mobilesdk_app_id": "1:296423810503:android:1e1e72c3851bd2caeae5e2",
         "android_client_info": {
-          "package_name": "com.example.smart_timer"
+          "package_name": "app.axetop.timer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "655642439960-a77pobp2esk96jbqriv73iu7it8e5dqb.apps.googleusercontent.com",
+          "client_id": "296423810503-nt5jdfi08saqgs0pail6bd8lvo246htm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAoGNt7yyPoqfy3TjoqibSIDjMo-ZToDmk"
+          "current_key": "AIzaSyCpxHkf_ooR1MOpCSUT-kYTPO0g7UJOG38"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "655642439960-a77pobp2esk96jbqriv73iu7it8e5dqb.apps.googleusercontent.com",
+              "client_id": "296423810503-nt5jdfi08saqgs0pail6bd8lvo246htm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

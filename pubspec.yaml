@@ -38,7 +38,7 @@ dependencies:
   url_launcher: ^6.1.12
   package_info_plus: ^4.0.2
   flutter_mailer: ^2.1.1
-  unique_ids: ^3.0.0
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:

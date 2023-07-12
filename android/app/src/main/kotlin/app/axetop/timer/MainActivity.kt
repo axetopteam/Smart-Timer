@@ -1,4 +1,4 @@
-package com.example.smart_timer
+package app.axetop.timer
 
 import io.flutter.embedding.android.FlutterActivity
 

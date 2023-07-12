@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAoGNt7yyPoqfy3TjoqibSIDjMo-ZToDmk',
-    appId: '1:655642439960:android:b15e34f39f52f430d3ae6d',
-    messagingSenderId: '655642439960',
-    projectId: 'easy-timer-app',
-    storageBucket: 'easy-timer-app.appspot.com',
+    apiKey: 'AIzaSyCpxHkf_ooR1MOpCSUT-kYTPO0g7UJOG38',
+    appId: '1:296423810503:android:1e1e72c3851bd2caeae5e2',
+    messagingSenderId: '296423810503',
+    projectId: 'timer-c0bce',
+    storageBucket: 'timer-c0bce.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB6ex_CmfSqNU6PhVGFr1ddBFYBf5A2cYc',
-    appId: '1:655642439960:ios:2b4b36ba108d91e2d3ae6d',
-    messagingSenderId: '655642439960',
-    projectId: 'easy-timer-app',
-    storageBucket: 'easy-timer-app.appspot.com',
-    iosClientId: '655642439960-8oa483ekqga78u3rkr4ardfjkbas28h7.apps.googleusercontent.com',
+    apiKey: 'AIzaSyClWbjBIpc-S08kt2INHSJKVwY7kS5-csM',
+    appId: '1:296423810503:ios:7f8eb4120f86a5eaeae5e2',
+    messagingSenderId: '296423810503',
+    projectId: 'timer-c0bce',
+    storageBucket: 'timer-c0bce.appspot.com',
+    iosClientId: '296423810503-6sgde6fa9q5an0hsbrkk58kruta8lg23.apps.googleusercontent.com',
     iosBundleId: 'app.axetop.timer',
   );
 }
