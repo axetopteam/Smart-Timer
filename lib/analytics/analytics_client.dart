@@ -5,11 +5,11 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 abstract class AnalyticsClient {
   Future<bool> initialize();
 
-  void setUserId(String? userId);
+  Future<void> setUserId(String? userId);
 
-  void setUserProperty(String propertyId, dynamic value);
+  Future<void> setUserProperty(String propertyId, dynamic value);
 
-  void logEvent(String eventId, Map<String, dynamic> properties);
+  Future<void> logEvent(String eventId, Map<String, dynamic> properties);
 }
 
 class DebugAnalyticsClient implements AnalyticsClient {
@@ -19,17 +19,17 @@ class DebugAnalyticsClient implements AnalyticsClient {
   }
 
   @override
-  void setUserId(String? userId) {
+  Future<void> setUserId(String? userId) async {
     debugPrint('#DebugAnalyticsClient# set user id: $userId');
   }
 
   @override
-  void setUserProperty(String propertyId, dynamic value) {
+  Future<void> setUserProperty(String propertyId, dynamic value) async {
     debugPrint('#DebugAnalyticsClient# set $propertyId = $value');
   }
 
   @override
-  void logEvent(String eventId, Map<String, dynamic> properties) {
+  Future<void> logEvent(String eventId, Map<String, dynamic> properties) async {
     debugPrint('#DebugAnalyticsClient# log $eventId $properties');
   }
 }
@@ -40,18 +40,18 @@ class FirebaseClient implements AnalyticsClient {
   final FirebaseAnalytics _firebaseClient = FirebaseAnalytics.instance;
 
   @override
-  void setUserId(String? userId) {
-    _firebaseClient.setUserId(id: userId);
+  Future<void> setUserId(String? userId) async {
+    return _firebaseClient.setUserId(id: userId);
   }
 
   @override
-  void setUserProperty(String propertyId, dynamic value) {
-    _firebaseClient.setUserProperty(name: propertyId, value: value);
+  Future<void> setUserProperty(String propertyId, dynamic value) async {
+    return _firebaseClient.setUserProperty(name: propertyId, value: value);
   }
 
   @override
-  void logEvent(String eventId, Map<String, dynamic> properties) {
-    _firebaseClient.logEvent(name: eventId, parameters: properties);
+  Future<void> logEvent(String eventId, Map<String, dynamic> properties) async {
+    return _firebaseClient.logEvent(name: eventId, parameters: properties);
   }
 
   @override
@@ -74,7 +74,7 @@ class MixPanelClient implements AnalyticsClient {
   }
 
   @override
-  void setUserId(String? id) {
+  Future<void> setUserId(String? id) async {
     if (id != null) {
       user = People(id);
       _mixpanelClient.identify(id);
@@ -82,12 +82,12 @@ class MixPanelClient implements AnalyticsClient {
   }
 
   @override
-  void setUserProperty(String propertyId, dynamic value) {
+  Future<void> setUserProperty(String propertyId, dynamic value) async {
     user?.setOnce(propertyId, value);
   }
 
   @override
-  void logEvent(String eventId, Map<String, dynamic> properties) {
+  Future<void> logEvent(String eventId, Map<String, dynamic> properties) async {
     _mixpanelClient.track(eventId, properties: properties);
   }
 }

@@ -54,7 +54,7 @@ void main() async {
     }
   }
 
-  AnalyticsManager().setUserId(appProperties.userId);
+  await AnalyticsManager().setUserId(appProperties.userId);
 
   runApp(
     EasyLocalization(

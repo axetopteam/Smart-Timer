@@ -56,10 +56,10 @@ class AnalyticsManager {
     return true;
   }
 
-  void setUserId(String? userId) {
+  Future<void> setUserId(String? userId) async {
     _userId = userId;
     for (var client in _analyticsClients) {
-      client.setUserId(userId);
+      await client.setUserId(userId);
     }
   }
 
