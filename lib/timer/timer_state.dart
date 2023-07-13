@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
@@ -147,8 +146,6 @@ abstract class TimerStateBase with Store {
     _audio.playHalfTime();
   }
 
-  AppProperties get _properties => GetIt.I();
-
   @observable
   bool soundOn = true;
 
@@ -157,7 +154,7 @@ abstract class TimerStateBase with Store {
     try {
       soundOn = !soundOn;
       await _audio.switchSoundOnOff(soundOn);
-      _properties.saveSoundOn(soundOn);
+      AppProperties().saveSoundOn(soundOn);
     } catch (_) {}
   }
 }

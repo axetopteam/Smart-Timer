@@ -2,9 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
-import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
@@ -28,7 +27,7 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   void initState() {
-    final json = GetIt.I<AppProperties>().getAmrapSettings();
+    final json = AppProperties().getAmrapSettings();
     amrapState = json != null ? AmrapState.fromJson(json) : AmrapState();
 
     super.initState();
@@ -37,7 +36,7 @@ class _AmrapPageState extends State<AmrapPage> {
   @override
   void dispose() {
     final json = amrapState.toJson();
-    GetIt.I<AppProperties>().setAmrapSettings(json);
+    AppProperties().setAmrapSettings(json);
     super.dispose();
   }
 

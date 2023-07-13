@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
-import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
@@ -27,7 +26,7 @@ class ApplicationSupport {
     final buildNumber = packageInfo.buildNumber;
 
     final osVersion = Platform.operatingSystem;
-    final userId = GetIt.I<AppProperties>().userId;
+    final userId = AppProperties().userId;
     //TODO: localization
     return '''
 

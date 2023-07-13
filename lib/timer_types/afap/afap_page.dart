@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -29,14 +28,14 @@ class _AfapPageState extends State<AfapPage> {
   @override
   void initState() {
     super.initState();
-    final json = GetIt.I<AppProperties>().getAfapSettings();
+    final json = AppProperties().getAfapSettings();
     afapState = json != null ? AfapState.fromJson(json) : AfapState();
   }
 
   @override
   void dispose() {
     final json = afapState.toJson();
-    GetIt.I<AppProperties>().setAfapSettings(json);
+    AppProperties().setAfapSettings(json);
     super.dispose();
   }
 

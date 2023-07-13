@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
@@ -23,7 +22,7 @@ class _CustomizedPageState extends State<CustomizedPage> {
 
   @override
   void initState() {
-    final json = GetIt.I<AppProperties>().getCustomSettings();
+    final json = AppProperties().getCustomSettings();
     customSettings = json != null ? CustomizedState.fromJson(json) : CustomizedState();
     super.initState();
   }
@@ -31,7 +30,7 @@ class _CustomizedPageState extends State<CustomizedPage> {
   @override
   void dispose() {
     final json = customSettings.toJson();
-    GetIt.I<AppProperties>().setCustomSettings(json);
+    AppProperties().setCustomSettings(json);
     super.dispose();
   }
 

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -29,7 +28,7 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   void initState() {
-    final settingsJson = GetIt.I<AppProperties>().getTabataSettings();
+    final settingsJson = AppProperties().getTabataSettings();
     tabataState = settingsJson != null ? TabataState.fromJson(settingsJson) : TabataState();
 
     super.initState();
@@ -38,7 +37,7 @@ class _TabataPageState extends State<TabataPage> {
   @override
   dispose() {
     final json = tabataState.toJson();
-    GetIt.I<AppProperties>().setTabataSettings(json);
+    AppProperties().setTabataSettings(json);
     super.dispose();
   }
 

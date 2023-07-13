@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -29,7 +28,7 @@ class _EmomPageState extends State<EmomPage> {
 
   @override
   void initState() {
-    final settingsJson = GetIt.I<AppProperties>().getEmomSettings();
+    final settingsJson = AppProperties().getEmomSettings();
     emomState = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
     super.initState();
   }
@@ -37,7 +36,7 @@ class _EmomPageState extends State<EmomPage> {
   @override
   void dispose() {
     final json = emomState.toJson();
-    GetIt.I<AppProperties>().setEmomSettings(json);
+    AppProperties().setEmomSettings(json);
     super.dispose();
   }
 

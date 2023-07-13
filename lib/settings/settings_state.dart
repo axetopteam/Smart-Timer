@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
@@ -11,7 +10,7 @@ abstract class _SettingsState with Store {
     _initializeValues();
   }
 
-  AppProperties get _properties => GetIt.I();
+  final _properties = AppProperties();
 
   @observable
   bool? soundOn;

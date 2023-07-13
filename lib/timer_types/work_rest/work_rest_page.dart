@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
@@ -28,7 +27,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
 
   @override
   void initState() {
-    final settingsJson = GetIt.I<AppProperties>().getWorkRestSettings();
+    final settingsJson = AppProperties().getWorkRestSettings();
     workRest = settingsJson != null ? WorkRestState.fromJson(settingsJson) : WorkRestState();
     super.initState();
   }
@@ -36,7 +35,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
   @override
   void dispose() {
     final json = workRest.toJson();
-    GetIt.I<AppProperties>().setWorkRestSettings(json);
+    AppProperties().setWorkRestSettings(json);
     super.dispose();
   }
 
