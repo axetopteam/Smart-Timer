@@ -4,7 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
+import 'package:smart_timer/purchasing/purchase_manager.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:uuid/uuid.dart';
@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 import 'analytics/analytics_manager.dart';
 import 'core/app_theme/theme.dart';
 import 'firebase_options.dart';
+import 'purchasing/premium_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,6 @@ void main() async {
   final appProperties = AppProperties();
   await appProperties.initializeProperties();
 
-  GetIt.I.registerSingleton<AppProperties>(appProperties);
   final appRouter = AppRouter();
 
   SystemChrome.setSystemUIOverlayStyle(
@@ -55,6 +55,9 @@ void main() async {
   }
 
   await AnalyticsManager().setUserId(appProperties.userId);
+
+  final premiumState = PremiumState();
+  PurchaseManager().initialize(onProfileUpdated: premiumState.updatePremiumStatus);
 
   runApp(
     EasyLocalization(

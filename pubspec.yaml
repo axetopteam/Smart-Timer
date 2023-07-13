@@ -22,6 +22,9 @@ dependencies:
   easy_localization: ^3.0.2
   auto_route: ^7.7.0
 
+  #purchase
+  adapty_flutter: ^2.4.4
+
   #analytics
   firebase_core: ^2.14.0
   firebase_crashlytics: ^3.3.3

@@ -2,7 +2,13 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// AppProperties singleton class
+
 class AppProperties {
+  static final AppProperties _internalSingleton = AppProperties._internal();
+  factory AppProperties() => _internalSingleton;
+  AppProperties._internal();
+
   late SharedPreferences _preferences;
   final String _userIdKey = 'userId';
   final String _amrapSettingsKey = 'amrapSettings';

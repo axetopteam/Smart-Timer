@@ -1,4 +1,8 @@
 PODS:
+  - Adapty (2.4.5)
+  - adapty_flutter (2.4.4):
+    - Adapty (= 2.4.5)
+    - Flutter
   - audioplayers_darwin (0.0.1):
     - Flutter
   - Firebase/Analytics (10.10.0):
@@ -143,6 +147,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - adapty_flutter (from `.symlinks/plugins/adapty_flutter/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -158,6 +163,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Adapty
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -175,6 +181,8 @@ SPEC REPOS:
     - PromisesSwift
 
 EXTERNAL SOURCES:
+  adapty_flutter:
+    :path: ".symlinks/plugins/adapty_flutter/ios"
   audioplayers_darwin:
     :path: ".symlinks/plugins/audioplayers_darwin/ios"
   firebase_analytics:
@@ -201,6 +209,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
+  Adapty: 7d3ef97291d631d1711bb176c61dd5f26d143bd1
+  adapty_flutter: 27c33cd8e3f07bb015793730fde19a82a311aa49
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   Firebase: facd334e557a979bd03a0b58d90fd56b52b8aba0
   firebase_analytics: 1a5ad75876257318ba5fdc6bf7aae73b6e98d0cf
