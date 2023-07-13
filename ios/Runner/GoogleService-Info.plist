@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>655642439960-8oa483ekqga78u3rkr4ardfjkbas28h7.apps.googleusercontent.com</string>
+	<string>296423810503-6sgde6fa9q5an0hsbrkk58kruta8lg23.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.655642439960-8oa483ekqga78u3rkr4ardfjkbas28h7</string>
+	<string>com.googleusercontent.apps.296423810503-6sgde6fa9q5an0hsbrkk58kruta8lg23</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB6ex_CmfSqNU6PhVGFr1ddBFYBf5A2cYc</string>
+	<string>AIzaSyClWbjBIpc-S08kt2INHSJKVwY7kS5-csM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>655642439960</string>
+	<string>296423810503</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>app.axetop.timer</string>
 	<key>PROJECT_ID</key>
-	<string>easy-timer-app</string>
+	<string>timer-c0bce</string>
 	<key>STORAGE_BUCKET</key>
-	<string>easy-timer-app.appspot.com</string>
+	<string>timer-c0bce.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:655642439960:ios:2b4b36ba108d91e2d3ae6d</string>
+	<string>1:296423810503:ios:7f8eb4120f86a5eaeae5e2</string>
 </dict>
 </plist>
