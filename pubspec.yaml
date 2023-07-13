@@ -26,6 +26,7 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_crashlytics: ^3.3.3
   firebase_analytics: ^10.4.3
+  mixpanel_flutter: ^2.1.1
 
   #UI
   modal_bottom_sheet: ^3.0.0-pre

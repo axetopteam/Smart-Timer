@@ -9,6 +9,7 @@ import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:uuid/uuid.dart';
 
+import 'analytics/analytics_manager.dart';
 import 'core/app_theme/theme.dart';
 import 'firebase_options.dart';
 
@@ -40,16 +41,20 @@ void main() async {
     ),
   );
 
+  await AnalyticsManager().initialize();
+
   if (appProperties.userId == null) {
     try {
       final uuid = const Uuid().v1();
-      appProperties.userId = uuid;
+      await appProperties.setUserId(uuid);
     } catch (e) {
       if (kDebugMode) {
         print('#main# Failed to get uuid');
       }
     }
   }
+
+  AnalyticsManager().setUserId(appProperties.userId);
 
   runApp(
     EasyLocalization(

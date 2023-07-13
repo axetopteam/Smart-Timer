@@ -22,9 +22,11 @@ class AppProperties {
     return _preferences.getString(_userIdKey);
   }
 
-  set userId(String? value) {
-    if (value == null) return;
-    _preferences.setString(_userIdKey, value);
+  Future<bool?> setUserId(String? value) async {
+    if (value != null) {
+      return await _preferences.setString(_userIdKey, value);
+    }
+    return null;
   }
 
   Future<bool> setAmrapSettings(Map<String, dynamic> json) {
