@@ -17,6 +17,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color pickerOverlay;
   final Color background;
   final Color containerBackground;
+  final Color premium;
+  final Color warning;
 
   const ThemeColors({
     required this.amrapColor,
@@ -35,6 +37,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.pickerOverlay,
     required this.background,
     required this.containerBackground,
+    required this.premium,
+    required this.warning,
   });
 
   @override
@@ -55,6 +59,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? pickerOverlay,
     Color? background,
     Color? containerBackground,
+    Color? premium,
+    Color? warning,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -73,6 +79,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       pickerOverlay: pickerOverlay ?? this.pickerOverlay,
       background: background ?? this.background,
       containerBackground: containerBackground ?? this.containerBackground,
+      premium: premium ?? this.premium,
+      warning: warning ?? this.warning,
     );
   }
 
@@ -102,6 +110,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       pickerOverlay: Color.lerp(pickerOverlay, other.pickerOverlay, t)!,
       background: Color.lerp(background, other.background, t)!,
       containerBackground: Color.lerp(containerBackground, other.containerBackground, t)!,
+      premium: Color.lerp(premium, other.premium, t)!,
+      warning: Color.lerp(warning, other.warning, t)!,
     );
   }
 
@@ -122,5 +132,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         pickerOverlay: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.15),
         background: AppColors.black,
         containerBackground: AppColors.greyBlue,
+        premium: AppColors.activeGreen,
+        warning: AppColors.systemRed,
       );
 }

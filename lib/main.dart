@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_timer/purchasing/purchase_manager.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
@@ -64,7 +65,10 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: MyApp(appRouter),
+      child: Provider.value(
+        value: premiumState,
+        child: MyApp(appRouter),
+      ),
     ),
   );
 }
