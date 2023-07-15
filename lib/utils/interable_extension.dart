@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 extension SeparatedWidgets on Iterable<Widget> {
-  Iterable<Widget> addSeparator(Widget separator) {
-    if (isEmpty) return this;
+  List<Widget> addSeparator(Widget separator) {
+    if (isEmpty) return toList();
     final result = <Widget>[];
     for (var item in this) {
       result.addAll(

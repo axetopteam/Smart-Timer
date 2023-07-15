@@ -73,6 +73,7 @@ abstract class AppColors {
   static const grey = Color(0xFF7C7C7C);
   static const activeGreen = CupertinoColors.activeGreen;
   static const systemRed = CupertinoColors.systemRed;
+  static const activeBlue = CupertinoColors.activeBlue;
 
   static const denimBlue = Color(0xFF254CB0);
   static const darkGreen = Color(0xFF387722);

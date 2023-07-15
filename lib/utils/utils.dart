@@ -15,4 +15,12 @@ class AppUtils {
       return false;
     }
   }
+
+  static Future<bool> openPrivacyPolicy() {
+    return tryLaunchUrl('https://axetop.dev/privacy');
+  }
+
+  static Future<bool> openTermsOfUse() {
+    return tryLaunchUrl('https://axetop.dev/terms');
+  }
 }

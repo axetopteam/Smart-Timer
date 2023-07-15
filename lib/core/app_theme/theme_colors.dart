@@ -9,6 +9,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color customColor;
   final Color mainText;
   final Color secondaryText;
+  final Color tertiaryText;
   final Color borderColor;
   final Color bottomSheetBackgroundColor;
   final Color timerOverlayColor;
@@ -19,6 +20,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color containerBackground;
   final Color premium;
   final Color warning;
+  final Color accent;
 
   const ThemeColors({
     required this.amrapColor,
@@ -29,6 +31,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.customColor,
     required this.mainText,
     required this.secondaryText,
+    required this.tertiaryText,
     required this.borderColor,
     required this.bottomSheetBackgroundColor,
     required this.timerOverlayColor,
@@ -39,6 +42,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.containerBackground,
     required this.premium,
     required this.warning,
+    required this.accent,
   });
 
   @override
@@ -51,6 +55,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? customColor,
     Color? mainText,
     Color? secondaryText,
+    Color? tertiaryText,
     Color? borderColor,
     Color? bottomSheetBackgroundColor,
     Color? timerOverlayColor,
@@ -61,6 +66,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? containerBackground,
     Color? premium,
     Color? warning,
+    Color? accent,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -71,6 +77,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       customColor: customColor ?? this.customColor,
       mainText: mainText ?? this.mainText,
       secondaryText: secondaryText ?? this.secondaryText,
+      tertiaryText: tertiaryText ?? this.tertiaryText,
       borderColor: borderColor ?? this.borderColor,
       bottomSheetBackgroundColor: bottomSheetBackgroundColor ?? this.bottomSheetBackgroundColor,
       timerOverlayColor: timerOverlayColor ?? this.timerOverlayColor,
@@ -81,6 +88,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       containerBackground: containerBackground ?? this.containerBackground,
       premium: premium ?? this.premium,
       warning: warning ?? this.warning,
+      accent: accent ?? this.accent,
     );
   }
 
@@ -102,6 +110,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       customColor: Color.lerp(customColor, other.customColor, t)!,
       mainText: Color.lerp(mainText, other.mainText, t)!,
       secondaryText: Color.lerp(secondaryText, other.secondaryText, t)!,
+      tertiaryText: Color.lerp(tertiaryText, other.tertiaryText, t)!,
       borderColor: Color.lerp(borderColor, other.borderColor, t)!,
       bottomSheetBackgroundColor: Color.lerp(bottomSheetBackgroundColor, other.bottomSheetBackgroundColor, t)!,
       timerOverlayColor: Color.lerp(timerOverlayColor, other.timerOverlayColor, t)!,
@@ -112,6 +121,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       containerBackground: Color.lerp(containerBackground, other.containerBackground, t)!,
       premium: Color.lerp(premium, other.premium, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
     );
   }
 
@@ -124,6 +134,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         customColor: AppColors.paleRed,
         mainText: AppColors.white,
         secondaryText: Colors.grey,
+        tertiaryText: Colors.black87,
         borderColor: AppColors.grey,
         bottomSheetBackgroundColor: AppColors.black,
         timerOverlayColor: AppColors.black70,
@@ -134,5 +145,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         containerBackground: AppColors.greyBlue,
         premium: AppColors.activeGreen,
         warning: AppColors.systemRed,
+        accent: AppColors.activeBlue,
       );
 }

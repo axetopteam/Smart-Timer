@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/purchasing/premium_state.dart';
 import 'package:smart_timer/utils/utils.dart';
 
@@ -87,11 +88,13 @@ class _SettingsPageState extends State<SettingsPage> {
         CupertinoListTile.notched(
           title: const Text('Purchase Plan'),
           leading: const Icon(CupertinoIcons.star_circle_fill),
-          onTap: () {},
+          onTap: () {
+            PaywallPage.show(context);
+          },
         ),
         CupertinoListTile.notched(
           title: const Text('Plan'),
-          leading: const Icon(CupertinoIcons.check_mark_circled),
+          leading: const Icon(CupertinoIcons.checkmark_seal),
           trailing: Observer(builder: (ctx) {
             return Container(
               padding: const EdgeInsets.fromLTRB(6, 2, 6, 4),
@@ -134,6 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
               if (soundOn != null) {
                 return CupertinoSwitch(
                   value: soundOn,
+                  applyTheme: true,
                   onChanged: (value) {
                     _state.saveSoundOn(value);
                   },
@@ -164,12 +168,12 @@ class _SettingsPageState extends State<SettingsPage> {
         CupertinoListTile.notched(
           title: Text('Privacy Policy'),
           leading: const Icon(CupertinoIcons.checkmark_shield_fill),
-          onTap: () => AppUtils.tryLaunchUrl('https://axetop.dev/privacy'),
+          onTap: AppUtils.openPrivacyPolicy,
         ),
         CupertinoListTile.notched(
           title: Text('Terms of Use'),
           leading: const Icon(CupertinoIcons.doc_plaintext),
-          onTap: () => AppUtils.tryLaunchUrl('https://axetop.dev/terms'),
+          onTap: AppUtils.openTermsOfUse,
         ),
       ],
     );

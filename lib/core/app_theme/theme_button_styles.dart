@@ -4,11 +4,13 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
   final ElevatedButtonThemeData startButtonTheme;
   final TextButtonThemeData deleteButtonTheme;
   final ElevatedButtonThemeData popupButtonTheme;
+  final ElevatedButtonThemeData paywallButtonTheme;
 
   const ThemeButtonStyles({
     required this.startButtonTheme,
     required this.deleteButtonTheme,
     required this.popupButtonTheme,
+    required this.paywallButtonTheme,
   });
 
   @override
@@ -16,11 +18,13 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
     ElevatedButtonThemeData? startButtonTheme,
     TextButtonThemeData? deleteButtonTheme,
     ElevatedButtonThemeData? popupButtonTheme,
+    ElevatedButtonThemeData? paywallButtonTheme,
   }) {
     return ThemeButtonStyles(
       startButtonTheme: startButtonTheme ?? this.startButtonTheme,
       deleteButtonTheme: deleteButtonTheme ?? this.deleteButtonTheme,
       popupButtonTheme: popupButtonTheme ?? this.popupButtonTheme,
+      paywallButtonTheme: paywallButtonTheme ?? this.paywallButtonTheme,
     );
   }
 
@@ -37,6 +41,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
       startButtonTheme: ElevatedButtonThemeData.lerp(startButtonTheme, other.startButtonTheme, t)!,
       deleteButtonTheme: TextButtonThemeData.lerp(deleteButtonTheme, other.deleteButtonTheme, t)!,
       popupButtonTheme: ElevatedButtonThemeData.lerp(popupButtonTheme, other.popupButtonTheme, t)!,
+      paywallButtonTheme: ElevatedButtonThemeData.lerp(paywallButtonTheme, other.paywallButtonTheme, t)!,
     );
   }
 
@@ -72,6 +77,18 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
+            ),
+            minimumSize: MaterialStateProperty.all(const Size(double.infinity, 56)),
+          ),
+        ),
+        paywallButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all(AppColors.white),
+            backgroundColor: MaterialStateProperty.all(AppColors.activeBlue),
+            textStyle: MaterialStateProperty.all(displayMedium),
+            elevation: MaterialStateProperty.all(0),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             ),
             minimumSize: MaterialStateProperty.all(const Size(double.infinity, 56)),
           ),

@@ -2,7 +2,7 @@ part of 'theme.dart';
 
 ThemeData createDarkTheme() {
   return ThemeData(
-    primaryColor: AppColors.white,
+    primaryColor: AppColors.activeBlue,
     brightness: Brightness.dark,
     fontFamily: 'Montserrat',
     textTheme: createTextTheme().apply(displayColor: AppColors.white),
@@ -41,8 +41,9 @@ ThemeData createDarkTheme() {
         ),
       ),
     ),
+    iconTheme: const IconThemeData(color: AppColors.activeBlue),
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-      primaryColor: AppColors.white,
+      primaryColor: AppColors.activeBlue,
       textTheme: CupertinoTextThemeData(),
     ),
     extensions: <ThemeExtension<dynamic>>[

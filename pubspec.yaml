@@ -34,7 +34,6 @@ dependencies:
 
   #UI
   modal_bottom_sheet: ^3.0.0-pre
-  wolt_modal_sheet: ^0.0.3
 
   #utilities
   json_annotation: ^4.3.0
@@ -45,6 +44,7 @@ dependencies:
   package_info_plus: ^4.0.2
   flutter_mailer: ^2.1.1
   uuid: ^3.0.7
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:
