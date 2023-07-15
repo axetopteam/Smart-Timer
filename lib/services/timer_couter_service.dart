@@ -12,27 +12,29 @@ class TimerCouterService {
 
   final appProperties = AppProperties();
 
-  late final List<DateTime> lastTimersEndTimes;
+  late final List<DateTime> _lastTimersEndTimes;
 
   void initialize() {
-    lastTimersEndTimes = appProperties.lastTimersEndTimes;
+    _lastTimersEndTimes = appProperties.lastTimersEndTimes;
   }
 
   void addNewTime(DateTime dateTime) {
-    lastTimersEndTimes.add(dateTime.toUtc());
+    _lastTimersEndTimes.add(dateTime.toUtc());
 
-    if (lastTimersEndTimes.length > _maxCount) {
-      lastTimersEndTimes =
-          lastTimersEndTimes.sublist(lastTimersEndTimes.length - _maxCount, lastTimersEndTimes.length).toList();
+    if (_lastTimersEndTimes.length > _maxCount) {
+      _lastTimersEndTimes =
+          _lastTimersEndTimes.sublist(_lastTimersEndTimes.length - _maxCount, _lastTimersEndTimes.length).toList();
     }
 
-    appProperties.lastTimersEndTimes = lastTimersEndTimes;
+    appProperties.lastTimersEndTimes = _lastTimersEndTimes;
   }
 
-  int get todaysCount {
+  int get _todaysCount {
     final now = DateTime.now();
     final beginOfToday = DateTime(now.year, now.month, now.day);
-    final todaysTimers = lastTimersEndTimes.where((element) => element.isAfter(beginOfToday));
+    final todaysTimers = _lastTimersEndTimes.where((element) => element.isAfter(beginOfToday));
     return todaysTimers.length;
   }
+
+  bool get canStartNewTimer => _todaysCount < 3;
 }

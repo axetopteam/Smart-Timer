@@ -22,9 +22,8 @@ class StartButton extends StatelessWidget {
         child: ElevatedButton(
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(backgroundColor)),
           onPressed: () {
-            final todaysCount = TimerCouterService().todaysCount;
             final premiumState = context.read<PremiumState>();
-            if (premiumState.isPremiumActive || todaysCount < 2) {
+            if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {
               onPressed();
             } else {
               PaywallPage.show(context);
