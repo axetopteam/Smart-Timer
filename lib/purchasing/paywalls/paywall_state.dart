@@ -10,7 +10,7 @@ class PaywallState = _PaywallState with _$PaywallState;
 
 abstract class _PaywallState with Store {
   _PaywallState() {
-    fetchPaywallAndProducts();
+    initialize();
   }
   final purchaseManager = PurchaseManager();
 
@@ -29,11 +29,28 @@ abstract class _PaywallState with Store {
   @observable
   bool purchaseInProgress = false;
 
+  Future<void> initialize() async {
+    if (paywall == null) {
+      await _fetchPaywall();
+    }
+    await _fetchPaywallProducts();
+  }
+
   @action
-  Future<void> fetchPaywallAndProducts({bool ensureEligibility = false}) async {
+  Future<void> _fetchPaywall() async {
     try {
       error = null;
       paywall = await purchaseManager.getOrLoadPaywall(mainPaywallId);
+      purchaseManager.logShowPaywall(paywall!);
+    } catch (e) {
+      error = e;
+    }
+  }
+
+  @action
+  Future<void> _fetchPaywallProducts({bool ensureEligibility = false}) async {
+    try {
+      error = null;
       products = await purchaseManager.getPaywallProducts(paywall!, ensureEligibility: ensureEligibility);
 
       selectedProduct ??= products?.firstOrNull;
@@ -45,10 +62,10 @@ abstract class _PaywallState with Store {
       shouldReloadProducts = result != null;
 
       if (shouldReloadProducts) {
-        await fetchPaywallAndProducts(ensureEligibility: true);
+        await _fetchPaywallProducts(ensureEligibility: true);
       }
     } catch (e) {
-      error = ensureEligibility ? null : e;
+      error = products != null ? null : e;
     }
   }
 

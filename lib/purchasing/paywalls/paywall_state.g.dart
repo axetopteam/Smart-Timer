@@ -88,20 +88,28 @@ mixin _$PaywallState on _PaywallState, Store {
     });
   }
 
-  late final _$fetchPaywallAndProductsAsyncAction =
-      AsyncAction('_PaywallState.fetchPaywallAndProducts', context: context);
+  late final _$_fetchPaywallAsyncAction =
+      AsyncAction('_PaywallState._fetchPaywall', context: context);
 
   @override
-  Future<void> fetchPaywallAndProducts({bool ensureEligibility = false}) {
-    return _$fetchPaywallAndProductsAsyncAction.run(() =>
-        super.fetchPaywallAndProducts(ensureEligibility: ensureEligibility));
+  Future<void> _fetchPaywall() {
+    return _$_fetchPaywallAsyncAction.run(() => super._fetchPaywall());
+  }
+
+  late final _$_fetchPaywallProductsAsyncAction =
+      AsyncAction('_PaywallState._fetchPaywallProducts', context: context);
+
+  @override
+  Future<void> _fetchPaywallProducts({bool ensureEligibility = false}) {
+    return _$_fetchPaywallProductsAsyncAction.run(() =>
+        super._fetchPaywallProducts(ensureEligibility: ensureEligibility));
   }
 
   late final _$restorePurchaseAsyncAction =
       AsyncAction('_PaywallState.restorePurchase', context: context);
 
   @override
-  Future restorePurchase() {
+  Future<void> restorePurchase() {
     return _$restorePurchaseAsyncAction.run(() => super.restorePurchase());
   }
 
@@ -109,7 +117,7 @@ mixin _$PaywallState on _PaywallState, Store {
       AsyncAction('_PaywallState.makePurchase', context: context);
 
   @override
-  Future makePurchase(AdaptyPaywallProduct product) {
+  Future<void> makePurchase(AdaptyPaywallProduct product) {
     return _$makePurchaseAsyncAction.run(() => super.makePurchase(product));
   }
 

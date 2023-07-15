@@ -50,8 +50,9 @@ class _PaywallPageState extends State<PaywallPage> {
                     const SizedBox(height: 40),
                     Observer(builder: (ctx) {
                       final products = state.products;
+
                       if (products == null) {
-                        return Container();
+                        return const ProductContainerPlaceholder();
                       } else {
                         return Column(
                             children: products

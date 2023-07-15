@@ -166,4 +166,12 @@ class PurchaseManager {
       return null;
     }
   }
+
+  Future<void> logShowPaywall(AdaptyPaywall paywall) async {
+    try {
+      await Adapty().logShowPaywall(paywall: paywall);
+    } catch (e) {
+      Future.delayed(const Duration(seconds: 5), () => logShowPaywall(paywall));
+    }
+  }
 }
