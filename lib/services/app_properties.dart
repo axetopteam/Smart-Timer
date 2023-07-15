@@ -18,6 +18,7 @@ class AppProperties {
   final String _customSettingsKey = 'customSettings';
   final String _workRestSettingsKey = 'workRestSettings';
   final String _soundOnKey = 'soundOn';
+  final String _lastTimersEndTimesKey = 'lastTimersEndTimes';
 
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
@@ -93,6 +94,15 @@ class AppProperties {
 
   Future<bool> setJson(String key, Map<String, dynamic> json) {
     return _preferences.setString(key, jsonEncode(json));
+  }
+
+  set lastTimersEndTimes(List<DateTime> times) {
+    _preferences.setStringList(_lastTimersEndTimesKey, times.map((e) => e.millisecondsSinceEpoch.toString()).toList());
+  }
+
+  List<DateTime> get lastTimersEndTimes {
+    final timesList = _preferences.getStringList(_lastTimersEndTimesKey) ?? [];
+    return timesList.map((e) => DateTime.fromMillisecondsSinceEpoch(int.parse(e), isUtc: true)).toList();
   }
 
   Map<String, dynamic>? getJson(String key) {
