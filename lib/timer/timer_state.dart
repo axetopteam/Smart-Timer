@@ -6,6 +6,7 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
+import 'package:smart_timer/services/timer_couter_service.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
@@ -24,7 +25,13 @@ abstract class TimerStateBase with Store {
   final WorkoutSet workout;
   final TimerType timerType;
 
-  final _audio = AudioService();
+  late final AudioService _audio;
+
+  void initializeAudio(bool soundOn) {
+    _audio = AudioService();
+    this.soundOn = soundOn;
+    _audio.switchSoundOnOff(soundOn);
+  }
 
   final countdownInterval = WorkoutInterval(
     type: WorkoutIntervalType.countdown,
@@ -114,6 +121,7 @@ abstract class TimerStateBase with Store {
 
       if (workout.isEnded) {
         currentState = TimerStatus.done;
+        TimerCouterService().addNewTime(DateTime.now());
         close();
       }
     }
