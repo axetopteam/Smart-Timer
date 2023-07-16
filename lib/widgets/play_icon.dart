@@ -9,7 +9,7 @@ class PlayIcon extends StatelessWidget {
     return Icon(
       Icons.play_circle_filled_rounded,
       color: context.color.playIconColor,
-      size: 90,
+      size: 120,
     );
   }
 }

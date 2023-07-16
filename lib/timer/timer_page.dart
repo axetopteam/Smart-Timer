@@ -75,7 +75,7 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (state.currentState != TimerStatus.ready) {
+        if (state.currentState != TimerStatus.ready && state.currentState != TimerStatus.done) {
           final res = await _showConfirmExitAlert();
           return res ?? false;
         }
@@ -246,9 +246,6 @@ class _TimerPageState extends State<TimerPage> {
 
   Widget _buildRoudsInfo() {
     return Observer(builder: (_) {
-      if (!state.countdownInterval.isEnded) {
-        return const SizedBox();
-      }
       return Text(
         state.workout.currentStateDescription ?? '',
         style: context.textTheme.displayMedium,
@@ -261,17 +258,19 @@ class _TimerPageState extends State<TimerPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const Spacer(),
         Container(
-          height: 160,
-          width: 160,
+          height: 180,
+          width: 180,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: state.timerType.workoutColor(context),
             shape: BoxShape.circle,
           ),
-          child: const Icon(
-            CupertinoIcons.check_mark,
-            size: 120,
+          child: Icon(
+            CupertinoIcons.checkmark_alt,
+            size: 140,
+            color: context.color.mainText,
           ),
         ),
         const SizedBox(height: 40),
@@ -280,8 +279,18 @@ class _TimerPageState extends State<TimerPage> {
           textAlign: TextAlign.center,
           style: context.textTheme.displayLarge,
         ),
-
-        //TODO: нужна кнопка завершить
+        const SizedBox(height: 40),
+        const Spacer(),
+        ElevatedButtonTheme(
+          data: context.buttonThemes.popupButtonTheme,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: Text('Complete'),
+          ),
+        ),
+        const SizedBox(height: 20),
       ],
     );
   }

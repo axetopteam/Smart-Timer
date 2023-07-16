@@ -36,5 +36,5 @@ class TimerCouterService {
     return todaysTimers.length;
   }
 
-  bool get canStartNewTimer => _todaysCount < 3;
+  bool get canStartNewTimer => _todaysCount < 2;
 }
