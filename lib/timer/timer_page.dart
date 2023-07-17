@@ -9,6 +9,7 @@ import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_properties.dart';
+import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -78,6 +79,9 @@ class _TimerPageState extends State<TimerPage> {
         if (state.currentState != TimerStatus.ready && state.currentState != TimerStatus.done) {
           final res = await _showConfirmExitAlert();
           return res ?? false;
+        }
+        if (state.currentState == TimerStatus.done) {
+          _requestAppReview();
         }
         return true;
       },
@@ -286,6 +290,7 @@ class _TimerPageState extends State<TimerPage> {
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
+              _requestAppReview();
             },
             child: Text('Complete'),
           ),
@@ -293,6 +298,10 @@ class _TimerPageState extends State<TimerPage> {
         const SizedBox(height: 20),
       ],
     );
+  }
+
+  void _requestAppReview() {
+    Future.delayed(const Duration(seconds: 1), AppReviewService().requestReviewIfAvailable);
   }
 
   Future<bool?> _showConfirmExitAlert() {

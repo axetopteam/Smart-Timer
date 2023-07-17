@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/purchasing/premium_state.dart';
+import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/utils.dart';
 
 import 'settings_state.dart';
@@ -62,7 +63,9 @@ class _SettingsPageState extends State<SettingsPage> {
         CupertinoListTile.notched(
           title: Text('Rate Us'),
           leading: const Icon(CupertinoIcons.star_fill),
-          // onTap: () {},
+          onTap: () {
+            AppReviewService().openStoreListing();
+          },
         ),
         CupertinoListTile.notched(
           title: const Text('Contact Us'),

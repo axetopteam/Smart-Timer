@@ -19,6 +19,8 @@ class AppProperties {
   final String _workRestSettingsKey = 'workRestSettings';
   final String _soundOnKey = 'soundOn';
   final String _lastTimersEndTimesKey = 'lastTimersEndTimes';
+  final String _rateSuggestionShowedAtKey = 'rateSuggestionShowedAt';
+  final String _rateSuggestionShowedVersionKey = 'rateSuggestionShowedVersion';
 
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
@@ -97,12 +99,30 @@ class AppProperties {
   }
 
   set lastTimersEndTimes(List<DateTime> times) {
-    _preferences.setStringList(_lastTimersEndTimesKey, times.map((e) => e.millisecondsSinceEpoch.toString()).toList());
+    _preferences.setStringList(
+        _lastTimersEndTimesKey, times.map((e) => e.toUtc().millisecondsSinceEpoch.toString()).toList());
   }
 
   List<DateTime> get lastTimersEndTimes {
     final timesList = _preferences.getStringList(_lastTimersEndTimesKey) ?? [];
     return timesList.map((e) => DateTime.fromMillisecondsSinceEpoch(int.parse(e), isUtc: true)).toList();
+  }
+
+  void rateSuggestionShowedParams(DateTime dateTime, String version) {
+    _preferences.setInt(_rateSuggestionShowedAtKey, dateTime.millisecondsSinceEpoch);
+    _preferences.setString(_rateSuggestionShowedVersionKey, version);
+  }
+
+  ({DateTime? date, String? version}) get rateSuggestionShowParams {
+    final millisecondsSinceEpoch = _preferences.getInt(_rateSuggestionShowedAtKey);
+    final version = _preferences.getString(_rateSuggestionShowedVersionKey);
+
+    return (
+      date: millisecondsSinceEpoch != null
+          ? DateTime.fromMicrosecondsSinceEpoch(millisecondsSinceEpoch, isUtc: true)
+          : null,
+      version: version,
+    );
   }
 
   Map<String, dynamic>? getJson(String key) {
