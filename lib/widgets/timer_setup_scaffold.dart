@@ -56,7 +56,7 @@ class TimerSetupScaffold extends StatelessWidget {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       alignment: Alignment.bottomLeft,
-                      padding: const EdgeInsets.only(left: 94, bottom: 20),
+                      padding: const EdgeInsets.only(left: 94, bottom: 20, right: 20),
                       child: Text(subtitle),
                     ),
                   ),

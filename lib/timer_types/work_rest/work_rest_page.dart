@@ -63,7 +63,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RoundsWidget(
-                      title: '${LocaleKeys.rounds.tr()}:',
+                      title: LocaleKeys.rounds.tr(),
                       initialValue: workRest.roundsCount,
                       onValueChanged: (value) {
                         workRest.setRounds(value);
