@@ -79,49 +79,10 @@ class AnalyticsManager {
   static AnalyticsEvent get eventAppClosed => AnalyticsEvent('app_closed');
   static AnalyticsEvent get eventFirstLaunch => AnalyticsEvent('first_launch');
 
-  //логин
-  static AnalyticsEvent get eventLoginScreenOpened => AnalyticsEvent('login_screen_opened');
-  static AnalyticsEvent get eventLoginScreenCountryChanged => AnalyticsEvent('login_screen_country_changed');
-  static AnalyticsEvent get eventLoginScreenContinuePressed => AnalyticsEvent('login_screen_continue_pressed');
-
-  static AnalyticsEvent get eventSmsScreenOpened => AnalyticsEvent('sms_screen_opened');
-  static AnalyticsEvent get eventSmsScreenCodeEntered => AnalyticsEvent('sms_screen_code_entered');
-  static AnalyticsEvent get eventSmsScreenAnotherPhonePressed => AnalyticsEvent('sms_screen_another_phone_pressed');
-
-  //регистрация
-  static AnalyticsEvent get eventRegistrationScreenOpened => AnalyticsEvent('registration_screen_opened');
-  static AnalyticsEvent get eventRegistrationDocumentsScreenOpened =>
-      AnalyticsEvent('registration_documents_screen_opened');
-  static AnalyticsEvent get eventRegistrationScreenAnotherPhonePressed =>
-      AnalyticsEvent('registration_screen_another_phone_pressed');
-  static AnalyticsEvent get eventRegistrationScreenDonePressed => AnalyticsEvent('registration_screen_done_pressed');
-
-  //создание пина
-  static AnalyticsEvent get eventPinCreationScreenOpened => AnalyticsEvent('pin_creation_screen_opened');
-  static AnalyticsEvent get eventPinCreationBiometryRequest => AnalyticsEvent('pin_creation_biometry_request');
-
-  //чаты
-  static AnalyticsEvent get eventChatListOpened => AnalyticsEvent('chat_list_opened');
-  static AnalyticsEvent get eventChatListSearchActivated => AnalyticsEvent('chat_list_search_activated');
-  static AnalyticsEvent get eventChatOpened => AnalyticsEvent('chat_opened');
-  static AnalyticsEvent get eventChatCameraOpened => AnalyticsEvent('chat_camera_opened');
-  static AnalyticsEvent get eventChatGaleryOpened => AnalyticsEvent('chat_gallery_opened');
-  static AnalyticsEvent get eventChatAddAttachment => AnalyticsEvent('chat_add_attachment');
-  static AnalyticsEvent get eventChatArchived => AnalyticsEvent('chat_archived');
-  static AnalyticsEvent get eventChatUnarchived => AnalyticsEvent('chat_unarchived');
-  static AnalyticsEvent get eventArchiveScreenOpened => AnalyticsEvent('archive_screen_opened');
-
-  //профиль
-  static AnalyticsEvent get eventProfileOpened => AnalyticsEvent('profile_opened');
-  static AnalyticsEvent get eventProfileEditOpened => AnalyticsEvent('profile_edit_opened');
-  static AnalyticsEvent get eventProfileEditSaved => AnalyticsEvent('profile_edit_saved');
-
-  //семья
-  static AnalyticsEvent get eventRelativesOpened => AnalyticsEvent('relatives_opened');
-  static AnalyticsEvent get eventRelativeAddOpened => AnalyticsEvent('relative_add_opened');
-  static AnalyticsEvent get eventRelativeProfileOpen => AnalyticsEvent('relative_profile_opened');
-  static AnalyticsEvent get eventRelativeRemoveOpened => AnalyticsEvent('relative_remove_opened');
-  static AnalyticsEvent get eventRelativeRemoveConfirmPressed => AnalyticsEvent('relative_remove_confirm_pressed');
+  //покупка
+  static AnalyticsEvent get eventSubscriptionTrialActivated => AnalyticsEvent('subscription_trial_activated_client');
+  static AnalyticsEvent get eventSubscriptionPurchaseDone => AnalyticsEvent('subscription_purchase_done_client');
+  static AnalyticsEvent get eventSubscriptionPurchaseFailed => AnalyticsEvent('subscription_purchase_failed_client');
 
   //настройки
   static AnalyticsEvent get eventSettingsOpened => AnalyticsEvent('settings_opened');

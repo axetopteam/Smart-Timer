@@ -1,19 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/purchasing/adapty_extensions.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/utils.dart';
+import 'package:smart_timer/widgets/adaptive_alert.dart';
 
 import 'product_container.dart';
 
 class PaywallPage extends StatefulWidget {
   const PaywallPage({super.key});
 
-  static Future<void> show(BuildContext context) {
-    return showCupertinoModalPopup<void>(
+  static Future<bool?> show(BuildContext context) {
+    return showCupertinoModalPopup<bool>(
         context: context,
         builder: (context) {
           return const PaywallPage();
@@ -26,6 +28,64 @@ class PaywallPage extends StatefulWidget {
 
 class _PaywallPageState extends State<PaywallPage> {
   final state = PaywallState();
+
+  late final ReactionDisposer _errorReactionDisposer;
+  late final ReactionDisposer _makePurchaseReactionDisposer;
+
+  @override
+  void initState() {
+    _errorReactionDisposer = reaction(
+      (_) => state.error,
+      (error) async {
+        if (error != null) {
+          await _showLoadErrorAlert();
+          Navigator.of(context).pop(false);
+        }
+      },
+    );
+
+    _makePurchaseReactionDisposer = reaction<PurchaseResult?>(
+      (_) => state.purchaseResult,
+      (purchaseResult) {
+        if (purchaseResult?.type == PurchaseResultType.success) {
+          Navigator.of(context).pop(true);
+        }
+        if (purchaseResult?.type == PurchaseResultType.fail) {
+          _showPurchaseError(errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+        }
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    _errorReactionDisposer();
+    _makePurchaseReactionDisposer();
+    super.dispose();
+  }
+
+  Future<void> _showLoadErrorAlert() async {
+    return await AdaptiveDialog.show(
+      context,
+      title: 'Failed to load Paywall',
+      content: 'Please, try again later.',
+      actions: [
+        DialogAction(
+          actionTitle: 'Ok',
+          onPressed: Navigator.of(context).pop,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showPurchaseError({int? errorCode, String? message}) async {
+    AdaptiveDialog.show(
+      context,
+      title: 'Purchase error',
+      content: 'code: ${errorCode ?? 'Unknonwn'}\nmessage: ${message ?? ''}',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

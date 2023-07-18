@@ -4,6 +4,8 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/purchasing/paywalls/paywalls_ids.dart';
 import 'package:smart_timer/purchasing/purchase_manager.dart';
 
+export 'package:smart_timer/purchasing/purchase_manager.dart' show PurchaseResult, PurchaseResultType;
+
 part 'paywall_state.g.dart';
 
 class PaywallState = _PaywallState with _$PaywallState;
@@ -29,6 +31,10 @@ abstract class _PaywallState with Store {
   @observable
   bool purchaseInProgress = false;
 
+  @observable
+  PurchaseResult? purchaseResult;
+
+  @observable
   Future<void> initialize() async {
     if (paywall == null) {
       await _fetchPaywall();
@@ -40,20 +46,28 @@ abstract class _PaywallState with Store {
   Future<void> _fetchPaywall() async {
     try {
       error = null;
+
       paywall = await purchaseManager.getOrLoadPaywall(mainPaywallId);
-      purchaseManager.logShowPaywall(paywall!);
     } catch (e) {
       error = e;
     }
   }
 
+  bool _paywallShowLogged = false;
+
   @action
   Future<void> _fetchPaywallProducts({bool ensureEligibility = false}) async {
     try {
       error = null;
+
       products = await purchaseManager.getPaywallProducts(paywall!, ensureEligibility: ensureEligibility);
 
       selectedProduct ??= products?.firstOrNull;
+
+      if (!_paywallShowLogged) {
+        purchaseManager.logShowPaywall(paywall!);
+        _paywallShowLogged = true;
+      }
 
       var shouldReloadProducts = false;
 
@@ -76,17 +90,19 @@ abstract class _PaywallState with Store {
 
   @action
   Future<void> restorePurchase() async {
+    purchaseResult = null;
     if (purchaseInProgress) return;
     purchaseInProgress = true;
-    await purchaseManager.restorePurchases();
+    purchaseResult = await purchaseManager.restorePurchases();
     purchaseInProgress = false;
   }
 
   @action
   Future<void> makePurchase(AdaptyPaywallProduct product) async {
+    purchaseResult = null;
     if (purchaseInProgress) return;
     purchaseInProgress = true;
-    await purchaseManager.makePurchase(product);
+    purchaseResult = await purchaseManager.makePurchase(product);
     purchaseInProgress = false;
   }
 }

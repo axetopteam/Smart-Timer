@@ -1,13 +1,22 @@
 import 'dart:async';
 
 import 'package:adapty_flutter/adapty_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 import 'adapty_extensions.dart';
 import 'paywalls/paywalls_ids.dart';
 
-enum PurchaseResult { userCancelled, fail, success }
+enum PurchaseResultType { userCancelled, fail, success }
+
+class PurchaseResult {
+  PurchaseResult(this.type, {this.errorCode, this.message});
+  final PurchaseResultType type;
+  final int? errorCode;
+  final String? message;
+}
 
 /// PurchaseManager singleton class
 class PurchaseManager {
@@ -113,37 +122,39 @@ class PurchaseManager {
   }
 
   Future<PurchaseResult> makePurchase(AdaptyPaywallProduct product) async {
-    // unawaited(
-    //     FirebaseCrashlytics.instance.log('#PurchaseManager# initiatePurchase productId = ${productInfo.productId}'));
+    unawaited(
+        FirebaseCrashlytics.instance.log('#PurchaseManager# initiatePurchase productId = ${product.vendorProductId}'));
 
     try {
       var makePurchaseResult = await Adapty().makePurchase(product: product);
       final premium = makePurchaseResult?.accessLevels[premiumAccessLevelKey]?.isActive ?? false;
 
-      // unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# premium = $premium'));
+      unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# premium = $premium'));
 
-      // if (premium) logSuccesPurchase(productInfo);
+      if (premium) _logSuccessPurchase(product);
 
-      return premium ? PurchaseResult.success : PurchaseResult.fail;
+      return premium
+          ? PurchaseResult(PurchaseResultType.success)
+          : PurchaseResult(PurchaseResultType.fail, message: 'Unknown error');
     } on AdaptyError catch (adaptyError) {
       if (adaptyError.code == AdaptyErrorCode.paymentCancelled) {
-        // unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# userCancelled'));
-        // logErrorPurchase(productInfo: productInfo, isUserCanceled: true);
+        unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# userCancelled'));
+        _logErrorPurchase(productInfo: product, isUserCanceled: true);
 
-        return PurchaseResult.userCancelled;
+        return PurchaseResult(PurchaseResultType.userCancelled);
       } else {
-        // unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# error = $adaptyError'));
+        unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# error = $adaptyError'));
 
-        // final message = adaptyError.message;
-        // final errorCode = adaptyError.code;
-        // logErrorPurchase(productInfo: productInfo, isUserCanceled: false, errorCode: errorCode);
+        final message = adaptyError.message;
+        final errorCode = adaptyError.code;
+        _logErrorPurchase(productInfo: product, isUserCanceled: false, errorCode: errorCode);
 
-        return PurchaseResult.fail;
+        return PurchaseResult(PurchaseResultType.fail, message: message, errorCode: errorCode);
       }
     } catch (e) {
-      // logErrorPurchase(productInfo: productInfo, isUserCanceled: false);
-      // unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# error = $e'));
-      return PurchaseResult.fail;
+      _logErrorPurchase(productInfo: product, isUserCanceled: false);
+      unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# error = $e'));
+      return PurchaseResult(PurchaseResultType.success, message: e.toString());
     }
   }
 
@@ -151,9 +162,9 @@ class PurchaseManager {
     try {
       var profile = await Adapty().restorePurchases();
 
-      return profile.hasPremium ? PurchaseResult.success : PurchaseResult.fail;
+      return profile.hasPremium ? PurchaseResult(PurchaseResultType.success) : PurchaseResult(PurchaseResultType.fail);
     } catch (e) {
-      return PurchaseResult.fail;
+      return PurchaseResult(PurchaseResultType.fail);
     }
   }
 
@@ -173,5 +184,36 @@ class PurchaseManager {
     } catch (e) {
       Future.delayed(const Duration(seconds: 5), () => logShowPaywall(paywall));
     }
+  }
+
+  void _logSuccessPurchase(AdaptyPaywallProduct product) {
+    final trialDuration = product.introductoryDiscount?.subscriptionPeriod.inDays;
+    if (product.trialIsAvailable && trialDuration != null) {
+      AnalyticsManager.eventSubscriptionTrialActivated
+        ..setProperty('price', product.price)
+        ..setProperty('currency', product.currencyCode)
+        ..setProperty('type', 'default')
+        ..setProperty('trial_option', '${trialDuration}_days')
+        ..commit();
+    } else {
+      AnalyticsManager.eventSubscriptionPurchaseDone
+        ..setProperty('price', product.price)
+        ..setProperty('currency', product.currencyCode)
+        ..setProperty('product_id', product.vendorProductId)
+        ..commit();
+    }
+  }
+
+  void _logErrorPurchase({
+    required AdaptyPaywallProduct productInfo,
+    required bool isUserCanceled,
+    int? errorCode,
+  }) {
+    AnalyticsManager.eventSubscriptionPurchaseFailed
+      ..setProperty('price', productInfo.price)
+      ..setProperty('currency', productInfo.currencyCode)
+      ..setProperty('reason', isUserCanceled ? 'cancel' : 'fail')
+      ..setProperty('error_code', errorCode)
+      ..commit();
   }
 }

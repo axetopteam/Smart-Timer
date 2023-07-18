@@ -88,6 +88,28 @@ mixin _$PaywallState on _PaywallState, Store {
     });
   }
 
+  late final _$purchaseResultAtom =
+      Atom(name: '_PaywallState.purchaseResult', context: context);
+
+  @override
+  PurchaseResult? get purchaseResult {
+    _$purchaseResultAtom.reportRead();
+    return super.purchaseResult;
+  }
+
+  @override
+  set purchaseResult(PurchaseResult? value) {
+    _$purchaseResultAtom.reportWrite(value, super.purchaseResult, () {
+      super.purchaseResult = value;
+    });
+  }
+
+  @override
+  ObservableFuture<void> initialize() {
+    final _$future = super.initialize();
+    return ObservableFuture<void>(_$future, context: context);
+  }
+
   late final _$_fetchPaywallAsyncAction =
       AsyncAction('_PaywallState._fetchPaywall', context: context);
 
@@ -142,7 +164,8 @@ paywall: ${paywall},
 products: ${products},
 selectedProduct: ${selectedProduct},
 error: ${error},
-purchaseInProgress: ${purchaseInProgress}
+purchaseInProgress: ${purchaseInProgress},
+purchaseResult: ${purchaseResult}
     ''';
   }
 }
