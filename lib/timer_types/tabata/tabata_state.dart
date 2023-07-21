@@ -47,6 +47,10 @@ abstract class TabataStoreBase with Store {
   @action
   void setRestAfterSet(int tabataIndex, Duration duration) {
     tabats[tabataIndex] = tabats[tabataIndex].copyWith(restAfterSet: duration);
+
+    if (tabataIndex == tabatsCount - 2) {
+      tabats[tabataIndex + 1] = tabats[tabataIndex + 1].copyWith(restAfterSet: duration);
+    }
   }
 
   @action

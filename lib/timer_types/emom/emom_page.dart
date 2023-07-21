@@ -63,7 +63,7 @@ class _EmomPageState extends State<EmomPage> {
                 (ctx, index) {
                   return _buildEmom(index);
                 },
-                childCount: emomState.emoms.length,
+                childCount: emomState.emomsCount,
               ),
             );
           },
@@ -93,7 +93,7 @@ class _EmomPageState extends State<EmomPage> {
   Widget _buildEmom(int emomIndex) {
     return Observer(builder: (context) {
       final emom = emomState.emoms[emomIndex];
-      bool isLast = emomIndex == emomState.emoms.length - 1;
+      bool isLast = emomIndex == emomState.emomsCount - 1;
       return Column(
         children: [
           Padding(
@@ -156,7 +156,7 @@ class _EmomPageState extends State<EmomPage> {
                       ],
                     ),
                   ),
-                if (emomState.emoms.length > 1)
+                if (emomState.emomsCount > 1)
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
                     child: Row(

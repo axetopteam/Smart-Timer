@@ -23,6 +23,14 @@ Map<String, dynamic> _$EmomStateToJson(EmomState instance) => <String, dynamic>{
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$EmomState on EmomStateBase, Store {
+  Computed<int>? _$emomsCountComputed;
+
+  @override
+  int get emomsCount =>
+      (_$emomsCountComputed ??= Computed<int>(() => super.emomsCount,
+              name: 'EmomStateBase.emomsCount'))
+          .value;
+
   late final _$EmomStateBaseActionController =
       ActionController(name: 'EmomStateBase', context: context);
 
@@ -84,7 +92,7 @@ mixin _$EmomState on EmomStateBase, Store {
   @override
   String toString() {
     return '''
-
+emomsCount: ${emomsCount}
     ''';
   }
 }

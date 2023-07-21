@@ -37,6 +37,9 @@ abstract class AmrapStateBase with Store {
     if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
 
     amraps[amrapIndex] = amraps[amrapIndex].copyWith(restTime: duration);
+    if (amrapIndex == amrapsCount - 2) {
+      amraps[amrapIndex + 1] = amraps[amrapIndex + 1].copyWith(restTime: duration);
+    }
   }
 
   @action

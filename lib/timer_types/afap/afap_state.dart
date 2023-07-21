@@ -37,6 +37,10 @@ abstract class AfapStateBase with Store {
     if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
     afaps[afapIndex] = afaps[afapIndex].copyWith(restTime: duration);
+
+    if (afapIndex == afapsCount - 2) {
+      afaps[afapIndex + 1] = afaps[afapIndex + 1].copyWith(restTime: duration);
+    }
   }
 
   @action

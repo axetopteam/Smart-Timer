@@ -22,6 +22,9 @@ abstract class EmomStateBase with Store {
 
   final ObservableList<Emom> emoms;
 
+  @computed
+  int get emomsCount => emoms.length;
+
   // Duration get totalTime => workTime.duration! * roundsCount;
 
   @action
@@ -40,6 +43,9 @@ abstract class EmomStateBase with Store {
   void setRestAfterSet(int emomIndex, Duration duration) {
     final emom = emoms[emomIndex];
     emoms[emomIndex] = emom.copyWith(restAfterSet: duration);
+    if (emomIndex == emomsCount - 2) {
+      emoms[emomIndex + 1] = emoms[emomIndex + 1].copyWith(restAfterSet: duration);
+    }
   }
 
   @action
@@ -55,7 +61,7 @@ abstract class EmomStateBase with Store {
 
   WorkoutSet get workout {
     List<WorkoutSet> sets = [];
-    for (var i = 0; i < emoms.length; i++) {
+    for (var i = 0; i < emomsCount; i++) {
       final emom = emoms[i];
       List<WorkoutInterval> intervals = List.generate(
         emom.roundsCount,
@@ -65,7 +71,7 @@ abstract class EmomStateBase with Store {
           isLast: index == emom.roundsCount - 1,
         ),
       );
-      if (i != emoms.length - 1) {
+      if (i != emomsCount - 1) {
         intervals.add(WorkoutInterval(
           duration: emom.restAfterSet,
           type: WorkoutIntervalType.rest,
@@ -83,6 +89,6 @@ abstract class EmomStateBase with Store {
   }
 
   String _setDescriptionSolver(int currentIndex) {
-    return 'SET $currentIndex/${emoms.length}';
+    return 'SET $currentIndex/$emomsCount';
   }
 }
