@@ -39,6 +39,7 @@ class _PaywallPageState extends State<PaywallPage> {
       (error) async {
         if (error != null) {
           await _showLoadErrorAlert();
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop(false);
         }
       },
