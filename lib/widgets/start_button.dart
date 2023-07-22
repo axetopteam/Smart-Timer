@@ -5,6 +5,7 @@ import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
+import 'package:smart_timer/widgets/adaptive_alert.dart';
 
 import '../purchasing/premium_state.dart';
 
@@ -21,12 +22,26 @@ class StartButton extends StatelessWidget {
         padding: const EdgeInsets.only(right: 30),
         child: ElevatedButton(
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(backgroundColor)),
-          onPressed: () {
+          onPressed: () async {
             final premiumState = context.read<PremiumState>();
             if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {
               onPressed();
             } else {
-              PaywallPage.show(context);
+              await AdaptiveDialog.show(
+                context,
+                title: ' Нет запусков',
+                content: 'На бесплатном тарифе в день есть только 2 запуска таймера',
+                actions: [
+                  DialogAction(
+                    actionTitle: 'Обновить',
+                    onPressed: Navigator.of(context).pop,
+                  ),
+                ],
+              );
+              final hasPremium = await PaywallPage.show(context) ?? false;
+              if (hasPremium) {
+                onPressed();
+              }
             }
           },
           child: Text(LocaleKeys.start.tr()),
