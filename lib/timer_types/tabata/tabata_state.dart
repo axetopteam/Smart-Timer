@@ -76,7 +76,7 @@ abstract class TabataStoreBase with Store {
       final rounds = <WorkoutSet>[];
       for (var j = 0; j < tabata.roundsCount; j++) {
         final round = WorkoutSet([
-          workInterval.copyWith(isLast: j == tabata.roundsCount - 1),
+          workInterval.copyWith(isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1),
           if (j != tabata.roundsCount - 1) restInterval.copy(),
           if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet.copy(),
         ]);

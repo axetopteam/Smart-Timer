@@ -68,7 +68,7 @@ abstract class EmomStateBase with Store {
         (index) => WorkoutInterval(
           duration: emom.workTime,
           type: WorkoutIntervalType.work,
-          isLast: index == emom.roundsCount - 1,
+          isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
         ),
       );
       if (i != emomsCount - 1) {

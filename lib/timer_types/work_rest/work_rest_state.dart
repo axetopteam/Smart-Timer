@@ -50,7 +50,12 @@ abstract class WorkRestStateBase with Store {
 
     final lastRound = WorkoutSet(
       [
-        WorkoutInterval(type: WorkoutIntervalType.work, duration: null, isCountdown: false, isLast: true),
+        WorkoutInterval(
+          type: WorkoutIntervalType.work,
+          duration: null,
+          isCountdown: false,
+          isLast: roundsCount != 1,
+        ),
       ],
     );
 

@@ -60,9 +60,10 @@ abstract class AmrapStateBase with Store {
       final amrap = WorkoutSet(
         [
           WorkoutInterval(
-              type: WorkoutIntervalType.work,
-              duration: amraps[i].workTime,
-              isLast: amrapsCount != 1 && i == amrapsCount - 1),
+            type: WorkoutIntervalType.work,
+            duration: amraps[i].workTime,
+            isLast: amrapsCount != 1 && i == amrapsCount - 1,
+          ),
           if (i != amrapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: amraps[i].restTime),
         ],
       );

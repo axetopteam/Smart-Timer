@@ -72,7 +72,7 @@ abstract class AfapStateBase with Store {
             type: WorkoutIntervalType.work,
             duration: afap.noTimeCap ? null : afap.timeCap,
             isCountdown: false,
-            isLast: i == afapsCount - 1,
+            isLast: afapsCount != 1 && i == afapsCount - 1,
           ),
           if (i != afapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: afap.restTime),
         ],
