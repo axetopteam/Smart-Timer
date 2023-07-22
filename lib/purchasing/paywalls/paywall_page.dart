@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -157,7 +158,7 @@ class _PaywallPageState extends State<PaywallPage> {
       top: safeOffset.top + 20,
       child: IconButton(
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(kDebugMode);
         },
         icon: Icon(
           CupertinoIcons.clear_circled_solid,
