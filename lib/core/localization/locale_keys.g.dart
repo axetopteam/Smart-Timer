@@ -75,6 +75,8 @@ abstract class  LocaleKeys {
   static const paywall_title = 'paywall.title';
   static const paywall_features_1_title = 'paywall.features.1_title';
   static const paywall_features_1_subtitle = 'paywall.features.1_subtitle';
+  static const paywall_features_2_title = 'paywall.features.2_title';
+  static const paywall_features_2_subtitle = 'paywall.features.2_subtitle';
   static const paywall_features = 'paywall.features';
   static const paywall_bottom_block_no_commitments = 'paywall.bottom_block.no_commitments';
   static const paywall_bottom_block_trial = 'paywall.bottom_block.trial';

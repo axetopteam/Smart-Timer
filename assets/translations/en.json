@@ -86,7 +86,9 @@
         "title": "Unlock All Features\nof Easy Timer",
         "features": {
             "1_title": "No limits",
-            "1_subtitle": "Have unlimited timers"
+            "1_subtitle": "Have unlimited timers",
+            "2_title": "No ads",
+            "2_subtitle": "Train without distracting ads"
         },
         "bottom_block": {
             "no_commitments": "No commitments, cancel anytime.",

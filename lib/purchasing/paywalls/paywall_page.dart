@@ -265,6 +265,11 @@ class _PaywallPageState extends State<PaywallPage> {
           title: LocaleKeys.paywall_features_1_title.tr(),
           subtitle: LocaleKeys.paywall_features_1_subtitle.tr(),
         ),
+        _featureRow(
+          icon: CupertinoIcons.nosign,
+          title: LocaleKeys.paywall_features_2_title.tr(),
+          subtitle: LocaleKeys.paywall_features_2_subtitle.tr(),
+        ),
       ].addSeparator(const SizedBox(height: 20)),
     );
   }
