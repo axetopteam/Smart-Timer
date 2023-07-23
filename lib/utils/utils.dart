@@ -17,10 +17,10 @@ class AppUtils {
   }
 
   static Future<bool> openPrivacyPolicy() {
-    return tryLaunchUrl('https://axetop.dev/privacy');
+    return tryLaunchUrl('https://axetop.dev/easytimer/privacy');
   }
 
   static Future<bool> openTermsOfUse() {
-    return tryLaunchUrl('https://axetop.dev/terms');
+    return tryLaunchUrl('https://axetop.dev/easytimer/terms');
   }
 }

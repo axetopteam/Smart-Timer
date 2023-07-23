@@ -1,7 +1,9 @@
 import 'package:adapty_flutter/adapty_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_extensions.dart';
 
 class ProductContainer extends StatelessWidget {
@@ -58,14 +60,16 @@ class ProductContainer extends StatelessWidget {
 
   String get title {
     if (product.isUnlim) {
-      return 'Billed once';
+      return LocaleKeys.paywall_product_title_unlim.tr();
     } else {
       final localizedSubscriptionPeriod = product.introductoryDiscount?.localizedSubscriptionPeriod;
 
       if (product.trialIsAvailable) {
-        return '$localizedSubscriptionPeriod free trial';
+        return localizedSubscriptionPeriod != null
+            ? '$localizedSubscriptionPeriod ${LocaleKeys.paywall_product_title_trial.tr().toLowerCase()}'
+            : LocaleKeys.paywall_product_title_trial.tr();
       } else {
-        return 'Subscription';
+        return LocaleKeys.paywall_product_title_default.tr();
       }
     }
   }

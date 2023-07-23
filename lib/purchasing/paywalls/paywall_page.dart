@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_extensions.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
@@ -70,23 +72,20 @@ class _PaywallPageState extends State<PaywallPage> {
   Future<void> _showLoadErrorAlert() async {
     return await AdaptiveDialog.show(
       context,
-      title: 'Failed to load Paywall',
-      content: 'Please, try again later.',
-      actions: [
-        DialogAction(
-          actionTitle: 'Ok',
-          onPressed: Navigator.of(context).pop,
-        ),
-      ],
+      title: LocaleKeys.paywall_loading_error_title.tr(),
+      content: LocaleKeys.paywall_loading_error_title.tr(),
     );
   }
 
   Future<void> _showPurchaseError({int? errorCode, String? message}) async {
-    AdaptiveDialog.show(
-      context,
-      title: 'Purchase error',
-      content: 'code: ${errorCode ?? 'Unknonwn'}\nmessage: ${message ?? ''}',
-    );
+    AdaptiveDialog.show(context,
+        title: LocaleKeys.paywall_purchase_error_title.tr(),
+        content: LocaleKeys.paywall_purchase_error_title.tr(
+          namedArgs: {
+            'errorCode': '${errorCode ?? 'Unknonwn'}',
+            'message': message ?? '',
+          },
+        ));
   }
 
   @override
@@ -104,7 +103,7 @@ class _PaywallPageState extends State<PaywallPage> {
                   children: [
                     SizedBox(height: safeOffset.top + 80),
                     Text(
-                      'Unlock All Features\nof Easy Timer',
+                      LocaleKeys.paywall_title.tr(),
                       style: context.textTheme.titleSmall,
                     ),
                     const SizedBox(height: 40),
@@ -177,12 +176,12 @@ class _PaywallPageState extends State<PaywallPage> {
           ? null
           : selectedProduct.isUnlim
               ? null
-              : 'No commitments, cancel anytime.';
+              : LocaleKeys.paywall_bottom_block_no_commitments.tr();
 
       String? subtitle = selectedProduct == null
           ? null
           : selectedProduct.trialIsAvailable
-              ? 'Payment will be automatically charged after end of trial period.'
+              ? LocaleKeys.paywall_bottom_block_trial.tr()
               : null;
 
       return Container(
@@ -222,12 +221,12 @@ class _PaywallPageState extends State<PaywallPage> {
               child: ElevatedButtonTheme(
                 data: context.buttonThemes.paywallButtonTheme,
                 child: ElevatedButton(
+                  onPressed: selectedProduct != null ? () => state.makePurchase(selectedProduct) : null,
                   child: Container(
                     width: double.maxFinite,
                     alignment: Alignment.center,
-                    child: Text('Continue'),
+                    child: Text(LocaleKeys.paywall_bottom_block_button_title.tr()),
                   ),
-                  onPressed: selectedProduct != null ? () => state.makePurchase(selectedProduct) : null,
                 ),
               ),
             ),
@@ -238,17 +237,17 @@ class _PaywallPageState extends State<PaywallPage> {
                 TextButton(
                   style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
                   onPressed: AppUtils.openTermsOfUse,
-                  child: Text('Terms'),
+                  child: Text(LocaleKeys.paywall_bottom_block_terms.tr()),
                 ),
                 TextButton(
                   style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
                   onPressed: state.restorePurchase,
-                  child: Text('Restore'),
+                  child: Text(LocaleKeys.paywall_bottom_block_restore.tr()),
                 ),
                 TextButton(
                   style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
                   onPressed: AppUtils.openPrivacyPolicy,
-                  child: Text('Privacy'),
+                  child: Text(LocaleKeys.paywall_bottom_block_privacy.tr()),
                 ),
               ],
             ),
@@ -261,7 +260,11 @@ class _PaywallPageState extends State<PaywallPage> {
   Column _featuresList() {
     return Column(
       children: [
-        _featureRow(icon: Icons.all_inclusive, title: 'No limits', subtitle: 'Have unlimited timers'),
+        _featureRow(
+          icon: Icons.all_inclusive,
+          title: LocaleKeys.paywall_features_1_title.tr(),
+          subtitle: LocaleKeys.paywall_features_1_subtitle.tr(),
+        ),
       ].addSeparator(const SizedBox(height: 20)),
     );
   }

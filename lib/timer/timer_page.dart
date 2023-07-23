@@ -279,7 +279,7 @@ class _TimerPageState extends State<TimerPage> {
         ),
         const SizedBox(height: 40),
         Text(
-          'Well Done',
+          LocaleKeys.timer_completed_title.tr(),
           textAlign: TextAlign.center,
           style: context.textTheme.displayLarge,
         ),
@@ -292,7 +292,7 @@ class _TimerPageState extends State<TimerPage> {
               Navigator.of(context).popUntil((route) => route.isFirst);
               _requestAppReview();
             },
-            child: Text('Complete'),
+            child: Text(LocaleKeys.timer_completed_button.tr()),
           ),
         ),
         const SizedBox(height: 20),

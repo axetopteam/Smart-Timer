@@ -1,4 +1,6 @@
 import 'package:adapty_flutter/adapty_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 const String premiumAccessLevelKey = 'premium';
 
@@ -11,7 +13,7 @@ extension AdaptyProfileX on AdaptyProfile {
 extension AdaptyPaywallProductX on AdaptyPaywallProduct {
   bool get isUnlim => subscriptionPeriod == null;
 
-  String? get readbleSubscriptionPeriod => isUnlim ? 'Lifetime' : localizedSubscriptionPeriod;
+  String? get readbleSubscriptionPeriod => isUnlim ? LocaleKeys.paywall_lifetime.tr() : localizedSubscriptionPeriod;
 
   bool get trialIsAvailable =>
       introductoryOfferEligibility == AdaptyEligibility.eligible && introductoryDiscount != null;

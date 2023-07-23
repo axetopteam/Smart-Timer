@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 class DialogAction {
   DialogAction({
@@ -98,7 +99,7 @@ class AdaptiveDialog extends StatelessWidget {
                   CupertinoDialogAction(
                     onPressed: () => Navigator.of(context).pop(),
                     isDefaultAction: true,
-                    child: Text(tr('ok').toUpperCase()),
+                    child: Text(LocaleKeys.ok.tr().toUpperCase()),
                   )
                 ]
               : [];

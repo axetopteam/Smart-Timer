@@ -8,6 +8,7 @@ export 'package:smart_timer/purchasing/purchase_manager.dart' show PurchaseResul
 
 part 'paywall_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class PaywallState = _PaywallState with _$PaywallState;
 
 abstract class _PaywallState with Store {

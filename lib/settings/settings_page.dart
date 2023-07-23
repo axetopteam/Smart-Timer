@@ -1,9 +1,11 @@
 import 'package:auto_route/annotations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/purchasing/premium_state.dart';
 import 'package:smart_timer/services/app_review_service.dart';
@@ -34,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(LocaleKeys.settings_title.tr()),
         centerTitle: true,
       ),
       body: ListView(
@@ -52,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return CupertinoListSection.insetGrouped(
       backgroundColor: context.color.background,
       header: Text(
-        'GENERAL',
+        LocaleKeys.settings_general.tr().toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
       ),
       margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
@@ -61,14 +63,14 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       children: [
         CupertinoListTile.notched(
-          title: Text('Rate Us'),
+          title: Text(LocaleKeys.settings_rate_us.tr()),
           leading: const Icon(CupertinoIcons.star_fill),
           onTap: () {
             AppReviewService().openStoreListing();
           },
         ),
         CupertinoListTile.notched(
-          title: const Text('Contact Us'),
+          title: Text(LocaleKeys.settings_contact_us.tr()),
           leading: const Icon(CupertinoIcons.at),
           onTap: () => ApplicationSupport.showSupportDialog(context),
         ),
@@ -80,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return CupertinoListSection.insetGrouped(
       backgroundColor: context.color.background,
       header: Text(
-        'PLAN',
+        LocaleKeys.settings_plan_title.tr().toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
       ),
       margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
@@ -89,14 +91,14 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       children: [
         CupertinoListTile.notched(
-          title: const Text('Purchase Plan'),
+          title: Text(LocaleKeys.settings_plan_purchase.tr()),
           leading: const Icon(CupertinoIcons.star_circle_fill),
           onTap: () {
             PaywallPage.show(context);
           },
         ),
         CupertinoListTile.notched(
-          title: const Text('Plan'),
+          title: Text(LocaleKeys.settings_plan_title.tr()),
           leading: const Icon(CupertinoIcons.checkmark_seal),
           trailing: Observer(builder: (ctx) {
             return Container(
@@ -105,14 +107,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: premiumState.isPremiumActive ? context.color.premium : context.color.warning,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: premiumState.isPremiumActive ? Text('Active') : Text('Inactive'),
+              child: premiumState.isPremiumActive
+                  ? Text(LocaleKeys.settings_plan_active.tr())
+                  : Text(LocaleKeys.settings_plan_inactive.tr()),
             );
           }),
         ),
         CupertinoListTile.notched(
-          title: const Text('Restore Purchases'),
+          title: Text(LocaleKeys.settings_plan_restore.tr()),
           leading: const Icon(Icons.cloud_download),
-          onTap: () {},
+          onTap: () {}, //TODO: add restore
         ),
       ],
     );
@@ -121,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _soundBlock() {
     return CupertinoListSection.insetGrouped(
       header: Text(
-        'SOUND',
+        LocaleKeys.settings_sound.tr().toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
       ),
       backgroundColor: context.color.background,
@@ -132,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       children: [
         CupertinoListTile.notched(
-          title: Text('Sound On'),
+          title: Text(LocaleKeys.settings_sound_on.tr()),
           leading: const Icon(CupertinoIcons.speaker_3_fill),
           trailing: Observer(
             builder: (context) {
@@ -158,7 +162,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _legalBlock() {
     return CupertinoListSection.insetGrouped(
       header: Text(
-        'LEGAL',
+        LocaleKeys.settings_legal.tr().toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
       ),
       backgroundColor: context.color.background,
@@ -169,12 +173,12 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       children: [
         CupertinoListTile.notched(
-          title: Text('Privacy Policy'),
+          title: Text(LocaleKeys.settings_privacy_policy.tr()),
           leading: const Icon(CupertinoIcons.checkmark_shield_fill),
           onTap: AppUtils.openPrivacyPolicy,
         ),
         CupertinoListTile.notched(
-          title: Text('Terms of Use'),
+          title: Text(LocaleKeys.settings_terms_of_use.tr()),
           leading: const Icon(CupertinoIcons.doc_plaintext),
           onTap: AppUtils.openTermsOfUse,
         ),

@@ -11,6 +11,7 @@
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel",
+    "ok": "Ok",
     "amrap": {
         "title": "AMRAP",
         "description": "Repeat as many rounds as\npossible for selected time",
@@ -37,7 +38,7 @@
         "delete_button_title": "Remove TABATA {}"
     },
     "work_rest": {
-        "title": "РАБОТА:ОТДЫХ",
+        "title": "WORK:REST",
         "description": "Adjust the ratio between work time and rest time"
     },
     "timer": {
@@ -46,9 +47,60 @@
         "complete_round": "Slide to complete",
         "pause": "Tap to pause",
         "resume": "Tap to resume",
+        "completed": {
+            "title": "Well Done",
+            "button": "Complete"
+        },
         "confirm_exit_alert": {
             "title": "Are you sure you want to get out?",
             "content": "Your progress will not be saved"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "general": "General",
+        "rate_us": "Rate Us",
+        "contact_us": "Contact Us",
+        "plan": {
+            "title": "Plan",
+            "purchase": "Purchase Plan",
+            "active": "Active",
+            "inactive": "Inactive",
+            "restore": "Restore Purchases"
+        },
+        "sound": "Sound",
+        "sound_on": "Sound On",
+        "legal": "Legal",
+        "privacy_policy": "Privacy Policy",
+        "terms_of_use": "Terms of Use"
+    },
+    "paywall": {
+        "loading_error": {
+            "title": "Failed to load paywall",
+            "content": "Please, try again later."
+        },
+        "purchase_error": {
+            "title": "Purchase error",
+            "content": "code: {errorCode}\nmessage: {message}"
+        },
+        "title": "Unlock All Features\nof Easy Timer",
+        "features": {
+            "1_title": "No limits",
+            "1_subtitle": "Have unlimited timers"
+        },
+        "bottom_block": {
+            "no_commitments": "No commitments, cancel anytime.",
+            "trial": "Payment will be automatically charged after end of trial period.",
+            "button_title": "Continue",
+            "terms": "Terms",
+            "restore": "Restore",
+            "privacy": "Privacy"
+        },
+        "lifetime": "Lifetime",
+        "product_title": {
+            "unlim": "Billed once",
+            "trial": "Free trial",
+            "default": "Subscription"
         }
     }
 }

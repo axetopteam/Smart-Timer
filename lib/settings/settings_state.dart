@@ -3,6 +3,7 @@ import 'package:smart_timer/services/app_properties.dart';
 
 part 'settings_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class SettingsState = _SettingsState with _$SettingsState;
 
 abstract class _SettingsState with Store {
