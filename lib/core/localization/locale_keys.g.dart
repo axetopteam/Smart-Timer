@@ -66,6 +66,10 @@ abstract class  LocaleKeys {
   static const settings_privacy_policy = 'settings.privacy_policy';
   static const settings_terms_of_use = 'settings.terms_of_use';
   static const settings = 'settings';
+  static const limit_reached_alert_title = 'limit_reached_alert.title';
+  static const limit_reached_alert_content = 'limit_reached_alert.content';
+  static const limit_reached_alert_button_title = 'limit_reached_alert.button_title';
+  static const limit_reached_alert = 'limit_reached_alert';
   static const paywall_loading_error_title = 'paywall.loading_error.title';
   static const paywall_loading_error_content = 'paywall.loading_error.content';
   static const paywall_loading_error = 'paywall.loading_error';

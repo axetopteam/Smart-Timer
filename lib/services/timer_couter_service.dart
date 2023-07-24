@@ -3,6 +3,7 @@ import 'package:smart_timer/services/app_properties.dart';
 
 /// TimerCouterService singleton class
 class TimerCouterService {
+  static const maxFreeTimerADay = 2;
   static final TimerCouterService _internalSingleton = TimerCouterService._internal();
   factory TimerCouterService() => _internalSingleton;
   TimerCouterService._internal() {
@@ -37,5 +38,5 @@ class TimerCouterService {
     return todaysTimers.length;
   }
 
-  bool get canStartNewTimer => _todaysCount < 2 || kDebugMode;
+  bool get canStartNewTimer => _todaysCount < maxFreeTimerADay || kDebugMode;
 }

@@ -29,11 +29,12 @@ class StartButton extends StatelessWidget {
             } else {
               await AdaptiveDialog.show(
                 context,
-                title: ' Нет запусков',
-                content: 'На бесплатном тарифе в день есть только 2 запуска таймера',
+                title: LocaleKeys.limit_reached_alert_title.tr(),
+                content:
+                    LocaleKeys.limit_reached_alert_content.tr(args: [TimerCouterService.maxFreeTimerADay.toString()]),
                 actions: [
                   DialogAction(
-                    actionTitle: 'Обновить',
+                    actionTitle: LocaleKeys.limit_reached_alert_button_title.tr(),
                     onPressed: Navigator.of(context).pop,
                   ),
                 ],

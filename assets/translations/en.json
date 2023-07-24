@@ -74,6 +74,11 @@
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use"
     },
+    "limit_reached_alert": {
+        "title": "Free Launch Limit Reached",
+        "content": "Unfortunately, you have reached the limit for free timer launches today. The maximum number of free launches is {} per day. Please consider upgrading to a paid plan to get unlimited launches. Thank you for your understanding!",
+        "button_title": "Update"
+    },
     "paywall": {
         "loading_error": {
             "title": "Failed to load paywall",
