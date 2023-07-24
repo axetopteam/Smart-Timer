@@ -224,7 +224,7 @@ class _TimerPageState extends State<TimerPage> {
       builder: (_) {
         final currentInterval = state.currentInterval;
         bool isFirstSecond = currentInterval.isFirstSecond;
-        String? text;
+        String text;
         if (currentInterval.type == WorkoutIntervalType.countdown) {
           if (isFirstSecond && state.currentState != TimerStatus.run) {
             return const PlayIcon();
@@ -234,24 +234,26 @@ class _TimerPageState extends State<TimerPage> {
                     state.currentTime!,
                     isCountdown: currentInterval.isCountdown,
                   )
-                : null;
+                : '– –';
           }
+        } else {
+          text = isFirstSecond
+              ? currentInterval.type.redableName
+              : state.currentTime != null
+                  ? durationToString2(
+                      state.currentTime!,
+                      isCountdown: currentInterval.isCountdown,
+                    )
+                  : '– –';
         }
-        text = isFirstSecond
-            ? currentInterval.type.redableName
-            : state.currentTime != null
-                ? durationToString2(
-                    state.currentTime!,
-                    isCountdown: currentInterval.isCountdown,
-                  )
-                : null;
-        if (text == null) {
+        final timeParts = text.split(':');
+
+        if (text.length != 2) {
           return Text(
-            '– –',
+            text,
             style: context.textTheme.headlineSmall,
           );
         }
-        final timeParts = text.split(':');
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: timeParts
