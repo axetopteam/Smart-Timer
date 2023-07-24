@@ -75,98 +75,20 @@ class AnalyticsManager {
     }
   }
 
+  //app
   static AnalyticsEvent get eventAppOpened => AnalyticsEvent('app_opened');
   static AnalyticsEvent get eventAppClosed => AnalyticsEvent('app_closed');
   static AnalyticsEvent get eventFirstLaunch => AnalyticsEvent('first_launch');
 
-  //покупка
+  //settings
+  static AnalyticsEvent get eventSettingsOpened => AnalyticsEvent('settings_opened');
+  static AnalyticsEvent get eventSettingsClosed => AnalyticsEvent('settings_closed');
+
+  //purchase
+  static AnalyticsEvent get eventPaywallOpened => AnalyticsEvent('paywall_opened');
+  static AnalyticsEvent get eventPaywallShowed => AnalyticsEvent('paywall_showed');
+  static AnalyticsEvent get eventPaywallClosed => AnalyticsEvent('paywall_closed');
   static AnalyticsEvent get eventSubscriptionTrialActivated => AnalyticsEvent('subscription_trial_activated_client');
   static AnalyticsEvent get eventSubscriptionPurchaseDone => AnalyticsEvent('subscription_purchase_done_client');
   static AnalyticsEvent get eventSubscriptionPurchaseFailed => AnalyticsEvent('subscription_purchase_failed_client');
-
-  //настройки
-  static AnalyticsEvent get eventSettingsOpened => AnalyticsEvent('settings_opened');
-  static AnalyticsEvent get eventSettingsBiometryToggled => AnalyticsEvent('settings_biometry_toggled');
-  static AnalyticsEvent get eventSettingsPinPressed => AnalyticsEvent('settings_pin_pressed');
-  static AnalyticsEvent get eventSendLogsPressed => AnalyticsEvent('send_logs_pressed');
-  static AnalyticsEvent get eventSettingsLogoutPressed => AnalyticsEvent('settings_logout_pressed');
-  static AnalyticsEvent get eventSettingsDeletePressed => AnalyticsEvent('settings_delete_pressed');
-  static AnalyticsEvent get eventProfileSuccessfullyRemoved => AnalyticsEvent('profile_successfully_removed');
-
-  // уведомления
-  static AnalyticsEvent get eventNotificationsOpened => AnalyticsEvent('notifications_opened');
-  static AnalyticsEvent get eventNotificationsSearchActivated => AnalyticsEvent('notifications_search_activated');
-  static AnalyticsEvent get eventNotificationsAppointmentPressed => AnalyticsEvent('notifications_appointment_pressed');
-
-  //запись
-  static AnalyticsEvent get eventAppointmentsOpened => AnalyticsEvent('appointments_opened');
-  static AnalyticsEvent get eventAppointmentsOpenedMainScreen => AnalyticsEvent('appointments_opened_main_screen');
-  static AnalyticsEvent get eventAppointmentsSpecialitySearch => AnalyticsEvent('appointments_speciality_search');
-  static AnalyticsEvent get eventAppointmentPredefineSelection => AnalyticsEvent('appointment_predefine_selection');
-  static AnalyticsEvent get eventAppointmentsSpecialitySelected => AnalyticsEvent('appointments_speciality_selected');
-  static AnalyticsEvent get eventAppointmentUserSelection => AnalyticsEvent('appointment_user_selection');
-  static AnalyticsEvent get eventAppointmentsDoctorSelected => AnalyticsEvent('appointments_doctor_selected');
-  static AnalyticsEvent get eventAppointmentsSelectionOpened => AnalyticsEvent('appointments_selection_opened');
-  static AnalyticsEvent get eventAppointmentsFilterAllOpened => AnalyticsEvent('appointments_filter_all_opened');
-  static AnalyticsEvent get eventAppointmentsFilterTimeOpened => AnalyticsEvent('appointments_filter_time_opened');
-  static AnalyticsEvent get eventAppointmentsFilterDateOpened => AnalyticsEvent('appointments_filter_date_opened');
-  static AnalyticsEvent get eventAppointmentsFilterClinicOpened => AnalyticsEvent('appointments_filter_clinic_opened');
-  static AnalyticsEvent get eventAppointmentsFilterServiceOpened =>
-      AnalyticsEvent('appointments_filter_service_opened');
-  static AnalyticsEvent get eventAppointmentsSpecialistInfo => AnalyticsEvent('appointments_specialist_info');
-  static AnalyticsEvent get eventAppointmentPriceInfo => AnalyticsEvent('appointment_price_info');
-  static AnalyticsEvent get eventAppointmentScrollTimeslots => AnalyticsEvent('appointment_scroll_timeslots');
-  static AnalyticsEvent get eventAppointmentsSpecialistSelected => AnalyticsEvent('appointments_specialist_selected');
-  static AnalyticsEvent get eventAppointmentsConfirmOpened => AnalyticsEvent('appointments_confirm_opened');
-  static AnalyticsEvent get eventAppointmentsConfirmSuccessPressed =>
-      AnalyticsEvent('appointments_confirm_success_pressed');
-
-  //главный экран
-  static AnalyticsEvent get eventMainScreenOpened => AnalyticsEvent('main_screen_opened');
-  static AnalyticsEvent get eventNoSubscribtionScreenOpened => AnalyticsEvent('no_subscribtion_screen_opened');
-  static AnalyticsEvent get eventSelectDoctorWebsitePressed => AnalyticsEvent('select_doctor_website_pressed');
-
-  //мед. карта
-  static AnalyticsEvent get eventMedcardOpened => AnalyticsEvent('medcard_opened');
-  static AnalyticsEvent get eventMedcardOpenedMainScreen => AnalyticsEvent('medcard_opened_main_screen');
-
-  //другое
-  static AnalyticsEvent get eventMenuOpened => AnalyticsEvent('menu_opened');
-
-  //клиники
-  static AnalyticsEvent get eventClinicsOpened => AnalyticsEvent('clinicks_opened');
-
-  //оплата услуг
-  static AnalyticsEvent get eventBalanceOpened => AnalyticsEvent('balance_opened');
-
-  //подписки
-  static AnalyticsEvent get eventSubscriptionsOpened => AnalyticsEvent('subscriptions_opened');
-
-  //дежурный доктор
-  static AnalyticsEvent get eventDutyDoctorConfigLoaded => AnalyticsEvent('duty_doctor_config_loaded');
-  static AnalyticsEvent get eventDutyDoctorButtonPressed => AnalyticsEvent('duty_doctor_button_pressed');
-
-  //умный поиск
-  static AnalyticsEvent get eventSearchNotFound => AnalyticsEvent('search_not_found');
-  static AnalyticsEvent get eventSearchSuccessful => AnalyticsEvent('search_successful');
 }
-
-enum MedcardOpenedFrom {
-  tabBar,
-  mainScreen,
-} //for analytics
-
-enum AppointmentSearchOpenedFrom {
-  tabBar,
-  mainScreen,
-  notifications,
-  smartSearch,
-} //for analytics
-
-enum AppointmentFilterOpenedFrom {
-  search,
-  reservation,
-  referralPreview,
-  referralPage,
-  doctorSubscription,
-} //for analytics
