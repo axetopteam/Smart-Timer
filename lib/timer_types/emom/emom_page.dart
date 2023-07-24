@@ -112,7 +112,7 @@ class _EmomPageState extends State<EmomPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         RoundsWidget(
-                          title: '${LocaleKeys.rounds.tr()}:',
+                          title: LocaleKeys.rounds.tr(),
                           initialValue: emom.roundsCount,
                           onValueChanged: (value) => emomState.setRounds(emomIndex, value),
                         ),
