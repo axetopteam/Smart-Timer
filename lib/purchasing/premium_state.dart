@@ -6,6 +6,7 @@ import 'package:smart_timer/purchasing/purchase_manager.dart';
 
 part 'premium_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class PremiumState = _PremiumState with _$PremiumState;
 
 abstract class _PremiumState with Store {
