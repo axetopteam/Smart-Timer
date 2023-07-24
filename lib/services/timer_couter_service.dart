@@ -14,7 +14,7 @@ class TimerCouterService {
 
   final appProperties = AppProperties();
 
-  late final List<DateTime> _lastTimersEndTimes;
+  late List<DateTime> _lastTimersEndTimes;
 
   void initialize() {
     _lastTimersEndTimes = appProperties.lastTimersEndTimes;
