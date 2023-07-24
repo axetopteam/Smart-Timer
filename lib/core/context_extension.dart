@@ -10,4 +10,6 @@ extension BuildContextExt on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
 
   ThemeButtonStyles get buttonThemes => Theme.of(this).extension<ThemeButtonStyles>()!;
+
+  ThemeTextStyles get textStyles => Theme.of(this).extension<ThemeTextStyles>()!;
 }

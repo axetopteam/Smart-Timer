@@ -9,7 +9,7 @@ ThemeData createDarkTheme() {
     scaffoldBackgroundColor: AppColors.black,
     dividerColor: AppColors.greyBlue,
     appBarTheme: const AppBarTheme(
-      titleTextStyle: displaySmall,
+      titleTextStyle: AppFonts.displaySmall,
       centerTitle: false,
       elevation: 0,
       toolbarHeight: 70,
@@ -29,7 +29,7 @@ ThemeData createDarkTheme() {
           },
         ),
         foregroundColor: MaterialStateProperty.all(AppColors.white),
-        textStyle: MaterialStateProperty.all(bodyMedium),
+        textStyle: MaterialStateProperty.all(AppFonts.bodyMedium),
         elevation: MaterialStateProperty.all(0),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
@@ -49,6 +49,7 @@ ThemeData createDarkTheme() {
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.dark,
       ThemeButtonStyles.dark,
+      ThemeTextStyles.dark,
     ],
   );
 }

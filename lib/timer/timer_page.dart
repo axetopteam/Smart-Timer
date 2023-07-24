@@ -12,6 +12,7 @@ import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
+import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/play_icon.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -164,37 +165,7 @@ class _TimerPageState extends State<TimerPage> {
                             );
                           }),
                           const SizedBox(height: 10),
-                          Observer(builder: (_) {
-                            final currentInterval = state.currentInterval;
-                            bool isFirstSecond = currentInterval.isFirstSecond;
-                            if (currentInterval.type == WorkoutIntervalType.countdown) {
-                              if (isFirstSecond && state.currentState != TimerStatus.run) {
-                                return const PlayIcon();
-                              } else {
-                                return Text(
-                                  state.currentTime != null
-                                      ? durationToString2(
-                                          state.currentTime!,
-                                          isCountdown: currentInterval.isCountdown,
-                                        )
-                                      : '--',
-                                  style: context.textTheme.headlineSmall,
-                                );
-                              }
-                            }
-                            final text = isFirstSecond
-                                ? currentInterval.type.redableName
-                                : state.currentTime != null
-                                    ? durationToString2(
-                                        state.currentTime!,
-                                        isCountdown: currentInterval.isCountdown,
-                                      )
-                                    : '--';
-                            return Text(
-                              text,
-                              style: context.textTheme.headlineSmall,
-                            );
-                          }),
+                          _buildTime(),
                           const SizedBox(height: 10),
                           _buildRoudsInfo(),
                         ],
@@ -245,6 +216,75 @@ class _TimerPageState extends State<TimerPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildTime() {
+    return Observer(
+      builder: (_) {
+        final currentInterval = state.currentInterval;
+        bool isFirstSecond = currentInterval.isFirstSecond;
+        String? text;
+        if (currentInterval.type == WorkoutIntervalType.countdown) {
+          if (isFirstSecond && state.currentState != TimerStatus.run) {
+            return const PlayIcon();
+          } else {
+            text = state.currentTime != null
+                ? durationToString2(
+                    state.currentTime!,
+                    isCountdown: currentInterval.isCountdown,
+                  )
+                : null;
+          }
+        }
+        text = isFirstSecond
+            ? currentInterval.type.redableName
+            : state.currentTime != null
+                ? durationToString2(
+                    state.currentTime!,
+                    isCountdown: currentInterval.isCountdown,
+                  )
+                : null;
+        if (text == null) {
+          return Text(
+            '– –',
+            style: context.textTheme.headlineSmall,
+          );
+        }
+        final timeParts = text.split(':');
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: timeParts
+              .map(
+                (e) => _buildTimeDigits(e),
+              )
+              .addSeparator(Container(
+                alignment: Alignment.center,
+                width: 24,
+                child: Text(
+                  ':',
+                  style: context.textTheme.headlineSmall,
+                ),
+              )),
+        );
+      },
+    );
+  }
+
+  Widget _buildTimeDigits(String digits) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: digits
+          .split('')
+          .map((digit) => Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: Text(
+                  digit,
+                  style: context.textTheme.headlineSmall,
+                ),
+              ))
+          .toList(),
     );
   }
 

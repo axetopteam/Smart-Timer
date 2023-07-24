@@ -38,6 +38,7 @@ class StartButton extends StatelessWidget {
                   ),
                 ],
               );
+              // ignore: use_build_context_synchronously
               final hasPremium = await PaywallPage.show(context) ?? false;
               if (hasPremium) {
                 onPressed();

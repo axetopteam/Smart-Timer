@@ -1,66 +1,69 @@
 part of 'theme.dart';
 
-const bodyLarge = TextStyle(
-  fontFamily: 'Inter',
-  height: 20 / 18,
-  fontSize: 18,
-  fontWeight: FontWeight.w700,
-);
+class AppFonts {
+  static const bodyLarge = TextStyle(
+    fontFamily: 'Inter',
+    height: 20 / 18,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+  );
 
-const bodyMedium = TextStyle(
-  fontFamily: 'Inter',
-  height: 20 / 14,
-  fontSize: 14,
-  fontWeight: FontWeight.w600,
-);
+  static const bodyMedium = TextStyle(
+    fontFamily: 'Inter',
+    height: 20 / 14,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  );
 
-const displayLarge = TextStyle(
-  height: 47 / 60,
-  fontSize: 60,
-  fontFamily: 'Montserrat',
-  fontWeight: FontWeight.w900,
-);
-const displayMedium = TextStyle(
-  height: 22 / 18,
-  fontSize: 18,
-  fontFamily: 'Montserrat',
-  fontWeight: FontWeight.w900,
-);
+  static const displayLarge = TextStyle(
+    height: 47 / 60,
+    fontSize: 60,
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w900,
+  );
 
-const displaySmall = TextStyle(
-  fontFamily: 'Montserrat',
-  height: 29 / 24,
-  fontSize: 24,
-  fontWeight: FontWeight.w900,
-);
+  static const displayMedium = TextStyle(
+    height: 22 / 18,
+    fontSize: 18,
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w900,
+  );
 
-const headlineMedium = TextStyle(
-  fontFamily: 'Inter',
-  height: 28 / 20,
-  fontSize: 20,
-  fontWeight: FontWeight.w700,
-);
+  static const displaySmall = TextStyle(
+    fontFamily: 'Montserrat',
+    height: 29 / 24,
+    fontSize: 24,
+    fontWeight: FontWeight.w900,
+  );
 
-const headlineSmall = TextStyle(
-  fontFamily: 'Inter',
-  height: 90 / 70,
-  fontSize: 70,
-  fontWeight: FontWeight.w900,
-);
+  static const headlineMedium = TextStyle(
+    fontFamily: 'Inter',
+    height: 28 / 20,
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+  );
 
-const titleMedium = TextStyle(
-  fontFamily: 'Inter',
-  height: 20 / 16,
-  fontSize: 16,
-  fontWeight: FontWeight.w900,
-);
+  static const headlineSmall = TextStyle(
+    fontFamily: 'Inter',
+    height: 90 / 70,
+    fontSize: 70,
+    fontWeight: FontWeight.w900,
+  );
 
-const titleSmall = TextStyle(
-  fontFamily: 'Inter',
-  height: 29 / 24,
-  fontSize: 24,
-  fontWeight: FontWeight.w900,
-);
+  static const titleMedium = TextStyle(
+    fontFamily: 'Inter',
+    height: 20 / 16,
+    fontSize: 16,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const titleSmall = TextStyle(
+    fontFamily: 'Inter',
+    height: 29 / 24,
+    fontSize: 24,
+    fontWeight: FontWeight.w900,
+  );
+}
 
 abstract class AppColors {
   static const white = Colors.white;

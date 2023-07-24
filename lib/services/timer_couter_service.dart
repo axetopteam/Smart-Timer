@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 /// TimerCouterService singleton class
@@ -36,5 +37,5 @@ class TimerCouterService {
     return todaysTimers.length;
   }
 
-  bool get canStartNewTimer => _todaysCount < 2;
+  bool get canStartNewTimer => _todaysCount < 2 || kDebugMode;
 }
