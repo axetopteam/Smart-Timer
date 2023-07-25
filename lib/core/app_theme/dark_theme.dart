@@ -41,6 +41,9 @@ ThemeData createDarkTheme() {
         ),
       ),
     ),
+    textButtonTheme: const TextButtonThemeData(
+      style: ButtonStyle(overlayColor: MaterialStatePropertyAll(Colors.transparent)),
+    ),
     iconTheme: const IconThemeData(color: AppColors.activeBlue),
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
       primaryColor: AppColors.activeBlue,

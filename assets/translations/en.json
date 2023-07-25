@@ -44,7 +44,7 @@
     "timer": {
         "work": "Work",
         "rest": "Rest",
-        "complete_round": "Slide to complete",
+        "complete_round": "Complete",
         "pause": "Tap to pause",
         "resume": "Tap to resume",
         "completed": {

@@ -15,6 +15,7 @@ import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/play_icon.dart';
+import 'package:smart_timer/widgets/swipe_button/slider_button.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'timer_progress_container.dart';
@@ -172,24 +173,7 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                       Expanded(
                         child: !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
-                            ? GestureDetector(
-                                onHorizontalDragEnd: (details) {
-                                  state.endCurrentInterval();
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(Icons.swipe_right, size: 30),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        LocaleKeys.timer_complete_round.tr(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
+                            ? _buildCompleteRoundButton()
                             : Container(),
                       )
                     ],
@@ -205,9 +189,21 @@ class _TimerPageState extends State<TimerPage> {
             child: Observer(builder: (context) {
               switch (state.currentState) {
                 case TimerStatus.run:
-                  return Text(LocaleKeys.timer_pause.tr());
+                  return TextButton(
+                    onPressed: () => state.pause(),
+                    child: Text(
+                      LocaleKeys.timer_pause.tr(),
+                      style: context.textTheme.bodyMedium,
+                    ),
+                  );
                 case TimerStatus.pause:
-                  return Text(LocaleKeys.timer_resume.tr());
+                  return TextButton(
+                    onPressed: () => state.resume(),
+                    child: Text(
+                      LocaleKeys.timer_resume.tr(),
+                      style: context.textTheme.bodyMedium,
+                    ),
+                  );
                 case TimerStatus.done:
                 case TimerStatus.ready:
                   return Container();
@@ -216,6 +212,41 @@ class _TimerPageState extends State<TimerPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCompleteRoundButton() {
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: SliderButton(
+        backgroundColor: Colors.white30,
+        label: Text(
+          LocaleKeys.timer_complete_round.tr(),
+          style: context.textTheme.bodyLarge,
+        ),
+        height: 50,
+        buttonSize: 40,
+        alignLabel: const Alignment(0.2, 0),
+        shimmer: true,
+        highlightedColor: context.color.secondaryText,
+        baseColor: context.color.mainText,
+        action: () {
+          state.endCurrentInterval();
+        },
+        child: Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(
+            color: context.color.playIconColor,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            CupertinoIcons.arrow_right,
+            color: state.timerType.workoutColor(context),
+          ),
+        ),
+      ),
     );
   }
 
