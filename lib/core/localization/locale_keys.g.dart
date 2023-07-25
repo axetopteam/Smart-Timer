@@ -14,6 +14,7 @@ abstract class  LocaleKeys {
   static const no = 'no';
   static const cancel = 'cancel';
   static const ok = 'ok';
+  static const close = 'close';
   static const amrap_title = 'amrap.title';
   static const amrap_description = 'amrap.description';
   static const amrap_add_button_title = 'amrap.add_button_title';

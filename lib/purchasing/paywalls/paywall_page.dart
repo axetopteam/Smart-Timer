@@ -11,6 +11,7 @@ import 'package:smart_timer/purchasing/paywalls/paywall_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/utils.dart';
 import 'package:smart_timer/widgets/adaptive_alert.dart';
+import 'package:smart_timer/widgets/purchase_error_alert.dart';
 
 import 'product_container.dart';
 
@@ -58,7 +59,8 @@ class _PaywallPageState extends State<PaywallPage> {
           Navigator.of(context).pop(true);
         }
         if (purchaseResult?.type == PurchaseResultType.fail) {
-          _showPurchaseError(errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+          PurchaseErrorAlert.showPurchaseError(context,
+              errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
         }
       },
     );
@@ -77,19 +79,6 @@ class _PaywallPageState extends State<PaywallPage> {
       context,
       title: LocaleKeys.paywall_loading_error_title.tr(),
       content: LocaleKeys.paywall_loading_error_title.tr(),
-    );
-  }
-
-  Future<void> _showPurchaseError({int? errorCode, String? message}) async {
-    AdaptiveDialog.show(
-      context,
-      title: LocaleKeys.paywall_purchase_error_title.tr(),
-      content: LocaleKeys.paywall_purchase_error_title.tr(
-        namedArgs: {
-          'errorCode': '${errorCode ?? 'Unknonwn'}',
-          'message': message ?? '',
-        },
-      ),
     );
   }
 

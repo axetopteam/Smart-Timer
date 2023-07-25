@@ -99,7 +99,7 @@ class AdaptiveDialog extends StatelessWidget {
                   CupertinoDialogAction(
                     onPressed: () => Navigator.of(context).pop(),
                     isDefaultAction: true,
-                    child: Text(LocaleKeys.ok.tr().toUpperCase()),
+                    child: Text(LocaleKeys.close.tr()),
                   )
                 ]
               : [];

@@ -12,6 +12,7 @@
     "no": "No",
     "cancel": "Cancel",
     "ok": "Ok",
+    "close": "Close",
     "amrap": {
         "title": "AMRAP",
         "description": "Repeat as many rounds as\npossible for selected time",

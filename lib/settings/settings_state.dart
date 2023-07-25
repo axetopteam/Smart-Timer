@@ -1,5 +1,8 @@
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/purchasing/purchase_manager.dart';
 import 'package:smart_timer/services/app_properties.dart';
+
+export 'package:smart_timer/purchasing/purchase_manager.dart' show PurchaseResultType;
 
 part 'settings_state.g.dart';
 
@@ -16,6 +19,9 @@ abstract class _SettingsState with Store {
   @observable
   bool? soundOn;
 
+  @observable
+  bool purchaseInProgress = false;
+
   _initializeValues() {
     soundOn = _properties.soundOn;
   }
@@ -30,5 +36,14 @@ abstract class _SettingsState with Store {
     } else {
       soundOn = oldValue;
     }
+  }
+
+  @action
+  Future<PurchaseResult?> restorePurchase() async {
+    if (purchaseInProgress) return null;
+    purchaseInProgress = true;
+    final res = await PurchaseManager().restorePurchases();
+    purchaseInProgress = false;
+    return res;
   }
 }

@@ -25,6 +25,22 @@ mixin _$SettingsState on _SettingsState, Store {
     });
   }
 
+  late final _$purchaseInProgressAtom =
+      Atom(name: '_SettingsState.purchaseInProgress', context: context);
+
+  @override
+  bool get purchaseInProgress {
+    _$purchaseInProgressAtom.reportRead();
+    return super.purchaseInProgress;
+  }
+
+  @override
+  set purchaseInProgress(bool value) {
+    _$purchaseInProgressAtom.reportWrite(value, super.purchaseInProgress, () {
+      super.purchaseInProgress = value;
+    });
+  }
+
   late final _$saveSoundOnAsyncAction =
       AsyncAction('_SettingsState.saveSoundOn', context: context);
 
@@ -33,10 +49,19 @@ mixin _$SettingsState on _SettingsState, Store {
     return _$saveSoundOnAsyncAction.run(() => super.saveSoundOn(newValue));
   }
 
+  late final _$restorePurchaseAsyncAction =
+      AsyncAction('_SettingsState.restorePurchase', context: context);
+
+  @override
+  Future<PurchaseResult?> restorePurchase() {
+    return _$restorePurchaseAsyncAction.run(() => super.restorePurchase());
+  }
+
   @override
   String toString() {
     return '''
-soundOn: ${soundOn}
+soundOn: ${soundOn},
+purchaseInProgress: ${purchaseInProgress}
     ''';
   }
 }

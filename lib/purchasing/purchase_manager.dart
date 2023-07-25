@@ -163,6 +163,10 @@ class PurchaseManager {
       var profile = await Adapty().restorePurchases();
 
       return profile.hasPremium ? PurchaseResult(PurchaseResultType.success) : PurchaseResult(PurchaseResultType.fail);
+    } on AdaptyError catch (adaptyError) {
+      final message = adaptyError.message;
+      final errorCode = adaptyError.code;
+      return PurchaseResult(PurchaseResultType.fail, errorCode: errorCode, message: message);
     } catch (e) {
       return PurchaseResult(PurchaseResultType.fail);
     }

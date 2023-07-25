@@ -11,6 +11,7 @@ import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/utils.dart';
+import 'package:smart_timer/widgets/purchase_error_alert.dart';
 
 import 'settings_state.dart';
 import 'support.dart/application_support.dart';
@@ -127,14 +128,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   : Text(LocaleKeys.settings_plan_inactive.tr()),
             ),
           ),
-          CupertinoListTile.notched(
-            title: Text(LocaleKeys.settings_plan_restore.tr()),
-            leading: const Icon(Icons.cloud_download),
-            onTap: () {}, //TODO: add restore
-          ),
+          Observer(builder: (context) {
+            return CupertinoListTile.notched(
+              title: Text(LocaleKeys.settings_plan_restore.tr()),
+              leading: const Icon(Icons.cloud_download),
+              onTap: _state.purchaseInProgress ? null : _restore,
+              trailing: _state.purchaseInProgress ? const CupertinoActivityIndicator() : null,
+            );
+          }),
         ],
       );
     });
+  }
+
+  Future<void> _restore() async {
+    final purchaseResult = await _state.restorePurchase();
+    if (purchaseResult?.type == PurchaseResultType.fail) {
+      // ignore: use_build_context_synchronously
+      await PurchaseErrorAlert.showPurchaseError(context,
+          errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+    }
   }
 
   Widget _soundBlock() {
