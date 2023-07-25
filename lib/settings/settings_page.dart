@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
@@ -29,7 +30,14 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     premiumState = context.read<PremiumState>();
+    AnalyticsManager.eventSettingsOpened.commit();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    AnalyticsManager.eventSettingsClosed.commit();
+    super.dispose();
   }
 
   @override
@@ -66,13 +74,17 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(LocaleKeys.settings_rate_us.tr()),
           leading: const Icon(CupertinoIcons.star_fill),
           onTap: () {
+            AnalyticsManager.eventSettingsRateUsPressed.commit();
             AppReviewService().openStoreListing();
           },
         ),
         CupertinoListTile.notched(
           title: Text(LocaleKeys.settings_contact_us.tr()),
           leading: const Icon(CupertinoIcons.at),
-          onTap: () => ApplicationSupport.showSupportDialog(context),
+          onTap: () {
+            AnalyticsManager.eventSettingsContactUsPressed.commit();
+            ApplicationSupport.showSupportDialog(context);
+          },
         ),
       ],
     );
@@ -94,9 +106,10 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(LocaleKeys.settings_plan_purchase.tr()),
           leading: const Icon(CupertinoIcons.star_circle_fill),
           onTap: () {
+            AnalyticsManager.eventSettingsPurchasePressed.commit();
             PaywallPage.show(context);
           },
-        ),
+        ), //TODO: убрать если активна
         CupertinoListTile.notched(
           title: Text(LocaleKeys.settings_plan_title.tr()),
           leading: const Icon(CupertinoIcons.checkmark_seal),
@@ -110,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: premiumState.isPremiumActive
                   ? Text(LocaleKeys.settings_plan_active.tr())
                   : Text(LocaleKeys.settings_plan_inactive.tr()),
+              ////TODO: писать  дату если активна
             );
           }),
         ),
@@ -147,6 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   applyTheme: true,
                   onChanged: (value) {
                     _state.saveSoundOn(value);
+                    AnalyticsManager.eventSettingsSoundSwitched.setProperty('on', value).commit();
                   },
                 );
               } else {

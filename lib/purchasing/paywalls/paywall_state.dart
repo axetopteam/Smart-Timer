@@ -1,6 +1,7 @@
 import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:collection/collection.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/purchasing/paywalls/paywalls_ids.dart';
 import 'package:smart_timer/purchasing/purchase_manager.dart';
 
@@ -47,8 +48,11 @@ abstract class _PaywallState with Store {
   Future<void> _fetchPaywall() async {
     try {
       error = null;
-
       paywall = await purchaseManager.getOrLoadPaywall(mainPaywallId);
+      if (!_paywallShowLogged) {
+        purchaseManager.logShowPaywall(paywall!);
+        _paywallShowLogged = true;
+      }
     } catch (e) {
       error = e;
     }
@@ -65,9 +69,8 @@ abstract class _PaywallState with Store {
 
       selectedProduct ??= products?.firstOrNull;
 
-      if (!_paywallShowLogged) {
-        purchaseManager.logShowPaywall(paywall!);
-        _paywallShowLogged = true;
+      if (!ensureEligibility) {
+        AnalyticsManager.eventPaywallShowed.commit();
       }
 
       var shouldReloadProducts = false;

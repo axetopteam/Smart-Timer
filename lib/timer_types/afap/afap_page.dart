@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -30,12 +31,14 @@ class _AfapPageState extends State<AfapPage> {
     super.initState();
     final json = AppProperties().getAfapSettings();
     afapState = json != null ? AfapState.fromJson(json) : AfapState();
+    AnalyticsManager.eventAfapOpened.commit();
   }
 
   @override
   void dispose() {
     final json = afapState.toJson();
     AppProperties().setAfapSettings(json);
+    AnalyticsManager.eventAfapClosed.commit();
     super.dispose();
   }
 
@@ -45,14 +48,17 @@ class _AfapPageState extends State<AfapPage> {
       color: context.color.afapColor,
       appBarTitle: LocaleKeys.afap_title.tr(),
       subtitle: LocaleKeys.afap_description.tr(),
-      onStartPressed: () => context.pushRoute(
-        TimerRoute(
-          state: TimerState(
-            workout: afapState.workout,
-            timerType: TimerType.afap,
+      onStartPressed: () {
+        AnalyticsManager.eventAfapTimerStarted.setProperty('setsCount', afapState.afapsCount).commit();
+        context.pushRoute(
+          TimerRoute(
+            state: TimerState(
+              workout: afapState.workout,
+              timerType: TimerType.afap,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       slivers: [
         Observer(
           builder: (context) {
@@ -72,7 +78,10 @@ class _AfapPageState extends State<AfapPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: afapState.addAfap,
+              onPressed: () {
+                afapState.addAfap();
+                AnalyticsManager.eventAfapNewAdded.commit();
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -162,6 +171,7 @@ class _AfapPageState extends State<AfapPage> {
                             child: TextButton(
                               onPressed: () {
                                 afapState.deleteAfap(afapIndex);
+                                AnalyticsManager.eventAfapRemoved.commit();
                               },
                               child: Row(
                                 children: [

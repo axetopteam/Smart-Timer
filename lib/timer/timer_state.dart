@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
@@ -60,6 +61,7 @@ abstract class TimerStateBase with Store {
 
   @action
   void start() {
+    AnalyticsManager.eventTimerStarted.commit();
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
     currentState = TimerStatus.run;
@@ -91,6 +93,7 @@ abstract class TimerStateBase with Store {
     } else {
       currentState = TimerStatus.pause;
     }
+    AnalyticsManager.eventTimerPaused.commit();
   }
 
   @action
@@ -106,10 +109,12 @@ abstract class TimerStateBase with Store {
 
     currentState = TimerStatus.run;
     timerSubscription?.resume();
+    AnalyticsManager.eventTimerResumed.commit();
   }
 
   void endCurrentInterval() {
     workout.setDuration();
+    AnalyticsManager.eventTimerRoundCompleted.commit();
   }
 
   @action
@@ -121,8 +126,11 @@ abstract class TimerStateBase with Store {
 
       if (workout.isEnded) {
         currentState = TimerStatus.done;
-        TimerCouterService().addNewTime(DateTime.now());
         close();
+        TimerCouterService().addNewTime(DateTime.now());
+        AnalyticsManager.eventTimerFinished
+            .setProperty('todayCompletedTimersCount', TimerCouterService().todaysCount)
+            .commit();
       }
     }
   }
@@ -163,6 +171,7 @@ abstract class TimerStateBase with Store {
       soundOn = !soundOn;
       await _audio.switchSoundOnOff(soundOn);
       AppProperties().saveSoundOn(soundOn);
+      AnalyticsManager.eventTimerSoundSwitched.setProperty('on', soundOn);
     } catch (_) {}
   }
 }

@@ -190,16 +190,16 @@ class PurchaseManager {
     final trialDuration = product.introductoryDiscount?.subscriptionPeriod.inDays;
     if (product.trialIsAvailable && trialDuration != null) {
       AnalyticsManager.eventSubscriptionTrialActivated
+        ..setProperty('product_id', product.vendorProductId)
         ..setProperty('price', product.price)
         ..setProperty('currency', product.currencyCode)
-        ..setProperty('type', 'default')
         ..setProperty('trial_option', '${trialDuration}_days')
         ..commit();
     } else {
       AnalyticsManager.eventSubscriptionPurchaseDone
+        ..setProperty('product_id', product.vendorProductId)
         ..setProperty('price', product.price)
         ..setProperty('currency', product.currencyCode)
-        ..setProperty('product_id', product.vendorProductId)
         ..commit();
     }
   }
@@ -210,6 +210,7 @@ class PurchaseManager {
     int? errorCode,
   }) {
     AnalyticsManager.eventSubscriptionPurchaseFailed
+      ..setProperty('product_id', productInfo.vendorProductId)
       ..setProperty('price', productInfo.price)
       ..setProperty('currency', productInfo.currencyCode)
       ..setProperty('reason', isUserCanceled ? 'cancel' : 'fail')

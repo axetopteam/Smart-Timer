@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -30,6 +31,7 @@ class _TabataPageState extends State<TabataPage> {
   void initState() {
     final settingsJson = AppProperties().getTabataSettings();
     tabataState = settingsJson != null ? TabataState.fromJson(settingsJson) : TabataState();
+    AnalyticsManager.eventTabataOpened.commit();
 
     super.initState();
   }
@@ -38,6 +40,7 @@ class _TabataPageState extends State<TabataPage> {
   dispose() {
     final json = tabataState.toJson();
     AppProperties().setTabataSettings(json);
+    AnalyticsManager.eventTabataClosed.commit();
     super.dispose();
   }
 
@@ -48,14 +51,18 @@ class _TabataPageState extends State<TabataPage> {
       appBarTitle: LocaleKeys.tabata_title.tr(),
       subtitle: LocaleKeys.tabata_description.tr(),
       workout: () => tabataState.workout,
-      onStartPressed: () => context.router.push(
-        TimerRoute(
-          state: TimerState(
-            workout: tabataState.workout,
-            timerType: TimerType.tabata,
+      onStartPressed: () {
+        AnalyticsManager.eventTabataTimerStarted.setProperty('setsCount', tabataState.tabatsCount).commit();
+
+        context.router.push(
+          TimerRoute(
+            state: TimerState(
+              workout: tabataState.workout,
+              timerType: TimerType.tabata,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       slivers: [
         Observer(
           builder: (context) {
@@ -75,7 +82,10 @@ class _TabataPageState extends State<TabataPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: tabataState.addTabata,
+              onPressed: () {
+                tabataState.addTabata();
+                AnalyticsManager.eventTabataNewAdded.commit();
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -183,6 +193,7 @@ class _TabataPageState extends State<TabataPage> {
                           child: TextButton(
                             onPressed: () {
                               tabataState.deleteTabata(tabataIndex);
+                              AnalyticsManager.eventTabataRemoved.commit();
                             },
                             child: Row(
                               children: [

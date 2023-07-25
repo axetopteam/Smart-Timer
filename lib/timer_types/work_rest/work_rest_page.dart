@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
@@ -29,6 +30,8 @@ class _WorkRestPageState extends State<WorkRestPage> {
   void initState() {
     final settingsJson = AppProperties().getWorkRestSettings();
     workRest = settingsJson != null ? WorkRestState.fromJson(settingsJson) : WorkRestState();
+    AnalyticsManager.eventWorkRestOpened.commit();
+
     super.initState();
   }
 
@@ -36,6 +39,8 @@ class _WorkRestPageState extends State<WorkRestPage> {
   void dispose() {
     final json = workRest.toJson();
     AppProperties().setWorkRestSettings(json);
+    AnalyticsManager.eventWorkRestClosed.commit();
+
     super.dispose();
   }
 
@@ -45,14 +50,17 @@ class _WorkRestPageState extends State<WorkRestPage> {
       color: context.color.workRestColor,
       appBarTitle: LocaleKeys.work_rest_title.tr(),
       subtitle: LocaleKeys.work_rest_description.tr(),
-      onStartPressed: () => context.router.push(
-        TimerRoute(
-          state: TimerState(
-            workout: workRest.workout,
-            timerType: TimerType.workRest,
+      onStartPressed: () {
+        AnalyticsManager.eventWorkRestTimerStarted.setProperty('setsCount', 1).commit();
+        context.router.push(
+          TimerRoute(
+            state: TimerState(
+              workout: workRest.workout,
+              timerType: TimerType.workRest,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       slivers: [
         Observer(
           builder: (context) {

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -30,6 +31,7 @@ class _EmomPageState extends State<EmomPage> {
   void initState() {
     final settingsJson = AppProperties().getEmomSettings();
     emomState = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
+    AnalyticsManager.eventEmomOpened.commit();
     super.initState();
   }
 
@@ -37,6 +39,7 @@ class _EmomPageState extends State<EmomPage> {
   void dispose() {
     final json = emomState.toJson();
     AppProperties().setEmomSettings(json);
+    AnalyticsManager.eventEmomClosed.commit();
     super.dispose();
   }
 
@@ -47,14 +50,17 @@ class _EmomPageState extends State<EmomPage> {
       appBarTitle: LocaleKeys.emom_title.tr(),
       subtitle: LocaleKeys.emom_description.tr(),
       workout: () => emomState.workout,
-      onStartPressed: () => context.router.push(
-        TimerRoute(
-          state: TimerState(
-            workout: emomState.workout,
-            timerType: TimerType.emom,
+      onStartPressed: () {
+        AnalyticsManager.eventEmomTimerStarted.setProperty('setsCount', emomState.emomsCount).commit();
+        context.router.push(
+          TimerRoute(
+            state: TimerState(
+              workout: emomState.workout,
+              timerType: TimerType.emom,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       slivers: [
         Observer(
           builder: (context) {
@@ -74,7 +80,10 @@ class _EmomPageState extends State<EmomPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: emomState.addEmom,
+              onPressed: () {
+                emomState.addEmom();
+                AnalyticsManager.eventEmomNewAdded.commit();
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -166,6 +175,7 @@ class _EmomPageState extends State<EmomPage> {
                           child: TextButton(
                             onPressed: () {
                               emomState.deleteEmom(emomIndex);
+                              AnalyticsManager.eventEmomRemoved.commit();
                             },
                             child: Row(
                               children: [

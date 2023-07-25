@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_extensions.dart';
@@ -37,11 +37,13 @@ class _PaywallPageState extends State<PaywallPage> {
 
   @override
   void initState() {
+    AnalyticsManager.eventPaywallOpened.commit();
     _errorReactionDisposer = reaction(
       (_) => state.error,
       (error) async {
         if (error != null) {
           await _showLoadErrorAlert();
+          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', false);
           // ignore: use_build_context_synchronously
           Navigator.of(context).pop(false);
         }
@@ -52,6 +54,7 @@ class _PaywallPageState extends State<PaywallPage> {
       (_) => state.purchaseResult,
       (purchaseResult) {
         if (purchaseResult?.type == PurchaseResultType.success) {
+          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true);
           Navigator.of(context).pop(true);
         }
         if (purchaseResult?.type == PurchaseResultType.fail) {
@@ -78,14 +81,16 @@ class _PaywallPageState extends State<PaywallPage> {
   }
 
   Future<void> _showPurchaseError({int? errorCode, String? message}) async {
-    AdaptiveDialog.show(context,
-        title: LocaleKeys.paywall_purchase_error_title.tr(),
-        content: LocaleKeys.paywall_purchase_error_title.tr(
-          namedArgs: {
-            'errorCode': '${errorCode ?? 'Unknonwn'}',
-            'message': message ?? '',
-          },
-        ));
+    AdaptiveDialog.show(
+      context,
+      title: LocaleKeys.paywall_purchase_error_title.tr(),
+      content: LocaleKeys.paywall_purchase_error_title.tr(
+        namedArgs: {
+          'errorCode': '${errorCode ?? 'Unknonwn'}',
+          'message': message ?? '',
+        },
+      ),
+    );
   }
 
   @override
@@ -157,7 +162,8 @@ class _PaywallPageState extends State<PaywallPage> {
       top: safeOffset.top + 20,
       child: IconButton(
         onPressed: () {
-          Navigator.of(context).pop(kDebugMode);
+          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', false);
+          Navigator.of(context).pop(false);
         },
         icon: Icon(
           CupertinoIcons.clear_circled_solid,

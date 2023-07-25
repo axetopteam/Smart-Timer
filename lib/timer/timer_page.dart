@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
@@ -37,6 +38,7 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void initState() {
+    AnalyticsManager.eventTimerOpened;
     WakelockPlus.enable();
 
     state.initializeAudio(AppProperties().soundOn);
@@ -71,6 +73,8 @@ class _TimerPageState extends State<TimerPage> {
   void dispose() async {
     timerSubscription?.cancel();
     WakelockPlus.disable();
+    AnalyticsManager.eventTimerClosed.setProperty('status', state.currentState.name);
+
     super.dispose();
   }
 

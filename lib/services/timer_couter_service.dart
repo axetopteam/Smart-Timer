@@ -31,12 +31,12 @@ class TimerCouterService {
     appProperties.lastTimersEndTimes = _lastTimersEndTimes;
   }
 
-  int get _todaysCount {
+  int get todaysCount {
     final now = DateTime.now();
     final beginOfToday = DateTime(now.year, now.month, now.day);
     final todaysTimers = _lastTimersEndTimes.where((element) => element.isAfter(beginOfToday));
     return todaysTimers.length;
   }
 
-  bool get canStartNewTimer => _todaysCount < maxFreeTimerADay || kDebugMode;
+  bool get canStartNewTimer => todaysCount < maxFreeTimerADay || kDebugMode;
 }

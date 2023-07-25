@@ -80,9 +80,56 @@ class AnalyticsManager {
   static AnalyticsEvent get eventAppClosed => AnalyticsEvent('app_closed');
   static AnalyticsEvent get eventFirstLaunch => AnalyticsEvent('first_launch');
 
+  //amrap
+  static AnalyticsEvent get eventAmrapOpened => AnalyticsEvent('amrap_opened');
+  static AnalyticsEvent get eventAmrapClosed => AnalyticsEvent('amrap_closed');
+  static AnalyticsEvent get eventAmrapTimerStarted => AnalyticsEvent('amrap_timer_started');
+  static AnalyticsEvent get eventAmrapNewAdded => AnalyticsEvent('amrap_new_added');
+  static AnalyticsEvent get eventAmrapRemoved => AnalyticsEvent('amrap_removed');
+
+  //Afap
+  static AnalyticsEvent get eventAfapOpened => AnalyticsEvent('afap_opened');
+  static AnalyticsEvent get eventAfapClosed => AnalyticsEvent('afap_closed');
+  static AnalyticsEvent get eventAfapTimerStarted => AnalyticsEvent('afap_timer_started');
+  static AnalyticsEvent get eventAfapNewAdded => AnalyticsEvent('afap_new_added');
+  static AnalyticsEvent get eventAfapRemoved => AnalyticsEvent('afap_removed');
+
+  //Emom
+  static AnalyticsEvent get eventEmomOpened => AnalyticsEvent('emom_opened');
+  static AnalyticsEvent get eventEmomClosed => AnalyticsEvent('emom_closed');
+  static AnalyticsEvent get eventEmomTimerStarted => AnalyticsEvent('emom_timer_started');
+  static AnalyticsEvent get eventEmomNewAdded => AnalyticsEvent('emom_new_added');
+  static AnalyticsEvent get eventEmomRemoved => AnalyticsEvent('emom_removed');
+
+  //Tabata
+  static AnalyticsEvent get eventTabataOpened => AnalyticsEvent('tabata_opened');
+  static AnalyticsEvent get eventTabataClosed => AnalyticsEvent('tabata_closed');
+  static AnalyticsEvent get eventTabataTimerStarted => AnalyticsEvent('tabata_timer_started');
+  static AnalyticsEvent get eventTabataNewAdded => AnalyticsEvent('tabata_new_added');
+  static AnalyticsEvent get eventTabataRemoved => AnalyticsEvent('tabata_removed');
+
+  //WorkRest
+  static AnalyticsEvent get eventWorkRestOpened => AnalyticsEvent('work_rest_opened');
+  static AnalyticsEvent get eventWorkRestClosed => AnalyticsEvent('work_rest_closed');
+  static AnalyticsEvent get eventWorkRestTimerStarted => AnalyticsEvent('work_rest_timer_started');
+
+  //timer
+  static AnalyticsEvent get eventTimerOpened => AnalyticsEvent('timer_opened');
+  static AnalyticsEvent get eventTimerStarted => AnalyticsEvent('timer_started');
+  static AnalyticsEvent get eventTimerPaused => AnalyticsEvent('timer_paused');
+  static AnalyticsEvent get eventTimerResumed => AnalyticsEvent('timer_resumed');
+  static AnalyticsEvent get eventTimerFinished => AnalyticsEvent('timer_finished');
+  static AnalyticsEvent get eventTimerRoundCompleted => AnalyticsEvent('timer_round_completed');
+  static AnalyticsEvent get eventTimerSoundSwitched => AnalyticsEvent('timer_sound_switched');
+  static AnalyticsEvent get eventTimerClosed => AnalyticsEvent('timer_closed');
+
   //settings
   static AnalyticsEvent get eventSettingsOpened => AnalyticsEvent('settings_opened');
   static AnalyticsEvent get eventSettingsClosed => AnalyticsEvent('settings_closed');
+  static AnalyticsEvent get eventSettingsPurchasePressed => AnalyticsEvent('settings_purchase_pressed');
+  static AnalyticsEvent get eventSettingsSoundSwitched => AnalyticsEvent('settings_sound_switched');
+  static AnalyticsEvent get eventSettingsRateUsPressed => AnalyticsEvent('settings_rate_us_pressed');
+  static AnalyticsEvent get eventSettingsContactUsPressed => AnalyticsEvent('settings_contact_us_pressed');
 
   //purchase
   static AnalyticsEvent get eventPaywallOpened => AnalyticsEvent('paywall_opened');

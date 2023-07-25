@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -29,6 +30,7 @@ class _AmrapPageState extends State<AmrapPage> {
   void initState() {
     final json = AppProperties().getAmrapSettings();
     amrapState = json != null ? AmrapState.fromJson(json) : AmrapState();
+    AnalyticsManager.eventAmrapOpened.commit();
 
     super.initState();
   }
@@ -37,6 +39,7 @@ class _AmrapPageState extends State<AmrapPage> {
   void dispose() {
     final json = amrapState.toJson();
     AppProperties().setAmrapSettings(json);
+    AnalyticsManager.eventAmrapClosed.commit();
     super.dispose();
   }
 
@@ -46,14 +49,17 @@ class _AmrapPageState extends State<AmrapPage> {
       color: context.color.amrapColor,
       appBarTitle: LocaleKeys.amrap_title.tr(),
       subtitle: LocaleKeys.amrap_description.tr(),
-      onStartPressed: () => context.router.push(
-        TimerRoute(
-          state: TimerState(
-            workout: amrapState.workout,
-            timerType: TimerType.amrap,
+      onStartPressed: () {
+        AnalyticsManager.eventAmrapTimerStarted.setProperty('setsCount', amrapState.amrapsCount).commit();
+        context.router.push(
+          TimerRoute(
+            state: TimerState(
+              workout: amrapState.workout,
+              timerType: TimerType.amrap,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       slivers: [
         Observer(
           builder: (context) {
@@ -73,7 +79,10 @@ class _AmrapPageState extends State<AmrapPage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
-              onPressed: amrapState.addAmrap,
+              onPressed: () {
+                amrapState.addAmrap();
+                AnalyticsManager.eventAmrapNewAdded.commit();
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -151,6 +160,7 @@ class _AmrapPageState extends State<AmrapPage> {
                             child: TextButton(
                               onPressed: () {
                                 amrapState.deleteAmrap(amrapIndex);
+                                AnalyticsManager.eventAmrapRemoved.commit();
                               },
                               child: Row(
                                 children: [
