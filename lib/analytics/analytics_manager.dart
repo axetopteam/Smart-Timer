@@ -132,6 +132,7 @@ class AnalyticsManager {
   static AnalyticsEvent get eventSettingsContactUsPressed => AnalyticsEvent('settings_contact_us_pressed');
 
   //purchase
+  static AnalyticsEvent get eventDailyTimerLimitReached => AnalyticsEvent('daily_timer_limit_reached');
   static AnalyticsEvent get eventPaywallOpened => AnalyticsEvent('paywall_opened');
   static AnalyticsEvent get eventPaywallShowed => AnalyticsEvent('paywall_showed');
   static AnalyticsEvent get eventPaywallClosed => AnalyticsEvent('paywall_closed');

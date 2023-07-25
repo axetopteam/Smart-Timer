@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
@@ -27,6 +28,9 @@ class StartButton extends StatelessWidget {
             if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {
               onPressed();
             } else {
+              AnalyticsManager.eventDailyTimerLimitReached
+                  .setProperty('count', TimerCouterService().todaysCount)
+                  .commit();
               await AdaptiveDialog.show(
                 context,
                 title: LocaleKeys.limit_reached_alert_title.tr(),
