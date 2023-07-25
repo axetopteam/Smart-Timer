@@ -7,7 +7,7 @@ import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
 import 'package:smart_timer/widgets/adaptive_alert.dart';
 
-import '../purchasing/premium_state.dart';
+import '../purchasing/adapty_profile_state.dart';
 
 class StartButton extends StatelessWidget {
   const StartButton({Key? key, required this.onPressed, this.backgroundColor}) : super(key: key);
@@ -23,7 +23,7 @@ class StartButton extends StatelessWidget {
         child: ElevatedButton(
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(backgroundColor)),
           onPressed: () async {
-            final premiumState = context.read<PremiumState>();
+            final premiumState = context.read<AdaptyProfileState>();
             if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {
               onPressed();
             } else {

@@ -64,7 +64,7 @@
         "plan": {
             "title": "Plan",
             "purchase": "Purchase Plan",
-            "active": "Active",
+            "active": "Active until {date}",
             "inactive": "Inactive",
             "restore": "Restore Purchases"
         },

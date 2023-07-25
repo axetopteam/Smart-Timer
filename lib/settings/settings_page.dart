@@ -8,7 +8,7 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
-import 'package:smart_timer/purchasing/premium_state.dart';
+import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/utils.dart';
 
@@ -25,11 +25,11 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final _state = SettingsState();
-  late final PremiumState premiumState;
+  late final AdaptyProfileState adaptyProfileState;
 
   @override
   void initState() {
-    premiumState = context.read<PremiumState>();
+    adaptyProfileState = context.read<AdaptyProfileState>();
     AnalyticsManager.eventSettingsOpened.commit();
     super.initState();
   }
@@ -91,49 +91,50 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _planBlock() {
-    return CupertinoListSection.insetGrouped(
-      backgroundColor: context.color.background,
-      header: Text(
-        LocaleKeys.settings_plan_title.tr().toUpperCase(),
-        style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
-      ),
-      margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
-      decoration: BoxDecoration(
-        color: context.color.containerBackground,
-      ),
-      children: [
-        CupertinoListTile.notched(
-          title: Text(LocaleKeys.settings_plan_purchase.tr()),
-          leading: const Icon(CupertinoIcons.star_circle_fill),
-          onTap: () {
-            AnalyticsManager.eventSettingsPurchasePressed.commit();
-            PaywallPage.show(context);
-          },
-        ), //TODO: убрать если активна
-        CupertinoListTile.notched(
-          title: Text(LocaleKeys.settings_plan_title.tr()),
-          leading: const Icon(CupertinoIcons.checkmark_seal),
-          trailing: Observer(builder: (ctx) {
-            return Container(
+    return Observer(builder: (context) {
+      final expiresAt = adaptyProfileState.profile?.premiumAccessLevel?.expiresAt;
+      return CupertinoListSection.insetGrouped(
+        backgroundColor: context.color.background,
+        header: Text(
+          LocaleKeys.settings_plan_title.tr().toUpperCase(),
+          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+        ),
+        margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
+        decoration: BoxDecoration(
+          color: context.color.containerBackground,
+        ),
+        children: [
+          if (!adaptyProfileState.isPremiumActive)
+            CupertinoListTile.notched(
+              title: Text(LocaleKeys.settings_plan_purchase.tr()),
+              leading: const Icon(CupertinoIcons.star_circle_fill),
+              onTap: () {
+                AnalyticsManager.eventSettingsPurchasePressed.commit();
+                PaywallPage.show(context);
+              },
+            ),
+          CupertinoListTile.notched(
+            title: Text(LocaleKeys.settings_plan_title.tr()),
+            leading: const Icon(CupertinoIcons.checkmark_seal),
+            trailing: Container(
               padding: const EdgeInsets.fromLTRB(6, 2, 6, 4),
               decoration: BoxDecoration(
-                color: premiumState.isPremiumActive ? context.color.premium : context.color.warning,
+                color: adaptyProfileState.isPremiumActive ? context.color.premium : context.color.warning,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: premiumState.isPremiumActive
-                  ? Text(LocaleKeys.settings_plan_active.tr())
+              child: expiresAt != null
+                  ? Text(LocaleKeys.settings_plan_active.tr(namedArgs: {'date': DateFormat.yMd().format(expiresAt)}))
                   : Text(LocaleKeys.settings_plan_inactive.tr()),
-              ////TODO: писать  дату если активна
-            );
-          }),
-        ),
-        CupertinoListTile.notched(
-          title: Text(LocaleKeys.settings_plan_restore.tr()),
-          leading: const Icon(Icons.cloud_download),
-          onTap: () {}, //TODO: add restore
-        ),
-      ],
-    );
+            ),
+          ),
+          CupertinoListTile.notched(
+            title: Text(LocaleKeys.settings_plan_restore.tr()),
+            leading: const Icon(Icons.cloud_download),
+            onTap: () {}, //TODO: add restore
+          ),
+        ],
+      );
+    });
   }
 
   Widget _soundBlock() {

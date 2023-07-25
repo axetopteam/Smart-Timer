@@ -13,7 +13,7 @@ import 'package:uuid/uuid.dart';
 import 'analytics/analytics_manager.dart';
 import 'core/app_theme/theme.dart';
 import 'firebase_options.dart';
-import 'purchasing/premium_state.dart';
+import 'purchasing/adapty_profile_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,8 +62,8 @@ void main() async {
 
   await AnalyticsManager().setUserId(appProperties.userId);
 
-  final premiumState = PremiumState();
-  PurchaseManager().initialize(onProfileUpdated: premiumState.updatePremiumStatus);
+  final adaptyProfileState = AdaptyProfileState();
+  PurchaseManager().initialize(onProfileUpdated: adaptyProfileState.updatePremiumStatus);
 
   runApp(
     EasyLocalization(
@@ -71,7 +71,7 @@ void main() async {
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
       child: Provider.value(
-        value: premiumState,
+        value: adaptyProfileState,
         child: MyApp(appRouter),
       ),
     ),
