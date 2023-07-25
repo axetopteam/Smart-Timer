@@ -11,93 +11,106 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(actions: [
-        IconButton(
-          icon: const Icon(CupertinoIcons.settings),
-          onPressed: () {
-            context.router.push(const SettingsRoute());
-          },
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/background_image.png'),
         ),
-      ]),
-      resizeToAvoidBottomInset: false,
-      body: Material(
-        child: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 30, right: 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 100),
-                Padding(
-                  padding: const EdgeInsets.only(left: 18),
-                  child: Text(
-                    'EASY\nTIMER',
-                    style: context.textTheme.displayLarge,
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+              icon: const Icon(CupertinoIcons.settings),
+              onPressed: () {
+                context.router.push(const SettingsRoute());
+              },
+            ),
+          ],
+        ),
+        resizeToAvoidBottomInset: false,
+        body: Material(
+          color: Colors.transparent,
+          child: SizedBox.expand(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: Text(
+                      'EASY\nTIMER',
+                      style: context.textTheme.displayLarge,
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  runAlignment: WrapAlignment.center,
-                  direction: Axis.horizontal,
-                  runSpacing: 15,
-                  spacing: 10,
-                  verticalDirection: VerticalDirection.down,
-                  children: [
-                    buildContainer(
-                      context: context,
-                      title: TimerType.amrap.readbleName.toUpperCase(),
-                      color: context.color.amrapColor,
-                      onTap: () {
-                        context.router.push(const AmrapRoute());
-                      },
-                    ),
-                    buildContainer(
-                      context: context,
-                      title: TimerType.afap.readbleName.toUpperCase(),
-                      color: context.color.afapColor,
-                      onTap: () {
-                        context.router.push(const AfapRoute());
-                      },
-                    ),
-                    buildContainer(
-                      context: context,
-                      title: TimerType.emom.readbleName.toUpperCase(),
-                      color: context.color.emomColor,
-                      onTap: () {
-                        context.router.push(const EmomRoute());
-                      },
-                    ),
-                    buildContainer(
-                      context: context,
-                      title: TimerType.tabata.readbleName.toUpperCase(),
-                      color: context.color.tabataColor,
-                      onTap: () {
-                        context.router.push(const TabataRoute());
-                      },
-                    ),
-                    buildContainer(
-                      context: context,
-                      title: TimerType.workRest.readbleName.toUpperCase(),
-                      color: context.color.workRestColor,
-                      onTap: () {
-                        context.router.push(const WorkRestRoute());
-                      },
-                    ),
-                    // buildContainer(
-                    //   context: context,
-                    //   title: TimerType.custom.readbleName.toUpperCase(),
-                    //   color: context.color.customColor,
-                    //   onTap: () {
-                    //     context.router.push(const CustomizedRoute());
-                    //   },
-                    // ),
-                  ],
-                ),
-                const SizedBox(height: 56),
-              ],
+                  const Spacer(),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.center,
+                    direction: Axis.horizontal,
+                    runSpacing: 15,
+                    spacing: 10,
+                    verticalDirection: VerticalDirection.down,
+                    children: [
+                      buildContainer(
+                        context: context,
+                        title: TimerType.amrap.readbleName.toUpperCase(),
+                        color: context.color.amrapColor,
+                        onTap: () {
+                          context.router.push(const AmrapRoute());
+                        },
+                      ),
+                      buildContainer(
+                        context: context,
+                        title: TimerType.afap.readbleName.toUpperCase(),
+                        color: context.color.afapColor,
+                        onTap: () {
+                          context.router.push(const AfapRoute());
+                        },
+                      ),
+                      buildContainer(
+                        context: context,
+                        title: TimerType.emom.readbleName.toUpperCase(),
+                        color: context.color.emomColor,
+                        onTap: () {
+                          context.router.push(const EmomRoute());
+                        },
+                      ),
+                      buildContainer(
+                        context: context,
+                        title: TimerType.tabata.readbleName.toUpperCase(),
+                        color: context.color.tabataColor,
+                        onTap: () {
+                          context.router.push(const TabataRoute());
+                        },
+                      ),
+                      buildContainer(
+                        context: context,
+                        title: TimerType.workRest.readbleName.toUpperCase(),
+                        color: context.color.workRestColor,
+                        onTap: () {
+                          context.router.push(const WorkRestRoute());
+                        },
+                      ),
+                      // buildContainer(
+                      //   context: context,
+                      //   title: TimerType.custom.readbleName.toUpperCase(),
+                      //   color: context.color.customColor,
+                      //   onTap: () {
+                      //     context.router.push(const CustomizedRoute());
+                      //   },
+                      // ),
+                    ],
+                  ),
+                  const SizedBox(height: 56),
+                ],
+              ),
             ),
           ),
         ),
