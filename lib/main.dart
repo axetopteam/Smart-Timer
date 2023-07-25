@@ -44,6 +44,11 @@ void main() async {
 
   await AnalyticsManager().initialize();
 
+  if (appProperties.firstLaunchDate == null) {
+    appProperties.setFirstLaunchDate(DateTime.now());
+    AnalyticsManager.eventFirstLaunch.commit();
+  }
+
   if (appProperties.userId == null) {
     try {
       final uuid = const Uuid().v1();
@@ -73,16 +78,47 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp(this.appRouter, {Key? key}) : super(key: key);
 
   final AppRouter appRouter;
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    AnalyticsManager.eventAppOpened.commit();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        AnalyticsManager.eventAppOpened.commit();
+      case AppLifecycleState.inactive:
+        AnalyticsManager.eventAppClosed.commit();
+      case AppLifecycleState.detached:
+      case AppLifecycleState.paused:
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerDelegate: appRouter.delegate(),
-      routeInformationParser: appRouter.defaultRouteParser(),
+      routerDelegate: widget.appRouter.delegate(),
+      routeInformationParser: widget.appRouter.defaultRouteParser(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

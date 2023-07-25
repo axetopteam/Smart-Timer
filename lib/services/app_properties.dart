@@ -11,6 +11,7 @@ class AppProperties {
 
   late SharedPreferences _preferences;
   final String _userIdKey = 'userId';
+  final String _firstLaunchKey = 'firstLaunch';
   final String _amrapSettingsKey = 'amrapSettings';
   final String _afapSettingsKey = 'afapSettings';
   final String _tabataSettingsKey = 'tabataSettings';
@@ -31,59 +32,64 @@ class AppProperties {
     return _preferences.getString(_userIdKey);
   }
 
-  Future<bool?> setUserId(String? value) async {
-    if (value != null) {
-      return await _preferences.setString(_userIdKey, value);
-    }
-    return null;
+  Future<bool?> setUserId(String value) async {
+    return await _preferences.setString(_userIdKey, value);
+  }
+
+  DateTime? get firstLaunchDate {
+    return _preferences.getDateTime(_firstLaunchKey);
+  }
+
+  Future<bool?> setFirstLaunchDate(DateTime value) async {
+    return await _preferences.setDateTime(_firstLaunchKey, value);
   }
 
   Future<bool> setAmrapSettings(Map<String, dynamic> json) {
-    return setJson(_amrapSettingsKey, json);
+    return _preferences.setJson(_amrapSettingsKey, json);
   }
 
   Map<String, dynamic>? getAmrapSettings() {
-    return getJson(_amrapSettingsKey);
+    return _preferences.getJson(_amrapSettingsKey);
   }
 
   Future<bool> setAfapSettings(Map<String, dynamic> json) {
-    return setJson(_afapSettingsKey, json);
+    return _preferences.setJson(_afapSettingsKey, json);
   }
 
   Map<String, dynamic>? getAfapSettings() {
-    return getJson(_afapSettingsKey);
+    return _preferences.getJson(_afapSettingsKey);
   }
 
   Future<bool> setTabataSettings(Map<String, dynamic> json) {
-    return setJson(_tabataSettingsKey, json);
+    return _preferences.setJson(_tabataSettingsKey, json);
   }
 
   Map<String, dynamic>? getTabataSettings() {
-    return getJson(_tabataSettingsKey);
+    return _preferences.getJson(_tabataSettingsKey);
   }
 
   Future<bool> setEmomSettings(Map<String, dynamic> json) {
-    return setJson(_emomSettingsKey, json);
+    return _preferences.setJson(_emomSettingsKey, json);
   }
 
   Map<String, dynamic>? getEmomSettings() {
-    return getJson(_emomSettingsKey);
+    return _preferences.getJson(_emomSettingsKey);
   }
 
   Future<bool> setCustomSettings(Map<String, dynamic> json) {
-    return setJson(_customSettingsKey, json);
+    return _preferences.setJson(_customSettingsKey, json);
   }
 
   Map<String, dynamic>? getCustomSettings() {
-    return getJson(_customSettingsKey);
+    return _preferences.getJson(_customSettingsKey);
   }
 
   Future<bool> setWorkRestSettings(Map<String, dynamic> json) {
-    return setJson(_workRestSettingsKey, json);
+    return _preferences.setJson(_workRestSettingsKey, json);
   }
 
   Map<String, dynamic>? getWorkRestSettings() {
-    return getJson(_workRestSettingsKey);
+    return _preferences.getJson(_workRestSettingsKey);
   }
 
   bool get soundOn {
@@ -92,10 +98,6 @@ class AppProperties {
 
   Future<bool> saveSoundOn(bool value) {
     return _preferences.setBool(_soundOnKey, value);
-  }
-
-  Future<bool> setJson(String key, Map<String, dynamic> json) {
-    return _preferences.setString(key, jsonEncode(json));
   }
 
   set lastTimersEndTimes(List<DateTime> times) {
@@ -124,12 +126,34 @@ class AppProperties {
       version: version,
     );
   }
+}
+
+extension on SharedPreferences {
+  Future<bool> setJson(String key, Map<String, dynamic> json) {
+    return setString(key, jsonEncode(json));
+  }
 
   Map<String, dynamic>? getJson(String key) {
-    final jsonString = _preferences.getString(key);
+    final jsonString = getString(key);
     if (jsonString != null) {
       final json = jsonDecode(jsonString);
       return json;
+    }
+    return null;
+  }
+
+  Future<bool> setDateTime(String key, DateTime? dateTime) {
+    if (dateTime == null) {
+      return remove(key);
+    }
+    return setInt(key, dateTime.millisecondsSinceEpoch);
+  }
+
+  DateTime? getDateTime(String key) {
+    final millisecondsSinceEpoch = getInt(key);
+    if (millisecondsSinceEpoch != null) {
+      final dateTime = DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+      return dateTime;
     }
     return null;
   }
