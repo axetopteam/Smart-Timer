@@ -77,23 +77,20 @@ class _TabataPageState extends State<TabataPage> {
           },
         ),
         SliverPadding(
-          padding: const EdgeInsets.only(top: 26),
+          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                tabataState.addTabata();
-                AnalyticsManager.eventTabataNewAdded.commit();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add_circle_outline, size: 20),
-                  const SizedBox(width: 4),
-                  Text(LocaleKeys.tabata_add_button_title.tr())
-                ],
-              ),
+              child: ElevatedButton(
+            onPressed: () {
+              tabataState.addTabata();
+              AnalyticsManager.eventTabataNewAdded.commit();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.add_circle_outline, size: 20),
+                const SizedBox(width: 4),
+                Text(LocaleKeys.tabata_add_button_title.tr())
+              ],
             ),
           )),
         ),

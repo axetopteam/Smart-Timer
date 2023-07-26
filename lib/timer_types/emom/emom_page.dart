@@ -75,23 +75,20 @@ class _EmomPageState extends State<EmomPage> {
           },
         ),
         SliverPadding(
-          padding: const EdgeInsets.only(top: 26),
+          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                emomState.addEmom();
-                AnalyticsManager.eventEmomNewAdded.commit();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add_circle_outline, size: 20),
-                  const SizedBox(width: 4),
-                  Text(LocaleKeys.emom_add_button_title.tr())
-                ],
-              ),
+              child: ElevatedButton(
+            onPressed: () {
+              emomState.addEmom();
+              AnalyticsManager.eventEmomNewAdded.commit();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.add_circle_outline, size: 20),
+                const SizedBox(width: 4),
+                Text(LocaleKeys.emom_add_button_title.tr())
+              ],
             ),
           )),
         ),
