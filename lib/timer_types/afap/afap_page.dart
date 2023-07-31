@@ -13,6 +13,7 @@ import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
+import '../../widgets/new_item_transition.dart';
 import 'afap_state.dart';
 
 @RoutePage()
@@ -25,6 +26,9 @@ class AfapPage extends StatefulWidget {
 
 class _AfapPageState extends State<AfapPage> {
   late final AfapState afapState;
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
+  SliverAnimatedListState get _animatedList => _listKey.currentState!;
+  final _scroolController = ScrollController();
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _AfapPageState extends State<AfapPage> {
   void dispose() {
     final json = afapState.toJson();
     AppProperties().setAfapSettings(json);
+    _scroolController.dispose();
     AnalyticsManager.eventAfapClosed.commit();
     super.dispose();
   }
@@ -48,6 +53,7 @@ class _AfapPageState extends State<AfapPage> {
       color: context.color.afapColor,
       appBarTitle: LocaleKeys.afap_title.tr(),
       subtitle: LocaleKeys.afap_description.tr(),
+      scrollController: _scroolController,
       onStartPressed: () {
         AnalyticsManager.eventAfapTimerStarted.setProperty('setsCount', afapState.afapsCount).commit();
         context.pushRoute(
@@ -60,26 +66,16 @@ class _AfapPageState extends State<AfapPage> {
         );
       },
       slivers: [
-        Observer(
-          builder: (context) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (ctx, index) {
-                  return _buildAfap(index);
-                },
-                childCount: afapState.afapsCount,
-              ),
-            );
-          },
+        SliverAnimatedList(
+          key: _listKey,
+          initialItemCount: afapState.afapsCount,
+          itemBuilder: _itemBuilder,
         ),
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
               child: ElevatedButton(
-            onPressed: () {
-              afapState.addAfap();
-              AnalyticsManager.eventAfapNewAdded.commit();
-            },
+            onPressed: _addNewAfap,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -94,101 +90,138 @@ class _AfapPageState extends State<AfapPage> {
     );
   }
 
-  Widget _buildAfap(int afapIndex) {
-    return Observer(
-      builder: (context) {
-        final afap = afapState.afaps[afapIndex];
-        bool isLast = afapIndex == afapState.afapsCount - 1;
+  void _addNewAfap() {
+    afapState.addAfap();
+    _animatedList.insertItem(afapState.afapsCount - 1, duration: const Duration(milliseconds: 200));
+    Future.delayed(
+        const Duration(milliseconds: 200),
+        () => _scroolController.animateTo(
+              _scroolController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            ));
 
-        return Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-              child: Column(
+    AnalyticsManager.eventAfapNewAdded.commit();
+  }
+
+  Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
+    return Observer(builder: (ctx) {
+      final afap = afapState.afaps[index];
+      final isLast = index == afapState.afapsCount - 1;
+      return NewItemTransition(
+        animation: animation,
+        child: _buildAfap(
+          afap: afap,
+          isLast: isLast,
+          index: index,
+        ),
+      );
+    });
+  }
+
+  Widget _buildAfap({
+    required Afap afap,
+    required bool isLast,
+    required index,
+  }) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${LocaleKeys.afap_name.tr()} ${index + 1}',
+                style: context.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${LocaleKeys.afap_name.tr()} ${afapIndex + 1}',
-                    style: context.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IntervalWidget(
-                        title: '${LocaleKeys.time_cap.tr()}:',
-                        duration: afap.noTimeCap ? null : afap.timeCap,
-                        canBeUnlimited: true,
-                        onTap: !afap.noTimeCap
-                            ? () async {
-                                final selectedTime = await TimePicker.showTimePicker(
-                                  context,
-                                  initialDuration: afap.timeCap,
-                                );
-                                if (selectedTime != null) {
-                                  afapState.setTimeCap(afapIndex, selectedTime);
-                                }
-                              }
-                            : null,
-                        onNoTimeCapChanged: (newValue) {
-                          if (newValue != null) {
-                            afapState.setNoTimeCap(
-                              afapIndex,
-                              newValue,
-                            );
-                          }
-                        },
-                      ),
-                      if (!isLast) const SizedBox(width: 10),
-                      if (!isLast)
-                        IntervalWidget(
-                          title: LocaleKeys.rest_time.tr(),
-                          duration: afap.restTime,
-                          canBeUnlimited: false,
-                          onTap: () async {
+                  IntervalWidget(
+                    title: LocaleKeys.time_cap.tr(),
+                    duration: afap.noTimeCap ? null : afap.timeCap,
+                    canBeUnlimited: true,
+                    onTap: !afap.noTimeCap
+                        ? () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
-                              initialDuration: afap.restTime,
+                              initialDuration: afap.timeCap,
                             );
                             if (selectedTime != null) {
-                              afapState.setRestTime(afapIndex, selectedTime);
+                              afapState.setTimeCap(index, selectedTime);
                             }
-                          },
-                        ),
-                    ],
+                          }
+                        : null,
+                    onNoTimeCapChanged: (newValue) {
+                      if (newValue != null) {
+                        afapState.setNoTimeCap(
+                          index,
+                          newValue,
+                        );
+                      }
+                    },
                   ),
-                  if (afapState.afapsCount > 1)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        children: [
-                          TextButtonTheme(
-                            data: context.buttonThemes.deleteButtonTheme,
-                            child: TextButton(
-                              onPressed: () {
-                                afapState.deleteAfap(afapIndex);
-                                AnalyticsManager.eventAfapRemoved.commit();
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    LocaleKeys.afap_delete_button_title.tr(args: ['${afapIndex + 1}']),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  if (!isLast) const SizedBox(width: 10),
+                  if (!isLast)
+                    IntervalWidget(
+                      title: LocaleKeys.rest_time.tr(),
+                      duration: afap.restTime,
+                      canBeUnlimited: false,
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialDuration: afap.restTime,
+                        );
+                        if (selectedTime != null) {
+                          afapState.setRestTime(index, selectedTime);
+                        }
+                      },
                     ),
                 ],
               ),
-            ),
-            const Divider(thickness: 5, height: 5),
-          ],
-        );
-      },
+              if (afapState.afapsCount > 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      TextButtonTheme(
+                        data: context.buttonThemes.deleteButtonTheme,
+                        child: TextButton(
+                          onPressed: () {
+                            _animatedList.removeItem(
+                              index,
+                              (context, animation) => NewItemTransition(
+                                animation: animation,
+                                child: _buildAfap(
+                                  afap: afap,
+                                  isLast: isLast,
+                                  index: index,
+                                ),
+                              ),
+                            );
+                            afapState.deleteAfap(index);
+                            AnalyticsManager.eventAfapRemoved.commit();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                LocaleKeys.afap_delete_button_title.tr(args: ['${index + 1}']),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const Divider(thickness: 5, height: 5),
+      ],
     );
   }
 }
