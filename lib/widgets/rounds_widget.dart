@@ -93,6 +93,7 @@ class _RoundsWidgetState extends State<RoundsWidget> {
                     textAlign: TextAlign.center,
                     style: context.textTheme.bodyLarge,
                     cursorColor: context.color.mainText,
+                    decoration: const BoxDecoration(),
                     onChanged: (str) {
                       if (str.isNotEmpty) widget.onValueChanged(currentValue);
                     },

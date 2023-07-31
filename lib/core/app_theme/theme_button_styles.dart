@@ -56,21 +56,24 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
             fixedSize: MaterialStateProperty.all(const Size(130, 56)),
           ),
         ),
         deleteButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              foregroundColor: MaterialStateProperty.all(AppColors.red),
-              textStyle: MaterialStateProperty.all(AppFonts.bodyMedium),
-              minimumSize: MaterialStateProperty.all(const Size(0, 24)),
-              overlayColor: MaterialStateProperty.all(Colors.transparent)),
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            foregroundColor: MaterialStateProperty.all(AppColors.red),
+            textStyle: MaterialStateProperty.all(AppFonts.bodyMedium),
+            minimumSize: MaterialStateProperty.all(const Size(0, 24)),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+          ),
         ),
         popupButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all(AppColors.black),
             backgroundColor: MaterialStateProperty.all(AppColors.white),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
             textStyle: MaterialStateProperty.all(AppFonts.displayMedium),
             elevation: MaterialStateProperty.all(0),
             shape: MaterialStateProperty.all(
@@ -85,6 +88,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all(AppColors.white),
             backgroundColor: MaterialStateProperty.all(AppColors.activeBlue),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
             textStyle: MaterialStateProperty.all(AppFonts.displayMedium),
             elevation: MaterialStateProperty.all(0),
             shape: MaterialStateProperty.all(

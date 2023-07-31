@@ -8,6 +8,8 @@ ThemeData createDarkTheme() {
     textTheme: createTextTheme().apply(displayColor: AppColors.white),
     scaffoldBackgroundColor: AppColors.black,
     dividerColor: AppColors.greyBlue,
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
       titleTextStyle: AppFonts.displaySmall,
       centerTitle: false,
@@ -29,6 +31,7 @@ ThemeData createDarkTheme() {
           },
         ),
         foregroundColor: MaterialStateProperty.all(AppColors.white),
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
         textStyle: MaterialStateProperty.all(AppFonts.bodyMedium),
         elevation: MaterialStateProperty.all(0),
         shape: MaterialStateProperty.all(
@@ -44,7 +47,7 @@ ThemeData createDarkTheme() {
     textButtonTheme: const TextButtonThemeData(
       style: ButtonStyle(overlayColor: MaterialStatePropertyAll(Colors.transparent)),
     ),
-    iconTheme: const IconThemeData(color: AppColors.activeBlue),
+    iconTheme: const IconThemeData(color: AppColors.white),
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
       primaryColor: AppColors.activeBlue,
       textTheme: CupertinoTextThemeData(),
