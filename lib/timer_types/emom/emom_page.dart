@@ -14,6 +14,7 @@ import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/rounds_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
+import '../../widgets/new_item_transition.dart';
 import 'emom_state.dart';
 
 @RoutePage()
@@ -26,6 +27,9 @@ class EmomPage extends StatefulWidget {
 
 class _EmomPageState extends State<EmomPage> {
   late final EmomState emomState;
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
+  SliverAnimatedListState get _animatedList => _listKey.currentState!;
+  final _scroolController = ScrollController();
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _EmomPageState extends State<EmomPage> {
   void dispose() {
     final json = emomState.toJson();
     AppProperties().setEmomSettings(json);
+    _scroolController.dispose();
     AnalyticsManager.eventEmomClosed.commit();
     super.dispose();
   }
@@ -49,6 +54,7 @@ class _EmomPageState extends State<EmomPage> {
       color: context.color.emomColor,
       appBarTitle: LocaleKeys.emom_title.tr(),
       subtitle: LocaleKeys.emom_description.tr(),
+      scrollController: _scroolController,
       workout: () => emomState.workout,
       onStartPressed: () {
         AnalyticsManager.eventEmomTimerStarted.setProperty('setsCount', emomState.emomsCount).commit();
@@ -62,26 +68,16 @@ class _EmomPageState extends State<EmomPage> {
         );
       },
       slivers: [
-        Observer(
-          builder: (context) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (ctx, index) {
-                  return _buildEmom(index);
-                },
-                childCount: emomState.emomsCount,
-              ),
-            );
-          },
+        SliverAnimatedList(
+          key: _listKey,
+          initialItemCount: emomState.emomsCount,
+          itemBuilder: _itemBuilder,
         ),
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
               child: ElevatedButton(
-            onPressed: () {
-              emomState.addEmom();
-              AnalyticsManager.eventEmomNewAdded.commit();
-            },
+            onPressed: _addNewEmom,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -96,102 +92,141 @@ class _EmomPageState extends State<EmomPage> {
     );
   }
 
-  Widget _buildEmom(int emomIndex) {
-    return Observer(builder: (context) {
-      final emom = emomState.emoms[emomIndex];
-      bool isLast = emomIndex == emomState.emomsCount - 1;
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${LocaleKeys.emom_title.tr()} ${emomIndex + 1}',
-                  style: context.textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RoundsWidget(
-                          title: LocaleKeys.rounds.tr(),
-                          initialValue: emom.roundsCount,
-                          onValueChanged: (value) => emomState.setRounds(emomIndex, value),
-                        ),
-                        const SizedBox(width: 10),
-                        IntervalWidget(
-                          title: LocaleKeys.work_time.tr(),
-                          duration: emom.workTime,
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: emom.workTime,
-                            );
-                            if (selectedTime != null) {
-                              emomState.setWorkTime(emomIndex, selectedTime);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                if (!isLast)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Row(
-                      children: [
-                        IntervalWidget(
-                          title:
-                              LocaleKeys.rest_after_time.tr(args: ['${LocaleKeys.emom_title.tr()} ${emomIndex + 1}']),
-                          duration: emom.restAfterSet,
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: emom.restAfterSet,
-                            );
-                            if (selectedTime != null) {
-                              emomState.setRestAfterSet(emomIndex, selectedTime);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                if (emomState.emomsCount > 1)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Row(
-                      children: [
-                        TextButtonTheme(
-                          data: context.buttonThemes.deleteButtonTheme,
-                          child: TextButton(
-                            onPressed: () {
-                              emomState.deleteEmom(emomIndex);
-                              AnalyticsManager.eventEmomRemoved.commit();
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  LocaleKeys.emom_delete_button_title.tr(args: ['${emomIndex + 1}']),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const Divider(thickness: 5, height: 5),
-        ],
+  void _addNewEmom() {
+    emomState.addEmom();
+    _animatedList.insertItem(emomState.emomsCount - 1, duration: const Duration(milliseconds: 200));
+    Future.delayed(
+        const Duration(milliseconds: 200),
+        () => _scroolController.animateTo(
+              _scroolController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            ));
+
+    AnalyticsManager.eventEmomNewAdded.commit();
+  }
+
+  Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
+    return Observer(builder: (ctx) {
+      final emom = emomState.emoms[index];
+      final isLast = index == emomState.emomsCount - 1;
+      return NewItemTransition(
+        animation: animation,
+        child: _buildEmom(
+          emom: emom,
+          isLast: isLast,
+          index: index,
+        ),
       );
     });
+  }
+
+  Widget _buildEmom({
+    required Emom emom,
+    required bool isLast,
+    required index,
+  }) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${LocaleKeys.emom_title.tr()} ${index + 1}',
+                style: context.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RoundsWidget(
+                        title: LocaleKeys.rounds.tr(),
+                        initialValue: emom.roundsCount,
+                        onValueChanged: (value) => emomState.setRounds(index, value),
+                      ),
+                      const SizedBox(width: 10),
+                      IntervalWidget(
+                        title: LocaleKeys.work_time.tr(),
+                        duration: emom.workTime,
+                        onTap: () async {
+                          final selectedTime = await TimePicker.showTimePicker(
+                            context,
+                            initialDuration: emom.workTime,
+                          );
+                          if (selectedTime != null) {
+                            emomState.setWorkTime(index, selectedTime);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (!isLast)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      IntervalWidget(
+                        title: LocaleKeys.rest_after_time.tr(args: ['${LocaleKeys.emom_title.tr()} ${index + 1}']),
+                        duration: emom.restAfterSet,
+                        onTap: () async {
+                          final selectedTime = await TimePicker.showTimePicker(
+                            context,
+                            initialDuration: emom.restAfterSet,
+                          );
+                          if (selectedTime != null) {
+                            emomState.setRestAfterSet(index, selectedTime);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              if (emomState.emomsCount > 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Row(
+                    children: [
+                      TextButtonTheme(
+                        data: context.buttonThemes.deleteButtonTheme,
+                        child: TextButton(
+                          onPressed: () {
+                            _animatedList.removeItem(
+                              index,
+                              (context, animation) => NewItemTransition(
+                                animation: animation,
+                                child: _buildEmom(
+                                  emom: emom,
+                                  isLast: isLast,
+                                  index: index,
+                                ),
+                              ),
+                            );
+                            emomState.deleteEmom(index);
+                            AnalyticsManager.eventEmomRemoved.commit();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                LocaleKeys.emom_delete_button_title.tr(args: ['${index + 1}']),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const Divider(thickness: 5, height: 5),
+      ],
+    );
   }
 }

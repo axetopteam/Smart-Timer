@@ -13,6 +13,7 @@ import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
+import '../../widgets/new_item_transition.dart';
 import 'amrap_state.dart';
 
 @RoutePage()
@@ -25,6 +26,9 @@ class AmrapPage extends StatefulWidget {
 
 class _AmrapPageState extends State<AmrapPage> {
   late final AmrapState amrapState;
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
+  SliverAnimatedListState get _animatedList => _listKey.currentState!;
+  final _scroolController = ScrollController();
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _AmrapPageState extends State<AmrapPage> {
   void dispose() {
     final json = amrapState.toJson();
     AppProperties().setAmrapSettings(json);
+    _scroolController.dispose();
     AnalyticsManager.eventAmrapClosed.commit();
     super.dispose();
   }
@@ -49,6 +54,7 @@ class _AmrapPageState extends State<AmrapPage> {
       color: context.color.amrapColor,
       appBarTitle: LocaleKeys.amrap_title.tr(),
       subtitle: LocaleKeys.amrap_description.tr(),
+      scrollController: _scroolController,
       onStartPressed: () {
         AnalyticsManager.eventAmrapTimerStarted.setProperty('setsCount', amrapState.amrapsCount).commit();
         context.router.push(
@@ -61,36 +67,23 @@ class _AmrapPageState extends State<AmrapPage> {
         );
       },
       slivers: [
-        Observer(
-          builder: (context) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (ctx, index) {
-                  return _buildAmrap(index);
-                },
-                childCount: amrapState.amrapsCount,
-              ),
-            );
-          },
+        SliverAnimatedList(
+          key: _listKey,
+          initialItemCount: amrapState.amrapsCount,
+          itemBuilder: _itemBuilder,
         ),
         SliverPadding(
-          padding: const EdgeInsets.only(top: 26),
+          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                amrapState.addAmrap();
-                AnalyticsManager.eventAmrapNewAdded.commit();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add_circle_outline, size: 20),
-                  const SizedBox(width: 4),
-                  Text(LocaleKeys.amrap_add_button_title.tr())
-                ],
-              ),
+              child: ElevatedButton(
+            onPressed: _addNewAmrap,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.add_circle_outline, size: 20),
+                const SizedBox(width: 4),
+                Text(LocaleKeys.amrap_add_button_title.tr())
+              ],
             ),
           )),
         ),
@@ -98,89 +91,126 @@ class _AmrapPageState extends State<AmrapPage> {
     );
   }
 
-  Widget _buildAmrap(int amrapIndex) {
-    return Observer(
-      builder: (context) {
-        final amrap = amrapState.amraps[amrapIndex];
-        bool isLast = amrapIndex == amrapState.amrapsCount - 1;
+  void _addNewAmrap() {
+    amrapState.addAmrap();
+    _animatedList.insertItem(amrapState.amrapsCount - 1, duration: const Duration(milliseconds: 200));
+    Future.delayed(
+        const Duration(milliseconds: 200),
+        () => _scroolController.animateTo(
+              _scroolController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            ));
 
-        return Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-              child: Column(
+    AnalyticsManager.eventAmrapNewAdded.commit();
+  }
+
+  Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
+    return Observer(builder: (ctx) {
+      final amrap = amrapState.amraps[index];
+      final isLast = index == amrapState.amrapsCount - 1;
+      return NewItemTransition(
+        animation: animation,
+        child: _buildAmrap(
+          amrap: amrap,
+          isLast: isLast,
+          index: index,
+        ),
+      );
+    });
+  }
+
+  Widget _buildAmrap({
+    required Amrap amrap,
+    required bool isLast,
+    required index,
+  }) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${LocaleKeys.amrap_title.tr()} ${index + 1}',
+                style: context.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${LocaleKeys.amrap_title.tr()} ${amrapIndex + 1}',
-                    style: context.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IntervalWidget(
-                          title: LocaleKeys.work_time.tr(),
-                          duration: amrap.workTime,
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: amrap.workTime,
-                            );
-                            if (selectedTime != null) {
-                              amrapState.setWorkTime(amrapIndex, selectedTime);
-                            }
-                          }),
-                      if (!isLast) const SizedBox(width: 10),
-                      if (!isLast)
-                        IntervalWidget(
-                          title: LocaleKeys.rest_time.tr(),
-                          duration: amrap.restTime,
-                          canBeUnlimited: false,
-                          onTap: () async {
-                            final selectedTime = await TimePicker.showTimePicker(
-                              context,
-                              initialDuration: amrap.restTime,
-                            );
-                            if (selectedTime != null) {
-                              amrapState.setRestTime(amrapIndex, selectedTime);
-                            }
-                          },
-                        ),
-                    ],
-                  ),
-                  if (amrapState.amrapsCount > 1)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        children: [
-                          TextButtonTheme(
-                            data: context.buttonThemes.deleteButtonTheme,
-                            child: TextButton(
-                              onPressed: () {
-                                amrapState.deleteAmrap(amrapIndex);
-                                AnalyticsManager.eventAmrapRemoved.commit();
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${amrapIndex + 1}']),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  IntervalWidget(
+                      title: LocaleKeys.work_time.tr(),
+                      duration: amrap.workTime,
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialDuration: amrap.workTime,
+                        );
+                        if (selectedTime != null) {
+                          amrapState.setWorkTime(index, selectedTime);
+                        }
+                      }),
+                  if (!isLast) const SizedBox(width: 10),
+                  if (!isLast)
+                    IntervalWidget(
+                      title: LocaleKeys.rest_time.tr(),
+                      duration: amrap.restTime,
+                      canBeUnlimited: false,
+                      onTap: () async {
+                        final selectedTime = await TimePicker.showTimePicker(
+                          context,
+                          initialDuration: amrap.restTime,
+                        );
+                        if (selectedTime != null) {
+                          amrapState.setRestTime(index, selectedTime);
+                        }
+                      },
                     ),
                 ],
               ),
-            ),
-            const Divider(thickness: 5, height: 5),
-          ],
-        );
-      },
+              if (amrapState.amrapsCount > 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      TextButtonTheme(
+                        data: context.buttonThemes.deleteButtonTheme,
+                        child: TextButton(
+                          onPressed: () {
+                            _animatedList.removeItem(
+                              index,
+                              (context, animation) => NewItemTransition(
+                                animation: animation,
+                                child: _buildAmrap(
+                                  amrap: amrap,
+                                  isLast: isLast,
+                                  index: index,
+                                ),
+                              ),
+                            );
+                            amrapState.deleteAmrap(index);
+                            AnalyticsManager.eventAmrapRemoved.commit();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                LocaleKeys.amrap_delete_button_title.tr(args: ['${index + 1}']),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const Divider(thickness: 5, height: 5),
+      ],
     );
   }
 }

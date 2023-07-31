@@ -5,6 +5,7 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'amrap.dart';
+export 'amrap.dart';
 
 part 'amrap_state.g.dart';
 
