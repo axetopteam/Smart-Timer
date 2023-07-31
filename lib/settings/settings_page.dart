@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: expiresAt != null
-                  ? Text(LocaleKeys.settings_plan_active.tr(namedArgs: {'date': DateFormat.yMd().format(expiresAt)}))
+                  ? Text(LocaleKeys.settings_plan_active.tr())
                   : Text(LocaleKeys.settings_plan_inactive.tr()),
             ),
           ),
