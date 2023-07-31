@@ -96,9 +96,9 @@ class _AmrapPageState extends State<AmrapPage> {
 
   void addNewAmrap() {
     amrapState.addAmrap();
-    _animatedList.insertItem(amrapState.amrapsCount - 1);
+    _animatedList.insertItem(amrapState.amrapsCount - 1, duration: const Duration(milliseconds: 200));
     Future.delayed(
-        const Duration(milliseconds: 100),
+        const Duration(milliseconds: 200),
         () => _scroolController.animateTo(
               _scroolController.position.maxScrollExtent,
               duration: const Duration(milliseconds: 300),
@@ -208,16 +208,17 @@ class _AmrapPageState extends State<AmrapPage> {
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
-    final amrap = amrapState.amraps[index];
-    final isLast = index == amrapState.amrapsCount - 1;
-
-    return NewItemTransition(
-      animation: animation,
-      child: _buildAmrap(
-        amrap: amrap,
-        isLast: isLast,
-        index: index,
-      ),
-    );
+    return Observer(builder: (ctx) {
+      final amrap = amrapState.amraps[index];
+      final isLast = index == amrapState.amrapsCount - 1;
+      return NewItemTransition(
+        animation: animation,
+        child: _buildAmrap(
+          amrap: amrap,
+          isLast: isLast,
+          index: index,
+        ),
+      );
+    });
   }
 }
