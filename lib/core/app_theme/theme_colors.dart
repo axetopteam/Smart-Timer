@@ -21,6 +21,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color premium;
   final Color warning;
   final Color accent;
+  final Color shadow;
 
   const ThemeColors({
     required this.amrapColor,
@@ -43,6 +44,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     required this.premium,
     required this.warning,
     required this.accent,
+    required this.shadow,
   });
 
   @override
@@ -67,6 +69,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? premium,
     Color? warning,
     Color? accent,
+    Color? shadow,
   }) {
     return ThemeColors(
       amrapColor: amrapColor ?? this.amrapColor,
@@ -89,6 +92,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       premium: premium ?? this.premium,
       warning: warning ?? this.warning,
       accent: accent ?? this.accent,
+      shadow: shadow ?? this.shadow,
     );
   }
 
@@ -122,6 +126,7 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       premium: Color.lerp(premium, other.premium, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
       accent: Color.lerp(accent, other.accent, t)!,
+      shadow: Color.lerp(shadow, other.shadow, t)!,
     );
   }
 
@@ -146,5 +151,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         premium: AppColors.activeGreen,
         warning: AppColors.systemRed,
         accent: AppColors.activeBlue,
+        shadow: AppColors.grey,
       );
 }
