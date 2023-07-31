@@ -5,6 +5,7 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'emom.dart';
+export 'emom.dart';
 
 part 'emom_state.g.dart';
 
