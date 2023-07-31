@@ -5,6 +5,7 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
 import 'tabata.dart';
+export 'tabata.dart';
 
 part 'tabata_state.g.dart';
 
