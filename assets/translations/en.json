@@ -73,7 +73,8 @@
         "sound_on": "Sound On",
         "legal": "Legal",
         "privacy_policy": "Privacy Policy",
-        "terms_of_use": "Terms of Use"
+        "terms_of_use": "Terms of Use",
+        "support_email_signature": "Type your feedback or describe your problem above this line.\n\nPlease don't delete or edit the information below."
     },
     "limit_reached_alert": {
         "title": "Free Launch Limit Reached",

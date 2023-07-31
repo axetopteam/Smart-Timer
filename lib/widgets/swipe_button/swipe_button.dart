@@ -32,7 +32,6 @@ class _SwipeButtonState extends State<SwipeButton> with SingleTickerProviderStat
         return GestureDetector(
           onPanUpdate: (details) {
             final dx = details.localPosition.dx;
-            print('$dx/$maxX');
             controller.animateTo(max(dx / maxX, 1.0));
           },
           child: Stack(
@@ -53,7 +52,7 @@ class _SwipeButtonState extends State<SwipeButton> with SingleTickerProviderStat
                 child: Container(
                   height: widget.height + 12,
                   width: widget.height + 12,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.denimBlue,
                     shape: BoxShape.circle,
                   ),

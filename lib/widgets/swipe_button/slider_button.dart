@@ -68,7 +68,7 @@ class SliderButton extends StatefulWidget {
   }) : assert((buttonSize ?? 60) <= (height));
 
   @override
-  _SliderButtonState createState() => _SliderButtonState();
+  State<SliderButton> createState() => _SliderButtonState();
 }
 
 class _SliderButtonState extends State<SliderButton> {

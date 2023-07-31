@@ -183,11 +183,11 @@ class _PaywallPageState extends State<PaywallPage> {
         padding: EdgeInsets.fromLTRB(20, 0, 20, safeOffset.bottom + 20),
         decoration: BoxDecoration(
           color: context.color.background,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Color(0xFF8E8E93), //TODO: add to theme
+              color: context.color.shadow,
               blurRadius: 8,
-              offset: Offset(0, -8),
+              offset: const Offset(0, -8),
               spreadRadius: -8,
             )
           ],
@@ -226,23 +226,32 @@ class _PaywallPageState extends State<PaywallPage> {
               ),
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                TextButton(
-                  style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
-                  onPressed: AppUtils.openTermsOfUse,
-                  child: Text(LocaleKeys.paywall_bottom_block_terms.tr()),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
+                        onPressed: AppUtils.openTermsOfUse,
+                        child: Text(LocaleKeys.paywall_bottom_block_terms.tr()),
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
+                        onPressed: AppUtils.openPrivacyPolicy,
+                        child: Text(LocaleKeys.paywall_bottom_block_privacy.tr()),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 4),
                 TextButton(
                   style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
                   onPressed: state.restorePurchase,
                   child: Text(LocaleKeys.paywall_bottom_block_restore.tr()),
-                ),
-                TextButton(
-                  style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
-                  onPressed: AppUtils.openPrivacyPolicy,
-                  child: Text(LocaleKeys.paywall_bottom_block_privacy.tr()),
                 ),
               ],
             ),

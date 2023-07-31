@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 class ApplicationSupport {
@@ -27,14 +29,13 @@ class ApplicationSupport {
 
     final osVersion = Platform.operatingSystem;
     final userId = AppProperties().userId;
-    //TODO: localization
     return '''
 
 
 
 
 -----
-"Type your feedback or describe your problem above this line.\n\nPlease don't delete or edit the information below." 
+${LocaleKeys.settings_support_email_signature.tr()} 
 
 UserId: $userId
 System: $osVersion

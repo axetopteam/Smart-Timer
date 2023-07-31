@@ -66,6 +66,7 @@ abstract class  LocaleKeys {
   static const settings_legal = 'settings.legal';
   static const settings_privacy_policy = 'settings.privacy_policy';
   static const settings_terms_of_use = 'settings.terms_of_use';
+  static const settings_support_email_signature = 'settings.support_email_signature';
   static const settings = 'settings';
   static const limit_reached_alert_title = 'limit_reached_alert.title';
   static const limit_reached_alert_content = 'limit_reached_alert.content';
