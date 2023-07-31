@@ -13,6 +13,7 @@ class TimerSetupScaffold extends StatelessWidget {
     required this.subtitle,
     required this.onStartPressed,
     required this.slivers,
+    this.scrollController,
     this.workout,
     Key? key,
   }) : super(key: key);
@@ -23,6 +24,7 @@ class TimerSetupScaffold extends StatelessWidget {
   final List<Widget> slivers;
   final void Function() onStartPressed;
   final WorkoutSet Function()? workout;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class TimerSetupScaffold extends StatelessWidget {
         child: Stack(
           children: [
             CustomScrollView(
+              controller: scrollController,
               slivers: [
                 SliverAppBar(
                   centerTitle: false,

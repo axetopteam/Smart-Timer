@@ -13,6 +13,7 @@ import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
+import '../../widgets/new_item_transition.dart';
 import 'amrap_state.dart';
 
 @RoutePage()
@@ -25,6 +26,9 @@ class AmrapPage extends StatefulWidget {
 
 class _AmrapPageState extends State<AmrapPage> {
   late final AmrapState amrapState;
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
+  SliverAnimatedListState get _animatedList => _listKey.currentState!;
+  final _scroolController = ScrollController();
 
   @override
   void initState() {
@@ -49,6 +53,7 @@ class _AmrapPageState extends State<AmrapPage> {
       color: context.color.amrapColor,
       appBarTitle: LocaleKeys.amrap_title.tr(),
       subtitle: LocaleKeys.amrap_description.tr(),
+      scrollController: _scroolController,
       onStartPressed: () {
         AnalyticsManager.eventAmrapTimerStarted.setProperty('setsCount', amrapState.amrapsCount).commit();
         context.router.push(
@@ -63,34 +68,25 @@ class _AmrapPageState extends State<AmrapPage> {
       slivers: [
         Observer(
           builder: (context) {
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (ctx, index) {
-                  return _buildAmrap(index);
-                },
-                childCount: amrapState.amrapsCount,
-              ),
+            return SliverAnimatedList(
+              key: _listKey,
+              initialItemCount: amrapState.amrapsCount,
+              itemBuilder: _itemBuilder,
             );
           },
         ),
         SliverPadding(
-          padding: const EdgeInsets.only(top: 26),
+          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
           sliver: SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                amrapState.addAmrap();
-                AnalyticsManager.eventAmrapNewAdded.commit();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add_circle_outline, size: 20),
-                  const SizedBox(width: 4),
-                  Text(LocaleKeys.amrap_add_button_title.tr())
-                ],
-              ),
+              child: ElevatedButton(
+            onPressed: addNewAmrap,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.add_circle_outline, size: 20),
+                const SizedBox(width: 4),
+                Text(LocaleKeys.amrap_add_button_title.tr())
+              ],
             ),
           )),
         ),
@@ -98,12 +94,27 @@ class _AmrapPageState extends State<AmrapPage> {
     );
   }
 
-  Widget _buildAmrap(int amrapIndex) {
+  void addNewAmrap() {
+    amrapState.addAmrap();
+    _animatedList.insertItem(amrapState.amrapsCount - 1);
+    Future.delayed(
+        const Duration(milliseconds: 100),
+        () => _scroolController.animateTo(
+              _scroolController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            ));
+
+    AnalyticsManager.eventAmrapNewAdded.commit();
+  }
+
+  Widget _buildAmrap({
+    required Amrap amrap,
+    required bool isLast,
+    required index,
+  }) {
     return Observer(
       builder: (context) {
-        final amrap = amrapState.amraps[amrapIndex];
-        bool isLast = amrapIndex == amrapState.amrapsCount - 1;
-
         return Column(
           children: [
             Container(
@@ -112,7 +123,7 @@ class _AmrapPageState extends State<AmrapPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${LocaleKeys.amrap_title.tr()} ${amrapIndex + 1}',
+                    '${LocaleKeys.amrap_title.tr()} ${index + 1}',
                     style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -129,7 +140,7 @@ class _AmrapPageState extends State<AmrapPage> {
                               initialDuration: amrap.workTime,
                             );
                             if (selectedTime != null) {
-                              amrapState.setWorkTime(amrapIndex, selectedTime);
+                              amrapState.setWorkTime(index, selectedTime);
                             }
                           }),
                       if (!isLast) const SizedBox(width: 10),
@@ -144,7 +155,7 @@ class _AmrapPageState extends State<AmrapPage> {
                               initialDuration: amrap.restTime,
                             );
                             if (selectedTime != null) {
-                              amrapState.setRestTime(amrapIndex, selectedTime);
+                              amrapState.setRestTime(index, selectedTime);
                             }
                           },
                         ),
@@ -159,13 +170,25 @@ class _AmrapPageState extends State<AmrapPage> {
                             data: context.buttonThemes.deleteButtonTheme,
                             child: TextButton(
                               onPressed: () {
-                                amrapState.deleteAmrap(amrapIndex);
+                                _animatedList.removeItem(
+                                  index,
+                                  (context, animation) => NewItemTransition(
+                                    animation: animation,
+                                    child: _buildAmrap(
+                                      amrap: amrap,
+                                      isLast: isLast,
+                                      index: index,
+                                    ),
+                                  ),
+                                );
+                                amrapState.deleteAmrap(index);
+
                                 AnalyticsManager.eventAmrapRemoved.commit();
                               },
                               child: Row(
                                 children: [
                                   Text(
-                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${amrapIndex + 1}']),
+                                    LocaleKeys.amrap_delete_button_title.tr(args: ['${index + 1}']),
                                   )
                                 ],
                               ),
@@ -181,6 +204,20 @@ class _AmrapPageState extends State<AmrapPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
+    final amrap = amrapState.amraps[index];
+    final isLast = index == amrapState.amrapsCount - 1;
+
+    return NewItemTransition(
+      animation: animation,
+      child: _buildAmrap(
+        amrap: amrap,
+        isLast: isLast,
+        index: index,
+      ),
     );
   }
 }
