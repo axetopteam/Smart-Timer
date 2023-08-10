@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
@@ -55,7 +57,7 @@ class PurchaseManager {
         _onProfileUpdated?.call(profile);
       });
 
-      // await _setFallbackPaywalls();
+      await _setFallbackPaywalls();
       await _initializePaywalls();
 
       debugPrint('#PurchaseManager#  Adapty activate and identify!');
@@ -64,6 +66,19 @@ class PurchaseManager {
     } catch (e) {
       debugPrint('#PurchaseManager# Adapty activate and/or identify failed. Error: $e');
       return false;
+    }
+  }
+
+  Future<void> _setFallbackPaywalls() async {
+    final filePath = Platform.isIOS
+        ? 'assets/paywall_fallbacks/ios_fallback.json'
+        : 'assets/paywall_fallbacks/android_fallback.json';
+    final jsonString = await rootBundle.loadString(filePath);
+
+    try {
+      await Adapty().setFallbackPaywalls(jsonString);
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
