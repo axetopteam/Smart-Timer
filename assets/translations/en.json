@@ -2,41 +2,41 @@
     "work_time": "Work:",
     "rest_time": "Rest:",
     "rest_after_time": "Rest after {}:",
-    "rounds": "Rounds:",
+    "rounds": "Rounds",
     "start": "Start",
-    "time_cap": "Time cap",
-    "rest_ratio": "Ratio for rest time",
-    "no_time_cap": "No time cap",
-    "no_cap": "No cap",
+    "time_cap": "Time Cap:",
+    "rest_ratio": "Rest Time Ratio:",
+    "no_time_cap": "No Time Limit",
+    "no_cap": "No Limit",
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel",
-    "ok": "Ok",
+    "ok": "OK",
     "close": "Close",
     "amrap": {
         "title": "AMRAP",
-        "description": "Repeat as many rounds as\npossible for selected time",
-        "add_button_title": "Add another AMRAP",
-        "delete_button_title": "Remove AMRAP {}"
+        "description": "Perform as many repetitions as\npossible in a specified time",
+        "add_button_title": "Add Another AMRAP",
+        "delete_button_title": "Delete AMRAP {}"
     },
     "afap": {
         "name": "AFAP",
-        "title": "FOR TIME",
-        "description": "Repeat rounds as fast as possible for selected time",
-        "add_button_title": "Add another AFAP",
-        "delete_button_title": "Remove AFAP {}"
+        "title": "AS FAST AS POSSIBLE",
+        "description": "Complete the task as fast as possible",
+        "add_button_title": "Add Another AFAP",
+        "delete_button_title": "Delete AFAP {}"
     },
     "emom": {
         "title": "EMOM",
-        "description": "Complete one round and rest until the end of time",
-        "add_button_title": "Add another EMOM",
-        "delete_button_title": "Remove EMOM {}"
+        "description": "Perform one round and rest until the end of time",
+        "add_button_title": "Add Another EMOM",
+        "delete_button_title": "Delete EMOM {}"
     },
     "tabata": {
         "title": "TABATA",
-        "description": "Do the exercise alternating work and rest",
-        "add_button_title": "Add another TABATA",
-        "delete_button_title": "Remove TABATA {}"
+        "description": "Perform an exercise alternating between work and rest",
+        "add_button_title": "Add Another TABATA",
+        "delete_button_title": "Delete TABATA {}"
     },
     "work_rest": {
         "title": "WORK:REST",
@@ -46,14 +46,14 @@
         "work": "Work",
         "rest": "Rest",
         "complete_round": "Complete",
-        "pause": "Tap to pause",
-        "resume": "Tap to resume",
+        "pause": "Press to pause",
+        "resume": "Press to resume",
         "completed": {
-            "title": "Well Done",
+            "title": "Great Job",
             "button": "Complete"
         },
         "confirm_exit_alert": {
-            "title": "Are you sure you want to get out?",
+            "title": "Are you sure you want to exit?",
             "content": "Your progress will not be saved"
         }
     },
@@ -63,43 +63,43 @@
         "rate_us": "Rate Us",
         "contact_us": "Contact Us",
         "plan": {
-            "title": "Plan",
-            "purchase": "Purchase Plan",
+            "title": "Subscription",
+            "purchase": "Subscribe",
             "active": "Active",
             "inactive": "Inactive",
             "restore": "Restore Purchases"
         },
         "sound": "Sound",
         "sound_on": "Sound On",
-        "legal": "Legal",
+        "legal": "Agreements",
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use",
-        "support_email_signature": "Type your feedback or describe your problem above this line.\n\nPlease don't delete or edit the information below."
+        "support_email_signature": "Write your feedback or describe your issue above this line.\n\nPlease do not delete or modify the information provided below."
     },
     "limit_reached_alert": {
-        "title": "Free Launch Limit Reached",
-        "content": "Unfortunately, you have reached the limit for free timer launches today. The maximum number of free launches is {} per day. Please consider upgrading to a paid plan to get unlimited launches. Thank you for your understanding!",
+        "title": "Free Launches Exhausted",
+        "content": "Unfortunately, you have reached the limit of free timer launches for today. The maximum number of free launches is {} per day. Please consider upgrading to a paid plan to access unlimited launches. Thank you for your understanding!",
         "button_title": "Update"
     },
     "paywall": {
         "loading_error": {
-            "title": "Failed to load paywall",
-            "content": "Please, try again later."
+            "title": "Failed to Load Page",
+            "content": "Please try again later."
         },
         "purchase_error": {
-            "title": "Purchase error",
+            "title": "Purchase Error",
             "content": "code: {errorCode}\nmessage: {message}"
         },
-        "title": "Unlock All Features\nof Easy Timer",
+        "title": "Unlock All Features\nEasy Timer",
         "features": {
-            "1_title": "No limits",
-            "1_subtitle": "Have unlimited timers",
-            "2_title": "No ads",
+            "1_title": "No Restrictions",
+            "1_subtitle": "Launch an unlimited number of timers",
+            "2_title": "Ad-Free",
             "2_subtitle": "Train without distracting ads"
         },
         "bottom_block": {
             "no_commitments": "No commitments, cancel anytime.",
-            "trial": "Payment will be automatically charged after end of trial period.",
+            "trial": "Payment will be automatically deducted after the trial period ends.",
             "button_title": "Continue",
             "terms": "Terms",
             "restore": "Restore",
@@ -107,8 +107,8 @@
         },
         "lifetime": "Lifetime",
         "product_title": {
-            "unlim": "Billed once",
-            "trial": "Free trial",
+            "unlim": "Pay Once",
+            "trial": "Free Trial",
             "default": "Subscription"
         }
     }
