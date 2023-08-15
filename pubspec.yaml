@@ -73,6 +73,7 @@ flutter:
     - assets/icons/
     - assets/sounds/
     - assets/translations/
+    - assets/paywall_fallbacks/
 
   fonts:
     - family: Inter

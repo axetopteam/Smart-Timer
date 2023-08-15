@@ -70,12 +70,11 @@ class PurchaseManager {
   }
 
   Future<void> _setFallbackPaywalls() async {
-    final filePath = Platform.isIOS
-        ? 'assets/paywall_fallbacks/ios_fallback.json'
-        : 'assets/paywall_fallbacks/android_fallback.json';
-    final jsonString = await rootBundle.loadString(filePath);
-
     try {
+      final filePath = Platform.isIOS
+          ? 'assets/paywall_fallbacks/ios_fallback.json'
+          : 'assets/paywall_fallbacks/android_fallback.json';
+      final jsonString = await rootBundle.loadString(filePath);
       await Adapty().setFallbackPaywalls(jsonString);
     } catch (e) {
       debugPrint(e.toString());
