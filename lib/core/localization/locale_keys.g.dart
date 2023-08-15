@@ -75,9 +75,10 @@ abstract class  LocaleKeys {
   static const paywall_loading_error_title = 'paywall.loading_error.title';
   static const paywall_loading_error_content = 'paywall.loading_error.content';
   static const paywall_loading_error = 'paywall.loading_error';
-  static const paywall_purchase_error_title = 'paywall.purchase_error.title';
-  static const paywall_purchase_error_content = 'paywall.purchase_error.content';
-  static const paywall_purchase_error = 'paywall.purchase_error';
+  static const paywall_purchase_error_title = 'paywall.purchase_error_title';
+  static const paywall_restore_error_title = 'paywall.restore_error.title';
+  static const paywall_restore_error_no_active_subscription = 'paywall.restore_error.no_active_subscription';
+  static const paywall_restore_error = 'paywall.restore_error';
   static const paywall_title = 'paywall.title';
   static const paywall_features_1_title = 'paywall.features.1_title';
   static const paywall_features_1_subtitle = 'paywall.features.1_subtitle';

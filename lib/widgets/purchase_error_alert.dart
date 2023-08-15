@@ -8,12 +8,15 @@ class PurchaseErrorAlert {
     return AdaptiveDialog.show(
       context,
       title: LocaleKeys.paywall_purchase_error_title.tr(),
-      content: LocaleKeys.paywall_purchase_error_content.tr(
-        namedArgs: {
-          'errorCode': '${errorCode ?? 'Unknonwn'}',
-          'message': message ?? '',
-        },
-      ),
+      content: '${errorCode != null ? 'errorCode: $errorCode\n' : ''}${message ?? ''}',
+    );
+  }
+
+  static Future<void> showRestoreError(BuildContext context, {int? errorCode, String? message}) async {
+    return AdaptiveDialog.show(
+      context,
+      title: LocaleKeys.paywall_restore_error_title.tr(),
+      content: '${errorCode != null ? 'errorCode: $errorCode\n' : ''}${message ?? ''}',
     );
   }
 }

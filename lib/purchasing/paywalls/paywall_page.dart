@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_extensions.dart';
+import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/utils.dart';
@@ -54,13 +56,21 @@ class _PaywallPageState extends State<PaywallPage> {
     _makePurchaseReactionDisposer = reaction<PurchaseResult?>(
       (_) => state.purchaseResult,
       (purchaseResult) {
-        if (purchaseResult?.type == PurchaseResultType.success) {
-          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true);
-          Navigator.of(context).pop(true);
-        }
-        if (purchaseResult?.type == PurchaseResultType.fail) {
-          PurchaseErrorAlert.showPurchaseError(context,
-              errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+        switch (purchaseResult?.type) {
+          case PurchaseResultType.success:
+            AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true);
+            final profile = purchaseResult?.profile;
+            if (profile != null) {
+              context.read<AdaptyProfileState>().updatePremiumStatus(profile);
+            }
+            Navigator.of(context).pop(true);
+          case PurchaseResultType.fail:
+            PurchaseErrorAlert.showPurchaseError(context,
+                errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+          case PurchaseResultType.restoreFail:
+            PurchaseErrorAlert.showRestoreError(context,
+                errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
+          default:
         }
       },
     );

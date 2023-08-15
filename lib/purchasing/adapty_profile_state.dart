@@ -12,6 +12,9 @@ part 'adapty_profile_state.g.dart';
 class AdaptyProfileState = _AdaptyProfileState with _$AdaptyProfileState;
 
 abstract class _AdaptyProfileState with Store {
+  _AdaptyProfileState() {
+    // checkSubscriptionStatus();
+  }
   @observable
   AdaptyProfile? profile;
 

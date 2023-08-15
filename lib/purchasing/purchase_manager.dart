@@ -2,20 +2,28 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:adapty_flutter/adapty_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
 import 'adapty_extensions.dart';
 import 'paywalls/paywalls_ids.dart';
 
-enum PurchaseResultType { userCancelled, fail, success }
+enum PurchaseResultType {
+  userCancelled,
+  fail,
+  restoreFail,
+  success,
+}
 
 class PurchaseResult {
-  PurchaseResult(this.type, {this.errorCode, this.message});
+  PurchaseResult(this.type, {this.profile, this.errorCode, this.message});
   final PurchaseResultType type;
+  final AdaptyProfile? profile;
   final int? errorCode;
   final String? message;
 }
@@ -145,10 +153,12 @@ class PurchaseManager {
 
       unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# premium = $premium'));
 
-      if (premium) _logSuccessPurchase(product);
+      if (premium) {
+        _logSuccessPurchase(product);
+      }
 
       return premium
-          ? PurchaseResult(PurchaseResultType.success)
+          ? PurchaseResult(PurchaseResultType.success, profile: makePurchaseResult)
           : PurchaseResult(PurchaseResultType.fail, message: 'Unknown error');
     } on AdaptyError catch (adaptyError) {
       if (adaptyError.code == AdaptyErrorCode.paymentCancelled) {
@@ -168,7 +178,7 @@ class PurchaseManager {
     } catch (e) {
       _logErrorPurchase(productInfo: product, isUserCanceled: false);
       unawaited(FirebaseCrashlytics.instance.log('#PurchaseManager# error = $e'));
-      return PurchaseResult(PurchaseResultType.success, message: e.toString());
+      return PurchaseResult(PurchaseResultType.fail, message: e.toString());
     }
   }
 
@@ -176,13 +186,21 @@ class PurchaseManager {
     try {
       var profile = await Adapty().restorePurchases();
 
-      return profile.hasPremium ? PurchaseResult(PurchaseResultType.success) : PurchaseResult(PurchaseResultType.fail);
+      return profile.hasPremium
+          ? PurchaseResult(PurchaseResultType.success, profile: profile)
+          : PurchaseResult(
+              PurchaseResultType.restoreFail,
+              message: LocaleKeys.paywall_restore_error_no_active_subscription.tr(),
+            );
     } on AdaptyError catch (adaptyError) {
       final message = adaptyError.message;
       final errorCode = adaptyError.code;
-      return PurchaseResult(PurchaseResultType.fail, errorCode: errorCode, message: message);
+      return PurchaseResult(PurchaseResultType.restoreFail, errorCode: errorCode, message: message);
     } catch (e) {
-      return PurchaseResult(PurchaseResultType.fail);
+      return PurchaseResult(
+        PurchaseResultType.restoreFail,
+        message: e.toString(),
+      );
     }
   }
 

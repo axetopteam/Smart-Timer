@@ -46,7 +46,7 @@ class FirebaseClient implements AnalyticsClient {
 
   @override
   Future<void> setUserProperty(String propertyId, dynamic value) async {
-    return _firebaseClient.setUserProperty(name: propertyId, value: value);
+    return _firebaseClient.setUserProperty(name: propertyId, value: value.toString());
   }
 
   @override

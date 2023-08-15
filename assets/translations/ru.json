@@ -86,9 +86,10 @@
             "title": "Не удалось загрузить страницу",
             "content": "Пожалуйста, попробуйте позже."
         },
-        "purchase_error": {
-            "title": "Ошибка при покупке",
-            "content": "code: {errorCode}\nmessage: {message}"
+        "purchase_error": "Ошибка при покупке",
+        "restore_error": {
+            "title": "Не удалось восстановить покупки",
+            "no_active_subscription": "Не удалось найти активные подписки"
         },
         "title": "Разблокируйте все функции\nEasy Timer",
         "features": {

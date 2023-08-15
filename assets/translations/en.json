@@ -86,9 +86,10 @@
             "title": "Failed to Load Page",
             "content": "Please try again later."
         },
-        "purchase_error": {
-            "title": "Purchase Error",
-            "content": "code: {errorCode}\nmessage: {message}"
+        "purchase_error_title": "Purchase Error",
+        "restore_error": {
+            "title": "Failed to restore purchases",
+            "no_active_subscription": "Couldn't find active subscriptions"
         },
         "title": "Unlock All Features\nEasy Timer",
         "features": {

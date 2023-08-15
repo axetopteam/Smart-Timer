@@ -93,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _planBlock() {
     return Observer(builder: (context) {
-      final expiresAt = adaptyProfileState.profile?.premiumAccessLevel?.expiresAt;
+      final isActive = adaptyProfileState.profile?.hasPremium ?? false;
       return CupertinoListSection.insetGrouped(
         backgroundColor: context.color.background,
         header: Text(
@@ -123,9 +123,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: adaptyProfileState.isPremiumActive ? context.color.premium : context.color.warning,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: expiresAt != null
-                  ? Text(LocaleKeys.settings_plan_active.tr())
-                  : Text(LocaleKeys.settings_plan_inactive.tr()),
+              child:
+                  isActive ? Text(LocaleKeys.settings_plan_active.tr()) : Text(LocaleKeys.settings_plan_inactive.tr()),
             ),
           ),
           Observer(builder: (context) {
@@ -143,9 +142,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _restore() async {
     final purchaseResult = await _state.restorePurchase();
-    if (purchaseResult?.type == PurchaseResultType.fail) {
+    if (purchaseResult?.type == PurchaseResultType.success) {
+      AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true);
+      final profile = purchaseResult?.profile;
+      if (profile != null) {
+        adaptyProfileState.updatePremiumStatus(profile);
+      }
+    }
+    if (purchaseResult?.type == PurchaseResultType.restoreFail) {
       // ignore: use_build_context_synchronously
-      await PurchaseErrorAlert.showPurchaseError(context,
+      await PurchaseErrorAlert.showRestoreError(context,
           errorCode: purchaseResult?.errorCode, message: purchaseResult?.message);
     }
   }
