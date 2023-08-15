@@ -13,7 +13,7 @@ class AdaptyProfileState = _AdaptyProfileState with _$AdaptyProfileState;
 
 abstract class _AdaptyProfileState with Store {
   _AdaptyProfileState() {
-    // checkSubscriptionStatus();
+    checkSubscriptionStatus();
   }
   @observable
   AdaptyProfile? profile;
