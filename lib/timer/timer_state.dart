@@ -36,7 +36,7 @@ abstract class TimerStateBase with Store {
 
   final countdownInterval = WorkoutInterval(
     type: WorkoutIntervalType.countdown,
-    duration: const Duration(seconds: 5),
+    duration: const Duration(seconds: 10),
   );
 
   final timeStream = Stream.periodic(
