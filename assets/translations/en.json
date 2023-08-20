@@ -21,7 +21,7 @@
     },
     "afap": {
         "name": "AFAP",
-        "title": "AS FAST AS POSSIBLE",
+        "title": "FOR TIME",
         "description": "Complete the task as fast as possible",
         "add_button_title": "Add Another AFAP",
         "delete_button_title": "Delete AFAP {}"
