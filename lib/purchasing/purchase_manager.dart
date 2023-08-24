@@ -226,17 +226,17 @@ class PurchaseManager {
     final trialDuration = product.introductoryDiscount?.subscriptionPeriod.inDays;
     if (product.trialIsAvailable && trialDuration != null) {
       AnalyticsManager.eventSubscriptionTrialActivated
-        ..setProperty('product_id', product.vendorProductId)
-        ..setProperty('price', product.price)
-        ..setProperty('currency', product.currencyCode)
-        ..setProperty('trial_option', '${trialDuration}_days')
-        ..commit();
+          .setProperty('product_id', product.vendorProductId)
+          .setProperty('price', product.price)
+          .setProperty('currency', product.currencyCode)
+          .setProperty('trial_option', '${trialDuration}_days')
+          .commit();
     } else {
       AnalyticsManager.eventSubscriptionPurchaseDone
-        ..setProperty('product_id', product.vendorProductId)
-        ..setProperty('price', product.price)
-        ..setProperty('currency', product.currencyCode)
-        ..commit();
+          .setProperty('product_id', product.vendorProductId)
+          .setProperty('price', product.price)
+          .setProperty('currency', product.currencyCode)
+          .commit();
     }
   }
 
@@ -246,11 +246,11 @@ class PurchaseManager {
     int? errorCode,
   }) {
     AnalyticsManager.eventSubscriptionPurchaseFailed
-      ..setProperty('product_id', productInfo.vendorProductId)
-      ..setProperty('price', productInfo.price)
-      ..setProperty('currency', productInfo.currencyCode)
-      ..setProperty('reason', isUserCanceled ? 'cancel' : 'fail')
-      ..setProperty('error_code', errorCode)
-      ..commit();
+        .setProperty('product_id', productInfo.vendorProductId)
+        .setProperty('price', productInfo.price)
+        .setProperty('currency', productInfo.currencyCode)
+        .setProperty('reason', isUserCanceled ? 'cancel' : 'fail')
+        .setProperty('error_code', errorCode)
+        .commit();
   }
 }

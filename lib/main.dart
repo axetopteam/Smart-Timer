@@ -106,10 +106,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         AnalyticsManager.eventAppOpened.commit();
-      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
         AnalyticsManager.eventAppClosed.commit();
       case AppLifecycleState.detached:
-      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
     }
     super.didChangeAppLifecycleState(state);
   }

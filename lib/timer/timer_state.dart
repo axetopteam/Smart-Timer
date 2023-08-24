@@ -171,7 +171,7 @@ abstract class TimerStateBase with Store {
       soundOn = !soundOn;
       await _audio.switchSoundOnOff(soundOn);
       AppProperties().saveSoundOn(soundOn);
-      AnalyticsManager.eventTimerSoundSwitched.setProperty('on', soundOn);
+      AnalyticsManager.eventTimerSoundSwitched.setProperty('on', soundOn).commit();
     } catch (_) {}
   }
 }
