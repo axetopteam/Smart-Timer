@@ -26,14 +26,8 @@ class StartButton extends StatelessWidget {
           onPressed: () async {
             final premiumState = context.read<AdaptyProfileState>();
             AnalyticsManager.eventSetupPageStartPressed
-                .setProperty(
-                  'restOfLaunches',
-                  TimerCouterService.maxFreeTimerADay - TimerCouterService().todaysCount,
-                )
-                .setProperty(
-                  'maxLaunches',
-                  TimerCouterService.maxFreeTimerADay,
-                )
+                .setProperty('rest_of_launches', TimerCouterService.maxFreeTimerADay - TimerCouterService().todaysCount)
+                .setProperty('max_launches', TimerCouterService.maxFreeTimerADay)
                 .commit();
 
             if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {

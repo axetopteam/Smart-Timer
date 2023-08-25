@@ -38,7 +38,7 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void initState() {
-    AnalyticsManager.eventTimerOpened.setProperty('timerType', state.timerType.name).commit();
+    AnalyticsManager.eventTimerOpened.setProperty('timer_type', state.timerType.name).commit();
     WakelockPlus.enable();
 
     state.initializeAudio(AppProperties().soundOn);
@@ -75,7 +75,7 @@ class _TimerPageState extends State<TimerPage> {
     WakelockPlus.disable();
     AnalyticsManager.eventTimerClosed
         .setProperty('status', state.currentState.name)
-        .setProperty('timerType', state.timerType.name)
+        .setProperty('timer_type', state.timerType.name)
         .commit();
 
     state.close();

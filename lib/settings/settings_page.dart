@@ -143,7 +143,6 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _restore() async {
     final purchaseResult = await _state.restorePurchase();
     if (purchaseResult?.type == PurchaseResultType.success) {
-      AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true).commit();
       final profile = purchaseResult?.profile;
       if (profile != null) {
         adaptyProfileState.updatePremiumStatus(profile);

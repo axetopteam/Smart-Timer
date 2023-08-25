@@ -129,8 +129,8 @@ abstract class TimerStateBase with Store {
         close();
         TimerCouterService().addNewTime(DateTime.now());
         AnalyticsManager.eventTimerFinished
-            .setProperty('todayCompletedTimersCount', TimerCouterService().todaysCount)
-            .setProperty('timerType', timerType.name)
+            .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
+            .setProperty('timer_type', timerType.name)
             .commit();
       }
     }

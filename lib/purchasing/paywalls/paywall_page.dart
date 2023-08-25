@@ -45,7 +45,7 @@ class _PaywallPageState extends State<PaywallPage> {
       (error) async {
         if (error != null) {
           await _showLoadErrorAlert();
-          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', false).commit();
+          AnalyticsManager.eventPaywallClosed.setProperty('premium_activated', false).commit();
           // ignore: use_build_context_synchronously
           Navigator.of(context).pop(false);
         }
@@ -57,7 +57,7 @@ class _PaywallPageState extends State<PaywallPage> {
       (purchaseResult) {
         switch (purchaseResult?.type) {
           case PurchaseResultType.success:
-            AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', true).commit();
+            AnalyticsManager.eventPaywallClosed.setProperty('premium_activated', true).commit();
             final profile = purchaseResult?.profile;
             if (profile != null) {
               context.read<AdaptyProfileState>().updatePremiumStatus(profile);
@@ -160,7 +160,7 @@ class _PaywallPageState extends State<PaywallPage> {
       top: safeOffset.top + 20,
       child: IconButton(
         onPressed: () {
-          AnalyticsManager.eventPaywallClosed.setProperty('premiumActivated', false).commit();
+          AnalyticsManager.eventPaywallClosed.setProperty('premium_activated', false).commit();
           Navigator.of(context).pop(false);
         },
         icon: Icon(

@@ -35,7 +35,7 @@ class _AfapPageState extends State<AfapPage> {
     super.initState();
     final json = AppProperties().getAfapSettings();
     afapState = json != null ? AfapState.fromJson(json) : AfapState();
-    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.afap.name).commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.afap.name).commit();
   }
 
   @override
@@ -43,7 +43,7 @@ class _AfapPageState extends State<AfapPage> {
     final json = afapState.toJson();
     AppProperties().setAfapSettings(json);
     _scroolController.dispose();
-    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.afap.name).commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.afap.name).commit();
     super.dispose();
   }
 
@@ -101,8 +101,8 @@ class _AfapPageState extends State<AfapPage> {
             ));
 
     AnalyticsManager.eventSetupPageNewSetAdded
-        .setProperty('timerType', TimerType.afap.name)
-        .setProperty('setsCount', afapState.afapsCount)
+        .setProperty('timer_type', TimerType.afap.name)
+        .setProperty('sets_count', afapState.afapsCount)
         .commit();
   }
 
@@ -206,8 +206,8 @@ class _AfapPageState extends State<AfapPage> {
                             );
                             afapState.deleteAfap(index);
                             AnalyticsManager.eventSetupPageSetRemoved
-                                .setProperty('timerType', TimerType.afap.name)
-                                .setProperty('setsCount', afapState.afapsCount)
+                                .setProperty('timer_type', TimerType.afap.name)
+                                .setProperty('sets_count', afapState.afapsCount)
                                 .commit();
                           },
                           child: Row(
