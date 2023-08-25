@@ -51,45 +51,47 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TimerSetupScaffold(
-      color: context.color.tabataColor,
-      appBarTitle: LocaleKeys.tabata_title.tr(),
-      subtitle: LocaleKeys.tabata_description.tr(),
-      scrollController: _scroolController,
-      workout: () => tabataState.workout,
-      onStartPressed: () {
-        context.router.push(
-          TimerRoute(
-            state: TimerState(
-              workout: tabataState.workout,
-              timerType: TimerType.tabata,
+    return Observer(builder: (context) {
+      return TimerSetupScaffold(
+        color: context.color.tabataColor,
+        appBarTitle: LocaleKeys.tabata_title.tr(),
+        subtitle: LocaleKeys.tabata_description.tr(),
+        scrollController: _scroolController,
+        workout: tabataState.workout,
+        onStartPressed: () {
+          context.router.push(
+            TimerRoute(
+              state: TimerState(
+                workout: tabataState.workout,
+                timerType: TimerType.tabata,
+              ),
             ),
+          );
+        },
+        slivers: [
+          SliverAnimatedList(
+            key: _listKey,
+            initialItemCount: tabataState.tabatsCount,
+            itemBuilder: _itemBuilder,
           ),
-        );
-      },
-      slivers: [
-        SliverAnimatedList(
-          key: _listKey,
-          initialItemCount: tabataState.tabatsCount,
-          itemBuilder: _itemBuilder,
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
-          sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-            onPressed: _addNewTabata,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.add_circle_outline, size: 20),
-                const SizedBox(width: 4),
-                Text(LocaleKeys.tabata_add_button_title.tr())
-              ],
-            ),
-          )),
-        ),
-      ],
-    );
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
+            sliver: SliverToBoxAdapter(
+                child: ElevatedButton(
+              onPressed: _addNewTabata,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.tabata_add_button_title.tr())
+                ],
+              ),
+            )),
+          ),
+        ],
+      );
+    });
   }
 
   void _addNewTabata() {

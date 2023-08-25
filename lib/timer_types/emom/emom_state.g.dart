@@ -30,6 +30,13 @@ mixin _$EmomState on EmomStateBase, Store {
       (_$emomsCountComputed ??= Computed<int>(() => super.emomsCount,
               name: 'EmomStateBase.emomsCount'))
           .value;
+  Computed<WorkoutSet>? _$workoutComputed;
+
+  @override
+  WorkoutSet get workout =>
+      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
+              name: 'EmomStateBase.workout'))
+          .value;
 
   late final _$EmomStateBaseActionController =
       ActionController(name: 'EmomStateBase', context: context);
@@ -92,7 +99,8 @@ mixin _$EmomState on EmomStateBase, Store {
   @override
   String toString() {
     return '''
-emomsCount: ${emomsCount}
+emomsCount: ${emomsCount},
+workout: ${workout}
     ''';
   }
 }

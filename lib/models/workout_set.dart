@@ -33,6 +33,20 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
   DateTime? get finishTimeUtc => sets.last.finishTimeUtc;
 
   @override
+  DateTime? finishTimeFor({required DateTime startTime}) {
+    DateTime? previousFinishTime = startTime;
+    for (int i = 0; i < setsCount; i++) {
+      print('finish at: $previousFinishTime');
+      if (previousFinishTime != null) {
+        previousFinishTime = sets[i].finishTimeFor(startTime: previousFinishTime);
+      } else {
+        break;
+      }
+    }
+    return previousFinishTime;
+  }
+
+  @override
   WorkoutInterval get currentInterval => _currentSet.currentInterval as WorkoutInterval;
 
   @override
@@ -99,6 +113,13 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
         sets[i].start((sets[i - 1].finishTimeUtc!));
       }
     }
+  }
+
+  @computed
+  Duration? get totalTime {
+    final potentialStartTime = DateTime(0);
+    final finishTime = finishTimeFor(startTime: potentialStartTime);
+    return finishTime?.difference(potentialStartTime);
   }
 
   @override

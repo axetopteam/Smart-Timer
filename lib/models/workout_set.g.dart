@@ -16,6 +16,13 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
       (_$currentTimeComputed ??= Computed<Duration?>(() => super.currentTime,
               name: 'WorkoutSetBase.currentTime'))
           .value;
+  Computed<Duration?>? _$totalTimeComputed;
+
+  @override
+  Duration? get totalTime =>
+      (_$totalTimeComputed ??= Computed<Duration?>(() => super.totalTime,
+              name: 'WorkoutSetBase.totalTime'))
+          .value;
 
   late final _$_currentSetIndexAtom =
       Atom(name: 'WorkoutSetBase._currentSetIndex', context: context);
@@ -83,7 +90,8 @@ mixin _$WorkoutSet on WorkoutSetBase, Store {
   @override
   String toString() {
     return '''
-currentTime: ${currentTime}
+currentTime: ${currentTime},
+totalTime: ${totalTime}
     ''';
   }
 }

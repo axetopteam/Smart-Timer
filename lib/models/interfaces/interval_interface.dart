@@ -3,6 +3,7 @@ import 'package:smart_timer/services/audio_service.dart';
 abstract class IntervalInterface {
   Duration? get currentTime;
   DateTime? get finishTimeUtc;
+  DateTime? finishTimeFor({required DateTime startTime});
   IntervalInterface get currentInterval;
   IntervalInterface? get nextInterval;
   Map<DateTime, SoundType> get reminders;

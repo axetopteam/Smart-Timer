@@ -57,7 +57,7 @@ class ThemeButtonStyles extends ThemeExtension<ThemeButtonStyles> {
               ),
             ),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
-            fixedSize: MaterialStateProperty.all(const Size(130, 56)),
+            minimumSize: MaterialStateProperty.all(const Size(0, 56)),
           ),
         ),
         deleteButtonTheme: TextButtonThemeData(

@@ -61,8 +61,16 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
 
   @override
   DateTime? get finishTimeUtc {
-    if (startTimeUtc != null && restDuration != null) {
-      return startTimeUtc!.add(restDuration!);
+    if (startTimeUtc != null) {
+      return finishTimeFor(startTime: startTimeUtc!);
+    }
+    return null;
+  }
+
+  @override
+  DateTime? finishTimeFor({required DateTime startTime}) {
+    if (restDuration != null) {
+      return startTime.add(restDuration!);
     }
     return null;
   }

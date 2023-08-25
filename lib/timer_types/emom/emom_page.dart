@@ -50,45 +50,47 @@ class _EmomPageState extends State<EmomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TimerSetupScaffold(
-      color: context.color.emomColor,
-      appBarTitle: LocaleKeys.emom_title.tr(),
-      subtitle: LocaleKeys.emom_description.tr(),
-      scrollController: _scroolController,
-      workout: () => emomState.workout,
-      onStartPressed: () {
-        context.router.push(
-          TimerRoute(
-            state: TimerState(
-              workout: emomState.workout,
-              timerType: TimerType.emom,
+    return Observer(builder: (context) {
+      return TimerSetupScaffold(
+        color: context.color.emomColor,
+        appBarTitle: LocaleKeys.emom_title.tr(),
+        subtitle: LocaleKeys.emom_description.tr(),
+        scrollController: _scroolController,
+        workout: emomState.workout,
+        onStartPressed: () {
+          context.router.push(
+            TimerRoute(
+              state: TimerState(
+                workout: emomState.workout,
+                timerType: TimerType.emom,
+              ),
             ),
+          );
+        },
+        slivers: [
+          SliverAnimatedList(
+            key: _listKey,
+            initialItemCount: emomState.emomsCount,
+            itemBuilder: _itemBuilder,
           ),
-        );
-      },
-      slivers: [
-        SliverAnimatedList(
-          key: _listKey,
-          initialItemCount: emomState.emomsCount,
-          itemBuilder: _itemBuilder,
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
-          sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-            onPressed: _addNewEmom,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.add_circle_outline, size: 20),
-                const SizedBox(width: 4),
-                Text(LocaleKeys.emom_add_button_title.tr())
-              ],
-            ),
-          )),
-        ),
-      ],
-    );
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
+            sliver: SliverToBoxAdapter(
+                child: ElevatedButton(
+              onPressed: _addNewEmom,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.emom_add_button_title.tr())
+                ],
+              ),
+            )),
+          ),
+        ],
+      );
+    });
   }
 
   void _addNewEmom() {

@@ -50,44 +50,47 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TimerSetupScaffold(
-      color: context.color.amrapColor,
-      appBarTitle: LocaleKeys.amrap_title.tr(),
-      subtitle: LocaleKeys.amrap_description.tr(),
-      scrollController: _scroolController,
-      onStartPressed: () {
-        context.router.push(
-          TimerRoute(
-            state: TimerState(
-              workout: amrapState.workout,
-              timerType: TimerType.amrap,
+    return Observer(builder: (context) {
+      return TimerSetupScaffold(
+        color: context.color.amrapColor,
+        appBarTitle: LocaleKeys.amrap_title.tr(),
+        subtitle: LocaleKeys.amrap_description.tr(),
+        scrollController: _scroolController,
+        workout: amrapState.workout,
+        onStartPressed: () {
+          context.router.push(
+            TimerRoute(
+              state: TimerState(
+                workout: amrapState.workout,
+                timerType: TimerType.amrap,
+              ),
             ),
+          );
+        },
+        slivers: [
+          SliverAnimatedList(
+            key: _listKey,
+            initialItemCount: amrapState.amrapsCount,
+            itemBuilder: _itemBuilder,
           ),
-        );
-      },
-      slivers: [
-        SliverAnimatedList(
-          key: _listKey,
-          initialItemCount: amrapState.amrapsCount,
-          itemBuilder: _itemBuilder,
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
-          sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-            onPressed: _addNewAmrap,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.add_circle_outline, size: 20),
-                const SizedBox(width: 4),
-                Text(LocaleKeys.amrap_add_button_title.tr())
-              ],
-            ),
-          )),
-        ),
-      ],
-    );
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
+            sliver: SliverToBoxAdapter(
+                child: ElevatedButton(
+              onPressed: _addNewAmrap,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.add_circle_outline, size: 20),
+                  const SizedBox(width: 4),
+                  Text(LocaleKeys.amrap_add_button_title.tr())
+                ],
+              ),
+            )),
+          ),
+        ],
+      );
+    });
   }
 
   void _addNewAmrap() {
