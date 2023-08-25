@@ -69,6 +69,7 @@ abstract class TimerStateBase with Store {
     workout.start(countdownInterval.finishTimeUtc!);
 
     timerSubscription = timeStream.listen((nowUtc) {
+      _playAudioIfNeeded(nowUtc);
       tick(nowUtc);
     });
   }
@@ -139,28 +140,28 @@ abstract class TimerStateBase with Store {
   @action
   void close() {
     timerSubscription?.cancel();
-  }
-
-  void dispose() {
     _audio.stop();
     _audio.dispose();
   }
+
   //sound
-
-  void playCountdown() {
-    _audio.playCountdown();
-  }
-
-  void play10Seconds() {
-    _audio.play10Seconds();
-  }
-
-  void playLastRound() {
-    _audio.playLastRound();
-  }
-
-  void playHalfTime() {
-    _audio.playHalfTime();
+  void _playAudioIfNeeded(DateTime dateTime) {
+    switch (reminders[dateTime]) {
+      case SoundType.countdown:
+        _audio.playCountdown();
+        break;
+      case SoundType.tenSeconds:
+        _audio.play10Seconds();
+        break;
+      case SoundType.lastRound:
+        _audio.playLastRound();
+        break;
+      case SoundType.halfTime:
+        _audio.playHalfTime();
+        break;
+      case null:
+        break;
+    }
   }
 
   @observable

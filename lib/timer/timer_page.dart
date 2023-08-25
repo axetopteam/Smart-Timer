@@ -11,7 +11,6 @@ import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/app_review_service.dart';
-import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
@@ -42,29 +41,6 @@ class _TimerPageState extends State<TimerPage> {
     WakelockPlus.enable();
 
     state.initializeAudio(AppProperties().soundOn);
-
-    timerSubscription = state.timeStream.listen(
-      (now) {
-        if (state.reminders.containsKey(now)) {
-          switch (state.reminders[now]) {
-            case SoundType.countdown:
-              state.playCountdown();
-              break;
-            case SoundType.tenSeconds:
-              state.play10Seconds();
-              break;
-            case SoundType.lastRound:
-              state.playLastRound();
-              break;
-            case SoundType.halfTime:
-              state.playHalfTime();
-              break;
-            case null:
-              break;
-          }
-        }
-      },
-    );
 
     super.initState();
   }
