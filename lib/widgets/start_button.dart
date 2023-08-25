@@ -25,12 +25,20 @@ class StartButton extends StatelessWidget {
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(backgroundColor)),
           onPressed: () async {
             final premiumState = context.read<AdaptyProfileState>();
+            AnalyticsManager.eventSetupPageStartPressed
+                .setProperty(
+                  'restOfLaunches',
+                  TimerCouterService.maxFreeTimerADay - TimerCouterService().todaysCount,
+                )
+                .setProperty(
+                  'maxLaunches',
+                  TimerCouterService.maxFreeTimerADay,
+                )
+                .commit();
+
             if (premiumState.isPremiumActive || TimerCouterService().canStartNewTimer) {
               onPressed();
             } else {
-              AnalyticsManager.eventDailyTimerLimitReached
-                  .setProperty('count', TimerCouterService().todaysCount)
-                  .commit();
               await AdaptiveDialog.show(
                 context,
                 title: LocaleKeys.limit_reached_alert_title.tr(),

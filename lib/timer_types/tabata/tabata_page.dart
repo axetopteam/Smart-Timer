@@ -35,7 +35,7 @@ class _TabataPageState extends State<TabataPage> {
   void initState() {
     final settingsJson = AppProperties().getTabataSettings();
     tabataState = settingsJson != null ? TabataState.fromJson(settingsJson) : TabataState();
-    AnalyticsManager.eventTabataOpened.commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.tabata.name).commit();
 
     super.initState();
   }
@@ -45,7 +45,7 @@ class _TabataPageState extends State<TabataPage> {
     final json = tabataState.toJson();
     AppProperties().setTabataSettings(json);
     _scroolController.dispose();
-    AnalyticsManager.eventTabataClosed.commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.tabata.name).commit();
     super.dispose();
   }
 
@@ -103,7 +103,10 @@ class _TabataPageState extends State<TabataPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventTabataNewAdded.setProperty('setsCount', tabataState.tabatsCount).commit();
+    AnalyticsManager.eventSetupPageNewSetAdded
+        .setProperty('timerType', TimerType.tabata.name)
+        .setProperty('setsCount', tabataState.tabatsCount)
+        .commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -224,7 +227,8 @@ class _TabataPageState extends State<TabataPage> {
                               ),
                             );
                             tabataState.deleteTabata(index);
-                            AnalyticsManager.eventTabataRemoved
+                            AnalyticsManager.eventSetupPageSetRemoved
+                                .setProperty('timerType', TimerType.tabata.name)
                                 .setProperty('setsCount', tabataState.tabatsCount)
                                 .commit();
                           },

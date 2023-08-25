@@ -35,7 +35,7 @@ class _AfapPageState extends State<AfapPage> {
     super.initState();
     final json = AppProperties().getAfapSettings();
     afapState = json != null ? AfapState.fromJson(json) : AfapState();
-    AnalyticsManager.eventAfapOpened.commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.afap.name).commit();
   }
 
   @override
@@ -43,7 +43,7 @@ class _AfapPageState extends State<AfapPage> {
     final json = afapState.toJson();
     AppProperties().setAfapSettings(json);
     _scroolController.dispose();
-    AnalyticsManager.eventAfapClosed.commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.afap.name).commit();
     super.dispose();
   }
 
@@ -100,7 +100,10 @@ class _AfapPageState extends State<AfapPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventAfapNewAdded.setProperty('setsCount', afapState.afapsCount).commit();
+    AnalyticsManager.eventSetupPageNewSetAdded
+        .setProperty('timerType', TimerType.afap.name)
+        .setProperty('setsCount', afapState.afapsCount)
+        .commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -202,7 +205,10 @@ class _AfapPageState extends State<AfapPage> {
                               ),
                             );
                             afapState.deleteAfap(index);
-                            AnalyticsManager.eventAfapRemoved.setProperty('setsCount', afapState.afapsCount).commit();
+                            AnalyticsManager.eventSetupPageSetRemoved
+                                .setProperty('timerType', TimerType.afap.name)
+                                .setProperty('setsCount', afapState.afapsCount)
+                                .commit();
                           },
                           child: Row(
                             children: [

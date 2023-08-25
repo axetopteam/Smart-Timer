@@ -30,7 +30,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
   void initState() {
     final settingsJson = AppProperties().getWorkRestSettings();
     workRest = settingsJson != null ? WorkRestState.fromJson(settingsJson) : WorkRestState();
-    AnalyticsManager.eventWorkRestOpened.commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.workRest.name).commit();
 
     super.initState();
   }
@@ -39,7 +39,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
   void dispose() {
     final json = workRest.toJson();
     AppProperties().setWorkRestSettings(json);
-    AnalyticsManager.eventWorkRestClosed.commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.workRest.name).commit();
 
     super.dispose();
   }

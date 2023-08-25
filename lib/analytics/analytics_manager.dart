@@ -80,33 +80,14 @@ class AnalyticsManager {
   static AnalyticsEvent get eventAppClosed => AnalyticsEvent('app_closed');
   static AnalyticsEvent get eventFirstLaunch => AnalyticsEvent('first_launch');
 
-  //amrap
-  static AnalyticsEvent get eventAmrapOpened => AnalyticsEvent('amrap_opened');
-  static AnalyticsEvent get eventAmrapClosed => AnalyticsEvent('amrap_closed');
-  static AnalyticsEvent get eventAmrapNewAdded => AnalyticsEvent('amrap_new_added');
-  static AnalyticsEvent get eventAmrapRemoved => AnalyticsEvent('amrap_removed');
-
-  //Afap
-  static AnalyticsEvent get eventAfapOpened => AnalyticsEvent('afap_opened');
-  static AnalyticsEvent get eventAfapClosed => AnalyticsEvent('afap_closed');
-  static AnalyticsEvent get eventAfapNewAdded => AnalyticsEvent('afap_new_added');
-  static AnalyticsEvent get eventAfapRemoved => AnalyticsEvent('afap_removed');
-
-  //Emom
-  static AnalyticsEvent get eventEmomOpened => AnalyticsEvent('emom_opened');
-  static AnalyticsEvent get eventEmomClosed => AnalyticsEvent('emom_closed');
-  static AnalyticsEvent get eventEmomNewAdded => AnalyticsEvent('emom_new_added');
-  static AnalyticsEvent get eventEmomRemoved => AnalyticsEvent('emom_removed');
-
-  //Tabata
-  static AnalyticsEvent get eventTabataOpened => AnalyticsEvent('tabata_opened');
-  static AnalyticsEvent get eventTabataClosed => AnalyticsEvent('tabata_closed');
-  static AnalyticsEvent get eventTabataNewAdded => AnalyticsEvent('tabata_new_added');
-  static AnalyticsEvent get eventTabataRemoved => AnalyticsEvent('tabata_removed');
+  //setup
+  static AnalyticsEvent get eventSetupPageOpened => AnalyticsEvent('setup_page_opened');
+  static AnalyticsEvent get eventSetupPageClosed => AnalyticsEvent('setup_page_closed');
+  static AnalyticsEvent get eventSetupPageNewSetAdded => AnalyticsEvent('setup_page_new_set_added');
+  static AnalyticsEvent get eventSetupPageSetRemoved => AnalyticsEvent('setup_page_set_removed');
+  static AnalyticsEvent get eventSetupPageStartPressed => AnalyticsEvent('setup_page_start_pressed');
 
   //WorkRest
-  static AnalyticsEvent get eventWorkRestOpened => AnalyticsEvent('work_rest_opened');
-  static AnalyticsEvent get eventWorkRestClosed => AnalyticsEvent('work_rest_closed');
   static AnalyticsEvent get eventWorkRestSetRatio => AnalyticsEvent('work_rest_set_ratio');
 
   //timer
@@ -128,9 +109,9 @@ class AnalyticsManager {
   static AnalyticsEvent get eventSettingsContactUsPressed => AnalyticsEvent('settings_contact_us_pressed');
 
   //purchase
-  static AnalyticsEvent get eventDailyTimerLimitReached => AnalyticsEvent('daily_timer_limit_reached');
   static AnalyticsEvent get eventPaywallOpened => AnalyticsEvent('paywall_opened');
   static AnalyticsEvent get eventPaywallShowed => AnalyticsEvent('paywall_showed');
+  static AnalyticsEvent get eventPaywallPurchaseButtonPressed => AnalyticsEvent('paywall_purchase_button_pressed');
   static AnalyticsEvent get eventPaywallClosed => AnalyticsEvent('paywall_closed');
   static AnalyticsEvent get eventSubscriptionTrialActivated => AnalyticsEvent('subscription_trial_activated_client');
   static AnalyticsEvent get eventSubscriptionPurchaseDone => AnalyticsEvent('subscription_purchase_done_client');

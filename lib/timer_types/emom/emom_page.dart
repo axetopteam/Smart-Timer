@@ -35,7 +35,7 @@ class _EmomPageState extends State<EmomPage> {
   void initState() {
     final settingsJson = AppProperties().getEmomSettings();
     emomState = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
-    AnalyticsManager.eventEmomOpened.commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.emom.name).commit();
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _EmomPageState extends State<EmomPage> {
     final json = emomState.toJson();
     AppProperties().setEmomSettings(json);
     _scroolController.dispose();
-    AnalyticsManager.eventEmomClosed.commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.emom.name).commit();
     super.dispose();
   }
 
@@ -102,7 +102,10 @@ class _EmomPageState extends State<EmomPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventEmomNewAdded.setProperty('setsCount', emomState.emomsCount).commit();
+    AnalyticsManager.eventSetupPageNewSetAdded
+        .setProperty('timerType', TimerType.emom.name)
+        .setProperty('setsCount', emomState.emomsCount)
+        .commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -207,7 +210,10 @@ class _EmomPageState extends State<EmomPage> {
                               ),
                             );
                             emomState.deleteEmom(index);
-                            AnalyticsManager.eventEmomRemoved.setProperty('setsCount', emomState.emomsCount).commit();
+                            AnalyticsManager.eventSetupPageSetRemoved
+                                .setProperty('timerType', TimerType.emom.name)
+                                .setProperty('setsCount', emomState.emomsCount)
+                                .commit();
                           },
                           child: Row(
                             children: [

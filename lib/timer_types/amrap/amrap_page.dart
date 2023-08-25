@@ -34,7 +34,7 @@ class _AmrapPageState extends State<AmrapPage> {
   void initState() {
     final json = AppProperties().getAmrapSettings();
     amrapState = json != null ? AmrapState.fromJson(json) : AmrapState();
-    AnalyticsManager.eventAmrapOpened.commit();
+    AnalyticsManager.eventSetupPageOpened.setProperty('timerType', TimerType.amrap.name).commit();
 
     super.initState();
   }
@@ -44,7 +44,7 @@ class _AmrapPageState extends State<AmrapPage> {
     final json = amrapState.toJson();
     AppProperties().setAmrapSettings(json);
     _scroolController.dispose();
-    AnalyticsManager.eventAmrapClosed.commit();
+    AnalyticsManager.eventSetupPageClosed.setProperty('timerType', TimerType.amrap.name).commit();
     super.dispose();
   }
 
@@ -101,7 +101,10 @@ class _AmrapPageState extends State<AmrapPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventAmrapNewAdded.setProperty('setsCount', amrapState.amrapsCount).commit();
+    AnalyticsManager.eventSetupPageNewSetAdded
+        .setProperty('timerType', TimerType.amrap.name)
+        .setProperty('setsCount', amrapState.amrapsCount)
+        .commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -191,7 +194,8 @@ class _AmrapPageState extends State<AmrapPage> {
                               ),
                             );
                             amrapState.deleteAmrap(index);
-                            AnalyticsManager.eventAmrapRemoved
+                            AnalyticsManager.eventSetupPageSetRemoved
+                                .setProperty('timerType', TimerType.amrap.name)
                                 .setProperty('setsCount', amrapState.amrapsCount)
                                 .commit();
                           },

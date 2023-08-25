@@ -226,7 +226,14 @@ class _PaywallPageState extends State<PaywallPage> {
               child: ElevatedButtonTheme(
                 data: context.buttonThemes.paywallButtonTheme,
                 child: ElevatedButton(
-                  onPressed: selectedProduct != null ? () => state.makePurchase(selectedProduct) : null,
+                  onPressed: selectedProduct != null
+                      ? () {
+                          AnalyticsManager.eventPaywallPurchaseButtonPressed
+                              .setProperty('product_id', selectedProduct.vendorProductId)
+                              .commit();
+                          state.makePurchase(selectedProduct);
+                        }
+                      : null,
                   child: Container(
                     width: double.maxFinite,
                     alignment: Alignment.center,
