@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/purchasing/adapty_extensions.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/purchasing/paywalls/paywall_state.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
