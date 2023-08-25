@@ -55,7 +55,6 @@ class _AfapPageState extends State<AfapPage> {
       subtitle: LocaleKeys.afap_description.tr(),
       scrollController: _scroolController,
       onStartPressed: () {
-        AnalyticsManager.eventAfapTimerStarted.setProperty('setsCount', afapState.afapsCount).commit();
         context.pushRoute(
           TimerRoute(
             state: TimerState(
@@ -101,7 +100,7 @@ class _AfapPageState extends State<AfapPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventAfapNewAdded.commit();
+    AnalyticsManager.eventAfapNewAdded.setProperty('setsCount', afapState.afapsCount).commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -203,7 +202,7 @@ class _AfapPageState extends State<AfapPage> {
                               ),
                             );
                             afapState.deleteAfap(index);
-                            AnalyticsManager.eventAfapRemoved.commit();
+                            AnalyticsManager.eventAfapRemoved.setProperty('setsCount', afapState.afapsCount).commit();
                           },
                           child: Row(
                             children: [

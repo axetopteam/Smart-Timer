@@ -57,7 +57,6 @@ class _EmomPageState extends State<EmomPage> {
       scrollController: _scroolController,
       workout: () => emomState.workout,
       onStartPressed: () {
-        AnalyticsManager.eventEmomTimerStarted.setProperty('setsCount', emomState.emomsCount).commit();
         context.router.push(
           TimerRoute(
             state: TimerState(
@@ -103,7 +102,7 @@ class _EmomPageState extends State<EmomPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventEmomNewAdded.commit();
+    AnalyticsManager.eventEmomNewAdded.setProperty('setsCount', emomState.emomsCount).commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -208,7 +207,7 @@ class _EmomPageState extends State<EmomPage> {
                               ),
                             );
                             emomState.deleteEmom(index);
-                            AnalyticsManager.eventEmomRemoved.commit();
+                            AnalyticsManager.eventEmomRemoved.setProperty('setsCount', emomState.emomsCount).commit();
                           },
                           child: Row(
                             children: [

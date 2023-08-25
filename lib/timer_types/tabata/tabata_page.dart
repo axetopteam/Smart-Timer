@@ -58,8 +58,6 @@ class _TabataPageState extends State<TabataPage> {
       scrollController: _scroolController,
       workout: () => tabataState.workout,
       onStartPressed: () {
-        AnalyticsManager.eventTabataTimerStarted.setProperty('setsCount', tabataState.tabatsCount).commit();
-
         context.router.push(
           TimerRoute(
             state: TimerState(
@@ -105,7 +103,7 @@ class _TabataPageState extends State<TabataPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventTabataNewAdded.commit();
+    AnalyticsManager.eventTabataNewAdded.setProperty('setsCount', tabataState.tabatsCount).commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -226,7 +224,9 @@ class _TabataPageState extends State<TabataPage> {
                               ),
                             );
                             tabataState.deleteTabata(index);
-                            AnalyticsManager.eventTabataRemoved.commit();
+                            AnalyticsManager.eventTabataRemoved
+                                .setProperty('setsCount', tabataState.tabatsCount)
+                                .commit();
                           },
                           child: Row(
                             children: [

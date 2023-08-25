@@ -56,7 +56,6 @@ class _AmrapPageState extends State<AmrapPage> {
       subtitle: LocaleKeys.amrap_description.tr(),
       scrollController: _scroolController,
       onStartPressed: () {
-        AnalyticsManager.eventAmrapTimerStarted.setProperty('setsCount', amrapState.amrapsCount).commit();
         context.router.push(
           TimerRoute(
             state: TimerState(
@@ -102,7 +101,7 @@ class _AmrapPageState extends State<AmrapPage> {
               curve: Curves.easeInOut,
             ));
 
-    AnalyticsManager.eventAmrapNewAdded.commit();
+    AnalyticsManager.eventAmrapNewAdded.setProperty('setsCount', amrapState.amrapsCount).commit();
   }
 
   Widget _itemBuilder(BuildContext context, int index, Animation<double> animation) {
@@ -192,7 +191,9 @@ class _AmrapPageState extends State<AmrapPage> {
                               ),
                             );
                             amrapState.deleteAmrap(index);
-                            AnalyticsManager.eventAmrapRemoved.commit();
+                            AnalyticsManager.eventAmrapRemoved
+                                .setProperty('setsCount', amrapState.amrapsCount)
+                                .commit();
                           },
                           child: Row(
                             children: [

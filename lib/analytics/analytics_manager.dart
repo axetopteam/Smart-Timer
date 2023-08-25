@@ -83,35 +83,31 @@ class AnalyticsManager {
   //amrap
   static AnalyticsEvent get eventAmrapOpened => AnalyticsEvent('amrap_opened');
   static AnalyticsEvent get eventAmrapClosed => AnalyticsEvent('amrap_closed');
-  static AnalyticsEvent get eventAmrapTimerStarted => AnalyticsEvent('amrap_timer_started');
   static AnalyticsEvent get eventAmrapNewAdded => AnalyticsEvent('amrap_new_added');
   static AnalyticsEvent get eventAmrapRemoved => AnalyticsEvent('amrap_removed');
 
   //Afap
   static AnalyticsEvent get eventAfapOpened => AnalyticsEvent('afap_opened');
   static AnalyticsEvent get eventAfapClosed => AnalyticsEvent('afap_closed');
-  static AnalyticsEvent get eventAfapTimerStarted => AnalyticsEvent('afap_timer_started');
   static AnalyticsEvent get eventAfapNewAdded => AnalyticsEvent('afap_new_added');
   static AnalyticsEvent get eventAfapRemoved => AnalyticsEvent('afap_removed');
 
   //Emom
   static AnalyticsEvent get eventEmomOpened => AnalyticsEvent('emom_opened');
   static AnalyticsEvent get eventEmomClosed => AnalyticsEvent('emom_closed');
-  static AnalyticsEvent get eventEmomTimerStarted => AnalyticsEvent('emom_timer_started');
   static AnalyticsEvent get eventEmomNewAdded => AnalyticsEvent('emom_new_added');
   static AnalyticsEvent get eventEmomRemoved => AnalyticsEvent('emom_removed');
 
   //Tabata
   static AnalyticsEvent get eventTabataOpened => AnalyticsEvent('tabata_opened');
   static AnalyticsEvent get eventTabataClosed => AnalyticsEvent('tabata_closed');
-  static AnalyticsEvent get eventTabataTimerStarted => AnalyticsEvent('tabata_timer_started');
   static AnalyticsEvent get eventTabataNewAdded => AnalyticsEvent('tabata_new_added');
   static AnalyticsEvent get eventTabataRemoved => AnalyticsEvent('tabata_removed');
 
   //WorkRest
   static AnalyticsEvent get eventWorkRestOpened => AnalyticsEvent('work_rest_opened');
   static AnalyticsEvent get eventWorkRestClosed => AnalyticsEvent('work_rest_closed');
-  static AnalyticsEvent get eventWorkRestTimerStarted => AnalyticsEvent('work_rest_timer_started');
+  static AnalyticsEvent get eventWorkRestSetRatio => AnalyticsEvent('work_rest_set_ratio');
 
   //timer
   static AnalyticsEvent get eventTimerOpened => AnalyticsEvent('timer_opened');

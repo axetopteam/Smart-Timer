@@ -51,7 +51,6 @@ class _WorkRestPageState extends State<WorkRestPage> {
       appBarTitle: LocaleKeys.work_rest_title.tr(),
       subtitle: LocaleKeys.work_rest_description.tr(),
       onStartPressed: () {
-        AnalyticsManager.eventWorkRestTimerStarted.setProperty('setsCount', 1).commit();
         context.router.push(
           TimerRoute(
             state: TimerState(
@@ -81,7 +80,10 @@ class _WorkRestPageState extends State<WorkRestPage> {
                     RatioWidget(
                       title: '${LocaleKeys.rest_ratio.tr()}:',
                       initialValue: workRest.ratio,
-                      onValueChanged: (value) => workRest.setRatio(value),
+                      onValueChanged: (value) {
+                        workRest.setRatio(value);
+                        AnalyticsManager.eventWorkRestSetRatio.setProperty('ratio', value).commit();
+                      },
                     ),
                   ],
                 ),

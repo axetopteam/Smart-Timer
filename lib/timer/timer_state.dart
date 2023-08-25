@@ -61,7 +61,7 @@ abstract class TimerStateBase with Store {
 
   @action
   void start() {
-    AnalyticsManager.eventTimerStarted.commit();
+    AnalyticsManager.eventTimerStarted.setProperty('timerType', timerType.name).commit();
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
     currentState = TimerStatus.run;
@@ -130,6 +130,7 @@ abstract class TimerStateBase with Store {
         TimerCouterService().addNewTime(DateTime.now());
         AnalyticsManager.eventTimerFinished
             .setProperty('todayCompletedTimersCount', TimerCouterService().todaysCount)
+            .setProperty('timerType', timerType.name)
             .commit();
       }
     }
