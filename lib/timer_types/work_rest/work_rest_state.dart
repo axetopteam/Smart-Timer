@@ -30,7 +30,6 @@ abstract class WorkRestStateBase with Store {
   @observable
   double ratio;
 
-  @computed
   WorkoutSet get workout {
     WorkoutInterval work = WorkoutInterval(
       duration: null,

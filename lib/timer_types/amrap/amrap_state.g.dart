@@ -31,13 +31,6 @@ mixin _$AmrapState on AmrapStateBase, Store {
       (_$amrapsCountComputed ??= Computed<int>(() => super.amrapsCount,
               name: 'AmrapStateBase.amrapsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
-
-  @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'AmrapStateBase.workout'))
-          .value;
 
   late final _$AmrapStateBaseActionController =
       ActionController(name: 'AmrapStateBase', context: context);
@@ -89,8 +82,7 @@ mixin _$AmrapState on AmrapStateBase, Store {
   @override
   String toString() {
     return '''
-amrapsCount: ${amrapsCount},
-workout: ${workout}
+amrapsCount: ${amrapsCount}
     ''';
   }
 }

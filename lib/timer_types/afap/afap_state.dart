@@ -62,7 +62,6 @@ abstract class AfapStateBase with Store {
     afaps.removeAt(afapIndex);
   }
 
-  @computed
   WorkoutSet get workout {
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < afapsCount; i++) {

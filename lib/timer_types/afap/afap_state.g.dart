@@ -30,13 +30,6 @@ mixin _$AfapState on AfapStateBase, Store {
       (_$afapsCountComputed ??= Computed<int>(() => super.afapsCount,
               name: 'AfapStateBase.afapsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
-
-  @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'AfapStateBase.workout'))
-          .value;
 
   late final _$AfapStateBaseActionController =
       ActionController(name: 'AfapStateBase', context: context);
@@ -99,8 +92,7 @@ mixin _$AfapState on AfapStateBase, Store {
   @override
   String toString() {
     return '''
-afapsCount: ${afapsCount},
-workout: ${workout}
+afapsCount: ${afapsCount}
     ''';
   }
 }

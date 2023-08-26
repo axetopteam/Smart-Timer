@@ -31,13 +31,6 @@ mixin _$TabataState on TabataStoreBase, Store {
       (_$tabatsCountComputed ??= Computed<int>(() => super.tabatsCount,
               name: 'TabataStoreBase.tabatsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
-
-  @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'TabataStoreBase.workout'))
-          .value;
 
   late final _$TabataStoreBaseActionController =
       ActionController(name: 'TabataStoreBase', context: context);
@@ -111,8 +104,7 @@ mixin _$TabataState on TabataStoreBase, Store {
   @override
   String toString() {
     return '''
-tabatsCount: ${tabatsCount},
-workout: ${workout}
+tabatsCount: ${tabatsCount}
     ''';
   }
 }

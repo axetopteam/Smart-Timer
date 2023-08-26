@@ -54,7 +54,6 @@ abstract class AmrapStateBase with Store {
     amraps.removeAt(amrapIndex);
   }
 
-  @computed
   WorkoutSet get workout {
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < amrapsCount; i++) {

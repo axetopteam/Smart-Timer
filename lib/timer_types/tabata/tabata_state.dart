@@ -65,7 +65,6 @@ abstract class TabataStoreBase with Store {
     tabats.removeAt(tabataIndex);
   }
 
-  @computed
   WorkoutSet get workout {
     final sets = <WorkoutSet>[];
     for (var i = 0; i < tabatsCount; i++) {

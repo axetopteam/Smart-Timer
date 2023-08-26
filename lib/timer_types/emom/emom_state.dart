@@ -60,7 +60,6 @@ abstract class EmomStateBase with Store {
     emoms.removeAt(emomIndex);
   }
 
-  @computed
   WorkoutSet get workout {
     List<WorkoutSet> sets = [];
     for (var i = 0; i < emomsCount; i++) {
