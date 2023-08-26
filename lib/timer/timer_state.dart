@@ -36,7 +36,7 @@ abstract class TimerStateBase with Store {
 
   final countdownInterval = WorkoutInterval(
     type: WorkoutIntervalType.countdown,
-    duration: const Duration(seconds: 10),
+    duration: const Duration(seconds: 10) - const Duration(milliseconds: 1),
   );
 
   final timeStream = Stream.periodic(
@@ -83,6 +83,9 @@ abstract class TimerStateBase with Store {
     }
   }
 
+  @observable
+  Duration? totalRestTime;
+
   @action
   void pause() {
     timerSubscription?.pause();
@@ -124,10 +127,12 @@ abstract class TimerStateBase with Store {
       countdownInterval.tick(nowUtc);
     } else {
       workout.tick(nowUtc);
+      final finishTimeUtc = workout.finishTimeUtc;
+      totalRestTime = finishTimeUtc?.difference(nowUtc);
 
       if (workout.isEnded) {
         currentState = TimerStatus.done;
-        close();
+        timerSubscription?.cancel();
         TimerCouterService().addNewTime(DateTime.now());
         AnalyticsManager.eventTimerFinished
             .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)

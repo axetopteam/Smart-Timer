@@ -44,4 +44,18 @@ enum TimerType {
         return context.color.customColor;
     }
   }
+
+  bool get showTotalTime {
+    switch (this) {
+      case TimerType.amrap:
+      case TimerType.emom:
+      case TimerType.tabata:
+        return true;
+
+      case TimerType.afap:
+      case TimerType.workRest:
+      case TimerType.custom:
+        return false;
+    }
+  }
 }

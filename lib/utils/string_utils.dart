@@ -2,6 +2,7 @@ const minutesPerHour = 60;
 const secondsPerMinute = 60;
 
 String durationToString2(Duration duration, {bool isCountdown = false}) {
+  //TODO: убрать отсюда isCountdown
   String twoDigits(int n) {
     if (n >= 10) return "$n";
     return "0$n";

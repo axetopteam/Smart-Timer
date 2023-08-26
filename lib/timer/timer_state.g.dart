@@ -40,6 +40,22 @@ mixin _$TimerState on TimerStateBase, Store {
     });
   }
 
+  late final _$totalRestTimeAtom =
+      Atom(name: 'TimerStateBase.totalRestTime', context: context);
+
+  @override
+  Duration? get totalRestTime {
+    _$totalRestTimeAtom.reportRead();
+    return super.totalRestTime;
+  }
+
+  @override
+  set totalRestTime(Duration? value) {
+    _$totalRestTimeAtom.reportWrite(value, super.totalRestTime, () {
+      super.totalRestTime = value;
+    });
+  }
+
   late final _$soundOnAtom =
       Atom(name: 'TimerStateBase.soundOn', context: context);
 
@@ -126,6 +142,7 @@ mixin _$TimerState on TimerStateBase, Store {
   String toString() {
     return '''
 currentState: ${currentState},
+totalRestTime: ${totalRestTime},
 soundOn: ${soundOn},
 currentInterval: ${currentInterval},
 currentTime: ${currentTime}

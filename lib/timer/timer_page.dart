@@ -12,10 +12,11 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
+import 'package:smart_timer/timer/widgets/complete_button.dart';
+import 'package:smart_timer/timer/widgets/digits_text.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/play_icon.dart';
-import 'package:smart_timer/widgets/swipe_button/slider_button.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'timer_progress_container.dart';
@@ -111,7 +112,7 @@ class _TimerPageState extends State<TimerPage> {
           child: Observer(builder: (context) {
             final currentInterval = state.currentInterval;
             final currentTime = state.currentTime;
-            final currentIntervalDurationInSeconds = currentInterval.duration?.inSeconds;
+            final currentIntervalDurationInSeconds = currentInterval.duration?.inMilliseconds;
             return GestureDetector(
               onTap: () {
                 switch (state.currentState) {
@@ -132,7 +133,7 @@ class _TimerPageState extends State<TimerPage> {
                 color: state.timerType.workoutColor(context),
                 timerStatus: state.currentState,
                 partOfHeight: currentIntervalDurationInSeconds != null
-                    ? (currentIntervalDurationInSeconds - (currentTime?.inSeconds ?? 0)) /
+                    ? (currentIntervalDurationInSeconds - (currentTime?.inMilliseconds ?? 0)) /
                         currentIntervalDurationInSeconds
                     : 0,
                 child: SizedBox.expand(
@@ -151,15 +152,24 @@ class _TimerPageState extends State<TimerPage> {
                             );
                           }),
                           const SizedBox(height: 10),
-                          _buildTime(),
+                          _buildTime(currentTime),
                           const SizedBox(height: 10),
                           _buildRoudsInfo(),
                         ],
                       ),
                       Expanded(
-                        child: !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
-                            ? _buildCompleteRoundButton()
-                            : Container(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _totalTime(),
+                            !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
+                                ? CompleteButton(
+                                    action: state.endCurrentInterval,
+                                    iconColor: state.timerType.workoutColor(context),
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -168,142 +178,106 @@ class _TimerPageState extends State<TimerPage> {
             );
           }),
         ),
-        Expanded(
-          flex: 2,
-          child: Center(
-            child: Observer(builder: (context) {
-              switch (state.currentState) {
-                case TimerStatus.run:
-                  return TextButton(
-                    onPressed: () => state.pause(),
-                    child: Text(
-                      LocaleKeys.timer_pause.tr(),
-                      style: context.textTheme.bodyMedium,
-                    ),
-                  );
-                case TimerStatus.pause:
-                  return TextButton(
-                    onPressed: () => state.resume(),
-                    child: Text(
-                      LocaleKeys.timer_resume.tr(),
-                      style: context.textTheme.bodyMedium,
-                    ),
-                  );
-                case TimerStatus.done:
-                case TimerStatus.ready:
-                  return Container();
-              }
-            }),
-          ),
-        ),
+        Expanded(flex: 2, child: _bottomClickableText()),
       ],
     );
   }
 
-  Widget _buildCompleteRoundButton() {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: SliderButton(
-        backgroundColor: Colors.white30,
-        label: Text(
-          LocaleKeys.timer_complete_round.tr(),
-          style: context.textTheme.bodyLarge,
-        ),
-        height: 50,
-        buttonSize: 40,
-        alignLabel: const Alignment(0.2, 0),
-        shimmer: true,
-        highlightedColor: context.color.secondaryText,
-        baseColor: context.color.mainText,
-        action: () {
-          state.endCurrentInterval();
+  Widget _bottomClickableText() {
+    return Observer(builder: (context) {
+      switch (state.currentState) {
+        case TimerStatus.run:
+          return TextButton(
+            onPressed: () => state.pause(),
+            child: Text(
+              LocaleKeys.timer_pause.tr(),
+              style: context.textTheme.bodyMedium,
+            ),
+          );
+        case TimerStatus.pause:
+          return TextButton(
+            onPressed: () => state.resume(),
+            child: Text(
+              LocaleKeys.timer_resume.tr(),
+              style: context.textTheme.bodyMedium,
+            ),
+          );
+        case TimerStatus.done:
+        case TimerStatus.ready:
+          return const SizedBox();
+      }
+    });
+  }
+
+  Widget _buildTime(Duration? currentTime) {
+    return SizedBox(
+      height: PlayIcon.size,
+      child: Observer(
+        builder: (_) {
+          final currentInterval = state.currentInterval;
+          bool isFirstSecond = currentInterval.isFirstSecond;
+          String text;
+          if (currentInterval.type == WorkoutIntervalType.countdown) {
+            if (state.currentState != TimerStatus.run) {
+              return const PlayIcon();
+            } else {
+              text = currentTime != null
+                  ? durationToString2(
+                      currentTime,
+                      isCountdown: true,
+                    )
+                  : '– –';
+            }
+          } else {
+            text = isFirstSecond
+                ? currentInterval.type.redableName
+                : currentTime != null
+                    ? durationToString2(
+                        currentTime,
+                        isCountdown: currentInterval.isCountdown,
+                      )
+                    : '– –';
+          }
+          final timeParts = text.split(':');
+
+          if (text.length != 2) {
+            return Text(
+              text,
+              style: context.textTheme.headlineSmall,
+            );
+          }
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: timeParts.map((e) => DigitsText(e)).addSeparator(
+                  Container(
+                    alignment: Alignment.center,
+                    width: 24,
+                    child: Text(
+                      ':',
+                      style: context.textTheme.headlineSmall,
+                    ),
+                  ),
+                ),
+          );
         },
-        child: Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: context.color.playIconColor,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            CupertinoIcons.arrow_right,
-            color: state.timerType.workoutColor(context),
-          ),
-        ),
       ),
     );
   }
 
-  Widget _buildTime() {
-    return Observer(
-      builder: (_) {
-        final currentInterval = state.currentInterval;
-        bool isFirstSecond = currentInterval.isFirstSecond;
-        String text;
-        if (currentInterval.type == WorkoutIntervalType.countdown) {
-          if (isFirstSecond && state.currentState != TimerStatus.run) {
-            return const PlayIcon();
-          } else {
-            text = state.currentTime != null
-                ? durationToString2(
-                    state.currentTime!,
-                    isCountdown: currentInterval.isCountdown,
-                  )
-                : '– –';
-          }
-        } else {
-          text = isFirstSecond
-              ? currentInterval.type.redableName
-              : state.currentTime != null
-                  ? durationToString2(
-                      state.currentTime!,
-                      isCountdown: currentInterval.isCountdown,
-                    )
-                  : '– –';
-        }
-        final timeParts = text.split(':');
-
-        if (text.length != 2) {
-          return Text(
-            text,
-            style: context.textTheme.headlineSmall,
-          );
-        }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: timeParts
-              .map(
-                (e) => _buildTimeDigits(e),
-              )
-              .addSeparator(Container(
-                alignment: Alignment.center,
-                width: 24,
-                child: Text(
-                  ':',
-                  style: context.textTheme.headlineSmall,
-                ),
-              )),
+  Widget _totalTime() {
+    if (state.timerType.showTotalTime && state.totalRestTime != null) {
+      return Observer(builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Общее время: ${durationToString2(state.totalRestTime!, isCountdown: true)}',
+            style: context.textTheme.titleMedium,
+          ),
         );
-      },
-    );
-  }
-
-  Widget _buildTimeDigits(String digits) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: digits
-          .split('')
-          .map((digit) => Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: Text(
-                  digit,
-                  style: context.textTheme.headlineSmall,
-                ),
-              ))
-          .toList(),
-    );
+      });
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildRoudsInfo() {

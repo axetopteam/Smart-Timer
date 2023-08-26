@@ -24,6 +24,7 @@ class AudioService {
   }
 
   Future<void> playLastRound() async {
+    //BUG: воспроизводится после паузы
     await audioPlayer.play(AssetSource('sounds/last_round.mp3'));
   }
 
