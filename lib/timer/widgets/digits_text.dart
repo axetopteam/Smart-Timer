@@ -10,10 +10,10 @@ class DigitsText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: digits
           .split('')
-          .map((digit) => Container(
-                alignment: Alignment.center,
+          .map((digit) => SizedBox(
                 width: 50,
                 child: Text(
                   digit,

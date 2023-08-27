@@ -237,17 +237,19 @@ class _TimerPageState extends State<TimerPage> {
           }
           final timeParts = text.split(':');
 
-          if (text.length != 2) {
-            return Text(
-              text,
-              style: context.textTheme.headlineSmall,
+          if (timeParts.length != 2) {
+            return Container(
+              alignment: Alignment.center,
+              child: Text(
+                text,
+                style: context.textTheme.headlineSmall,
+              ),
             );
           }
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: timeParts.map((e) => DigitsText(e)).addSeparator(
-                  Container(
-                    alignment: Alignment.center,
+                  SizedBox(
                     width: 24,
                     child: Text(
                       ':',
