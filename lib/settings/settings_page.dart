@@ -181,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   applyTheme: true,
                   onChanged: (value) {
                     _state.saveSoundOn(value);
-                    AnalyticsManager.eventSettingsSoundSwitched.setProperty('on', value).commit();
+                    AnalyticsManager.eventSettingsSoundSwitched.setProperty('on', value.toString()).commit();
                   },
                 );
               } else {
