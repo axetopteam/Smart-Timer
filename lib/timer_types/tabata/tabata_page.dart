@@ -146,7 +146,7 @@ class _TabataPageState extends State<TabataPage> {
               Row(
                 children: [
                   RoundsWidget(
-                    title: '${LocaleKeys.rounds.tr()}:',
+                    title: LocaleKeys.rounds.tr(),
                     initialValue: tabata.roundsCount,
                     onValueChanged: (rounds) => tabataState.setRounds(index, rounds),
                   ),
@@ -163,6 +163,7 @@ class _TabataPageState extends State<TabataPage> {
                     onTap: () async {
                       final selectedTime = await TimePicker.showTimePicker(
                         context,
+                        title: LocaleKeys.work.tr(),
                         initialDuration: tabata.workTime,
                       );
                       if (selectedTime != null) {
@@ -178,6 +179,7 @@ class _TabataPageState extends State<TabataPage> {
                     onTap: () async {
                       final selectedTime = await TimePicker.showTimePicker(
                         context,
+                        title: LocaleKeys.rest.tr(),
                         initialDuration: tabata.restTime,
                       );
                       if (selectedTime != null) {
@@ -198,6 +200,7 @@ class _TabataPageState extends State<TabataPage> {
                         onTap: () async {
                           final selectedTime = await TimePicker.showTimePicker(
                             context,
+                            title: LocaleKeys.rest_between_sets.tr(),
                             initialDuration: tabata.restAfterSet,
                           );
                           if (selectedTime != null) {

@@ -152,6 +152,7 @@ class _AmrapPageState extends State<AmrapPage> {
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
                           context,
+                          title: LocaleKeys.work.tr(),
                           initialDuration: amrap.workTime,
                         );
                         if (selectedTime != null) {
@@ -167,6 +168,7 @@ class _AmrapPageState extends State<AmrapPage> {
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
                           context,
+                          title: LocaleKeys.rest.tr(),
                           initialDuration: amrap.restTime,
                         );
                         if (selectedTime != null) {

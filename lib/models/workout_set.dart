@@ -36,7 +36,6 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
   DateTime? finishTimeFor({required DateTime startTime}) {
     DateTime? previousFinishTime = startTime;
     for (int i = 0; i < setsCount; i++) {
-      print('finish at: $previousFinishTime');
       if (previousFinishTime != null) {
         previousFinishTime = sets[i].finishTimeFor(startTime: previousFinishTime);
       } else {

@@ -10,14 +10,17 @@ part 'settings_state.g.dart';
 class SettingsState = _SettingsState with _$SettingsState;
 
 abstract class _SettingsState with Store {
-  _SettingsState() {
+  _SettingsState() : countdownSeconds = AppProperties().countdownSeconds {
     _initializeValues();
   }
 
-  final _properties = AppProperties();
+  final AppProperties _properties = AppProperties();
 
   @observable
   bool? soundOn;
+
+  @observable
+  int countdownSeconds;
 
   @observable
   bool purchaseInProgress = false;
@@ -36,6 +39,12 @@ abstract class _SettingsState with Store {
     } else {
       soundOn = oldValue;
     }
+  }
+
+  @action
+  Future<void> saveCountdownSeconds(int newValue) async {
+    _properties.countdownSeconds = newValue;
+    countdownSeconds = newValue;
   }
 
   @action

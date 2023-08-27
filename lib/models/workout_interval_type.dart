@@ -11,9 +11,9 @@ enum WorkoutIntervalType {
       case WorkoutIntervalType.countdown:
         return '';
       case WorkoutIntervalType.work:
-        return LocaleKeys.timer_work.tr();
+        return LocaleKeys.work.tr();
       case WorkoutIntervalType.rest:
-        return LocaleKeys.timer_rest.tr();
+        return LocaleKeys.rest.tr();
     }
   }
 }

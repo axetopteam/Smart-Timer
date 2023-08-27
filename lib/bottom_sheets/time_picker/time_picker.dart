@@ -8,18 +8,19 @@ import 'package:smart_timer/core/context_extension.dart';
 
 final minutesList = List.generate(60, (index) => index);
 final secondsList = List.generate(12, (index) => 5 * index);
-const timeStep = Duration(seconds: 5);
 
 class TimePicker extends StatefulWidget {
   static Future<Duration?> showTimePicker(
     BuildContext context, {
+    required String title,
     Duration? initialDuration,
-    Duration? minDuration = const Duration(seconds: 5),
+    Duration? minDuration,
   }) {
     return showCupertinoModalBottomSheet<Duration?>(
       context: context,
       topRadius: const Radius.circular(20),
       builder: (ctx) => TimePicker(
+        title: title,
         initialDuration: initialDuration ?? Duration.zero,
         minDuration: minDuration,
       ),
@@ -28,12 +29,15 @@ class TimePicker extends StatefulWidget {
 
   const TimePicker({
     Key? key,
+    required this.title,
     required this.initialDuration,
-    this.minDuration,
-  }) : super(key: key);
+    Duration? minDuration,
+  })  : minDuration = minDuration ?? const Duration(seconds: 5),
+        super(key: key);
 
+  final String title;
   final Duration initialDuration;
-  final Duration? minDuration;
+  final Duration minDuration;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -73,7 +77,6 @@ class _TimePickerState extends State<TimePicker> {
 
   void _checkMinimulDuration() {
     final minDuration = widget.minDuration;
-    if (minDuration == null) return;
     final minutes = state.minutes;
     final seconds = state.seconds;
     final currentDuration = Duration(minutes: minutes, seconds: seconds);
@@ -103,7 +106,7 @@ class _TimePickerState extends State<TimePicker> {
         children: [
           const SizedBox(height: 20),
           Text(
-            'Work',
+            widget.title,
             style: context.textTheme.displaySmall,
           ),
           const Spacer(),
@@ -125,7 +128,7 @@ class _TimePickerState extends State<TimePicker> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 50),
                           child: Text(
-                            'm',
+                            'm', //TODO: Localization
                             style: context.textTheme.headlineMedium,
                           ),
                         ),
@@ -162,7 +165,7 @@ class _TimePickerState extends State<TimePicker> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 44),
                           child: Text(
-                            's',
+                            's', //TODO: Localization
                             style: context.textTheme.headlineMedium,
                           ),
                         ),
@@ -195,7 +198,7 @@ class _TimePickerState extends State<TimePicker> {
               data: context.buttonThemes.popupButtonTheme,
               child: ElevatedButton(
                 child: const Text(
-                  'Confirm Time',
+                  'Confirm Time', //TODO: Localization
                 ),
                 onPressed: () {
                   final Duration? duration;

@@ -21,23 +21,29 @@ abstract class TimerStateBase with Store {
   TimerStateBase({
     required this.workout,
     required this.timerType,
-  });
+  }) {
+    initialize();
+  }
 
   final WorkoutSet workout;
   final TimerType timerType;
 
   late final AudioService _audio;
 
-  void initializeAudio(bool soundOn) {
+  final _appProperties = AppProperties();
+
+  void initialize() {
     _audio = AudioService();
+    final soundOn = _appProperties.soundOn;
     this.soundOn = soundOn;
     _audio.switchSoundOnOff(soundOn);
+    countdownInterval = WorkoutInterval(
+      type: WorkoutIntervalType.countdown,
+      duration: Duration(seconds: _appProperties.countdownSeconds) - const Duration(milliseconds: 1),
+    );
   }
 
-  final countdownInterval = WorkoutInterval(
-    type: WorkoutIntervalType.countdown,
-    duration: const Duration(seconds: 10) - const Duration(milliseconds: 1),
-  );
+  late final WorkoutInterval countdownInterval;
 
   final timeStream = Stream.periodic(
     const Duration(milliseconds: 100),
@@ -178,7 +184,7 @@ abstract class TimerStateBase with Store {
       soundOn = !soundOn;
       await _audio.switchSoundOnOff(soundOn);
       AppProperties().saveSoundOn(soundOn);
-      AnalyticsManager.eventTimerSoundSwitched.setProperty('on', soundOn).commit();
+      AnalyticsManager.eventTimerSoundSwitched.setProperty('on', soundOn.toString()).commit();
     } catch (_) {}
   }
 }

@@ -25,6 +25,22 @@ mixin _$SettingsState on _SettingsState, Store {
     });
   }
 
+  late final _$countdownSecondsAtom =
+      Atom(name: '_SettingsState.countdownSeconds', context: context);
+
+  @override
+  int get countdownSeconds {
+    _$countdownSecondsAtom.reportRead();
+    return super.countdownSeconds;
+  }
+
+  @override
+  set countdownSeconds(int value) {
+    _$countdownSecondsAtom.reportWrite(value, super.countdownSeconds, () {
+      super.countdownSeconds = value;
+    });
+  }
+
   late final _$purchaseInProgressAtom =
       Atom(name: '_SettingsState.purchaseInProgress', context: context);
 
@@ -49,6 +65,15 @@ mixin _$SettingsState on _SettingsState, Store {
     return _$saveSoundOnAsyncAction.run(() => super.saveSoundOn(newValue));
   }
 
+  late final _$saveCountdownSecondsAsyncAction =
+      AsyncAction('_SettingsState.saveCountdownSeconds', context: context);
+
+  @override
+  Future<void> saveCountdownSeconds(int newValue) {
+    return _$saveCountdownSecondsAsyncAction
+        .run(() => super.saveCountdownSeconds(newValue));
+  }
+
   late final _$restorePurchaseAsyncAction =
       AsyncAction('_SettingsState.restorePurchase', context: context);
 
@@ -61,6 +86,7 @@ mixin _$SettingsState on _SettingsState, Store {
   String toString() {
     return '''
 soundOn: ${soundOn},
+countdownSeconds: ${countdownSeconds},
 purchaseInProgress: ${purchaseInProgress}
     ''';
   }

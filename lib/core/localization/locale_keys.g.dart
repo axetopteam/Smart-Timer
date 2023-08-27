@@ -4,6 +4,9 @@ abstract class  LocaleKeys {
   static const work_time = 'work_time';
   static const rest_time = 'rest_time';
   static const rest_after_time = 'rest_after_time';
+  static const work = 'work';
+  static const rest = 'rest';
+  static const rest_between_sets = 'rest_between_sets';
   static const rounds = 'rounds';
   static const start = 'start';
   static const time_cap = 'time_cap';
@@ -39,8 +42,6 @@ abstract class  LocaleKeys {
   static const work_rest_title = 'work_rest.title';
   static const work_rest_description = 'work_rest.description';
   static const work_rest = 'work_rest';
-  static const timer_work = 'timer.work';
-  static const timer_rest = 'timer.rest';
   static const timer_complete_round = 'timer.complete_round';
   static const timer_pause = 'timer.pause';
   static const timer_resume = 'timer.resume';

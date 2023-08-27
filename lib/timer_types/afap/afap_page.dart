@@ -143,13 +143,14 @@ class _AfapPageState extends State<AfapPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IntervalWidget(
-                    title: LocaleKeys.time_cap.tr(),
+                    title: '${LocaleKeys.time_cap.tr()}:',
                     duration: afap.noTimeCap ? null : afap.timeCap,
                     canBeUnlimited: true,
                     onTap: !afap.noTimeCap
                         ? () async {
                             final selectedTime = await TimePicker.showTimePicker(
                               context,
+                              title: LocaleKeys.time_cap.tr(),
                               initialDuration: afap.timeCap,
                             );
                             if (selectedTime != null) {
@@ -175,6 +176,7 @@ class _AfapPageState extends State<AfapPage> {
                       onTap: () async {
                         final selectedTime = await TimePicker.showTimePicker(
                           context,
+                          title: LocaleKeys.rest.tr(),
                           initialDuration: afap.restTime,
                         );
                         if (selectedTime != null) {

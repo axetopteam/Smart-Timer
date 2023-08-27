@@ -22,6 +22,7 @@ class AppProperties {
   final String _lastTimersEndTimesKey = 'lastTimersEndTimes';
   final String _rateSuggestionShowedAtKey = 'rateSuggestionShowedAt';
   final String _rateSuggestionShowedVersionKey = 'rateSuggestionShowedVersion';
+  final String _countdownDurationKey = 'countdownDuration';
 
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
@@ -125,6 +126,19 @@ class AppProperties {
           : null,
       version: version,
     );
+  }
+
+  int get countdownSeconds {
+    final seconds = _preferences.getInt(_countdownDurationKey) ?? 10;
+    return seconds;
+  }
+
+  set countdownSeconds(int? seconds) {
+    if (seconds == null) {
+      _preferences.remove(_countdownDurationKey);
+    } else {
+      _preferences.setInt(_countdownDurationKey, seconds);
+    }
   }
 }
 

@@ -2,9 +2,12 @@
     "work_time": "Work:",
     "rest_time": "Rest:",
     "rest_after_time": "Rest after {}:",
-    "rounds": "Rounds",
+    "work": "Work",
+    "rest": "Rest",
+    "rest_between_sets": "Rest between sets",
+    "rounds": "Rounds:",
     "start": "Start",
-    "time_cap": "Time Cap:",
+    "time_cap": "Time Cap",
     "rest_ratio": "Rest Time Ratio:",
     "no_time_cap": "No Time Limit",
     "no_cap": "No Limit",
@@ -43,8 +46,6 @@
         "description": "Adjust the ratio between work time and rest time"
     },
     "timer": {
-        "work": "Work",
-        "rest": "Rest",
         "complete_round": "Complete",
         "pause": "Press to pause",
         "resume": "Press to resume",

@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
+import 'package:smart_timer/bottom_sheets/seconds_picker/seconds_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
+import 'package:smart_timer/purchasing/paywalls/paywall_page.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/utils.dart';
 import 'package:smart_timer/widgets/purchase_error_alert.dart';
@@ -52,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           _generalBlock(),
           _planBlock(),
-          _soundBlock(),
+          _timerBlock(),
           _legalBlock(),
         ],
       ),
@@ -155,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  Widget _soundBlock() {
+  Widget _timerBlock() {
     return CupertinoListSection.insetGrouped(
       header: Text(
         LocaleKeys.settings_sound.tr().toUpperCase(),
@@ -186,6 +187,28 @@ class _SettingsPageState extends State<SettingsPage> {
               } else {
                 return const CupertinoActivityIndicator();
               }
+            },
+          ),
+        ),
+        CupertinoListTile.notched(
+          title: Text('Обратный отсчет'),
+          leading: const Icon(CupertinoIcons.gobackward_10),
+          trailing: Observer(
+            builder: (context) {
+              return TextButton(
+                child: Text('${_state.countdownSeconds} сек'),
+                onPressed: () async {
+                  final selectedValue = await SecondsPicker.show(
+                    context,
+                    title: 'Обратный отсчет',
+                    initialValue: _state.countdownSeconds,
+                    range: SecondsPicker.countdownSecondsList,
+                  );
+                  if (selectedValue != null) {
+                    _state.saveCountdownSeconds(selectedValue);
+                  }
+                },
+              );
             },
           ),
         ),

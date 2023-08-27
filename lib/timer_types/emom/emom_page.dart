@@ -159,6 +159,7 @@ class _EmomPageState extends State<EmomPage> {
                         onTap: () async {
                           final selectedTime = await TimePicker.showTimePicker(
                             context,
+                            title: LocaleKeys.work.tr(),
                             initialDuration: emom.workTime,
                           );
                           if (selectedTime != null) {
@@ -181,6 +182,7 @@ class _EmomPageState extends State<EmomPage> {
                         onTap: () async {
                           final selectedTime = await TimePicker.showTimePicker(
                             context,
+                            title: LocaleKeys.rest_between_sets.tr(),
                             initialDuration: emom.restAfterSet,
                           );
                           if (selectedTime != null) {
