@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -30,15 +31,52 @@ class TimerPage extends StatefulWidget {
   State<TimerPage> createState() => _TimerPageState();
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMixin {
   StreamSubscription? timerSubscription;
 
   TimerState get state => widget.state;
+
+  late final AnimationController controller;
+
+  late final ReactionDisposer timeReactionDisposer;
+  late final ReactionDisposer intervalReactionDisposer;
+
+  var runAnimation = true;
+  final curve = Curves.linear;
 
   @override
   void initState() {
     AnalyticsManager.eventTimerOpened.setProperty('timer_type', state.timerType.name).commit();
     WakelockPlus.enable();
+
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(microseconds: 100),
+      reverseDuration: const Duration(microseconds: 300),
+    );
+
+    timeReactionDisposer = reaction(
+      (p0) => state.currentInterval.currentTime,
+      (p0) {
+        final currentIntervalDurationinMilliseconds = state.currentInterval.duration?.inMilliseconds;
+        final partOfDuration = currentIntervalDurationinMilliseconds != null
+            ? (currentIntervalDurationinMilliseconds - (state.currentTime?.inMilliseconds ?? 0)) /
+                currentIntervalDurationinMilliseconds
+            : 0.0;
+        if (runAnimation && currentIntervalDurationinMilliseconds != null) {
+          controller.animateTo(partOfDuration, duration: const Duration(milliseconds: 100));
+        }
+      },
+    );
+
+    intervalReactionDisposer = reaction(
+      (p0) => state.currentInterval,
+      (p0) {
+        runAnimation = false;
+        controller.animateTo(0, duration: const Duration(milliseconds: 500));
+        Future.delayed(const Duration(milliseconds: 500), () => runAnimation = true);
+      },
+    );
 
     super.initState();
   }
@@ -51,6 +89,10 @@ class _TimerPageState extends State<TimerPage> {
         .setProperty('status', state.currentState.name)
         .setProperty('timer_type', state.timerType.name)
         .commit();
+
+    timeReactionDisposer();
+    intervalReactionDisposer();
+    controller.dispose();
 
     state.close();
 
@@ -107,9 +149,7 @@ class _TimerPageState extends State<TimerPage> {
         Expanded(
           flex: 12,
           child: Observer(builder: (context) {
-            final currentInterval = state.currentInterval;
             final currentTime = state.currentTime;
-            final currentIntervalDurationInSeconds = currentInterval.duration?.inMilliseconds;
             return GestureDetector(
               onTap: () {
                 switch (state.currentState) {
@@ -129,10 +169,11 @@ class _TimerPageState extends State<TimerPage> {
               child: TimerProgressContainer(
                 color: state.timerType.workoutColor(context),
                 timerStatus: state.currentState,
-                partOfHeight: currentIntervalDurationInSeconds != null
-                    ? (currentIntervalDurationInSeconds - (currentTime?.inMilliseconds ?? 0)) /
-                        currentIntervalDurationInSeconds
-                    : 0,
+                controller: controller,
+                // partOfHeight: currentIntervalDurationInSeconds != null
+                //     ? (currentIntervalDurationInSeconds - (currentTime?.inMilliseconds ?? 0)) /
+                //         currentIntervalDurationInSeconds
+                //     : 0,
                 child: SizedBox.expand(
                   child: Column(
                     children: [
