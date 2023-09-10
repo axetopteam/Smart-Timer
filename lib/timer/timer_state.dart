@@ -39,7 +39,7 @@ abstract class TimerStateBase with Store {
     _audio.switchSoundOnOff(soundOn);
     countdownInterval = WorkoutInterval(
       type: WorkoutIntervalType.countdown,
-      duration: Duration(seconds: _appProperties.countdownSeconds) - const Duration(milliseconds: 1),
+      duration: Duration(seconds: _appProperties.countdownSeconds),
     );
   }
 
