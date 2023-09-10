@@ -200,7 +200,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onPressed: () async {
                   final selectedValue = await SecondsPicker.show(
                     context,
-                    title: 'Обратный отсчет',
+                    title: 'Обратный отсчет', //TODO: localization
                     initialValue: _state.countdownSeconds,
                     range: SecondsPicker.countdownSecondsList,
                   );
