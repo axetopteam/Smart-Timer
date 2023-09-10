@@ -85,7 +85,8 @@
         "legal": "Agreements",
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use",
-        "support_email_signature": "Write your feedback or describe your issue above this line.\n\nPlease do not delete or modify the information provided below."
+        "support_email_signature": "Write your feedback or describe your issue above this line.\n\nPlease do not delete or modify the information provided below.",
+        "version": "версия"
     },
     "limit_reached_alert": {
         "title": "Free Launches Exhausted",

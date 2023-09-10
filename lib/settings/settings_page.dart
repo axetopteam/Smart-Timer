@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/seconds_picker/seconds_picker.dart';
@@ -55,6 +56,8 @@ class _SettingsPageState extends State<SettingsPage> {
           _planBlock(),
           _timerBlock(),
           _legalBlock(),
+          _appInfo(),
+          const SizedBox(height: 12),
         ],
       ),
     );
@@ -241,5 +244,23 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ],
     );
+  }
+
+  Widget _appInfo() {
+    return FutureBuilder<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            final version = snapshot.data?.version ?? '';
+            final buildNumber = snapshot.data?.buildNumber ?? '';
+            return Align(
+              alignment: Alignment.center,
+              child: Text(
+                '${LocaleKeys.settings_version.tr()} $version.$buildNumber',
+              ),
+            );
+          }
+          return Container();
+        });
   }
 }
