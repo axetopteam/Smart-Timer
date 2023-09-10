@@ -15,7 +15,7 @@ dependencies:
   #common
   mobx: ^2.0.0
   flutter_mobx: ^2.0.0
-  audioplayers: ^4.1.0
+  audioplayers: ^5.1.0
   get_it: ^7.2.0
   wakelock_plus: ^1.1.1
   shared_preferences: ^2.0.15
