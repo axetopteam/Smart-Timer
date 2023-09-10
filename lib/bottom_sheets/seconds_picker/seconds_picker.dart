@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 class SecondsPicker extends StatefulWidget {
   static final countdownSecondsList = List.generate(28, (index) => 3 + index);
@@ -96,7 +98,7 @@ class _SecondsPickerState extends State<SecondsPicker> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 44),
                           child: Text(
-                            's', //TODO: local
+                            LocaleKeys.second_shortest.tr(),
                             style: context.textTheme.headlineMedium,
                           ),
                         ),
@@ -126,8 +128,8 @@ class _SecondsPickerState extends State<SecondsPicker> {
             child: ElevatedButtonTheme(
               data: context.buttonThemes.popupButtonTheme,
               child: ElevatedButton(
-                child: const Text(
-                  'Confirm', //TODO: local
+                child: Text(
+                  LocaleKeys.confirm.tr(),
                 ),
                 onPressed: () {
                   final seconds = widget.range[_secondsController.selectedItem];

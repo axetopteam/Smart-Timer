@@ -16,6 +16,15 @@
     "cancel": "Cancel",
     "ok": "OK",
     "close": "Close",
+    "second": {
+        "shortest": "s",
+        "short": "sec"
+    },
+    "minute": {
+        "shortest": "m",
+        "short": "min"
+    },
+    "confirm": "Confirm",
     "amrap": {
         "title": "AMRAP",
         "description": "Perform as many repetitions as\npossible in a specified time",
@@ -70,8 +79,9 @@
             "inactive": "Inactive",
             "restore": "Restore Purchases"
         },
-        "sound": "Sound",
+        "timer": "Timer",
         "sound_on": "Sound On",
+        "countdown": "Countdown",
         "legal": "Agreements",
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use",

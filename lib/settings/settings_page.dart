@@ -159,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _timerBlock() {
     return CupertinoListSection.insetGrouped(
       header: Text(
-        LocaleKeys.settings_sound.tr().toUpperCase(),
+        LocaleKeys.settings_timer.tr().toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
       ),
       backgroundColor: context.color.background,
@@ -191,16 +191,16 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
         CupertinoListTile.notched(
-          title: Text('Обратный отсчет'),
+          title: Text(LocaleKeys.settings_countdown.tr()),
           leading: const Icon(CupertinoIcons.gobackward_10),
           trailing: Observer(
             builder: (context) {
               return TextButton(
-                child: Text('${_state.countdownSeconds} сек'),
+                child: Text('${_state.countdownSeconds} ${LocaleKeys.second_short.tr()}'),
                 onPressed: () async {
                   final selectedValue = await SecondsPicker.show(
                     context,
-                    title: 'Обратный отсчет', //TODO: localization
+                    title: LocaleKeys.settings_countdown.tr(),
                     initialValue: _state.countdownSeconds,
                     range: SecondsPicker.countdownSecondsList,
                   );

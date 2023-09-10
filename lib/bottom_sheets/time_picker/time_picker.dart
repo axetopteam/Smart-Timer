@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/timer_picker_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 final minutesList = List.generate(60, (index) => index);
 final secondsList = List.generate(12, (index) => 5 * index);
@@ -128,7 +130,7 @@ class _TimePickerState extends State<TimePicker> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 50),
                           child: Text(
-                            'm', //TODO: Localization
+                            LocaleKeys.minute_shortest.tr(),
                             style: context.textTheme.headlineMedium,
                           ),
                         ),
@@ -165,7 +167,7 @@ class _TimePickerState extends State<TimePicker> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 44),
                           child: Text(
-                            's', //TODO: Localization
+                            LocaleKeys.second_shortest.tr(),
                             style: context.textTheme.headlineMedium,
                           ),
                         ),
@@ -197,8 +199,8 @@ class _TimePickerState extends State<TimePicker> {
             child: ElevatedButtonTheme(
               data: context.buttonThemes.popupButtonTheme,
               child: ElevatedButton(
-                child: const Text(
-                  'Confirm Time', //TODO: Localization
+                child: Text(
+                  LocaleKeys.confirm.tr(),
                 ),
                 onPressed: () {
                   final Duration? duration;

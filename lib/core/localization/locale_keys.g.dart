@@ -18,6 +18,13 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const ok = 'ok';
   static const close = 'close';
+  static const second_shortest = 'second.shortest';
+  static const second_short = 'second.short';
+  static const second = 'second';
+  static const minute_shortest = 'minute.shortest';
+  static const minute_short = 'minute.short';
+  static const minute = 'minute';
+  static const confirm = 'confirm';
   static const amrap_title = 'amrap.title';
   static const amrap_description = 'amrap.description';
   static const amrap_add_button_title = 'amrap.add_button_title';
@@ -62,8 +69,9 @@ abstract class  LocaleKeys {
   static const settings_plan_inactive = 'settings.plan.inactive';
   static const settings_plan_restore = 'settings.plan.restore';
   static const settings_plan = 'settings.plan';
-  static const settings_sound = 'settings.sound';
+  static const settings_timer = 'settings.timer';
   static const settings_sound_on = 'settings.sound_on';
+  static const settings_countdown = 'settings.countdown';
   static const settings_legal = 'settings.legal';
   static const settings_privacy_policy = 'settings.privacy_policy';
   static const settings_terms_of_use = 'settings.terms_of_use';
