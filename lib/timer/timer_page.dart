@@ -13,8 +13,6 @@ import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/widgets/complete_button.dart';
-import 'package:smart_timer/timer/widgets/digits_text.dart';
-import 'package:smart_timer/utils/interable_extension.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/play_icon.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -268,29 +266,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                     ? currentTime.durationToString(isCountdown: currentInterval.isCountdown)
                     : '– –';
           }
-          final timeParts = text.split(':');
-
-          if (timeParts.length != 2) {
-            return Container(
-              alignment: Alignment.center,
-              child: Text(
-                text,
-                style: context.textTheme.headlineSmall,
-              ),
-            );
-          }
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: timeParts.map((e) => DigitsText(e)).addSeparator(
-                  SizedBox(
-                    width: 24,
-                    child: Text(
-                      ':',
-                      style: context.textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-          );
+          return Text(text, style: context.textTheme.headlineSmall);
         },
       ),
     );
