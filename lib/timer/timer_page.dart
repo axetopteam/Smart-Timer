@@ -302,7 +302,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'Общее время: ${state.totalRestTime!.durationToString(isCountdown: true)}',
+            '${LocaleKeys.timer_total_time.tr()}: ${state.totalRestTime!.durationToString(isCountdown: true)}',
             style: context.textTheme.titleMedium,
           ),
         );

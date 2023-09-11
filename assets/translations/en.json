@@ -66,7 +66,8 @@
         "confirm_exit_alert": {
             "title": "Are you sure you want to exit?",
             "content": "Your progress will not be saved"
-        }
+        },
+        "total_time": "Total time"
     },
     "settings": {
         "title": "Settings",

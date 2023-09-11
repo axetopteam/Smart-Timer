@@ -59,6 +59,7 @@ abstract class  LocaleKeys {
   static const timer_confirm_exit_alert_title = 'timer.confirm_exit_alert.title';
   static const timer_confirm_exit_alert_content = 'timer.confirm_exit_alert.content';
   static const timer_confirm_exit_alert = 'timer.confirm_exit_alert';
+  static const timer_total_time = 'timer.total_time';
   static const timer = 'timer';
   static const settings_title = 'settings.title';
   static const settings_general = 'settings.general';
