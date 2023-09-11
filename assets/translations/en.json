@@ -25,6 +25,7 @@
         "short": "min"
     },
     "confirm": "Confirm",
+    "total": "Total",
     "amrap": {
         "title": "AMRAP",
         "description": "Perform as many repetitions as\npossible in a specified time",

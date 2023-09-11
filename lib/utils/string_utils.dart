@@ -1,20 +1,24 @@
 const minutesPerHour = 60;
 const secondsPerMinute = 60;
 
-String durationToString2(Duration duration, {bool isCountdown = false}) {
-  //TODO: убрать отсюда isCountdown
-  String twoDigits(int n) {
-    if (n >= 10) return "$n";
-    return "0$n";
+String twoDigits(int n) {
+  if (n >= 10) return "$n";
+  return "0$n";
+}
+
+extension DurationX on Duration {
+  String get readableString {
+    if (inMicroseconds < 0) {
+      return "-${(-this).readableString}";
+    }
+    String twoDigitMinutes = twoDigits(inMinutes);
+
+    String twoDigitSeconds = twoDigits(inSeconds.remainder(secondsPerMinute));
+
+    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  if (duration.inMicroseconds < 0) {
-    return "-${-duration}";
+  int get isSecondsCeil {
+    return (inMilliseconds / 1000).ceil();
   }
-  String twoDigitMinutes = twoDigits(duration.inMinutes);
-  final seconds = isCountdown ? duration.inSeconds + 1 : duration.inSeconds;
-
-  String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
-
-  return "$twoDigitMinutes:$twoDigitSeconds";
 }

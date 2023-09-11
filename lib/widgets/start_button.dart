@@ -64,7 +64,8 @@ class StartButton extends StatelessWidget {
             if (totalTime != null)
               Padding(
                 padding: const EdgeInsets.only(top: 0),
-                child: Text('Всего: ${durationToString2(totalTime!)}', style: context.textTheme.bodyMedium),
+                child:
+                    Text('${LocaleKeys.total.tr()}: ${totalTime!.readableString}', style: context.textTheme.bodyMedium),
               ),
           ],
         ),

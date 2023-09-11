@@ -25,6 +25,7 @@ abstract class  LocaleKeys {
   static const minute_short = 'minute.short';
   static const minute = 'minute';
   static const confirm = 'confirm';
+  static const total = 'total';
   static const amrap_title = 'amrap.title';
   static const amrap_description = 'amrap.description';
   static const amrap_add_button_title = 'amrap.add_button_title';

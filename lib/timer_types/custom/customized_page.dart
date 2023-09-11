@@ -183,7 +183,7 @@ class _CustomizedPageState extends State<CustomizedPage> {
                           },
                           child: Observer(
                             builder: (ctx) => ValueContainer(
-                              durationToString2(intervals[intervalIndex]),
+                              intervals[intervalIndex].readableString,
                             ),
                           ),
                         ),

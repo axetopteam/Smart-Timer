@@ -259,21 +259,13 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             if (state.currentState != TimerStatus.run) {
               return const PlayIcon();
             } else {
-              text = currentTime != null
-                  ? durationToString2(
-                      currentTime,
-                      isCountdown: true,
-                    )
-                  : '– –';
+              text = currentTime != null ? currentTime.durationToString(isCountdown: true) : '– –';
             }
           } else {
             text = isFirstSecond
                 ? currentInterval.type.redableName
                 : currentTime != null
-                    ? durationToString2(
-                        currentTime,
-                        isCountdown: currentInterval.isCountdown,
-                      )
+                    ? currentTime.durationToString(isCountdown: currentInterval.isCountdown)
                     : '– –';
           }
           final timeParts = text.split(':');
@@ -310,7 +302,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'Общее время: ${durationToString2(state.totalRestTime!, isCountdown: true)}',
+            'Общее время: ${state.totalRestTime!.durationToString(isCountdown: true)}',
             style: context.textTheme.titleMedium,
           ),
         );
@@ -396,5 +388,19 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             ],
           );
         });
+  }
+}
+
+extension on Duration {
+  String durationToString({bool isCountdown = false}) {
+    if (inMicroseconds < 0) {
+      return "-${(-this).durationToString}";
+    }
+    String twoDigitMinutes = twoDigits(inMinutes);
+    final seconds = isCountdown ? isSecondsCeil : inSeconds;
+
+    String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
+
+    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 }

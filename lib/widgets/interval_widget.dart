@@ -37,7 +37,7 @@ class IntervalWidget extends StatelessWidget {
           GestureDetector(
             onTap: onTap,
             child: ValueContainer(
-              duration != null ? durationToString2(duration!) : LocaleKeys.no_cap.tr(),
+              duration != null ? duration!.readableString : LocaleKeys.no_cap.tr(),
             ),
           ),
           if (canBeUnlimited)
