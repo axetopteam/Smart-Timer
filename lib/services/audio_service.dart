@@ -8,15 +8,30 @@ enum SoundType {
 }
 
 class AudioService {
-  AudioPlayer audioPlayer = AudioPlayer();
+  AudioService() {
+    audioPlayer = AudioPlayer();
+    audioPlayer.setSource(
+      AssetSource('sounds/countdown2.mp3'),
+    );
+    audioPlayer.setAudioContext(
+      const AudioContext(
+        iOS: AudioContextIOS(options: [
+          AVAudioSessionOptions.mixWithOthers,
+        ]),
+      ),
+    );
+  }
+  late final AudioPlayer audioPlayer;
 
   Future<void> switchSoundOnOff(bool value) async {
     await audioPlayer.setVolume(value ? 1 : 0);
   }
 
   Future<void> playCountdown() async {
-    await audioPlayer.stop();
-    await audioPlayer.play(AssetSource('sounds/countdown2.mp3'));
+    await audioPlayer.play(
+      AssetSource('sounds/countdown2.mp3'),
+      position: Duration.zero,
+    );
   }
 
   Future<void> play10Seconds() async {
