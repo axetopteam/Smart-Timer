@@ -37,8 +37,15 @@ lib/generated_plugin_registrant.dart
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 .last_build_id
-SuperSales.ipa
-SuperSales.app.dSYM.zip
+
+report.xml
+ios/build
+android/app/build
+android/app/release
+*.apk
+*.aar
+*.ap_
+*.aab
 
 report.xml
 ios/build
