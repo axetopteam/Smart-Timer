@@ -37,8 +37,10 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2"
-            android:name="AdaptyPublicSdkKey"
-            android:value="public_live_ga1NTy8S.wODi7yltw1g0fekTKiaF" />
+            android:value="2" />
+       <meta-data
+           android:name="AdaptyPublicSdkKey"
+           android:value="public_live_ga1NTy8S.wODi7yltw1g0fekTKiaF" />
+
     </application>
 </manifest>
