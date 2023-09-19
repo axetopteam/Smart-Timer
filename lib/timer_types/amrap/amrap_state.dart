@@ -1,11 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:protobuf/protobuf.dart';
+import 'package:smart_timer/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
 
-import 'amrap.dart';
-export 'amrap.dart';
+// import 'amrap.dart';
+// export 'amrap.dart';
 
 part 'amrap_state.g.dart';
 
@@ -29,8 +31,8 @@ abstract class AmrapStateBase with Store {
   @action
   void setWorkTime(int amrapIndex, Duration duration) {
     if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
-
     amraps[amrapIndex] = amraps[amrapIndex].copyWith(workTime: duration);
+    amraps[amrapIndex] = amraps[amrapIndex].rebuild((amrap) => amrap.workTime = duration.inSeconds);
   }
 
   @action

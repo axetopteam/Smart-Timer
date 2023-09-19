@@ -1,0 +1,9 @@
+syntax = "proto3";
+package timer;
+
+import "amrap/amrap.proto";
+
+
+message AmrapSettings {
+  repeated Amrap amraps = 1;
+}

@@ -6,6 +6,8 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
+import 'package:smart_timer/models/protos/amrap/amrap.pb.dart';
+import 'package:smart_timer/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
