@@ -3,21 +3,6 @@
 part of 'amrap_state.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-AmrapState _$AmrapStateFromJson(Map<String, dynamic> json) => AmrapState(
-      amraps: (json['amraps'] as List<dynamic>?)
-          ?.map((e) => Amrap.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$AmrapStateToJson(AmrapState instance) =>
-    <String, dynamic>{
-      'amraps': instance.amraps,
-    };
-
-// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

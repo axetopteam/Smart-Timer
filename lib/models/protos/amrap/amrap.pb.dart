@@ -32,8 +32,8 @@ class Amrap extends $pb.GeneratedMessage {
   factory Amrap.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Amrap', package: const $pb.PackageName(_omitMessageNames ? '' : 'timer'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'workDurationInSeconds', $pb.PbFieldType.O3, protoName: 'workDurationInSeconds')
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'restDurationInSeconds', $pb.PbFieldType.O3, protoName: 'restDurationInSeconds')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'workDurationInSeconds', $pb.PbFieldType.OU3, protoName: 'workDurationInSeconds')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'restDurationInSeconds', $pb.PbFieldType.OU3, protoName: 'restDurationInSeconds')
     ..hasRequiredFields = false
   ;
 
@@ -61,7 +61,7 @@ class Amrap extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.int get workDurationInSeconds => $_getIZ(0);
   @$pb.TagNumber(1)
-  set workDurationInSeconds($core.int v) { $_setSignedInt32(0, v); }
+  set workDurationInSeconds($core.int v) { $_setUnsignedInt32(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasWorkDurationInSeconds() => $_has(0);
   @$pb.TagNumber(1)
@@ -70,7 +70,7 @@ class Amrap extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.int get restDurationInSeconds => $_getIZ(1);
   @$pb.TagNumber(2)
-  set restDurationInSeconds($core.int v) { $_setSignedInt32(1, v); }
+  set restDurationInSeconds($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRestDurationInSeconds() => $_has(1);
   @$pb.TagNumber(2)

@@ -3,6 +3,6 @@ package timer;
 
 
 message Amrap {
-  int32 workDurationInSeconds = 1;
-  int32 restDurationInSeconds = 2;  
+  uint32 workDurationInSeconds = 1;
+  uint32 restDurationInSeconds = 2;  
 }

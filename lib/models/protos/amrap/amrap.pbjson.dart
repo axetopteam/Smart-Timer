@@ -17,14 +17,14 @@ import 'dart:typed_data' as $typed_data;
 const Amrap$json = {
   '1': 'Amrap',
   '2': [
-    {'1': 'workDurationInSeconds', '3': 1, '4': 1, '5': 5, '10': 'workDurationInSeconds'},
-    {'1': 'restDurationInSeconds', '3': 2, '4': 1, '5': 5, '10': 'restDurationInSeconds'},
+    {'1': 'workDurationInSeconds', '3': 1, '4': 1, '5': 13, '10': 'workDurationInSeconds'},
+    {'1': 'restDurationInSeconds', '3': 2, '4': 1, '5': 13, '10': 'restDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `Amrap`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List amrapDescriptor = $convert.base64Decode(
-    'CgVBbXJhcBI0ChV3b3JrRHVyYXRpb25JblNlY29uZHMYASABKAVSFXdvcmtEdXJhdGlvbkluU2'
-    'Vjb25kcxI0ChVyZXN0RHVyYXRpb25JblNlY29uZHMYAiABKAVSFXJlc3REdXJhdGlvbkluU2Vj'
+    'CgVBbXJhcBI0ChV3b3JrRHVyYXRpb25JblNlY29uZHMYASABKA1SFXdvcmtEdXJhdGlvbkluU2'
+    'Vjb25kcxI0ChVyZXN0RHVyYXRpb25JblNlY29uZHMYAiABKA1SFXJlc3REdXJhdGlvbkluU2Vj'
     'b25kcw==');
 

@@ -1,7 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:smart_timer/models/protos/amrap/amrap_extension.dart';
+import 'package:smart_timer/models/protos/amrap_settings/amrap_settings.pbserver.dart';
 import 'package:smart_timer/models/workout_interval.dart';
 import 'package:smart_timer/models/workout_interval_type.dart';
 import 'package:smart_timer/models/workout_set.dart';
@@ -11,17 +11,18 @@ import 'package:smart_timer/models/workout_set.dart';
 
 part 'amrap_state.g.dart';
 
-@JsonSerializable()
 class AmrapState extends AmrapStateBase with _$AmrapState {
   AmrapState({List<Amrap>? amraps}) : super(amraps: amraps);
+  Uint8List toBuffer() => AmrapSettings(amraps: amraps).writeToBuffer();
+  factory AmrapState.fromBuffer(Uint8List buffer) => AmrapState(amraps: AmrapSettings.fromBuffer(buffer).amraps);
 
-  Map<String, dynamic> toJson() => _$AmrapStateToJson(this);
+  // Map<String, dynamic> toJson() => {};
 
-  factory AmrapState.fromJson(Map<String, dynamic> json) => _$AmrapStateFromJson(json);
+  // factory AmrapState.fromJson(Map<String, dynamic> json) => AmrapState();
 }
 
 abstract class AmrapStateBase with Store {
-  AmrapStateBase({List<Amrap>? amraps}) : amraps = ObservableList.of(amraps ?? [Amrap.defaultValue]);
+  AmrapStateBase({List<Amrap>? amraps}) : amraps = ObservableList.of(amraps ?? [AmrapX.defaultValue]);
 
   ObservableList<Amrap> amraps;
 
@@ -31,23 +32,23 @@ abstract class AmrapStateBase with Store {
   @action
   void setWorkTime(int amrapIndex, Duration duration) {
     if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
-    amraps[amrapIndex] = amraps[amrapIndex].copyWith(workTime: duration);
-    amraps[amrapIndex] = amraps[amrapIndex].rebuild((amrap) => amrap.workTime = duration.inSeconds);
+
+    amraps[amrapIndex] = amraps[amrapIndex].copyWithNewValue(workTime: duration);
   }
 
   @action
   void setRestTime(int amrapIndex, Duration duration) {
     if (amrapIndex < 0 || amrapIndex >= amrapsCount) return;
 
-    amraps[amrapIndex] = amraps[amrapIndex].copyWith(restTime: duration);
+    amraps[amrapIndex] = amraps[amrapIndex].copyWithNewValue(restTime: duration);
     if (amrapIndex == amrapsCount - 2) {
-      amraps[amrapIndex + 1] = amraps[amrapIndex + 1].copyWith(restTime: duration);
+      amraps[amrapIndex + 1] = amraps[amrapIndex + 1].copyWithNewValue(restTime: duration);
     }
   }
 
   @action
   void addAmrap() {
-    final lastAmrapCopy = amraps.last.copyWith();
+    final lastAmrapCopy = amraps.last.copyWithNewValue();
     amraps.add(lastAmrapCopy);
   }
 

@@ -6,7 +6,6 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/models/protos/amrap/amrap.pb.dart';
 import 'package:smart_timer/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_properties.dart';
@@ -34,8 +33,8 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   void initState() {
-    final json = AppProperties().getAmrapSettings();
-    amrapState = json != null ? AmrapState.fromJson(json) : AmrapState();
+    final buffer = AppProperties().getAmrapSettings();
+    amrapState = buffer != null ? AmrapState.fromBuffer(buffer) : AmrapState();
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.amrap.name).commit();
 
     super.initState();
@@ -43,8 +42,8 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   void dispose() {
-    final json = amrapState.toJson();
-    AppProperties().setAmrapSettings(json);
+    final buffer = amrapState.toBuffer();
+    AppProperties().setAmrapSettings(buffer);
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.amrap.name).commit();
     super.dispose();

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:basic_utils/basic_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// AppProperties singleton class
@@ -45,12 +47,13 @@ class AppProperties {
     return await _preferences.setDateTime(_firstLaunchKey, value);
   }
 
-  Future<bool> setAmrapSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_amrapSettingsKey, json);
+  Future<bool> setAmrapSettings(Uint8List buffer) {
+    return _preferences.setString(_amrapSettingsKey, HexUtils.encode(buffer));
   }
 
-  Map<String, dynamic>? getAmrapSettings() {
-    return _preferences.getJson(_amrapSettingsKey);
+  Uint8List? getAmrapSettings() {
+    final hex = _preferences.getString(_amrapSettingsKey);
+    return hex != null ? HexUtils.decode(hex) : null;
   }
 
   Future<bool> setAfapSettings(Map<String, dynamic> json) {

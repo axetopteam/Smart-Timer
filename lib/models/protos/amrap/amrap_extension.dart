@@ -11,12 +11,12 @@ extension AmrapX on Amrap {
     return Duration(seconds: restDurationInSeconds);
   }
 
-  static Amrap defaultValue = Amrap(workDurationInSeconds: 10 * 60, restDurationInSeconds: 2 * 60);
+  static Amrap defaultValue = Amrap(workDurationInSeconds: 10 * 60, restDurationInSeconds: 2 * 60)..freeze();
 
-  Amrap copyWith({Duration? workTime, Duration? restTime}) {
+  Amrap copyWithNewValue({Duration? workTime, Duration? restTime}) {
     return Amrap(
-      workTime: workTime ?? this.workTime,
-      restTime: restTime ?? this.restTime,
+      workDurationInSeconds: (workTime ?? this.workTime).inSeconds,
+      restDurationInSeconds: (restTime ?? this.restTime).inSeconds,
     );
   }
 }

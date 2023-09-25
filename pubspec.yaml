@@ -49,6 +49,7 @@ dependencies:
   collection: ^1.17.1
   in_app_review: ^2.0.6
   protobuf: ^3.1.0
+  basic_utils: ^5.6.1
 
 dev_dependencies:
   flutter_test:
