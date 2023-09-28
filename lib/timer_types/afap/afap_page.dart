@@ -7,7 +7,6 @@ import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
@@ -33,15 +32,14 @@ class _AfapPageState extends State<AfapPage> {
   @override
   void initState() {
     super.initState();
-    final json = AppProperties().getAfapSettings();
-    afapState = json != null ? AfapState.fromJson(json) : AfapState();
+    afapState = AfapState();
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.afap.name).commit();
   }
 
   @override
   void dispose() {
-    final json = afapState.toJson();
-    AppProperties().setAfapSettings(json);
+    // final json = afapState.toJson();
+    // AppProperties().setAfapSettings(json);
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.afap.name).commit();
     super.dispose();

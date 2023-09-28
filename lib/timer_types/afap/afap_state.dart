@@ -1,25 +1,19 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
 
-import 'afap.dart';
-export 'afap.dart';
+export 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 
 part 'afap_state.g.dart';
 
-@JsonSerializable()
 class AfapState extends AfapStateBase with _$AfapState {
   AfapState({List<Afap>? afaps}) : super(afaps: afaps);
-
-  Map<String, dynamic> toJson() => _$AfapStateToJson(this);
-
-  factory AfapState.fromJson(Map<String, dynamic> json) => _$AfapStateFromJson(json);
 }
 
 abstract class AfapStateBase with Store {
-  AfapStateBase({List<Afap>? afaps}) : afaps = ObservableList.of(afaps ?? [Afap.defaultValue]);
+  AfapStateBase({List<Afap>? afaps}) : afaps = ObservableList.of(afaps ?? [AfapX.defaultValue]);
 
   ObservableList<Afap> afaps;
 
@@ -30,17 +24,17 @@ abstract class AfapStateBase with Store {
   void setTimeCap(int afapIndex, Duration duration) {
     if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
-    afaps[afapIndex] = afaps[afapIndex].copyWith(timeCap: duration);
+    afaps[afapIndex] = afaps[afapIndex].copyWithNewValue(timeCap: duration);
   }
 
   @action
   void setRestTime(int afapIndex, Duration duration) {
     if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
-    afaps[afapIndex] = afaps[afapIndex].copyWith(restTime: duration);
+    afaps[afapIndex] = afaps[afapIndex].copyWithNewValue(restTime: duration);
 
     if (afapIndex == afapsCount - 2) {
-      afaps[afapIndex + 1] = afaps[afapIndex + 1].copyWith(restTime: duration);
+      afaps[afapIndex + 1] = afaps[afapIndex + 1].copyWithNewValue(restTime: duration);
     }
   }
 
@@ -48,12 +42,12 @@ abstract class AfapStateBase with Store {
   void setNoTimeCap(int afapIndex, bool noTimeCap) {
     if (afapIndex < 0 || afapIndex >= afapsCount) return;
 
-    afaps[afapIndex] = afaps[afapIndex].copyWith(noTimeCap: noTimeCap);
+    afaps[afapIndex] = afaps[afapIndex].copyWithNewValue(noTimeCap: noTimeCap);
   }
 
   @action
   void addAfap() {
-    final lastAfapCopy = afaps.last.copyWith();
+    final lastAfapCopy = afaps.last.copyWithNewValue();
     afaps.add(lastAfapCopy);
   }
 

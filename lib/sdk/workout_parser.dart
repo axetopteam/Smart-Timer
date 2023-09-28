@@ -1,5 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pbserver.dart';
 import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 
@@ -19,6 +20,7 @@ class WorkoutParser {
       case TimerType.amrap:
         return AmrapSettings.fromBuffer(workoutData);
       case TimerType.afap:
+        return EmomSettings.fromBuffer(workoutData);
       case TimerType.emom:
         return EmomSettings.fromBuffer(workoutData);
       case TimerType.tabata:
@@ -36,10 +38,10 @@ class WorkoutParser {
     switch (workoutSettings.runtimeType) {
       case AmrapSettings:
         workoutData = (workoutSettings as AmrapSettings).writeToBuffer();
-      case TimerType.afap:
+      case AfapSettings:
+        workoutData = (workoutSettings as AfapSettings).writeToBuffer();
       case EmomSettings:
         workoutData = (workoutSettings as EmomSettings).writeToBuffer();
-
       case TimerType.tabata:
       case TimerType.workRest:
       case TimerType.custom:

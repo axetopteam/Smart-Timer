@@ -1,0 +1,9 @@
+syntax = "proto3";
+package timer;
+
+import "afap/afap.proto";
+
+
+message AfapSettings {
+  repeated Afap afaps = 1;
+}
