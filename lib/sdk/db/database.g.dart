@@ -34,7 +34,9 @@ class $WorkoutsHistoryTable extends WorkoutsHistory
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   @override
   List<GeneratedColumn> get $columns => [id, workout, endAt, description];
   @override
@@ -67,8 +69,6 @@ class $WorkoutsHistoryTable extends WorkoutsHistory
           _descriptionMeta,
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
-    } else if (isInserting) {
-      context.missing(_descriptionMeta);
     }
     return context;
   }
@@ -192,10 +192,9 @@ class WorkoutsHistoryCompanion extends UpdateCompanion<WorkoutSettings> {
     this.id = const Value.absent(),
     required String workout,
     required int endAt,
-    required String description,
+    this.description = const Value.absent(),
   })  : workout = Value(workout),
-        endAt = Value(endAt),
-        description = Value(description);
+        endAt = Value(endAt);
   static Insertable<WorkoutSettings> custom({
     Expression<int>? id,
     Expression<String>? workout,

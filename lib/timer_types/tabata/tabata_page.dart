@@ -33,8 +33,7 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   void initState() {
-    final settingsJson = AppProperties().getTabataSettings();
-    tabataState = settingsJson != null ? TabataState.fromJson(settingsJson) : TabataState();
+    tabataState = TabataState();
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.tabata.name).commit();
 
     super.initState();
@@ -42,8 +41,6 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   dispose() {
-    final json = tabataState.toJson();
-    AppProperties().setTabataSettings(json);
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.tabata.name).commit();
     super.dispose();

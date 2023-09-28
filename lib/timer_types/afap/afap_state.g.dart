@@ -3,20 +3,6 @@
 part of 'afap_state.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-AfapState _$AfapStateFromJson(Map<String, dynamic> json) => AfapState(
-      afaps: (json['afaps'] as List<dynamic>?)
-          ?.map((e) => Afap.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$AfapStateToJson(AfapState instance) => <String, dynamic>{
-      'afaps': instance.afaps,
-    };
-
-// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

@@ -3,20 +3,6 @@
 part of 'emom_state.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-EmomState _$EmomStateFromJson(Map<String, dynamic> json) => EmomState(
-      emoms: (json['emoms'] as List<dynamic>?)
-          ?.map((e) => Emom.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$EmomStateToJson(EmomState instance) => <String, dynamic>{
-      'emoms': instance.emoms,
-    };
-
-// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

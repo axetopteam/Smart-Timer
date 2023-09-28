@@ -12,10 +12,6 @@ part 'tabata_state.g.dart';
 @JsonSerializable()
 class TabataState extends TabataStoreBase with _$TabataState {
   TabataState({super.tabats});
-
-  Map<String, dynamic> toJson() => _$TabataStateToJson(this);
-
-  factory TabataState.fromJson(Map<String, dynamic> json) => _$TabataStateFromJson(json);
 }
 
 abstract class TabataStoreBase with Store {
