@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 // import 'package:smart_timer/models/workout.dart';
 
 class WorkoutDesc extends StatelessWidget {

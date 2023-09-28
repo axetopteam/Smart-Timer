@@ -1,6 +1,6 @@
 import 'package:jiffy/jiffy.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interfaces/interval_interface.dart';
+import 'package:smart_timer/sdk/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
 import 'workout_interval_type.dart';

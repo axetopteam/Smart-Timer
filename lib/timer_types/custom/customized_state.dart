@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/workout_interval.dart';
-import 'package:smart_timer/models/workout_interval_type.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout_interval.dart';
+import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 
 part 'customized_state.g.dart';
 

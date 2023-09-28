@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
-import 'package:smart_timer/models/workout_interval.dart';
-import 'package:smart_timer/models/workout_interval_type.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout_interval.dart';
+import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';

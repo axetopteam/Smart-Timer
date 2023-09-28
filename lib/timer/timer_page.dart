@@ -9,7 +9,7 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/widgets/complete_button.dart';

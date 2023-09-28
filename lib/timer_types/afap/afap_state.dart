@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/workout_interval.dart';
-import 'package:smart_timer/models/workout_interval_type.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout_interval.dart';
+import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 
 import 'afap.dart';
 export 'afap.dart';

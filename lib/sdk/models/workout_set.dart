@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/interfaces/descriptionable.dart';
-import 'package:smart_timer/models/interfaces/interval_interface.dart';
-import 'package:smart_timer/models/workout_interval.dart';
+import 'package:smart_timer/sdk/models/interfaces/descriptionable.dart';
+import 'package:smart_timer/sdk/models/interfaces/interval_interface.dart';
+import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
 part 'workout_set.g.dart';

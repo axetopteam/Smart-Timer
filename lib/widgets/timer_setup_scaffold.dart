@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 import '../pages/workout_desc.dart';
 import 'start_button.dart';
 

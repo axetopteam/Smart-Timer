@@ -4,12 +4,15 @@ import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 enum TimerType {
-  amrap,
-  afap,
-  emom,
-  tabata,
-  workRest,
-  custom;
+  amrap('00'),
+  afap('01'),
+  emom('02'),
+  tabata('03'),
+  workRest('04'),
+  custom('05');
+
+  final String hexCode;
+  const TimerType(this.hexCode);
 
   String get readbleName {
     switch (this) {
@@ -57,5 +60,9 @@ enum TimerType {
       case TimerType.custom:
         return false;
     }
+  }
+
+  factory TimerType.fromHexCode(String code) {
+    return TimerType.values.firstWhere((element) => element.hexCode == code);
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/models/protos/amrap/amrap_extension.dart';
-import 'package:smart_timer/models/protos/amrap_settings/amrap_settings.pbserver.dart';
-import 'package:smart_timer/models/workout_interval.dart';
-import 'package:smart_timer/models/workout_interval_type.dart';
-import 'package:smart_timer/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
+import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
+import 'package:smart_timer/sdk/models/workout_interval.dart';
+import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout_set.dart';
 
 // import 'amrap.dart';
 // export 'amrap.dart';
