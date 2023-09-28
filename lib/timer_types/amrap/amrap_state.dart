@@ -15,10 +15,6 @@ class AmrapState extends AmrapStateBase with _$AmrapState {
   AmrapState({List<Amrap>? amraps}) : super(amraps: amraps);
   Uint8List toBuffer() => AmrapSettings(amraps: amraps).writeToBuffer();
   factory AmrapState.fromBuffer(Uint8List buffer) => AmrapState(amraps: AmrapSettings.fromBuffer(buffer).amraps);
-
-  // Map<String, dynamic> toJson() => {};
-
-  // factory AmrapState.fromJson(Map<String, dynamic> json) => AmrapState();
 }
 
 abstract class AmrapStateBase with Store {

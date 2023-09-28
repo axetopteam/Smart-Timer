@@ -1,25 +1,19 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
 
-import 'emom.dart';
-export 'emom.dart';
+export 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 
 part 'emom_state.g.dart';
 
-@JsonSerializable()
 class EmomState extends EmomStateBase with _$EmomState {
   EmomState({super.emoms});
-
-  Map<String, dynamic> toJson() => _$EmomStateToJson(this);
-
-  factory EmomState.fromJson(Map<String, dynamic> json) => _$EmomStateFromJson(json);
 }
 
 abstract class EmomStateBase with Store {
-  EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [Emom.defaultValue]);
+  EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [EmomX.defaultValue]);
 
   final ObservableList<Emom> emoms;
 
@@ -31,27 +25,27 @@ abstract class EmomStateBase with Store {
   @action
   void setRounds(int emomIndex, int value) {
     final emom = emoms[emomIndex];
-    emoms[emomIndex] = emom.copyWith(roundsCount: value);
+    emoms[emomIndex] = emom.copyWithNewValue(roundsCount: value);
   }
 
   @action
   void setWorkTime(int emomIndex, Duration duration) {
     final emom = emoms[emomIndex];
-    emoms[emomIndex] = emom.copyWith(workTime: duration);
+    emoms[emomIndex] = emom.copyWithNewValue(workTime: duration);
   }
 
   @action
   void setRestAfterSet(int emomIndex, Duration duration) {
     final emom = emoms[emomIndex];
-    emoms[emomIndex] = emom.copyWith(restAfterSet: duration);
+    emoms[emomIndex] = emom.copyWithNewValue(restAfterSet: duration);
     if (emomIndex == emomsCount - 2) {
-      emoms[emomIndex + 1] = emoms[emomIndex + 1].copyWith(restAfterSet: duration);
+      emoms[emomIndex + 1] = emoms[emomIndex + 1].copyWithNewValue(restAfterSet: duration);
     }
   }
 
   @action
   void addEmom() {
-    final newEmom = emoms.last.copyWith();
+    final newEmom = emoms.last.copyWithNewValue();
     emoms.add(newEmom);
   }
 

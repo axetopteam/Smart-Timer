@@ -7,7 +7,6 @@ import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
@@ -33,16 +32,16 @@ class _EmomPageState extends State<EmomPage> {
 
   @override
   void initState() {
-    final settingsJson = AppProperties().getEmomSettings();
-    emomState = settingsJson != null ? EmomState.fromJson(settingsJson) : EmomState();
+    // final settingsJson = AppProperties().getEmomSettings();
+    emomState = EmomState(); //TODO: взять из базы последнюю
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.emom.name).commit();
     super.initState();
   }
 
   @override
   void dispose() {
-    final json = emomState.toJson();
-    AppProperties().setEmomSettings(json);
+    // final json = emomState.toJson();
+    // AppProperties().setEmomSettings(json); //TODO: cохранить в базу
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.emom.name).commit();
     super.dispose();

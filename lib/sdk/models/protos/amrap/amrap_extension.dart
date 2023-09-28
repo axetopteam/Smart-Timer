@@ -11,7 +11,7 @@ extension AmrapX on Amrap {
     return Duration(seconds: restDurationInSeconds);
   }
 
-  static Amrap defaultValue = Amrap(workDurationInSeconds: 10 * 60, restDurationInSeconds: 2 * 60)..freeze();
+  static Amrap defaultValue = Amrap(workDurationInSeconds: 10 * 60, restDurationInSeconds: 2 * 60);
 
   Amrap copyWithNewValue({Duration? workTime, Duration? restTime}) {
     return Amrap(
