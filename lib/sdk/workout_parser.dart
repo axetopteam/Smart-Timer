@@ -29,7 +29,7 @@ class WorkoutParser {
         return TabataSettings.fromBuffer(workoutData);
       case TimerType.workRest:
         return WorkRestSettings.fromBuffer(workoutData);
-      case TimerType.custom:
+      // case TimerType.custom:
     }
   }
 
@@ -50,7 +50,7 @@ class WorkoutParser {
         workoutData = (workoutSettings as TabataSettings).writeToBuffer();
       case WorkRestSettings:
         workoutData = (workoutSettings as WorkRestSettings).writeToBuffer();
-      case TimerType.custom:
+      // case TimerType.custom:
     }
 
     final workoutHex = HexUtils.encode(workoutData);

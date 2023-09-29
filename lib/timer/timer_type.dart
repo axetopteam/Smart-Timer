@@ -8,8 +8,8 @@ enum TimerType {
   afap('01'),
   emom('02'),
   tabata('03'),
-  workRest('04'),
-  custom('05');
+  workRest('04');
+  // custom('05');
 
   final String hexCode;
   const TimerType(this.hexCode);
@@ -26,8 +26,8 @@ enum TimerType {
         return LocaleKeys.tabata_title.tr();
       case TimerType.workRest:
         return LocaleKeys.work_rest_title.tr();
-      case TimerType.custom:
-        return 'Custom';
+      // case TimerType.custom:
+      //   return 'Custom';
     }
   }
 
@@ -43,8 +43,8 @@ enum TimerType {
         return context.color.tabataColor;
       case TimerType.workRest:
         return context.color.workRestColor;
-      case TimerType.custom:
-        return context.color.customColor;
+      // case TimerType.custom:
+      //   return context.color.customColor;
     }
   }
 
@@ -57,7 +57,7 @@ enum TimerType {
 
       case TimerType.afap:
       case TimerType.workRest:
-      case TimerType.custom:
+        // case TimerType.custom:
         return false;
     }
   }
