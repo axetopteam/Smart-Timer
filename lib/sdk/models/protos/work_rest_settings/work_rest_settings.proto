@@ -1,0 +1,9 @@
+syntax = "proto3";
+package timer;
+
+import "work_rest/work_rest.proto";
+
+
+message WorkRestSettings {
+  repeated WorkRest workRests = 1;
+}

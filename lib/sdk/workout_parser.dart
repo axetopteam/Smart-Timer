@@ -6,6 +6,7 @@ import 'models/protos/afap_settings/afap_settings.pb.dart';
 import 'models/protos/amrap_settings/amrap_settings.pb.dart';
 import 'models/protos/emom_settings/emom_settings.pb.dart';
 import 'models/protos/tabata_settings/tabata_settings.pb.dart';
+import 'models/protos/work_rest_settings/work_rest_settings.pb.dart';
 
 class WorkoutParser {
   Object decode(String rawData) {
@@ -27,6 +28,7 @@ class WorkoutParser {
       case TimerType.tabata:
         return TabataSettings.fromBuffer(workoutData);
       case TimerType.workRest:
+        return WorkRestSettings.fromBuffer(workoutData);
       case TimerType.custom:
     }
   }
@@ -46,7 +48,8 @@ class WorkoutParser {
         workoutData = (workoutSettings as EmomSettings).writeToBuffer();
       case TabataSettings:
         workoutData = (workoutSettings as TabataSettings).writeToBuffer();
-      case TimerType.workRest:
+      case WorkRestSettings:
+        workoutData = (workoutSettings as WorkRestSettings).writeToBuffer();
       case TimerType.custom:
     }
 
