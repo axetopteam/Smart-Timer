@@ -6,7 +6,6 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/ratio_widget.dart';
@@ -28,8 +27,6 @@ class _WorkRestPageState extends State<WorkRestPage> {
 
   @override
   void initState() {
-    final settingsJson = AppProperties().getWorkRestSettings();
-    workRest = settingsJson != null ? WorkRestState.fromJson(settingsJson) : WorkRestState();
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.workRest.name).commit();
 
     super.initState();
@@ -37,8 +34,6 @@ class _WorkRestPageState extends State<WorkRestPage> {
 
   @override
   void dispose() {
-    final json = workRest.toJson();
-    AppProperties().setWorkRestSettings(json);
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.workRest.name).commit();
 
     super.dispose();
@@ -71,17 +66,17 @@ class _WorkRestPageState extends State<WorkRestPage> {
                   children: [
                     RoundsWidget(
                       title: LocaleKeys.rounds.tr(),
-                      initialValue: workRest.roundsCount,
+                      initialValue: workRest.sets[workRest.setIndex].roundsCount,
                       onValueChanged: (value) {
-                        workRest.setRounds(value);
+                        workRest.setRounds(workRest.setIndex, value);
                       },
                     ),
                     const SizedBox(width: 10),
                     RatioWidget(
                       title: '${LocaleKeys.rest_ratio.tr()}:',
-                      initialValue: workRest.ratio,
+                      initialValue: workRest.sets[workRest.setIndex].ratio,
                       onValueChanged: (value) {
-                        workRest.setRatio(value);
+                        workRest.setRatio(workRest.setIndex, value);
                         AnalyticsManager.eventWorkRestSetRatio.setProperty('ratio', value).commit();
                       },
                     ),

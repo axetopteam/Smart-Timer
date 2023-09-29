@@ -8,9 +8,7 @@ export 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 
 part 'afap_state.g.dart';
 
-class AfapState extends AfapStateBase with _$AfapState {
-  AfapState({List<Afap>? afaps}) : super(afaps: afaps);
-}
+class AfapState = AfapStateBase with _$AfapState;
 
 abstract class AfapStateBase with Store {
   AfapStateBase({List<Afap>? afaps}) : afaps = ObservableList.of(afaps ?? [AfapX.defaultValue]);

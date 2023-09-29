@@ -3,21 +3,6 @@
 part of 'tabata_state.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-TabataState _$TabataStateFromJson(Map<String, dynamic> json) => TabataState(
-      tabats: (json['tabats'] as List<dynamic>?)
-          ?.map((e) => Tabata.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$TabataStateToJson(TabataState instance) =>
-    <String, dynamic>{
-      'tabats': instance.tabats,
-    };
-
-// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 

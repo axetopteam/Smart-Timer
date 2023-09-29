@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
@@ -9,10 +8,7 @@ export 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 
 part 'tabata_state.g.dart';
 
-@JsonSerializable()
-class TabataState extends TabataStoreBase with _$TabataState {
-  TabataState({super.tabats});
-}
+class TabataState = TabataStoreBase with _$TabataState;
 
 abstract class TabataStoreBase with Store {
   TabataStoreBase({List<Tabata>? tabats}) : tabats = ObservableList.of(tabats ?? [TabataX.defaultValue]);

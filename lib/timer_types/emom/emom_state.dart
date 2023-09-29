@@ -8,9 +8,7 @@ export 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 
 part 'emom_state.g.dart';
 
-class EmomState extends EmomStateBase with _$EmomState {
-  EmomState({super.emoms});
-}
+class EmomState = EmomStateBase with _$EmomState;
 
 abstract class EmomStateBase with Store {
   EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [EmomX.defaultValue]);
