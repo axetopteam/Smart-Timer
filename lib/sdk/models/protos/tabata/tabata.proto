@@ -1,0 +1,10 @@
+syntax = "proto3";
+package timer;
+
+
+message Tabata {
+  uint32 workTimeInSeconds = 1;
+  uint32 restTimeInSeconds = 2;
+  uint32 roundsCount = 3; 
+  uint32 restAfterSetInSeconds = 4;
+}

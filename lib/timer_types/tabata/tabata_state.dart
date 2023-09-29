@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
 
-import 'tabata.dart';
-export 'tabata.dart';
+export 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 
 part 'tabata_state.g.dart';
 
@@ -15,7 +15,7 @@ class TabataState extends TabataStoreBase with _$TabataState {
 }
 
 abstract class TabataStoreBase with Store {
-  TabataStoreBase({List<Tabata>? tabats}) : tabats = ObservableList.of(tabats ?? [Tabata.defaultValue]);
+  TabataStoreBase({List<Tabata>? tabats}) : tabats = ObservableList.of(tabats ?? [TabataX.defaultValue]);
 
   final ObservableList<Tabata> tabats;
 
@@ -28,31 +28,31 @@ abstract class TabataStoreBase with Store {
   void setRounds(int tabataIndex, int value) {
     final tabata = tabats[tabataIndex];
 
-    tabats[tabataIndex] = tabata.copyWith(roundsCount: value);
+    tabats[tabataIndex] = tabata.copyWithNewValue(roundsCount: value);
   }
 
   @action
   void setWorkTime(int tabataIndex, Duration duration) {
-    tabats[tabataIndex] = tabats[tabataIndex].copyWith(workTime: duration);
+    tabats[tabataIndex] = tabats[tabataIndex].copyWithNewValue(workTime: duration);
   }
 
   @action
   void setRestTime(int tabataIndex, Duration duration) {
-    tabats[tabataIndex] = tabats[tabataIndex].copyWith(restTime: duration);
+    tabats[tabataIndex] = tabats[tabataIndex].copyWithNewValue(restTime: duration);
   }
 
   @action
   void setRestAfterSet(int tabataIndex, Duration duration) {
-    tabats[tabataIndex] = tabats[tabataIndex].copyWith(restAfterSet: duration);
+    tabats[tabataIndex] = tabats[tabataIndex].copyWithNewValue(restAfterSet: duration);
 
     if (tabataIndex == tabatsCount - 2) {
-      tabats[tabataIndex + 1] = tabats[tabataIndex + 1].copyWith(restAfterSet: duration);
+      tabats[tabataIndex + 1] = tabats[tabataIndex + 1].copyWithNewValue(restAfterSet: duration);
     }
   }
 
   @action
   void addTabata() {
-    final newEmom = tabats.last.copyWith();
+    final newEmom = tabats.last.copyWithNewValue();
     tabats.add(newEmom);
   }
 
