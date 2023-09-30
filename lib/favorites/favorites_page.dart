@@ -5,7 +5,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 
-import '../sdk/models/protos/amrap_settings/amrap_settings.pb.dart';
 import 'favorites_state.dart';
 
 @RoutePage<void>()
@@ -30,7 +29,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               return ListTile(
                 onTap: () => onTap(favorites[index]),
                 title: Text(
-                  favorites[index].workoutSettings.toString(),
+                  HexUtils.encode(favorites[index].workoutSettings.writeToBuffer()),
                 ),
                 textColor: context.color.mainText,
               );
@@ -42,18 +41,22 @@ class _FavouritesPageState extends State<FavouritesPage> {
     );
   }
 
-  void onTap(FavoriteWorkout workout) {
-    switch (workout.timerType) {
-      case TimerType.amrap:
-        context.pushRoute(AmrapRoute(amrapSettings: workout.workoutSettings as AmrapSettings));
-
-      case TimerType.afap:
+  void onTap(FavoriteWorkout favoriteWorkout) {
+    final workoutSettings = favoriteWorkout.workoutSettings;
+    final j = workoutSettings.whichWorkout();
+    j.name;
+    switch (workoutSettings.whichWorkout()) {
+      case WorkoutSettings_Workout.amrap:
+        context.pushRoute(AmrapRoute(amrapSettings: workoutSettings.amrap));
+      case WorkoutSettings_Workout.afap:
       // TODO: Handle this case.
-      case TimerType.emom:
+      case WorkoutSettings_Workout.emom:
       // TODO: Handle this case.
-      case TimerType.tabata:
+      case WorkoutSettings_Workout.tabata:
       // TODO: Handle this case.
-      case TimerType.workRest:
+      case WorkoutSettings_Workout.workRest:
+      // TODO: Handle this case.
+      case WorkoutSettings_Workout.notSet:
       // TODO: Handle this case.
     }
   }

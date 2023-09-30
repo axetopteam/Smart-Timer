@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
-export 'package:smart_timer/sdk/sdk_service.dart' show FavoriteWorkout, TimerType;
+export 'package:smart_timer/sdk/sdk_service.dart' show FavoriteWorkout, TimerType, WorkoutSettings_Workout;
 
 part 'favorites_state.g.dart';
 

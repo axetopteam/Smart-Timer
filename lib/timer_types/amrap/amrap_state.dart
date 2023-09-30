@@ -55,7 +55,7 @@ abstract class AmrapStateBase with Store {
   Future<void> saveToFavorites(String name, String description) async {
     return GetIt.I<SdkService>().addToFavorite(
       type: TimerType.amrap,
-      workout: AmrapSettings(amraps: amraps),
+      workout: WorkoutSettings(amrap: AmrapSettings(amraps: amraps)),
       name: name,
       description: description,
     );
