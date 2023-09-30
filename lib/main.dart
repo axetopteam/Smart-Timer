@@ -4,9 +4,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/purchasing/purchase_manager.dart';
 import 'package:smart_timer/routes/router.dart';
+import 'package:smart_timer/sdk/db/database.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:uuid/uuid.dart';
 
@@ -33,6 +36,8 @@ void main() async {
   await appProperties.initializeProperties();
 
   final appRouter = AppRouter();
+
+  GetIt.I.registerSingleton(SdkService(db: AppDatabase()));
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

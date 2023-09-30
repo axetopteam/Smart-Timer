@@ -24,6 +24,12 @@ class MainPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           actions: [
             IconButton(
+              icon: const Icon(Icons.favorite_border),
+              onPressed: () {
+                context.router.push(const FavouritesRoute());
+              },
+            ),
+            IconButton(
               icon: const Icon(CupertinoIcons.settings),
               onPressed: () {
                 context.router.push(const SettingsRoute());
@@ -63,7 +69,7 @@ class MainPage extends StatelessWidget {
                         title: TimerType.amrap.readbleName.toUpperCase(),
                         color: context.color.amrapColor,
                         onTap: () {
-                          context.router.push(const AmrapRoute());
+                          context.router.push(AmrapRoute());
                         },
                       ),
                       buildContainer(

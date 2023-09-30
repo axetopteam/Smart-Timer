@@ -6,20 +6,24 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/services/app_properties.dart';
+import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
+import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pb.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import '../../widgets/new_item_transition.dart';
+
+export 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pb.dart';
+
 import 'amrap_state.dart';
 
 @RoutePage()
 class AmrapPage extends StatefulWidget {
-  const AmrapPage({Key? key}) : super(key: key);
+  const AmrapPage({this.amrapSettings, Key? key}) : super(key: key);
+  final AmrapSettings? amrapSettings;
 
   @override
   State<AmrapPage> createState() => _AmrapPageState();
@@ -33,8 +37,7 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   void initState() {
-    final buffer = AppProperties().getAmrapSettings();
-    amrapState = buffer != null ? AmrapState.fromBuffer(buffer) : AmrapState();
+    amrapState = AmrapState(amraps: widget.amrapSettings?.amraps);
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.amrap.name).commit();
 
     super.initState();
@@ -42,8 +45,6 @@ class _AmrapPageState extends State<AmrapPage> {
 
   @override
   void dispose() {
-    final buffer = amrapState.toBuffer();
-    AppProperties().setAmrapSettings(buffer);
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.amrap.name).commit();
     super.dispose();
@@ -58,6 +59,7 @@ class _AmrapPageState extends State<AmrapPage> {
         subtitle: LocaleKeys.amrap_description.tr(),
         scrollController: _scroolController,
         workout: amrapState.workout,
+        addToFavorites: amrapState.saveToFavorites,
         onStartPressed: () {
           context.router.push(
             TimerRoute(

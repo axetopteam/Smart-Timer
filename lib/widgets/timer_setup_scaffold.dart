@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -16,6 +17,7 @@ class TimerSetupScaffold extends StatelessWidget {
     required this.slivers,
     this.scrollController,
     this.workout,
+    this.addToFavorites,
     Key? key,
   }) : super(key: key);
 
@@ -26,6 +28,7 @@ class TimerSetupScaffold extends StatelessWidget {
   final void Function() onStartPressed;
   final WorkoutSet? workout;
   final ScrollController? scrollController;
+  final Future<void> Function(String name, String description)? addToFavorites;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +50,13 @@ class TimerSetupScaffold extends StatelessWidget {
                   backgroundColor: color,
                   expandedHeight: 140.0,
                   actions: [
+                    if (addToFavorites != null)
+                      IconButton(
+                        onPressed: () {
+                          addToFavorites!.call('', '');
+                        },
+                        icon: const Icon(CupertinoIcons.square_favorites_alt_fill),
+                      ),
                     if (kDebugMode && workout != null)
                       IconButton(
                         onPressed: () {

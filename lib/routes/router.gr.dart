@@ -40,9 +40,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AmrapRoute.name: (routeData) {
+      final args = routeData.argsAs<AmrapRouteArgs>(
+          orElse: () => const AmrapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const AmrapPage(),
+        child: AmrapPage(
+          amrapSettings: args.amrapSettings,
+          key: args.key,
+        ),
       );
     },
     EmomRoute.name: (routeData) {
@@ -65,6 +70,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MainPage(),
+      );
+    },
+    FavouritesRoute.name: (routeData) {
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: const FavouritesPage(),
       );
     },
   };
@@ -128,16 +139,39 @@ class AfapRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [AmrapPage]
-class AmrapRoute extends PageRouteInfo<void> {
-  const AmrapRoute({List<PageRouteInfo>? children})
-      : super(
+class AmrapRoute extends PageRouteInfo<AmrapRouteArgs> {
+  AmrapRoute({
+    AmrapSettings? amrapSettings,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           AmrapRoute.name,
+          args: AmrapRouteArgs(
+            amrapSettings: amrapSettings,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'AmrapRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<AmrapRouteArgs> page = PageInfo<AmrapRouteArgs>(name);
+}
+
+class AmrapRouteArgs {
+  const AmrapRouteArgs({
+    this.amrapSettings,
+    this.key,
+  });
+
+  final AmrapSettings? amrapSettings;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AmrapRouteArgs{amrapSettings: $amrapSettings, key: $key}';
+  }
 }
 
 /// generated route for
@@ -201,6 +235,20 @@ class MainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FavouritesPage]
+class FavouritesRoute extends PageRouteInfo<void> {
+  const FavouritesRoute({List<PageRouteInfo>? children})
+      : super(
+          FavouritesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavouritesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

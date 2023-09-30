@@ -1,10 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 
 // import 'amrap.dart';
 // export 'amrap.dart';
@@ -13,8 +14,6 @@ part 'amrap_state.g.dart';
 
 class AmrapState extends AmrapStateBase with _$AmrapState {
   AmrapState({List<Amrap>? amraps}) : super(amraps: amraps);
-  Uint8List toBuffer() => AmrapSettings(amraps: amraps).writeToBuffer();
-  factory AmrapState.fromBuffer(Uint8List buffer) => AmrapState(amraps: AmrapSettings.fromBuffer(buffer).amraps);
 }
 
 abstract class AmrapStateBase with Store {
@@ -51,6 +50,15 @@ abstract class AmrapStateBase with Store {
   @action
   void deleteAmrap(int amrapIndex) {
     amraps.removeAt(amrapIndex);
+  }
+
+  Future<void> saveToFavorites(String name, String description) async {
+    return GetIt.I<SdkService>().addToFavorite(
+      type: TimerType.amrap,
+      workout: AmrapSettings(amraps: amraps),
+      name: name,
+      description: description,
+    );
   }
 
   WorkoutSet get workout {

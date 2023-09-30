@@ -7,15 +7,15 @@ import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
-@DataClassName('WorkoutSettings')
-class WorkoutsHistory extends Table {
+@DataClassName("FavoriteWorkoutRawData")
+class FavoriteWorkouts extends Table {
   IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text().withDefault(const Constant(''))();
   TextColumn get workout => text()();
-  IntColumn get endAt => integer()();
   TextColumn get description => text().withDefault(const Constant(''))();
 }
 
-@DriftDatabase(tables: [WorkoutsHistory])
+@DriftDatabase(tables: [FavoriteWorkouts])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

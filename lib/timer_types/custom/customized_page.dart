@@ -6,7 +6,6 @@ import 'package:smart_timer/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/pages/workout_desc.dart';
-import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:smart_timer/widgets/value_container.dart';
 
@@ -24,15 +23,12 @@ class _CustomizedPageState extends State<CustomizedPage> {
 
   @override
   void initState() {
-    final json = AppProperties().getCustomSettings();
-    customSettings = json != null ? CustomizedState.fromJson(json) : CustomizedState();
+    customSettings = CustomizedState();
     super.initState();
   }
 
   @override
   void dispose() {
-    final json = customSettings.toJson();
-    AppProperties().setCustomSettings(json);
     super.dispose();
   }
 

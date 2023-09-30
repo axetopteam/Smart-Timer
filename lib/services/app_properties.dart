@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:basic_utils/basic_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// AppProperties singleton class
@@ -14,12 +12,7 @@ class AppProperties {
   late SharedPreferences _preferences;
   final String _userIdKey = 'userId';
   final String _firstLaunchKey = 'firstLaunch';
-  final String _amrapSettingsKey = 'amrapSettings';
-  final String _afapSettingsKey = 'afapSettings';
-  final String _tabataSettingsKey = 'tabataSettings';
-  final String _emomSettingsKey = 'emomSettings';
-  final String _customSettingsKey = 'customSettings';
-  final String _workRestSettingsKey = 'workRestSettings';
+
   final String _soundOnKey = 'soundOn';
   final String _lastTimersEndTimesKey = 'lastTimersEndTimes';
   final String _rateSuggestionShowedAtKey = 'rateSuggestionShowedAt';
@@ -45,55 +38,6 @@ class AppProperties {
 
   Future<bool?> setFirstLaunchDate(DateTime value) async {
     return await _preferences.setDateTime(_firstLaunchKey, value);
-  }
-
-  Future<bool> setAmrapSettings(Uint8List buffer) {
-    return _preferences.setString(_amrapSettingsKey, HexUtils.encode(buffer));
-  }
-
-  Uint8List? getAmrapSettings() {
-    final hex = _preferences.getString(_amrapSettingsKey);
-    return hex != null ? HexUtils.decode(hex) : null;
-  }
-
-  Future<bool> setAfapSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_afapSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getAfapSettings() {
-    return _preferences.getJson(_afapSettingsKey);
-  }
-
-  Future<bool> setTabataSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_tabataSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getTabataSettings() {
-    return _preferences.getJson(_tabataSettingsKey);
-  }
-
-  Future<bool> setEmomSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_emomSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getEmomSettings() {
-    return _preferences.getJson(_emomSettingsKey);
-  }
-
-  Future<bool> setCustomSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_customSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getCustomSettings() {
-    return _preferences.getJson(_customSettingsKey);
-  }
-
-  Future<bool> setWorkRestSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_workRestSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getWorkRestSettings() {
-    return _preferences.getJson(_workRestSettingsKey);
   }
 
   bool get soundOn {

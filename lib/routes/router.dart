@@ -3,6 +3,7 @@
 // @CustomAutoRouter
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
+import 'package:smart_timer/favorites/favorites_page.dart';
 import 'package:smart_timer/settings/settings_page.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer_types/afap/afap_page.dart';
@@ -30,5 +31,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(path: '/workRest', page: WorkRestRoute.page),
         AutoRoute(path: '/timer', page: TimerRoute.page),
         AutoRoute(path: '/settings', page: SettingsRoute.page),
+        AutoRoute(path: '/favorites', page: FavouritesRoute.page),
       ];
 }

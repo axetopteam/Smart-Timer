@@ -3,12 +3,12 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $WorkoutsHistoryTable extends WorkoutsHistory
-    with TableInfo<$WorkoutsHistoryTable, WorkoutSettings> {
+class $FavoriteWorkoutsTable extends FavoriteWorkouts
+    with TableInfo<$FavoriteWorkoutsTable, FavoriteWorkoutRawData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $WorkoutsHistoryTable(this.attachedDatabase, [this._alias]);
+  $FavoriteWorkoutsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -18,17 +18,19 @@ class $WorkoutsHistoryTable extends WorkoutsHistory
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   static const VerificationMeta _workoutMeta =
       const VerificationMeta('workout');
   @override
   late final GeneratedColumn<String> workout = GeneratedColumn<String>(
       'workout', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _endAtMeta = const VerificationMeta('endAt');
-  @override
-  late final GeneratedColumn<int> endAt = GeneratedColumn<int>(
-      'end_at', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -38,31 +40,30 @@ class $WorkoutsHistoryTable extends WorkoutsHistory
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
   @override
-  List<GeneratedColumn> get $columns => [id, workout, endAt, description];
+  List<GeneratedColumn> get $columns => [id, name, workout, description];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'workouts_history';
+  static const String $name = 'favorite_workouts';
   @override
-  VerificationContext validateIntegrity(Insertable<WorkoutSettings> instance,
+  VerificationContext validateIntegrity(
+      Insertable<FavoriteWorkoutRawData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
     if (data.containsKey('workout')) {
       context.handle(_workoutMeta,
           workout.isAcceptableOrUnknown(data['workout']!, _workoutMeta));
     } else if (isInserting) {
       context.missing(_workoutMeta);
-    }
-    if (data.containsKey('end_at')) {
-      context.handle(
-          _endAtMeta, endAt.isAcceptableOrUnknown(data['end_at']!, _endAtMeta));
-    } else if (isInserting) {
-      context.missing(_endAtMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -76,62 +77,63 @@ class $WorkoutsHistoryTable extends WorkoutsHistory
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  WorkoutSettings map(Map<String, dynamic> data, {String? tablePrefix}) {
+  FavoriteWorkoutRawData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return WorkoutSettings(
+    return FavoriteWorkoutRawData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       workout: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}workout'])!,
-      endAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}end_at'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
     );
   }
 
   @override
-  $WorkoutsHistoryTable createAlias(String alias) {
-    return $WorkoutsHistoryTable(attachedDatabase, alias);
+  $FavoriteWorkoutsTable createAlias(String alias) {
+    return $FavoriteWorkoutsTable(attachedDatabase, alias);
   }
 }
 
-class WorkoutSettings extends DataClass implements Insertable<WorkoutSettings> {
+class FavoriteWorkoutRawData extends DataClass
+    implements Insertable<FavoriteWorkoutRawData> {
   final int id;
+  final String name;
   final String workout;
-  final int endAt;
   final String description;
-  const WorkoutSettings(
+  const FavoriteWorkoutRawData(
       {required this.id,
+      required this.name,
       required this.workout,
-      required this.endAt,
       required this.description});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
     map['workout'] = Variable<String>(workout);
-    map['end_at'] = Variable<int>(endAt);
     map['description'] = Variable<String>(description);
     return map;
   }
 
-  WorkoutsHistoryCompanion toCompanion(bool nullToAbsent) {
-    return WorkoutsHistoryCompanion(
+  FavoriteWorkoutsCompanion toCompanion(bool nullToAbsent) {
+    return FavoriteWorkoutsCompanion(
       id: Value(id),
+      name: Value(name),
       workout: Value(workout),
-      endAt: Value(endAt),
       description: Value(description),
     );
   }
 
-  factory WorkoutSettings.fromJson(Map<String, dynamic> json,
+  factory FavoriteWorkoutRawData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return WorkoutSettings(
+    return FavoriteWorkoutRawData(
       id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
       workout: serializer.fromJson<String>(json['workout']),
-      endAt: serializer.fromJson<int>(json['endAt']),
       description: serializer.fromJson<String>(json['description']),
     );
   }
@@ -140,84 +142,84 @@ class WorkoutSettings extends DataClass implements Insertable<WorkoutSettings> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
       'workout': serializer.toJson<String>(workout),
-      'endAt': serializer.toJson<int>(endAt),
       'description': serializer.toJson<String>(description),
     };
   }
 
-  WorkoutSettings copyWith(
-          {int? id, String? workout, int? endAt, String? description}) =>
-      WorkoutSettings(
+  FavoriteWorkoutRawData copyWith(
+          {int? id, String? name, String? workout, String? description}) =>
+      FavoriteWorkoutRawData(
         id: id ?? this.id,
+        name: name ?? this.name,
         workout: workout ?? this.workout,
-        endAt: endAt ?? this.endAt,
         description: description ?? this.description,
       );
   @override
   String toString() {
-    return (StringBuffer('WorkoutSettings(')
+    return (StringBuffer('FavoriteWorkoutRawData(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('workout: $workout, ')
-          ..write('endAt: $endAt, ')
           ..write('description: $description')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, workout, endAt, description);
+  int get hashCode => Object.hash(id, name, workout, description);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is WorkoutSettings &&
+      (other is FavoriteWorkoutRawData &&
           other.id == this.id &&
+          other.name == this.name &&
           other.workout == this.workout &&
-          other.endAt == this.endAt &&
           other.description == this.description);
 }
 
-class WorkoutsHistoryCompanion extends UpdateCompanion<WorkoutSettings> {
+class FavoriteWorkoutsCompanion
+    extends UpdateCompanion<FavoriteWorkoutRawData> {
   final Value<int> id;
+  final Value<String> name;
   final Value<String> workout;
-  final Value<int> endAt;
   final Value<String> description;
-  const WorkoutsHistoryCompanion({
+  const FavoriteWorkoutsCompanion({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     this.workout = const Value.absent(),
-    this.endAt = const Value.absent(),
     this.description = const Value.absent(),
   });
-  WorkoutsHistoryCompanion.insert({
+  FavoriteWorkoutsCompanion.insert({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     required String workout,
-    required int endAt,
     this.description = const Value.absent(),
-  })  : workout = Value(workout),
-        endAt = Value(endAt);
-  static Insertable<WorkoutSettings> custom({
+  }) : workout = Value(workout);
+  static Insertable<FavoriteWorkoutRawData> custom({
     Expression<int>? id,
+    Expression<String>? name,
     Expression<String>? workout,
-    Expression<int>? endAt,
     Expression<String>? description,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (name != null) 'name': name,
       if (workout != null) 'workout': workout,
-      if (endAt != null) 'end_at': endAt,
       if (description != null) 'description': description,
     });
   }
 
-  WorkoutsHistoryCompanion copyWith(
+  FavoriteWorkoutsCompanion copyWith(
       {Value<int>? id,
+      Value<String>? name,
       Value<String>? workout,
-      Value<int>? endAt,
       Value<String>? description}) {
-    return WorkoutsHistoryCompanion(
+    return FavoriteWorkoutsCompanion(
       id: id ?? this.id,
+      name: name ?? this.name,
       workout: workout ?? this.workout,
-      endAt: endAt ?? this.endAt,
       description: description ?? this.description,
     );
   }
@@ -228,11 +230,11 @@ class WorkoutsHistoryCompanion extends UpdateCompanion<WorkoutSettings> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     if (workout.present) {
       map['workout'] = Variable<String>(workout.value);
-    }
-    if (endAt.present) {
-      map['end_at'] = Variable<int>(endAt.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -242,10 +244,10 @@ class WorkoutsHistoryCompanion extends UpdateCompanion<WorkoutSettings> {
 
   @override
   String toString() {
-    return (StringBuffer('WorkoutsHistoryCompanion(')
+    return (StringBuffer('FavoriteWorkoutsCompanion(')
           ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('workout: $workout, ')
-          ..write('endAt: $endAt, ')
           ..write('description: $description')
           ..write(')'))
         .toString();
@@ -254,11 +256,11 @@ class WorkoutsHistoryCompanion extends UpdateCompanion<WorkoutSettings> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
-  late final $WorkoutsHistoryTable workoutsHistory =
-      $WorkoutsHistoryTable(this);
+  late final $FavoriteWorkoutsTable favoriteWorkouts =
+      $FavoriteWorkoutsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [workoutsHistory];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [favoriteWorkouts];
 }
