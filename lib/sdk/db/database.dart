@@ -12,6 +12,7 @@ class FavoriteWorkouts extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withDefault(const Constant(''))();
   TextColumn get workout => text()();
+  TextColumn get timerType => text()();
   TextColumn get description => text().withDefault(const Constant(''))();
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/favorites/add_to_favorites_alert.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
 import '../pages/workout_desc.dart';
 import 'start_button.dart';
@@ -28,7 +29,7 @@ class TimerSetupScaffold extends StatelessWidget {
   final void Function() onStartPressed;
   final WorkoutSet? workout;
   final ScrollController? scrollController;
-  final Future<void> Function(String name, String description)? addToFavorites;
+  final OnSaveFavorite? addToFavorites;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,8 @@ class TimerSetupScaffold extends StatelessWidget {
                     if (addToFavorites != null)
                       IconButton(
                         onPressed: () {
-                          addToFavorites!.call('', '');
+                          AddToFavoritesAlert.show(context, addToFavorites: addToFavorites!);
+                          // addToFavorites!.call('', '');
                         },
                         icon: const Icon(CupertinoIcons.square_favorites_alt_fill),
                       ),

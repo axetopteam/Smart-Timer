@@ -9,22 +9,27 @@ extension DatabaseExtension on SdkService {
   }) async {
     await _db.addWorkoutToFavorite(
       name: name ?? '',
+      timerType: type.name,
       workout: WorkoutParser.encode(type, workout),
       description: description ?? '',
     );
   }
 
-  fetchFavorites() async {
+  Future<List<FavoriteWorkout>> fetchFavorites() async {
     final favoritesRawData = await _db.fetchFavorites();
-    return favoritesRawData.map((e) {
-      final workoutSettings = WorkoutParser.decode(e.workout);
 
-      return FavoriteWorkout(
-        id: e.id,
-        name: e.name,
-        description: e.description,
-        workoutSettings: workoutSettings,
-      );
-    }).toList();
+    List<FavoriteWorkout> favorites = [];
+    for (var data in favoritesRawData) {
+      try {
+        final workout = FavoriteWorkout(
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          workoutSettings: WorkoutParser.decode(data.workout),
+        );
+        favorites.add(workout);
+      } catch (_) {}
+    }
+    return favorites;
   }
 }
