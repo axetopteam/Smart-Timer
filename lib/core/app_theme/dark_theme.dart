@@ -51,6 +51,8 @@ ThemeData createDarkTheme() {
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
       primaryColor: AppColors.activeBlue,
       textTheme: CupertinoTextThemeData(),
+      scaffoldBackgroundColor: AppColors.black,
+      barBackgroundColor: AppColors.black,
     ),
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.dark,

@@ -55,16 +55,17 @@ class _AddToFavoritesAlertState extends State<AddToFavoritesAlert> {
       ),
       actions: [
         CupertinoDialogAction(
-          child: Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(),
           isDestructiveAction: true,
+          child: Text('Cancel'),
         ),
         CupertinoDialogAction(
-          child: Text('Save'),
           onPressed: () async {
+            final navigator = Navigator.of(context);
             await widget.addToFavorites(name: _nameController.text, description: _descriptionController.text);
-            Navigator.of(context).pop();
+            navigator.pop();
           },
+          child: Text('Save'),
         ),
       ],
     );

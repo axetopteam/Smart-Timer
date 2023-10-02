@@ -22,11 +22,11 @@ extension DatabaseExtension on SdkService {
     for (var data in favoritesRawData) {
       try {
         final workout = FavoriteWorkout(
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          workoutSettings: WorkoutParser.decode(data.workout),
-        );
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            workoutSettings: WorkoutParser.decode(data.workout),
+            type: TimerType.values.firstWhere((element) => element.name == data.timerType));
         favorites.add(workout);
       } catch (_) {}
     }

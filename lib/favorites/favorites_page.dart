@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:basic_utils/basic_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
+import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 
 import 'favorites_state.dart';
 
@@ -19,19 +19,30 @@ class _FavouritesPageState extends State<FavouritesPage> {
   final _state = FavoritesState();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Observer(builder: (context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Favorites'),
+      ),
+      child: Observer(builder: (context) {
         final favorites = _state.favorites;
         if (favorites != null) {
-          return ListView.builder(
+          return ListView.separated(
             itemCount: favorites.length,
+            separatorBuilder: (context, index) => const Divider(height: 2, thickness: 2),
             itemBuilder: (ctx, index) {
-              return ListTile(
-                onTap: () => onTap(favorites[index]),
-                title: Text(
-                  HexUtils.encode(favorites[index].workoutSettings.writeToBuffer()),
+              final favorite = favorites[index];
+              return CupertinoListTile(
+                leading: ColoredBox(
+                  color: favorite.type.workoutColor(context),
+                  child: const SizedBox.expand(),
                 ),
-                textColor: context.color.mainText,
+                leadingToTitle: 12,
+                onTap: () => onTap(favorite),
+                title: Text(
+                  favorite.workoutSettings.description,
+                ),
+                subtitle: Text(favorite.name),
+                // textColor: context.color.mainText,
               );
             },
           );
