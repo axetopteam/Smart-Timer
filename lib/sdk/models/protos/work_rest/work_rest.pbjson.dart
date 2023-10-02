@@ -19,11 +19,13 @@ const WorkRest$json = {
   '2': [
     {'1': 'roundsCount', '3': 1, '4': 1, '5': 13, '10': 'roundsCount'},
     {'1': 'ratio', '3': 2, '4': 1, '5': 1, '10': 'ratio'},
+    {'1': 'restAfterSetInSeconds', '3': 3, '4': 1, '5': 5, '10': 'restAfterSetInSeconds'},
   ],
 };
 
 /// Descriptor for `WorkRest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List workRestDescriptor = $convert.base64Decode(
     'CghXb3JrUmVzdBIgCgtyb3VuZHNDb3VudBgBIAEoDVILcm91bmRzQ291bnQSFAoFcmF0aW8YAi'
-    'ABKAFSBXJhdGlv');
+    'ABKAFSBXJhdGlvEjQKFXJlc3RBZnRlclNldEluU2Vjb25kcxgDIAEoBVIVcmVzdEFmdGVyU2V0'
+    'SW5TZWNvbmRz');
 

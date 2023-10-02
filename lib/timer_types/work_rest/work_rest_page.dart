@@ -13,10 +13,12 @@ import 'package:smart_timer/widgets/rounds_widget.dart';
 import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 
 import 'work_rest_state.dart';
+export 'work_rest_state.dart' show WorkRestSettings;
 
-@RoutePage()
+@RoutePage<void>()
 class WorkRestPage extends StatefulWidget {
-  const WorkRestPage({Key? key}) : super(key: key);
+  const WorkRestPage({this.workRestSettings, Key? key}) : super(key: key);
+  final WorkRestSettings? workRestSettings;
 
   @override
   State<WorkRestPage> createState() => _WorkRestPageState();
@@ -27,8 +29,8 @@ class _WorkRestPageState extends State<WorkRestPage> {
 
   @override
   void initState() {
+    workRest = WorkRestState(sets: widget.workRestSettings?.workRests);
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.workRest.name).commit();
-
     super.initState();
   }
 
@@ -45,6 +47,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
       color: context.color.workRestColor,
       appBarTitle: LocaleKeys.work_rest_title.tr(),
       subtitle: LocaleKeys.work_rest_description.tr(),
+      addToFavorites: workRest.saveToFavorites,
       onStartPressed: () {
         context.router.push(
           TimerRoute(

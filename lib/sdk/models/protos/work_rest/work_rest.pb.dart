@@ -17,6 +17,7 @@ class WorkRest extends $pb.GeneratedMessage {
   factory WorkRest({
     $core.int? roundsCount,
     $core.double? ratio,
+    $core.int? restAfterSetInSeconds,
   }) {
     final $result = create();
     if (roundsCount != null) {
@@ -24,6 +25,9 @@ class WorkRest extends $pb.GeneratedMessage {
     }
     if (ratio != null) {
       $result.ratio = ratio;
+    }
+    if (restAfterSetInSeconds != null) {
+      $result.restAfterSetInSeconds = restAfterSetInSeconds;
     }
     return $result;
   }
@@ -34,6 +38,7 @@ class WorkRest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'WorkRest', package: const $pb.PackageName(_omitMessageNames ? '' : 'timer'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'roundsCount', $pb.PbFieldType.OU3, protoName: 'roundsCount')
     ..a<$core.double>(2, _omitFieldNames ? '' : 'ratio', $pb.PbFieldType.OD)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'restAfterSetInSeconds', $pb.PbFieldType.O3, protoName: 'restAfterSetInSeconds')
     ..hasRequiredFields = false
   ;
 
@@ -75,6 +80,15 @@ class WorkRest extends $pb.GeneratedMessage {
   $core.bool hasRatio() => $_has(1);
   @$pb.TagNumber(2)
   void clearRatio() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get restAfterSetInSeconds => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set restAfterSetInSeconds($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasRestAfterSetInSeconds() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRestAfterSetInSeconds() => clearField(3);
 }
 
 

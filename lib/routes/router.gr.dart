@@ -33,9 +33,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     WorkRestRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
+      final args = routeData.argsAs<WorkRestRouteArgs>(
+          orElse: () => const WorkRestRouteArgs());
+      return AutoRoutePage<void>(
         routeData: routeData,
-        child: const WorkRestPage(),
+        child: WorkRestPage(
+          workRestSettings: args.workRestSettings,
+          key: args.key,
+        ),
       );
     },
     AfapRoute.name: (routeData) {
@@ -149,16 +154,40 @@ class TabataRouteArgs {
 
 /// generated route for
 /// [WorkRestPage]
-class WorkRestRoute extends PageRouteInfo<void> {
-  const WorkRestRoute({List<PageRouteInfo>? children})
-      : super(
+class WorkRestRoute extends PageRouteInfo<WorkRestRouteArgs> {
+  WorkRestRoute({
+    WorkRestSettings? workRestSettings,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           WorkRestRoute.name,
+          args: WorkRestRouteArgs(
+            workRestSettings: workRestSettings,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'WorkRestRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<WorkRestRouteArgs> page =
+      PageInfo<WorkRestRouteArgs>(name);
+}
+
+class WorkRestRouteArgs {
+  const WorkRestRouteArgs({
+    this.workRestSettings,
+    this.key,
+  });
+
+  final WorkRestSettings? workRestSettings;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WorkRestRouteArgs{workRestSettings: $workRestSettings, key: $key}';
+  }
 }
 
 /// generated route for

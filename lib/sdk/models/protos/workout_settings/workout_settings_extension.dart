@@ -73,7 +73,22 @@ extension WorkoutSettingsX on WorkoutSettings {
         );
         return '${LocaleKeys.tabata_title.tr()}: $buffer';
       case WorkoutSettings_Workout.workRest:
-        return 'AMRAP';
+        final buffer = StringBuffer();
+        workRest.workRests.forEachIndexed(
+          (index, element) {
+            buffer.writeAll([
+              '${element.roundsCount}x',
+              '(',
+              'ratio:',
+              element.ratio,
+              ')',
+            ]);
+            // if (index != emom.emoms.length - 1) {
+            //   buffer.writeAll(['/', element.restAfterSet.readableString, '/']);
+            // }
+          },
+        );
+        return '${LocaleKeys.work_rest_title.tr()}: $buffer';
       case WorkoutSettings_Workout.notSet:
         return '';
     }

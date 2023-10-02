@@ -101,7 +101,7 @@ class MainPage extends StatelessWidget {
                         title: TimerType.workRest.readbleName.toUpperCase(),
                         color: context.color.workRestColor,
                         onTap: () {
-                          context.router.push(const WorkRestRoute());
+                          context.router.push(WorkRestRoute());
                         },
                       ),
                       // buildContainer(

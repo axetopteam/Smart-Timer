@@ -66,9 +66,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
       case WorkoutSettings_Workout.tabata:
         context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
       case WorkoutSettings_Workout.workRest:
-      // TODO: Handle this case.
+        context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
       case WorkoutSettings_Workout.notSet:
-      // TODO: Handle this case.
     }
   }
 }
