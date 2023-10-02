@@ -34,9 +34,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AfapRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<AfapRouteArgs>(orElse: () => const AfapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const AfapPage(),
+        child: AfapPage(
+          afapSettings: args.afapSettings,
+          key: args.key,
+        ),
       );
     },
     AmrapRoute.name: (routeData) {
@@ -125,16 +130,39 @@ class WorkRestRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [AfapPage]
-class AfapRoute extends PageRouteInfo<void> {
-  const AfapRoute({List<PageRouteInfo>? children})
-      : super(
+class AfapRoute extends PageRouteInfo<AfapRouteArgs> {
+  AfapRoute({
+    AfapSettings? afapSettings,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           AfapRoute.name,
+          args: AfapRouteArgs(
+            afapSettings: afapSettings,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'AfapRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<AfapRouteArgs> page = PageInfo<AfapRouteArgs>(name);
+}
+
+class AfapRouteArgs {
+  const AfapRouteArgs({
+    this.afapSettings,
+    this.key,
+  });
+
+  final AfapSettings? afapSettings;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AfapRouteArgs{afapSettings: $afapSettings, key: $key}';
+  }
 }
 
 /// generated route for

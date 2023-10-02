@@ -12,9 +12,7 @@ import 'package:smart_timer/sdk/sdk_service.dart';
 
 part 'amrap_state.g.dart';
 
-class AmrapState extends AmrapStateBase with _$AmrapState {
-  AmrapState({List<Amrap>? amraps}) : super(amraps: amraps);
-}
+class AmrapState = AmrapStateBase with _$AmrapState;
 
 abstract class AmrapStateBase with Store {
   AmrapStateBase({List<Amrap>? amraps}) : amraps = ObservableList.of(amraps ?? [AmrapX.defaultValue]);
@@ -54,7 +52,6 @@ abstract class AmrapStateBase with Store {
 
   Future<void> saveToFavorites({required String name, required String description}) async {
     return GetIt.I<SdkService>().addToFavorite(
-      type: TimerType.amrap,
       workout: WorkoutSettings(amrap: AmrapSettings(amraps: amraps)),
       name: name,
       description: description,

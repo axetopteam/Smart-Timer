@@ -77,7 +77,7 @@ class MainPage extends StatelessWidget {
                         title: TimerType.afap.readbleName.toUpperCase(),
                         color: context.color.afapColor,
                         onTap: () {
-                          context.router.push(const AfapRoute());
+                          context.router.push(AfapRoute());
                         },
                       ),
                       buildContainer(

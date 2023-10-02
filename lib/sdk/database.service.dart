@@ -2,15 +2,15 @@ part of 'sdk_service.dart';
 
 extension DatabaseExtension on SdkService {
   Future<void> addToFavorite({
-    required TimerType type,
     String? name,
     required WorkoutSettings workout,
     String? description,
   }) async {
+    final timerType = TimerType.values.firstWhere((element) => element.name == workout.whichWorkout().name);
     await _db.addWorkoutToFavorite(
       name: name ?? '',
-      timerType: type.name,
-      workout: WorkoutParser.encode(type, workout),
+      timerType: timerType.name,
+      workout: WorkoutParser.encode(timerType, workout),
       description: description ?? '',
     );
   }

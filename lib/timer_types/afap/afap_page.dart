@@ -7,6 +7,7 @@ import 'package:smart_timer/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
+import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
 import 'package:smart_timer/timer/timer_state.dart';
 import 'package:smart_timer/timer/timer_type.dart';
 import 'package:smart_timer/widgets/interval_widget.dart';
@@ -15,9 +16,13 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import '../../widgets/new_item_transition.dart';
 import 'afap_state.dart';
 
+export 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
+
 @RoutePage()
 class AfapPage extends StatefulWidget {
-  const AfapPage({Key? key}) : super(key: key);
+  const AfapPage({this.afapSettings, Key? key}) : super(key: key);
+
+  final AfapSettings? afapSettings;
 
   @override
   State<AfapPage> createState() => _AfapPageState();
@@ -32,14 +37,13 @@ class _AfapPageState extends State<AfapPage> {
   @override
   void initState() {
     super.initState();
-    afapState = AfapState();
+    afapState = AfapState(afaps: widget.afapSettings?.afaps);
+
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.afap.name).commit();
   }
 
   @override
   void dispose() {
-    // final json = afapState.toJson();
-    // AppProperties().setAfapSettings(json);
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.afap.name).commit();
     super.dispose();
@@ -52,6 +56,7 @@ class _AfapPageState extends State<AfapPage> {
       appBarTitle: LocaleKeys.afap_title.tr(),
       subtitle: LocaleKeys.afap_description.tr(),
       scrollController: _scroolController,
+      addToFavorites: afapState.saveToFavorites,
       onStartPressed: () {
         context.pushRoute(
           TimerRoute(
