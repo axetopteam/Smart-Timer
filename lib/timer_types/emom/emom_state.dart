@@ -1,10 +1,14 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
+import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 
 export 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
+export 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 
 part 'emom_state.g.dart';
 
@@ -50,6 +54,14 @@ abstract class EmomStateBase with Store {
   @action
   void deleteEmom(int emomIndex) {
     emoms.removeAt(emomIndex);
+  }
+
+  Future<void> saveToFavorites({required String name, required String description}) async {
+    return GetIt.I<SdkService>().addToFavorite(
+      workout: WorkoutSettings(emom: EmomSettings(emoms: emoms)),
+      name: name,
+      description: description,
+    );
   }
 
   WorkoutSet get workout {

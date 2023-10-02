@@ -16,9 +16,13 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import '../../widgets/new_item_transition.dart';
 import 'emom_state.dart';
 
-@RoutePage()
+export 'emom_state.dart' show EmomSettings;
+
+@RoutePage<void>()
 class EmomPage extends StatefulWidget {
-  const EmomPage({Key? key}) : super(key: key);
+  const EmomPage({this.emomSettings, Key? key}) : super(key: key);
+
+  final EmomSettings? emomSettings;
 
   @override
   State<EmomPage> createState() => _EmomPageState();
@@ -32,16 +36,13 @@ class _EmomPageState extends State<EmomPage> {
 
   @override
   void initState() {
-    // final settingsJson = AppProperties().getEmomSettings();
-    emomState = EmomState(); //TODO: взять из базы последнюю
+    emomState = EmomState(emoms: widget.emomSettings?.emoms);
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.emom.name).commit();
     super.initState();
   }
 
   @override
   void dispose() {
-    // final json = emomState.toJson();
-    // AppProperties().setEmomSettings(json); //TODO: cохранить в базу
     _scroolController.dispose();
     AnalyticsManager.eventSetupPageClosed.setProperty('timer_type', TimerType.emom.name).commit();
     super.dispose();
@@ -56,6 +57,7 @@ class _EmomPageState extends State<EmomPage> {
         subtitle: LocaleKeys.emom_description.tr(),
         scrollController: _scroolController,
         workout: emomState.workout,
+        addToFavorites: emomState.saveToFavorites,
         onStartPressed: () {
           context.router.push(
             TimerRoute(

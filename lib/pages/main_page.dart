@@ -85,7 +85,7 @@ class MainPage extends StatelessWidget {
                         title: TimerType.emom.readbleName.toUpperCase(),
                         color: context.color.emomColor,
                         onTap: () {
-                          context.router.push(const EmomRoute());
+                          context.router.push(EmomRoute());
                         },
                       ),
                       buildContainer(

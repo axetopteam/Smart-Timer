@@ -61,9 +61,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     EmomRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
+      final args =
+          routeData.argsAs<EmomRouteArgs>(orElse: () => const EmomRouteArgs());
+      return AutoRoutePage<void>(
         routeData: routeData,
-        child: const EmomPage(),
+        child: EmomPage(
+          emomSettings: args.emomSettings,
+          key: args.key,
+        ),
       );
     },
     TimerRoute.name: (routeData) {
@@ -232,16 +237,39 @@ class AmrapRouteArgs {
 
 /// generated route for
 /// [EmomPage]
-class EmomRoute extends PageRouteInfo<void> {
-  const EmomRoute({List<PageRouteInfo>? children})
-      : super(
+class EmomRoute extends PageRouteInfo<EmomRouteArgs> {
+  EmomRoute({
+    EmomSettings? emomSettings,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           EmomRoute.name,
+          args: EmomRouteArgs(
+            emomSettings: emomSettings,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'EmomRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<EmomRouteArgs> page = PageInfo<EmomRouteArgs>(name);
+}
+
+class EmomRouteArgs {
+  const EmomRouteArgs({
+    this.emomSettings,
+    this.key,
+  });
+
+  final EmomSettings? emomSettings;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EmomRouteArgs{emomSettings: $emomSettings, key: $key}';
+  }
 }
 
 /// generated route for

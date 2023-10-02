@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/timer_types/afap/afap_state.dart';
+import 'package:smart_timer/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/timer_types/tabata/tabata_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 
@@ -40,7 +41,19 @@ extension WorkoutSettingsX on WorkoutSettings {
         );
         return '${LocaleKeys.afap_title.tr()}: $buffer';
       case WorkoutSettings_Workout.emom:
-        return 'AMRAP';
+        final buffer = StringBuffer();
+        emom.emoms.forEachIndexed(
+          (index, element) {
+            buffer.writeAll([
+              '${element.roundsCount}x',
+              element.workTime.readableString,
+            ]);
+            if (index != emom.emoms.length - 1) {
+              buffer.writeAll(['/', element.restAfterSet.readableString, '/']);
+            }
+          },
+        );
+        return '${LocaleKeys.emom_title.tr()}: $buffer';
       case WorkoutSettings_Workout.tabata:
         final buffer = StringBuffer();
         tabata.tabats.forEachIndexed(

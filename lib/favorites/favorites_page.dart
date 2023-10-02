@@ -62,6 +62,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
       case WorkoutSettings_Workout.afap:
         context.pushRoute(AfapRoute(afapSettings: workoutSettings.afap));
       case WorkoutSettings_Workout.emom:
+        context.pushRoute(EmomRoute(emomSettings: workoutSettings.emom));
       case WorkoutSettings_Workout.tabata:
         context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
       case WorkoutSettings_Workout.workRest:
