@@ -1,10 +1,14 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
+import 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 
 export 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
+export 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
 
 part 'tabata_state.g.dart';
 
@@ -55,6 +59,14 @@ abstract class TabataStoreBase with Store {
   @action
   void deleteTabata(int tabataIndex) {
     tabats.removeAt(tabataIndex);
+  }
+
+  Future<void> saveToFavorites({required String name, required String description}) async {
+    return GetIt.I<SdkService>().addToFavorite(
+      workout: WorkoutSettings(tabata: TabataSettings(tabats: tabats)),
+      name: name,
+      description: description,
+    );
   }
 
   WorkoutSet get workout {

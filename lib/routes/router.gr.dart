@@ -22,9 +22,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     TabataRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
+      final args = routeData.argsAs<TabataRouteArgs>(
+          orElse: () => const TabataRouteArgs());
+      return AutoRoutePage<void>(
         routeData: routeData,
-        child: const TabataPage(),
+        child: TabataPage(
+          tabataSettings: args.tabataSettings,
+          key: args.key,
+        ),
       );
     },
     WorkRestRoute.name: (routeData) {
@@ -102,16 +107,39 @@ class SettingsRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [TabataPage]
-class TabataRoute extends PageRouteInfo<void> {
-  const TabataRoute({List<PageRouteInfo>? children})
-      : super(
+class TabataRoute extends PageRouteInfo<TabataRouteArgs> {
+  TabataRoute({
+    TabataSettings? tabataSettings,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           TabataRoute.name,
+          args: TabataRouteArgs(
+            tabataSettings: tabataSettings,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'TabataRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<TabataRouteArgs> page = PageInfo<TabataRouteArgs>(name);
+}
+
+class TabataRouteArgs {
+  const TabataRouteArgs({
+    this.tabataSettings,
+    this.key,
+  });
+
+  final TabataSettings? tabataSettings;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'TabataRouteArgs{tabataSettings: $tabataSettings, key: $key}';
+  }
 }
 
 /// generated route for

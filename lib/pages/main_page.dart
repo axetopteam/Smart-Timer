@@ -93,7 +93,7 @@ class MainPage extends StatelessWidget {
                         title: TimerType.tabata.readbleName.toUpperCase(),
                         color: context.color.tabataColor,
                         onTap: () {
-                          context.router.push(const TabataRoute());
+                          context.router.push(TabataRoute());
                         },
                       ),
                       buildContainer(

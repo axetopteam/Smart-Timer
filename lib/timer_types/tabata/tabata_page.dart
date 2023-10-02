@@ -16,9 +16,12 @@ import 'package:smart_timer/widgets/timer_setup_scaffold.dart';
 import '../../widgets/new_item_transition.dart';
 import 'tabata_state.dart';
 
-@RoutePage()
+export 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
+
+@RoutePage<void>()
 class TabataPage extends StatefulWidget {
-  const TabataPage({Key? key}) : super(key: key);
+  const TabataPage({this.tabataSettings, Key? key}) : super(key: key);
+  final TabataSettings? tabataSettings;
 
   @override
   State<TabataPage> createState() => _TabataPageState();
@@ -32,7 +35,7 @@ class _TabataPageState extends State<TabataPage> {
 
   @override
   void initState() {
-    tabataState = TabataState();
+    tabataState = TabataState(tabats: widget.tabataSettings?.tabats);
     AnalyticsManager.eventSetupPageOpened.setProperty('timer_type', TimerType.tabata.name).commit();
 
     super.initState();
@@ -54,6 +57,7 @@ class _TabataPageState extends State<TabataPage> {
         subtitle: LocaleKeys.tabata_description.tr(),
         scrollController: _scroolController,
         workout: tabataState.workout,
+        addToFavorites: tabataState.saveToFavorites,
         onStartPressed: () {
           context.router.push(
             TimerRoute(
