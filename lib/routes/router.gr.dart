@@ -21,6 +21,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SettingsPage(),
       );
     },
+    NewTimerRoute.name: (routeData) {
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: const NewTimerPage(),
+      );
+    },
+    NewTimerRouter.name: (routeData) {
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: const NewTimerNavigator(),
+      );
+    },
     TabataRoute.name: (routeData) {
       final args = routeData.argsAs<TabataRouteArgs>(
           orElse: () => const TabataRouteArgs());
@@ -76,6 +88,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    FavouritesRoute.name: (routeData) {
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: const FavouritesPage(),
+      );
+    },
     TimerRoute.name: (routeData) {
       final args = routeData.argsAs<TimerRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -87,15 +105,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MainRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MainPage(),
-      );
-    },
-    FavouritesRoute.name: (routeData) {
       return AutoRoutePage<void>(
         routeData: routeData,
-        child: const FavouritesPage(),
+        child: const MainPage(),
       );
     },
   };
@@ -111,6 +123,34 @@ class SettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NewTimerPage]
+class NewTimerRoute extends PageRouteInfo<void> {
+  const NewTimerRoute({List<PageRouteInfo>? children})
+      : super(
+          NewTimerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewTimerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [NewTimerNavigator]
+class NewTimerRouter extends PageRouteInfo<void> {
+  const NewTimerRouter({List<PageRouteInfo>? children})
+      : super(
+          NewTimerRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewTimerRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -302,6 +342,20 @@ class EmomRouteArgs {
 }
 
 /// generated route for
+/// [FavouritesPage]
+class FavouritesRoute extends PageRouteInfo<void> {
+  const FavouritesRoute({List<PageRouteInfo>? children})
+      : super(
+          FavouritesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavouritesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [TimerPage]
 class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
   TimerRoute({
@@ -348,20 +402,6 @@ class MainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MainRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [FavouritesPage]
-class FavouritesRoute extends PageRouteInfo<void> {
-  const FavouritesRoute({List<PageRouteInfo>? children})
-      : super(
-          FavouritesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FavouritesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

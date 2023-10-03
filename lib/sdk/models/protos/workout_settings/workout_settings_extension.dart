@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
-import 'package:smart_timer/timer_types/afap/afap_state.dart';
-import 'package:smart_timer/timer_types/emom/emom_state.dart';
-import 'package:smart_timer/timer_types/tabata/tabata_state.dart';
+import 'package:smart_timer/UI/timer_types/afap/afap_state.dart';
+import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
+import 'package:smart_timer/UI/timer_types/tabata/tabata_state.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 
 import 'workout_settings.pb.dart';

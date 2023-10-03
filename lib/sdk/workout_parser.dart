@@ -1,6 +1,6 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:smart_timer/timer/timer_type.dart';
+import 'package:smart_timer/UI/timer/timer_type.dart';
 
 import 'models/protos/workout_settings/workout_settings.pb.dart';
 
