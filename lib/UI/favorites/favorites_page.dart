@@ -59,15 +59,15 @@ class _FavouritesPageState extends State<FavouritesPage> {
     j.name;
     switch (workoutSettings.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
-        context.pushRoute(AmrapRoute(amrapSettings: workoutSettings.amrap));
+        context.pushRoute(NewTimerRouter(children: [AmrapRoute(amrapSettings: workoutSettings.amrap)]));
       case WorkoutSettings_Workout.afap:
-        context.pushRoute(AfapRoute(afapSettings: workoutSettings.afap));
+        context.pushRoute(NewTimerRouter(children: [AfapRoute(afapSettings: workoutSettings.afap)]));
       case WorkoutSettings_Workout.emom:
-        context.pushRoute(EmomRoute(emomSettings: workoutSettings.emom));
+        context.pushRoute(NewTimerRouter(children: [EmomRoute(emomSettings: workoutSettings.emom)]));
       case WorkoutSettings_Workout.tabata:
-        context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
+        context.pushRoute(NewTimerRouter(children: [TabataRoute(tabataSettings: workoutSettings.tabata)]));
       case WorkoutSettings_Workout.workRest:
-        context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
+        context.pushRoute(NewTimerRouter(children: [WorkRestRoute(workRestSettings: workoutSettings.workRest)]));
       case WorkoutSettings_Workout.notSet:
     }
   }
