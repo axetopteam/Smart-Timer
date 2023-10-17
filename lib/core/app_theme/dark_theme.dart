@@ -18,6 +18,12 @@ ThemeData createDarkTheme() {
       titleSpacing: 36,
       backgroundColor: AppColors.black,
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.black,
+      selectedItemColor: AppColors.white,
+      unselectedItemColor: AppColors.dullGrey,
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.white),
     canvasColor: AppColors.black,
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     elevatedButtonTheme: ElevatedButtonThemeData(

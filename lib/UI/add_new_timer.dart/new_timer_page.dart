@@ -11,7 +11,7 @@ class NewTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,

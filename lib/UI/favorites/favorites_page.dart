@@ -19,11 +19,12 @@ class _FavouritesPageState extends State<FavouritesPage> {
   final _state = FavoritesState();
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Favorites'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Favorites'),
+        centerTitle: true,
       ),
-      child: Observer(builder: (context) {
+      body: Observer(builder: (context) {
         final favorites = _state.favorites;
         if (favorites != null) {
           return ListView.separated(

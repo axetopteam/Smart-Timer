@@ -12,4 +12,13 @@ enum TabBarItem {
         return CupertinoIcons.settings;
     }
   }
+
+  String get label {
+    switch (this) {
+      case TabBarItem.favorites:
+        return 'Избранное';
+      case TabBarItem.settings:
+        return 'Настройки';
+    }
+  }
 }
