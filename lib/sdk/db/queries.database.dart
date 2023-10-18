@@ -18,7 +18,11 @@ extension DatabaseQueries on AppDatabase {
     return into(favoriteWorkouts).insert(entry);
   }
 
-  Future<List<FavoriteWorkoutRawData>> fetchFavorites() {
-    return select(favoriteWorkouts).get();
+  Stream<List<FavoriteWorkoutRawData>> fetchFavorites() {
+    return select(favoriteWorkouts).watch();
+  }
+
+  Future<int> deleteFavorite(int id) {
+    return (delete(favoriteWorkouts)..where((t) => t.id.equals(id))).go();
   }
 }

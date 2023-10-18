@@ -24,7 +24,7 @@ abstract class FavoritesStateBase with Store {
   @action
   Future<void> fetchFavorites() async {
     try {
-      favorites = await _sdk.fetchFavorites();
+      // favorites = await _sdk.fetchFavorites();
     } catch (e) {
       error = e;
     }

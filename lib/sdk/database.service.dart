@@ -15,21 +15,27 @@ extension DatabaseExtension on SdkService {
     );
   }
 
-  Future<List<FavoriteWorkout>> fetchFavorites() async {
-    final favoritesRawData = await _db.fetchFavorites();
+  Stream<List<FavoriteWorkout>> favoritesStream() {
+    return _db.fetchFavorites().map(
+      (favoritesRawData) {
+        List<FavoriteWorkout> favorites = [];
+        for (var data in favoritesRawData) {
+          try {
+            final workout = FavoriteWorkout(
+                id: data.id,
+                name: data.name,
+                description: data.description,
+                workoutSettings: WorkoutParser.decode(data.workout),
+                type: TimerType.values.firstWhere((element) => element.name == data.timerType));
+            favorites.add(workout);
+          } catch (_) {}
+        }
+        return favorites;
+      },
+    );
+  }
 
-    List<FavoriteWorkout> favorites = [];
-    for (var data in favoritesRawData) {
-      try {
-        final workout = FavoriteWorkout(
-            id: data.id,
-            name: data.name,
-            description: data.description,
-            workoutSettings: WorkoutParser.decode(data.workout),
-            type: TimerType.values.firstWhere((element) => element.name == data.timerType));
-        favorites.add(workout);
-      } catch (_) {}
-    }
-    return favorites;
+  Future<int> deleteFavorite(int id) {
+    return _db.deleteFavorite(id);
   }
 }
