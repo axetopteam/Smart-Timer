@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_page.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_router.dart';
 import 'package:smart_timer/UI/favorites/favorites_tab.dart';
+import 'package:smart_timer/UI/history/history_page.dart';
 import 'package:smart_timer/UI/main_page/main_page.dart';
 import 'package:smart_timer/UI/settings/settings_page.dart';
 import 'package:smart_timer/UI/timer/timer_state.dart';
@@ -33,6 +34,7 @@ class AppRouter extends _$AppRouter {
           page: MainRoute.page,
           children: [
             AutoRoute(path: 'settings', page: SettingsRoute.page),
+            AutoRoute(path: 'history', page: HistoryRoute.page),
             AutoRoute(
               path: 'favoritesTab',
               page: FavoritesRouter.page,
@@ -42,9 +44,11 @@ class AppRouter extends _$AppRouter {
             ),
           ],
         ),
-        AutoRoute(
+        CustomRoute(
           path: '/newTimerRouter',
           page: NewTimerRouter.page,
+          fullscreenDialog: true,
+          transitionsBuilder: TransitionsBuilders.slideBottom,
           children: [
             AutoRoute(initial: true, path: 'newTimer', page: NewTimerRoute.page),
             AutoRoute(path: 'amrap', page: AmrapRoute.page),

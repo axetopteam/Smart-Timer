@@ -68,6 +68,7 @@ class AppFonts {
 abstract class AppColors {
   static const white = Colors.white;
   static const black = Color(0xFF0E0E0E);
+  static const black20 = Color(0x330E0E0E);
   static const black50 = Color(0x800E0E0E);
   static const black70 = Color(0xB20E0E0E);
   static const red = Color(0xFFFF5151);

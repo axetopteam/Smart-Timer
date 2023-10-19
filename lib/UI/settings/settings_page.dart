@@ -46,10 +46,10 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.settings_title.tr()),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text(LocaleKeys.settings_title.tr()),
+      //   centerTitle: true,
+      // ),
       body: ListView(
         children: [
           _generalBlock(),

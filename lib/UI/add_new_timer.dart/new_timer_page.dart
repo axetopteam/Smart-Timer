@@ -24,15 +24,12 @@ class NewTimerPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           actions: [
             IconButton(
-              icon: const Icon(Icons.favorite_border),
+              icon: const Icon(
+                CupertinoIcons.clear_circled,
+                size: 34,
+              ),
               onPressed: () {
-                context.router.push(const FavouritesRoute());
-              },
-            ),
-            IconButton(
-              icon: const Icon(CupertinoIcons.settings),
-              onPressed: () {
-                context.router.push(const SettingsRoute());
+                context.popRoute();
               },
             ),
           ],

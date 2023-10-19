@@ -1,4 +1,3 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     _routes = [
       const FavoritesRouter(),
+      const HistoryRoute(),
       const SettingsRoute(),
     ];
     super.initState();
@@ -28,42 +28,29 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      routes: _routes,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.pushRoute(const NewTimerRouter());
-        },
-        child: const Icon(CupertinoIcons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBuilder: (ctx, tabsRouter) => AnimatedBottomNavigationBar.builder(
-        itemCount: 2,
-        tabBuilder: (index, isActive) {
-          final barItem = TabBarItem.values[index];
-          final color = isActive
-              ? context.theme.bottomNavigationBarTheme.selectedItemColor
-              : context.theme.bottomNavigationBarTheme.unselectedItemColor;
-
-          return Column(
-            children: [
-              const SizedBox(height: 8),
-              Icon(barItem.icon, color: color),
-              const SizedBox(height: 4),
-              Text(
-                barItem.label,
-                style: context.textTheme.bodyMedium?.copyWith(color: color),
-              ),
-            ],
-          );
-        },
-        activeIndex: tabsRouter.activeIndex,
-        gapLocation: GapLocation.none,
-        onTap: tabsRouter.setActiveIndex,
-        backgroundColor: Colors.blueGrey,
-        blurEffect: false,
-        scaleFactor: 0,
-        splashRadius: 0,
+    return SafeArea(
+      child: AutoTabsScaffold(
+        routes: _routes,
+        lazyLoad: false,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.pushRoute(const NewTimerRouter());
+          },
+          child: const Icon(CupertinoIcons.add),
+        ),
+        resizeToAvoidBottomInset: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        bottomNavigationBuilder: (ctx, tabsRouter) => CupertinoTabBar(
+          currentIndex: tabsRouter.activeIndex,
+          onTap: (index) => tabsRouter.setActiveIndex(index),
+          activeColor: context.theme.iconTheme.color,
+          items: TabBarItem.values
+              .map((TabBarItem e) => BottomNavigationBarItem(
+                    icon: Icon(e.icon),
+                    label: e.label,
+                  ))
+              .toList(),
+        ),
       ),
     );
   }

@@ -58,7 +58,7 @@ ThemeData createDarkTheme() {
       primaryColor: AppColors.activeBlue,
       textTheme: CupertinoTextThemeData(),
       scaffoldBackgroundColor: AppColors.black,
-      barBackgroundColor: AppColors.black,
+      barBackgroundColor: AppColors.black20,
     ),
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.dark,
