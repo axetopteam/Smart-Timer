@@ -4,21 +4,24 @@ import 'package:smart_timer/sdk/models/protos/work_rest/work_rest_extension.dart
 import 'package:smart_timer/sdk/models/protos/work_rest_settings/work_rest_settings.pb.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
+
+import '../timer_settings_interface.dart';
 
 export 'package:smart_timer/sdk/models/protos/work_rest/work_rest_extension.dart';
 export 'package:smart_timer/sdk/models/protos/work_rest_settings/work_rest_settings.pb.dart';
 
 part 'work_rest_state.g.dart';
 
-class WorkRestState = WorkRestStateBase with _$WorkRestState;
+class WorkRestState = WorkRestStateBase with _$WorkRestState implements TimerSettingsInterface;
 
 abstract class WorkRestStateBase with Store {
   WorkRestStateBase({List<WorkRest>? sets}) : sets = ObservableList.of(sets ?? [WorkRestX.defaultValue]);
   final setIndex = 0;
 
   final ObservableList<WorkRest> sets;
+
+  final type = TimerType.workRest;
 
   @action
   void setRounds(int setIndex, int value) {
@@ -36,12 +39,13 @@ abstract class WorkRestStateBase with Store {
 
   Future<void> saveToFavorites({required String name, required String description}) async {
     return GetIt.I<SdkService>().addToFavorite(
-      workout: WorkoutSettings(workRest: WorkRestSettings(workRests: sets)),
+      settings: settings,
       name: name,
       description: description,
     );
   }
 
+  @computed
   WorkoutSet get workout {
     WorkoutInterval work = WorkoutInterval(
       duration: null,
@@ -75,6 +79,9 @@ abstract class WorkRestStateBase with Store {
 
     return WorkoutSet(rounds, descriptionSolver: _setDescriptionSolver);
   }
+
+  @computed
+  WorkoutSettings get settings => WorkoutSettings(workRest: WorkRestSettings(workRests: sets));
 
   String _setDescriptionSolver(int currentIndex) => 'ROUND $currentIndex/${sets[setIndex].roundsCount}';
 }

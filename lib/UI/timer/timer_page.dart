@@ -5,25 +5,28 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/UI/timer/timer_state.dart';
 import 'package:smart_timer/UI/timer/widgets/complete_button.dart';
 import 'package:smart_timer/utils/string_utils.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import '../timer_types/timer_settings_interface.dart';
 import '../widgets/play_icon.dart';
 import 'timer_progress_container.dart';
 import 'timer_status.dart';
 
 @RoutePage()
 class TimerPage extends StatefulWidget {
-  const TimerPage(this.state, {Key? key}) : super(key: key);
-  final TimerState state;
+  const TimerPage({required this.timerSettings, Key? key}) : super(key: key);
+  final TimerSettingsInterface timerSettings;
 
   @override
   State<TimerPage> createState() => _TimerPageState();
@@ -32,7 +35,7 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMixin {
   StreamSubscription? timerSubscription;
 
-  TimerState get state => widget.state;
+  late final TimerState state;
 
   late final AnimationController controller;
 
@@ -44,7 +47,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   @override
   void initState() {
-    AnalyticsManager.eventTimerOpened.setProperty('timer_type', state.timerType.name).commit();
+    state = TimerState(
+      workout: widget.timerSettings.workout,
+      timerType: widget.timerSettings.type,
+    );
+    AnalyticsManager.eventTimerOpened.setProperty('timer_type', widget.timerSettings.type.name).commit();
+
     WakelockPlus.enable();
 
     controller = AnimationController(
@@ -83,6 +91,17 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
   void dispose() async {
     timerSubscription?.cancel();
     WakelockPlus.disable();
+    if (state.currentState != TimerStatus.ready) {
+      GetIt.I<SdkService>().saveTrainingToHistory(
+        finishAt: DateTime.now(),
+        name: '',
+        description: '',
+        workoutSettings: widget.timerSettings.settings,
+        timerType: widget.timerSettings.type,
+        training: state.workout,
+        isFinished: true,
+      );
+    }
     AnalyticsManager.eventTimerClosed
         .setProperty('status', state.currentState.name)
         .setProperty('timer_type', state.timerType.name)

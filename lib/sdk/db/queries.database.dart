@@ -25,4 +25,26 @@ extension DatabaseQueries on AppDatabase {
   Future<int> deleteFavorite(int id) {
     return (delete(favoriteWorkouts)..where((t) => t.id.equals(id))).go();
   }
+
+  Future<int> saveTrainingToHistory({
+    required int finishAt,
+    required String name,
+    required String description,
+    int? wellBeing,
+    required String workout,
+    required String timerType,
+    required String training,
+    required bool isFinished,
+  }) {
+    final entry = TrainingHistoryCompanion.insert(
+        finishAt: finishAt,
+        name: Value(name),
+        description: Value(description),
+        wellBeing: Value(wellBeing),
+        workout: workout,
+        timerType: timerType,
+        training: training,
+        isFinished: isFinished);
+    return into(trainingHistory).insert(entry);
+  }
 }

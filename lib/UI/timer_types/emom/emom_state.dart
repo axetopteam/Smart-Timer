@@ -4,25 +4,26 @@ import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
+
+import '../timer_settings_interface.dart';
 
 export 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 export 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 
 part 'emom_state.g.dart';
 
-class EmomState = EmomStateBase with _$EmomState;
+class EmomState = EmomStateBase with _$EmomState implements TimerSettingsInterface;
 
 abstract class EmomStateBase with Store {
   EmomStateBase({List<Emom>? emoms}) : emoms = ObservableList.of(emoms ?? [EmomX.defaultValue]);
+
+  final type = TimerType.emom;
 
   final ObservableList<Emom> emoms;
 
   @computed
   int get emomsCount => emoms.length;
-
-  // Duration get totalTime => workTime.duration! * roundsCount;
 
   @action
   void setRounds(int emomIndex, int value) {
@@ -58,12 +59,13 @@ abstract class EmomStateBase with Store {
 
   Future<void> saveToFavorites({required String name, required String description}) async {
     return GetIt.I<SdkService>().addToFavorite(
-      workout: WorkoutSettings(emom: EmomSettings(emoms: emoms)),
+      settings: settings,
       name: name,
       description: description,
     );
   }
 
+  @computed
   WorkoutSet get workout {
     List<WorkoutSet> sets = [];
     for (var i = 0; i < emomsCount; i++) {
@@ -92,6 +94,9 @@ abstract class EmomStateBase with Store {
 
     return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
   }
+
+  @computed
+  WorkoutSettings get settings => WorkoutSettings(emom: EmomSettings(emoms: emoms));
 
   String _setDescriptionSolver(int currentIndex) {
     return 'SET $currentIndex/$emomsCount';

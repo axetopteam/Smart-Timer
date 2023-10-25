@@ -9,12 +9,12 @@ import 'package:smart_timer/UI/favorites/favorites_tab.dart';
 import 'package:smart_timer/UI/history/history_page.dart';
 import 'package:smart_timer/UI/main_page/main_page.dart';
 import 'package:smart_timer/UI/settings/settings_page.dart';
-import 'package:smart_timer/UI/timer/timer_state.dart';
+import 'package:smart_timer/UI/timer/timer_page.dart';
 import 'package:smart_timer/UI/timer_types/afap/afap_page.dart';
 import 'package:smart_timer/UI/timer_types/amrap/amrap_page.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_page.dart';
 import 'package:smart_timer/UI/timer_types/tabata/tabata_page.dart';
-import 'package:smart_timer/UI/timer/timer_page.dart';
+import 'package:smart_timer/UI/timer_types/timer_settings_interface.dart';
 import 'package:smart_timer/UI/timer_types/work_rest/work_rest_page.dart';
 
 import '../UI/favorites/favorites_page.dart';

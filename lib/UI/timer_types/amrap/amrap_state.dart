@@ -4,18 +4,18 @@ import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
-// import 'amrap.dart';
-// export 'amrap.dart';
+import '../timer_settings_interface.dart';
 
 part 'amrap_state.g.dart';
 
-class AmrapState = AmrapStateBase with _$AmrapState;
+class AmrapState = AmrapStateBase with _$AmrapState implements TimerSettingsInterface;
 
 abstract class AmrapStateBase with Store {
   AmrapStateBase({List<Amrap>? amraps}) : amraps = ObservableList.of(amraps ?? [AmrapX.defaultValue]);
+
+  final type = TimerType.amrap;
 
   ObservableList<Amrap> amraps;
 
@@ -52,12 +52,13 @@ abstract class AmrapStateBase with Store {
 
   Future<void> saveToFavorites({required String name, required String description}) async {
     return GetIt.I<SdkService>().addToFavorite(
-      workout: WorkoutSettings(amrap: AmrapSettings(amraps: amraps)),
+      settings: settings,
       name: name,
       description: description,
     );
   }
 
+  @computed
   WorkoutSet get workout {
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < amrapsCount; i++) {
@@ -76,6 +77,9 @@ abstract class AmrapStateBase with Store {
 
     return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
   }
+
+  @computed
+  WorkoutSettings get settings => WorkoutSettings(amrap: AmrapSettings(amraps: amraps));
 
   String _descriptionSolver(int currentAmrapIndex) {
     return 'AMRAP $currentAmrapIndex/$amrapsCount';

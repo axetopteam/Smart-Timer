@@ -2,14 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
+import 'package:smart_timer/UI/timer/timer_type.dart';
+import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
-import 'package:smart_timer/UI/timer/timer_state.dart';
-import 'package:smart_timer/UI/timer/timer_type.dart';
 
 import '../../widgets/interval_widget.dart';
 import '../../widgets/new_item_transition.dart';
@@ -59,12 +58,7 @@ class _AfapPageState extends State<AfapPage> {
       addToFavorites: afapState.saveToFavorites,
       onStartPressed: () {
         context.pushRoute(
-          TimerRoute(
-            state: TimerState(
-              workout: afapState.workout,
-              timerType: TimerType.afap,
-            ),
-          ),
+          TimerRoute(timerSettings: afapState),
         );
       },
       slivers: [

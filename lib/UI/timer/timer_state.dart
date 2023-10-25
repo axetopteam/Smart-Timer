@@ -4,11 +4,10 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
-import 'package:smart_timer/UI/timer/timer_type.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
 import 'timer_status.dart';
@@ -140,6 +139,7 @@ abstract class TimerStateBase with Store {
         currentState = TimerStatus.done;
         timerSubscription?.cancel();
         TimerCouterService().addNewTime(DateTime.now());
+
         AnalyticsManager.eventTimerFinished
             .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
             .setProperty('timer_type', timerType.name)

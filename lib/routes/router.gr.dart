@@ -100,7 +100,7 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: TimerPage(
-          args.state,
+          timerSettings: args.timerSettings,
           key: args.key,
         ),
       );
@@ -379,13 +379,13 @@ class FavouritesRoute extends PageRouteInfo<void> {
 /// [TimerPage]
 class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
   TimerRoute({
-    required TimerState state,
+    required TimerSettingsInterface timerSettings,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           TimerRoute.name,
           args: TimerRouteArgs(
-            state: state,
+            timerSettings: timerSettings,
             key: key,
           ),
           initialChildren: children,
@@ -398,17 +398,17 @@ class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
 
 class TimerRouteArgs {
   const TimerRouteArgs({
-    required this.state,
+    required this.timerSettings,
     this.key,
   });
 
-  final TimerState state;
+  final TimerSettingsInterface timerSettings;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'TimerRouteArgs{state: $state, key: $key}';
+    return 'TimerRouteArgs{timerSettings: $timerSettings, key: $key}';
   }
 }
 

@@ -189,4 +189,24 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
     Finish: ${finishTimeUtc != null ? Jiffy.parseFromDateTime(finishTimeUtc!).Hms : 'Unknown'}${isLast ? '\nisLast: $isLast' : ''}
     ''';
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'interval',
+      'data': {
+        'type': type.name,
+        'duration': duration?.inSeconds,
+        'isEnded': isEnded,
+      },
+    };
+  }
+
+  @override
+  factory WorkoutIntervalBase.fromJson(Map<String, dynamic> json) {
+    final data = json['data'];
+    final type = WorkoutIntervalType.values.firstWhere((element) => element.name == data['type']);
+    final duration = data['duration'] != null ? Duration(seconds: data['duration']) : null;
+    return WorkoutInterval(type: type, duration: duration);
+  }
 }

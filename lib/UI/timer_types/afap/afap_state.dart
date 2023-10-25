@@ -4,17 +4,20 @@ import 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
+
+import '../timer_settings_interface.dart';
 
 export 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 
 part 'afap_state.g.dart';
 
-class AfapState = AfapStateBase with _$AfapState;
+class AfapState = AfapStateBase with _$AfapState implements TimerSettingsInterface;
 
 abstract class AfapStateBase with Store {
   AfapStateBase({List<Afap>? afaps}) : afaps = ObservableList.of(afaps ?? [AfapX.defaultValue]);
+
+  final type = TimerType.afap;
 
   ObservableList<Afap> afaps;
 
@@ -59,12 +62,13 @@ abstract class AfapStateBase with Store {
 
   Future<void> saveToFavorites({required String name, required String description}) async {
     return GetIt.I<SdkService>().addToFavorite(
-      workout: WorkoutSettings(afap: AfapSettings(afaps: afaps)),
+      settings: settings,
       name: name,
       description: description,
     );
   }
 
+  @computed
   WorkoutSet get workout {
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < afapsCount; i++) {
@@ -85,6 +89,9 @@ abstract class AfapStateBase with Store {
 
     return WorkoutSet(sets, descriptionSolver: _despriptionSolver);
   }
+
+  @computed
+  WorkoutSettings get settings => WorkoutSettings(afap: AfapSettings(afaps: afaps));
 
   String _despriptionSolver(int currentIndex) {
     return 'AFAP $currentIndex/$afapsCount';

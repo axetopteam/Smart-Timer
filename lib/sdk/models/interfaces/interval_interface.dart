@@ -1,6 +1,7 @@
 import 'package:smart_timer/services/audio_service.dart';
 
 abstract class IntervalInterface {
+  IntervalInterface();
   Duration? get currentTime;
   DateTime? get finishTimeUtc;
   DateTime? finishTimeFor({required DateTime startTime});
@@ -13,4 +14,5 @@ abstract class IntervalInterface {
   void pause();
   void tick(DateTime nowUtc);
   IntervalInterface copy();
+  Map<String, dynamic> toJson();
 }

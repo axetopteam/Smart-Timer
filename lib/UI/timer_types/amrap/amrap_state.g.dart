@@ -16,6 +16,20 @@ mixin _$AmrapState on AmrapStateBase, Store {
       (_$amrapsCountComputed ??= Computed<int>(() => super.amrapsCount,
               name: 'AmrapStateBase.amrapsCount'))
           .value;
+  Computed<WorkoutSet>? _$workoutComputed;
+
+  @override
+  WorkoutSet get workout =>
+      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
+              name: 'AmrapStateBase.workout'))
+          .value;
+  Computed<WorkoutSettings>? _$settingsComputed;
+
+  @override
+  WorkoutSettings get settings =>
+      (_$settingsComputed ??= Computed<WorkoutSettings>(() => super.settings,
+              name: 'AmrapStateBase.settings'))
+          .value;
 
   late final _$AmrapStateBaseActionController =
       ActionController(name: 'AmrapStateBase', context: context);
@@ -67,7 +81,9 @@ mixin _$AmrapState on AmrapStateBase, Store {
   @override
   String toString() {
     return '''
-amrapsCount: ${amrapsCount}
+amrapsCount: ${amrapsCount},
+workout: ${workout},
+settings: ${settings}
     ''';
   }
 }

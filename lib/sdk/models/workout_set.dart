@@ -177,4 +177,19 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
     if (childDescription != null) buffer.write('\n$childDescription');
     return buffer.toString();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    List? dataList;
+
+    dataList = sets.map((element) => (element).toJson()).toList();
+
+    return {
+      'type': 'set',
+      'data': dataList,
+    };
+  }
+
+  // @override
+  // factory WorkoutIntervalBase.fromJson(Map<String, dynamic> json) => _$WorkoutIntervalBaseFromJson(json);
 }

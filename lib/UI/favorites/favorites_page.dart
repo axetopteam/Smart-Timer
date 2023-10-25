@@ -35,7 +35,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 final favorite = favorites[index];
                 return Slidable(
                   endActionPane: ActionPane(
-                    motion: DrawerMotion(),
+                    motion: const DrawerMotion(),
                     children: [
                       SlidableAction(
                         // An action can be bigger than the others.
@@ -75,8 +75,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   void onTap(FavoriteWorkout favoriteWorkout) {
     final workoutSettings = favoriteWorkout.workoutSettings;
-    final j = workoutSettings.whichWorkout();
-    j.name;
     switch (workoutSettings.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
         context.pushRoute(NewTimerRouter(children: [AmrapRoute(amrapSettings: workoutSettings.amrap)]));

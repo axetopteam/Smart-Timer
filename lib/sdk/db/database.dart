@@ -16,7 +16,20 @@ class FavoriteWorkouts extends Table {
   TextColumn get description => text().withDefault(const Constant(''))();
 }
 
-@DriftDatabase(tables: [FavoriteWorkouts])
+@DataClassName("TrainingHistoryRawData")
+class TrainingHistory extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get finishAt => integer()();
+  TextColumn get name => text().withDefault(const Constant(''))();
+  TextColumn get description => text().withDefault(const Constant(''))();
+  IntColumn get wellBeing => integer().nullable()();
+  TextColumn get workout => text()();
+  TextColumn get timerType => text()();
+  TextColumn get training => text()();
+  BoolColumn get isFinished => boolean()();
+}
+
+@DriftDatabase(tables: [FavoriteWorkouts, TrainingHistory])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
