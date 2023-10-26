@@ -7,15 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/UI/timer/timer_state.dart';
+import 'package:smart_timer/UI/timer/widgets/complete_button.dart';
+import 'package:smart_timer/UI/timer/widgets/completed_state.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_review_service.dart';
-import 'package:smart_timer/UI/timer/timer_state.dart';
-import 'package:smart_timer/UI/timer/widgets/complete_button.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../timer_types/timer_settings_interface.dart';
@@ -89,6 +90,10 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   @override
   void dispose() async {
+    if (state.currentState == TimerStatus.done) {
+      _requestAppReview();
+    }
+
     timerSubscription?.cancel();
     WakelockPlus.disable();
     if (state.currentState != TimerStatus.ready) {
@@ -98,7 +103,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
         description: '',
         workoutSettings: widget.timerSettings.settings,
         timerType: widget.timerSettings.type,
-        training: state.workout,
+        result: state.workout.toResult(),
         isFinished: true,
       );
     }
@@ -124,9 +129,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
           final res = await _showConfirmExitAlert();
           return res ?? false;
         }
-        if (state.currentState == TimerStatus.done) {
-          _requestAppReview();
-        }
         return true;
       },
       child: Scaffold(
@@ -150,7 +152,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Observer(
-                builder: (ctx) => state.currentState == TimerStatus.done ? _buildFinish() : _buildTimerContainer(),
+                builder: (ctx) => state.currentState == TimerStatus.done
+                    ? CompletedState(
+                        timerType: state.timerType,
+                        workout: state.workout,
+                      )
+                    : _buildTimerContainer(),
               ),
             ),
           ),
@@ -187,10 +194,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                 color: state.timerType.workoutColor(context),
                 timerStatus: state.currentState,
                 controller: controller,
-                // partOfHeight: currentIntervalDurationInSeconds != null
-                //     ? (currentIntervalDurationInSeconds - (currentTime?.inMilliseconds ?? 0)) /
-                //         currentIntervalDurationInSeconds
-                //     : 0,
                 child: SizedBox.expand(
                   child: Column(
                     children: [
@@ -317,48 +320,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     });
   }
 
-  Widget _buildFinish() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Spacer(),
-        Container(
-          height: 180,
-          width: 180,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: state.timerType.workoutColor(context),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            CupertinoIcons.checkmark_alt,
-            size: 140,
-            color: context.color.mainText,
-          ),
-        ),
-        const SizedBox(height: 40),
-        Text(
-          LocaleKeys.timer_completed_title.tr(),
-          textAlign: TextAlign.center,
-          style: context.textTheme.displayLarge,
-        ),
-        const SizedBox(height: 40),
-        const Spacer(),
-        ElevatedButtonTheme(
-          data: context.buttonThemes.popupButtonTheme,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              _requestAppReview();
-            },
-            child: Text(LocaleKeys.timer_completed_button.tr()),
-          ),
-        ),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
-
   void _requestAppReview() {
     Future.delayed(const Duration(seconds: 1), AppReviewService().requestReviewIfAvailable);
   }
@@ -383,19 +344,5 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             ],
           );
         });
-  }
-}
-
-extension on Duration {
-  String durationToString({bool isCountdown = false}) {
-    if (inMicroseconds < 0) {
-      return "-${(-this).durationToString}";
-    }
-    String twoDigitMinutes = twoDigits(inMinutes);
-    final seconds = isCountdown ? isSecondsCeil : inSeconds;
-
-    String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
-
-    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 }

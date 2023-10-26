@@ -33,7 +33,7 @@ extension DatabaseQueries on AppDatabase {
     int? wellBeing,
     required String workout,
     required String timerType,
-    required String training,
+    required String result,
     required bool isFinished,
   }) {
     final entry = TrainingHistoryCompanion.insert(
@@ -43,8 +43,12 @@ extension DatabaseQueries on AppDatabase {
         wellBeing: Value(wellBeing),
         workout: workout,
         timerType: timerType,
-        training: training,
+        result: result,
         isFinished: isFinished);
     return into(trainingHistory).insert(entry);
+  }
+
+  Future<List<TrainingHistoryRawData>> fetchHistory({int offset = 0, int limit = 10}) {
+    return (select(trainingHistory)..limit(limit, offset: offset)).get();
   }
 }

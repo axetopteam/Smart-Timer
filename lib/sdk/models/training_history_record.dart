@@ -1,9 +1,7 @@
-import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings.pb.dart';
 import 'package:smart_timer/UI/timer/timer_type.dart';
+import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings.pb.dart';
+import 'package:smart_timer/sdk/models/results/result_interface.dart';
 
-import 'workout_set.dart';
-
-export 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings.pb.dart';
 export 'package:smart_timer/UI/timer/timer_type.dart';
 
 class TrainingHistoryRecord {
@@ -14,7 +12,7 @@ class TrainingHistoryRecord {
   final int? wellBeing;
   final WorkoutSettings workout;
   final TimerType timerType;
-  final WorkoutSet training;
+  final WorkoutResultInterface result;
 
   TrainingHistoryRecord({
     required this.id,
@@ -24,6 +22,6 @@ class TrainingHistoryRecord {
     this.wellBeing,
     required this.workout,
     required this.timerType,
-    required this.training,
+    required this.result,
   });
 }

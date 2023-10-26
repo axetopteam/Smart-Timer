@@ -69,7 +69,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
                     ),
                     const SizedBox(width: 10),
                     RatioWidget(
-                      title: '${LocaleKeys.rest_ratio.tr()}:',
+                      title: LocaleKeys.rest_ratio.tr(),
                       initialValue: workRest.sets[workRest.setIndex].ratio,
                       onValueChanged: (value) {
                         workRest.setRatio(workRest.setIndex, value);

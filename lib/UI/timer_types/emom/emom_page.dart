@@ -90,12 +90,13 @@ class _EmomPageState extends State<EmomPage> {
     emomState.addEmom();
     _animatedList.insertItem(emomState.emomsCount - 1, duration: const Duration(milliseconds: 200));
     Future.delayed(
-        const Duration(milliseconds: 200),
-        () => _scroolController.animateTo(
-              _scroolController.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            ));
+      const Duration(milliseconds: 250),
+      () => _scroolController.animateTo(
+        _scroolController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
+    );
 
     AnalyticsManager.eventSetupPageNewSetAdded
         .setProperty('timer_type', TimerType.emom.name)

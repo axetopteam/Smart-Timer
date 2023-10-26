@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/UI/timer/timer_type.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
@@ -10,6 +12,7 @@ import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pb.dart';
+import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../../widgets/interval_widget.dart';
 import '../../widgets/new_item_transition.dart';
@@ -70,18 +73,39 @@ class _AmrapPageState extends State<AmrapPage> {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
             sliver: SliverToBoxAdapter(
-                child: ElevatedButton(
-              onPressed: _addNewAmrap,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add_circle_outline, size: 20),
-                  const SizedBox(width: 4),
-                  Text(LocaleKeys.amrap_add_button_title.tr())
-                ],
+              child: ElevatedButton(
+                onPressed: _addNewAmrap,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add_circle_outline, size: 20),
+                    const SizedBox(width: 4),
+                    Text(LocaleKeys.amrap_add_button_title.tr())
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
+          if (kDebugMode)
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
+              sliver: SliverToBoxAdapter(
+                child: ElevatedButton(
+                  onPressed: () {
+                    GetIt.I<SdkService>().saveTrainingToHistory(
+                      finishAt: DateTime.now(),
+                      name: '',
+                      description: '',
+                      workoutSettings: WorkoutSettings(amrap: AmrapSettings(amraps: amrapState.amraps)),
+                      timerType: TimerType.amrap,
+                      result: amrapState.workout.toResult(),
+                      isFinished: true,
+                    );
+                  },
+                  child: Text('Add To History'),
+                ),
+              ),
+            ),
         ],
       );
     });

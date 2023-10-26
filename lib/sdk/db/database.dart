@@ -25,7 +25,7 @@ class TrainingHistory extends Table {
   IntColumn get wellBeing => integer().nullable()();
   TextColumn get workout => text()();
   TextColumn get timerType => text()();
-  TextColumn get training => text()();
+  TextColumn get result => text()();
   BoolColumn get isFinished => boolean()();
 }
 

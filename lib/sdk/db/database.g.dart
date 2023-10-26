@@ -348,11 +348,10 @@ class $TrainingHistoryTable extends TrainingHistory
   late final GeneratedColumn<String> timerType = GeneratedColumn<String>(
       'timer_type', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _trainingMeta =
-      const VerificationMeta('training');
+  static const VerificationMeta _resultMeta = const VerificationMeta('result');
   @override
-  late final GeneratedColumn<String> training = GeneratedColumn<String>(
-      'training', aliasedName, false,
+  late final GeneratedColumn<String> result = GeneratedColumn<String>(
+      'result', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _isFinishedMeta =
       const VerificationMeta('isFinished');
@@ -372,7 +371,7 @@ class $TrainingHistoryTable extends TrainingHistory
         wellBeing,
         workout,
         timerType,
-        training,
+        result,
         isFinished
       ];
   @override
@@ -421,11 +420,11 @@ class $TrainingHistoryTable extends TrainingHistory
     } else if (isInserting) {
       context.missing(_timerTypeMeta);
     }
-    if (data.containsKey('training')) {
-      context.handle(_trainingMeta,
-          training.isAcceptableOrUnknown(data['training']!, _trainingMeta));
+    if (data.containsKey('result')) {
+      context.handle(_resultMeta,
+          result.isAcceptableOrUnknown(data['result']!, _resultMeta));
     } else if (isInserting) {
-      context.missing(_trainingMeta);
+      context.missing(_resultMeta);
     }
     if (data.containsKey('is_finished')) {
       context.handle(
@@ -458,8 +457,8 @@ class $TrainingHistoryTable extends TrainingHistory
           .read(DriftSqlType.string, data['${effectivePrefix}workout'])!,
       timerType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}timer_type'])!,
-      training: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}training'])!,
+      result: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}result'])!,
       isFinished: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_finished'])!,
     );
@@ -480,7 +479,7 @@ class TrainingHistoryRawData extends DataClass
   final int? wellBeing;
   final String workout;
   final String timerType;
-  final String training;
+  final String result;
   final bool isFinished;
   const TrainingHistoryRawData(
       {required this.id,
@@ -490,7 +489,7 @@ class TrainingHistoryRawData extends DataClass
       this.wellBeing,
       required this.workout,
       required this.timerType,
-      required this.training,
+      required this.result,
       required this.isFinished});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -504,7 +503,7 @@ class TrainingHistoryRawData extends DataClass
     }
     map['workout'] = Variable<String>(workout);
     map['timer_type'] = Variable<String>(timerType);
-    map['training'] = Variable<String>(training);
+    map['result'] = Variable<String>(result);
     map['is_finished'] = Variable<bool>(isFinished);
     return map;
   }
@@ -520,7 +519,7 @@ class TrainingHistoryRawData extends DataClass
           : Value(wellBeing),
       workout: Value(workout),
       timerType: Value(timerType),
-      training: Value(training),
+      result: Value(result),
       isFinished: Value(isFinished),
     );
   }
@@ -536,7 +535,7 @@ class TrainingHistoryRawData extends DataClass
       wellBeing: serializer.fromJson<int?>(json['wellBeing']),
       workout: serializer.fromJson<String>(json['workout']),
       timerType: serializer.fromJson<String>(json['timerType']),
-      training: serializer.fromJson<String>(json['training']),
+      result: serializer.fromJson<String>(json['result']),
       isFinished: serializer.fromJson<bool>(json['isFinished']),
     );
   }
@@ -551,7 +550,7 @@ class TrainingHistoryRawData extends DataClass
       'wellBeing': serializer.toJson<int?>(wellBeing),
       'workout': serializer.toJson<String>(workout),
       'timerType': serializer.toJson<String>(timerType),
-      'training': serializer.toJson<String>(training),
+      'result': serializer.toJson<String>(result),
       'isFinished': serializer.toJson<bool>(isFinished),
     };
   }
@@ -564,7 +563,7 @@ class TrainingHistoryRawData extends DataClass
           Value<int?> wellBeing = const Value.absent(),
           String? workout,
           String? timerType,
-          String? training,
+          String? result,
           bool? isFinished}) =>
       TrainingHistoryRawData(
         id: id ?? this.id,
@@ -574,7 +573,7 @@ class TrainingHistoryRawData extends DataClass
         wellBeing: wellBeing.present ? wellBeing.value : this.wellBeing,
         workout: workout ?? this.workout,
         timerType: timerType ?? this.timerType,
-        training: training ?? this.training,
+        result: result ?? this.result,
         isFinished: isFinished ?? this.isFinished,
       );
   @override
@@ -587,7 +586,7 @@ class TrainingHistoryRawData extends DataClass
           ..write('wellBeing: $wellBeing, ')
           ..write('workout: $workout, ')
           ..write('timerType: $timerType, ')
-          ..write('training: $training, ')
+          ..write('result: $result, ')
           ..write('isFinished: $isFinished')
           ..write(')'))
         .toString();
@@ -595,7 +594,7 @@ class TrainingHistoryRawData extends DataClass
 
   @override
   int get hashCode => Object.hash(id, finishAt, name, description, wellBeing,
-      workout, timerType, training, isFinished);
+      workout, timerType, result, isFinished);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -607,7 +606,7 @@ class TrainingHistoryRawData extends DataClass
           other.wellBeing == this.wellBeing &&
           other.workout == this.workout &&
           other.timerType == this.timerType &&
-          other.training == this.training &&
+          other.result == this.result &&
           other.isFinished == this.isFinished);
 }
 
@@ -619,7 +618,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
   final Value<int?> wellBeing;
   final Value<String> workout;
   final Value<String> timerType;
-  final Value<String> training;
+  final Value<String> result;
   final Value<bool> isFinished;
   const TrainingHistoryCompanion({
     this.id = const Value.absent(),
@@ -629,7 +628,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     this.wellBeing = const Value.absent(),
     this.workout = const Value.absent(),
     this.timerType = const Value.absent(),
-    this.training = const Value.absent(),
+    this.result = const Value.absent(),
     this.isFinished = const Value.absent(),
   });
   TrainingHistoryCompanion.insert({
@@ -640,12 +639,12 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     this.wellBeing = const Value.absent(),
     required String workout,
     required String timerType,
-    required String training,
+    required String result,
     required bool isFinished,
   })  : finishAt = Value(finishAt),
         workout = Value(workout),
         timerType = Value(timerType),
-        training = Value(training),
+        result = Value(result),
         isFinished = Value(isFinished);
   static Insertable<TrainingHistoryRawData> custom({
     Expression<int>? id,
@@ -655,7 +654,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     Expression<int>? wellBeing,
     Expression<String>? workout,
     Expression<String>? timerType,
-    Expression<String>? training,
+    Expression<String>? result,
     Expression<bool>? isFinished,
   }) {
     return RawValuesInsertable({
@@ -666,7 +665,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       if (wellBeing != null) 'well_being': wellBeing,
       if (workout != null) 'workout': workout,
       if (timerType != null) 'timer_type': timerType,
-      if (training != null) 'training': training,
+      if (result != null) 'result': result,
       if (isFinished != null) 'is_finished': isFinished,
     });
   }
@@ -679,7 +678,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       Value<int?>? wellBeing,
       Value<String>? workout,
       Value<String>? timerType,
-      Value<String>? training,
+      Value<String>? result,
       Value<bool>? isFinished}) {
     return TrainingHistoryCompanion(
       id: id ?? this.id,
@@ -689,7 +688,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       wellBeing: wellBeing ?? this.wellBeing,
       workout: workout ?? this.workout,
       timerType: timerType ?? this.timerType,
-      training: training ?? this.training,
+      result: result ?? this.result,
       isFinished: isFinished ?? this.isFinished,
     );
   }
@@ -718,8 +717,8 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     if (timerType.present) {
       map['timer_type'] = Variable<String>(timerType.value);
     }
-    if (training.present) {
-      map['training'] = Variable<String>(training.value);
+    if (result.present) {
+      map['result'] = Variable<String>(result.value);
     }
     if (isFinished.present) {
       map['is_finished'] = Variable<bool>(isFinished.value);
@@ -737,7 +736,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
           ..write('wellBeing: $wellBeing, ')
           ..write('workout: $workout, ')
           ..write('timerType: $timerType, ')
-          ..write('training: $training, ')
+          ..write('result: $result, ')
           ..write('isFinished: $isFinished')
           ..write(')'))
         .toString();

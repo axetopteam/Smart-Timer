@@ -3,11 +3,31 @@ import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
-import 'workout_interval_type.dart';
+import 'results/interval_result.dart';
 
 part 'workout_interval.g.dart';
 
-class WorkoutInterval = WorkoutIntervalBase with _$WorkoutInterval;
+class WorkoutInterval extends WorkoutIntervalBase with _$WorkoutInterval {
+  WorkoutInterval({
+    super.duration,
+    required super.type,
+    super.isCountdown = true,
+    super.isReverse = false,
+    super.reverseRatio = 1,
+    super.isLast = false,
+  });
+
+  @override
+  String toString() {
+    return '''
+    Interval. 
+    Start: ${startTimeUtc != null ? Jiffy.parseFromDateTime(startTimeUtc!).Hms : 'Unknown'}
+    Duration: $duration
+    Finish: ${finishTimeUtc != null ? Jiffy.parseFromDateTime(finishTimeUtc!).Hms : 'Unknown'}
+    ${isLast ? 'isLast: $isLast' : ''}
+    ''';
+  }
+}
 
 abstract class WorkoutIntervalBase with Store implements IntervalInterface {
   WorkoutIntervalBase({
@@ -181,32 +201,11 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
   }
 
   @override
-  String toString() {
-    return '''
-    Interval. 
-    Start: ${startTimeUtc != null ? Jiffy.parseFromDateTime(startTimeUtc!).Hms : 'Unknown'}
-    Duration: $duration
-    Finish: ${finishTimeUtc != null ? Jiffy.parseFromDateTime(finishTimeUtc!).Hms : 'Unknown'}${isLast ? '\nisLast: $isLast' : ''}
-    ''';
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'type': 'interval',
-      'data': {
-        'type': type.name,
-        'duration': duration?.inSeconds,
-        'isEnded': isEnded,
-      },
-    };
-  }
-
-  @override
-  factory WorkoutIntervalBase.fromJson(Map<String, dynamic> json) {
-    final data = json['data'];
-    final type = WorkoutIntervalType.values.firstWhere((element) => element.name == data['type']);
-    final duration = data['duration'] != null ? Duration(seconds: data['duration']) : null;
-    return WorkoutInterval(type: type, duration: duration);
+  IntervalResult toResult() {
+    return IntervalResult(
+      duration: duration,
+      type: type,
+      isCompleted: isEnded,
+    );
   }
 }

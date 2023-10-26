@@ -4,9 +4,27 @@ import 'package:smart_timer/sdk/models/interfaces/interval_interface.dart';
 import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
+import 'results/workout_result.dart';
+
 part 'workout_set.g.dart';
 
-class WorkoutSet = WorkoutSetBase with _$WorkoutSet;
+class WorkoutSet extends WorkoutSetBase with _$WorkoutSet {
+  WorkoutSet(super.setsList, {super.descriptionSolver});
+  @override
+  String toString() {
+    StringBuffer buffer = StringBuffer();
+    for (int i = 0; i < setsCount; i++) {
+      buffer.write('Round ${i + 1} \n');
+      final set = sets[i];
+      if ((set is! WorkoutInterval)) buffer.write('\n');
+      buffer.write(set.toString());
+
+      buffer.write('\n');
+    }
+
+    return buffer.toString();
+  }
+}
 
 abstract class WorkoutSetBase with Store implements IntervalInterface, Descriptionable {
   WorkoutSetBase(List<IntervalInterface> setsList, {this.descriptionSolver}) : sets = ObservableList.of(setsList);
@@ -153,21 +171,6 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
   }
 
   @override
-  String toString() {
-    StringBuffer buffer = StringBuffer();
-    for (int i = 0; i < setsCount; i++) {
-      buffer.write('Round ${i + 1} \n');
-      final set = sets[i];
-      if ((set is! WorkoutInterval)) buffer.write('\n');
-      buffer.write(set.toString());
-
-      buffer.write('\n');
-    }
-
-    return buffer.toString();
-  }
-
-  @override
   String? get currentStateDescription {
     StringBuffer buffer = StringBuffer();
     final description = descriptionSolver?.call(_currentSetIndex + 1);
@@ -179,17 +182,7 @@ abstract class WorkoutSetBase with Store implements IntervalInterface, Descripti
   }
 
   @override
-  Map<String, dynamic> toJson() {
-    List? dataList;
-
-    dataList = sets.map((element) => (element).toJson()).toList();
-
-    return {
-      'type': 'set',
-      'data': dataList,
-    };
+  WorkoutResult toResult() {
+    return WorkoutResult(sets: sets.map((element) => (element).toResult()).toList());
   }
-
-  // @override
-  // factory WorkoutIntervalBase.fromJson(Map<String, dynamic> json) => _$WorkoutIntervalBaseFromJson(json);
 }

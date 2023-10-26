@@ -1,5 +1,7 @@
 import 'package:smart_timer/services/audio_service.dart';
 
+import '../results/result_interface.dart';
+
 abstract class IntervalInterface {
   IntervalInterface();
   Duration? get currentTime;
@@ -14,5 +16,5 @@ abstract class IntervalInterface {
   void pause();
   void tick(DateTime nowUtc);
   IntervalInterface copy();
-  Map<String, dynamic> toJson();
+  WorkoutResultInterface toResult();
 }

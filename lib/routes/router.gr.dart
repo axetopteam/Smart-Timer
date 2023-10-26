@@ -34,7 +34,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     TabataRoute.name: (routeData) {
-      final args = routeData.argsAs<TabataRouteArgs>(orElse: () => const TabataRouteArgs());
+      final args = routeData.argsAs<TabataRouteArgs>(
+          orElse: () => const TabataRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: TabataPage(
@@ -44,7 +45,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     WorkRestRoute.name: (routeData) {
-      final args = routeData.argsAs<WorkRestRouteArgs>(orElse: () => const WorkRestRouteArgs());
+      final args = routeData.argsAs<WorkRestRouteArgs>(
+          orElse: () => const WorkRestRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: WorkRestPage(
@@ -54,7 +56,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AfapRoute.name: (routeData) {
-      final args = routeData.argsAs<AfapRouteArgs>(orElse: () => const AfapRouteArgs());
+      final args =
+          routeData.argsAs<AfapRouteArgs>(orElse: () => const AfapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: AfapPage(
@@ -64,7 +67,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AmrapRoute.name: (routeData) {
-      final args = routeData.argsAs<AmrapRouteArgs>(orElse: () => const AmrapRouteArgs());
+      final args = routeData.argsAs<AmrapRouteArgs>(
+          orElse: () => const AmrapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: AmrapPage(
@@ -74,7 +78,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     EmomRoute.name: (routeData) {
-      final args = routeData.argsAs<EmomRouteArgs>(orElse: () => const EmomRouteArgs());
+      final args =
+          routeData.argsAs<EmomRouteArgs>(orElse: () => const EmomRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: EmomPage(
@@ -217,7 +222,8 @@ class WorkRestRoute extends PageRouteInfo<WorkRestRouteArgs> {
 
   static const String name = 'WorkRestRoute';
 
-  static const PageInfo<WorkRestRouteArgs> page = PageInfo<WorkRestRouteArgs>(name);
+  static const PageInfo<WorkRestRouteArgs> page =
+      PageInfo<WorkRestRouteArgs>(name);
 }
 
 class WorkRestRouteArgs {

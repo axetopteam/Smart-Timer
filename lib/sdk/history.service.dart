@@ -8,7 +8,7 @@ extension HistoryExtension on SdkService {
     int? wellBeing,
     required WorkoutSettings workoutSettings,
     required TimerType timerType,
-    required WorkoutSet training,
+    required WorkoutResult result,
     required bool isFinished,
   }) async {
     await _db.saveTrainingToHistory(
@@ -18,8 +18,24 @@ extension HistoryExtension on SdkService {
       wellBeing: wellBeing,
       timerType: timerType.name,
       workout: WorkoutParser.encode(timerType, workoutSettings),
-      training: jsonEncode(training.toJson()),
+      result: jsonEncode(result.toJson()),
       isFinished: isFinished,
     );
+  }
+
+  Future<List<TrainingHistoryRecord>> fetchHistory({int offset = 0, int limit = 10}) async {
+    final res = await _db.fetchHistory(limit: limit, offset: offset);
+    return res.map((e) {
+      final timerType = TimerType.values.firstWhere((element) => element.name == e.timerType);
+      return TrainingHistoryRecord(
+        id: e.id,
+        dateTime: DateTime.fromMillisecondsSinceEpoch(e.finishAt),
+        name: e.name,
+        description: e.description,
+        workout: WorkoutParser.decode(e.workout),
+        timerType: timerType,
+        result: WorkoutResult.workoutResultParser(jsonDecode(e.result)),
+      );
+    }).toList();
   }
 }
