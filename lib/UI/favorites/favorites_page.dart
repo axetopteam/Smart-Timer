@@ -34,6 +34,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               slivers: [
                 CupertinoSliverNavigationBar(
                   largeTitle: Text('Favorites'),
+                  heroTag: 'favorites',
                 ),
                 SliverList.separated(
                   itemCount: favorites.length,

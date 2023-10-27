@@ -50,6 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
       slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: Text(LocaleKeys.settings_title.tr()),
+          heroTag: 'settings',
         ),
         _generalBlock(),
         _planBlock(),

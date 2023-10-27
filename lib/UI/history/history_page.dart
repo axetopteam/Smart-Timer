@@ -32,6 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
       slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: Text('History'),
+          heroTag: 'history',
         ),
         CupertinoSliverRefreshControl(
           onRefresh: () async {
