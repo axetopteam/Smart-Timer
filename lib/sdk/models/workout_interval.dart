@@ -204,6 +204,7 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
   IntervalResult toResult() {
     return IntervalResult(
       duration: duration,
+      currentDuration: currentTime,
       type: type,
       isCompleted: isEnded,
     );

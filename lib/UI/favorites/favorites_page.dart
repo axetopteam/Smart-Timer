@@ -30,7 +30,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
           if (favorites != null) {
             return ListView.separated(
               itemCount: favorites.length,
-              separatorBuilder: (context, index) => const Divider(height: 8, thickness: 2),
+              separatorBuilder: (context, index) => const Divider(height: 12, thickness: 2),
               itemBuilder: (ctx, index) {
                 final favorite = favorites[index];
                 return Slidable(

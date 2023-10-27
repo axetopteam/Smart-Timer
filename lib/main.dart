@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/purchasing/purchase_manager.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/db/database.dart';
@@ -129,6 +130,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return Provider(
+          create: (_) => HistoryState(),
+          child: child,
+        );
+      },
       theme: createDarkTheme(),
     );
   }

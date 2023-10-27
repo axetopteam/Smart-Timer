@@ -5,8 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/timer/timer_state.dart';
 import 'package:smart_timer/UI/timer/widgets/complete_button.dart';
 import 'package:smart_timer/UI/timer/widgets/completed_state.dart';
@@ -14,11 +14,11 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import '../history/history_state.dart';
 import '../timer_types/timer_settings_interface.dart';
 import '../widgets/play_icon.dart';
 import 'timer_progress_container.dart';
@@ -97,15 +97,15 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     timerSubscription?.cancel();
     WakelockPlus.disable();
     if (state.currentState != TimerStatus.ready) {
-      GetIt.I<SdkService>().saveTrainingToHistory(
-        finishAt: DateTime.now(),
-        name: '',
-        description: '',
-        workoutSettings: widget.timerSettings.settings,
-        timerType: widget.timerSettings.type,
-        result: state.workout.toResult(),
-        isFinished: true,
-      );
+      context.read<HistoryState>().saveTraining(
+            finishAt: DateTime.now(), //TODO: подумать какой время сохранить
+            name: '',
+            description: '',
+            workoutSettings: widget.timerSettings.settings,
+            timerType: widget.timerSettings.type,
+            result: state.workout.toResult(),
+            isFinished: state.currentState == TimerStatus.done,
+          );
     }
     AnalyticsManager.eventTimerClosed
         .setProperty('status', state.currentState.name)

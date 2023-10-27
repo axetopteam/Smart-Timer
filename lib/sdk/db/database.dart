@@ -26,7 +26,7 @@ class TrainingHistory extends Table {
   TextColumn get workout => text()();
   TextColumn get timerType => text()();
   TextColumn get result => text()();
-  BoolColumn get isFinished => boolean()();
+  BoolColumn get isFinished => boolean()(); //TODO: переименовать isCompleted
 }
 
 @DriftDatabase(tables: [FavoriteWorkouts, TrainingHistory])

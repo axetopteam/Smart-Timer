@@ -6,11 +6,18 @@ class IntervalResult implements WorkoutResultInterface {
   IntervalResult({
     required this.type,
     required this.duration,
+    required this.currentDuration,
     required this.isCompleted,
   });
   final WorkoutIntervalType type;
   final Duration? duration;
+  final Duration? currentDuration;
   final bool isCompleted;
+
+  @override
+  Duration get totalDuration {
+    return (currentDuration) ?? const Duration();
+  }
 
   @override
   Map<String, dynamic> toJson() {
@@ -19,6 +26,7 @@ class IntervalResult implements WorkoutResultInterface {
       'data': {
         'type': type.name,
         if (duration != null) 'duration': duration!.inSeconds,
+        if (currentDuration != null) 'currentDuration': currentDuration!.inSeconds,
         'isCompleted': isCompleted,
       },
     };
@@ -27,7 +35,8 @@ class IntervalResult implements WorkoutResultInterface {
   factory IntervalResult.fromJson(Map<String, dynamic> json) {
     final type = WorkoutIntervalType.values.firstWhere((element) => element.name == json['type']);
     final duration = json['duration'] != null ? Duration(seconds: json['duration']) : null;
+    final currentDuration = json['currentDuration'] != null ? Duration(seconds: json['currentDuration']) : null;
     final isCompleted = json['isCompleted'] ?? json['isEnded'];
-    return IntervalResult(type: type, duration: duration, isCompleted: isCompleted);
+    return IntervalResult(type: type, duration: duration, currentDuration: currentDuration, isCompleted: isCompleted);
   }
 }

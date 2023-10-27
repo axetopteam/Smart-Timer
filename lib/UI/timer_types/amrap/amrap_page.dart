@@ -3,9 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
-import 'package:smart_timer/UI/timer/timer_type.dart';
+import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
@@ -92,15 +92,15 @@ class _AmrapPageState extends State<AmrapPage> {
               sliver: SliverToBoxAdapter(
                 child: ElevatedButton(
                   onPressed: () {
-                    GetIt.I<SdkService>().saveTrainingToHistory(
-                      finishAt: DateTime.now(),
-                      name: '',
-                      description: '',
-                      workoutSettings: WorkoutSettings(amrap: AmrapSettings(amraps: amrapState.amraps)),
-                      timerType: TimerType.amrap,
-                      result: amrapState.workout.toResult(),
-                      isFinished: true,
-                    );
+                    context.read<HistoryState>().saveTraining(
+                          finishAt: DateTime.now(),
+                          name: '',
+                          description: '',
+                          workoutSettings: WorkoutSettings(amrap: AmrapSettings(amraps: amrapState.amraps)),
+                          timerType: TimerType.amrap,
+                          result: amrapState.workout.toResult(),
+                          isFinished: true,
+                        );
                   },
                   child: Text('Add To History'),
                 ),

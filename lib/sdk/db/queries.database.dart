@@ -26,7 +26,7 @@ extension DatabaseQueries on AppDatabase {
     return (delete(favoriteWorkouts)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<int> saveTrainingToHistory({
+  Future<TrainingHistoryRawData> saveTrainingToHistory({
     required int finishAt,
     required String name,
     required String description,
@@ -37,18 +37,22 @@ extension DatabaseQueries on AppDatabase {
     required bool isFinished,
   }) {
     final entry = TrainingHistoryCompanion.insert(
-        finishAt: finishAt,
-        name: Value(name),
-        description: Value(description),
-        wellBeing: Value(wellBeing),
-        workout: workout,
-        timerType: timerType,
-        result: result,
-        isFinished: isFinished);
-    return into(trainingHistory).insert(entry);
+      finishAt: finishAt,
+      name: Value(name),
+      description: Value(description),
+      wellBeing: Value(wellBeing),
+      workout: workout,
+      timerType: timerType,
+      result: result,
+      isFinished: isFinished,
+    );
+    return into(trainingHistory).insertReturning(entry);
   }
 
   Future<List<TrainingHistoryRawData>> fetchHistory({int offset = 0, int limit = 10}) {
-    return (select(trainingHistory)..limit(limit, offset: offset)).get();
+    return (select(trainingHistory)
+          ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)])
+          ..limit(limit, offset: offset))
+        .get();
   }
 }

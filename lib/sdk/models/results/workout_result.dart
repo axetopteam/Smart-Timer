@@ -6,6 +6,15 @@ class WorkoutResult implements WorkoutResultInterface {
   final List<WorkoutResultInterface> sets;
 
   @override
+  Duration get totalDuration {
+    var res = const Duration();
+    for (var element in sets) {
+      res += element.totalDuration;
+    }
+    return res;
+  }
+
+  @override
   Map<String, dynamic> toJson() {
     List? dataList;
 
