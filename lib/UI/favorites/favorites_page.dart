@@ -21,6 +21,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
       body: StreamBuilder(
         stream: _sdk.favoritesStream(),
@@ -28,43 +30,51 @@ class _FavouritesPageState extends State<FavouritesPage> {
           final favorites = snapshot.data;
 
           if (favorites != null) {
-            return ListView.separated(
-              itemCount: favorites.length,
-              separatorBuilder: (context, index) => const Divider(height: 12, thickness: 2),
-              itemBuilder: (ctx, index) {
-                final favorite = favorites[index];
-                return Slidable(
-                  endActionPane: ActionPane(
-                    motion: const DrawerMotion(),
-                    children: [
-                      SlidableAction(
-                        // An action can be bigger than the others.
-                        onPressed: (_) {
-                          _sdk.deleteFavorite(favorite.id);
-                        },
-                        backgroundColor: context.color.warning,
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
+            return CustomScrollView(
+              slivers: [
+                CupertinoSliverNavigationBar(
+                  largeTitle: Text('Favorites'),
+                ),
+                SliverList.separated(
+                  itemCount: favorites.length,
+                  separatorBuilder: (_, __) => const Divider(height: 12, thickness: 2),
+                  itemBuilder: (ctx, index) {
+                    final favorite = favorites[index];
+                    return Slidable(
+                      endActionPane: ActionPane(
+                        motion: const DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            // An action can be bigger than the others.
+                            onPressed: (_) {
+                              _sdk.deleteFavorite(favorite.id);
+                            },
+                            backgroundColor: context.color.warning,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  key: ValueKey(favorite.id),
-                  child: CupertinoListTile(
-                    leading: ColoredBox(
-                      color: favorite.type.workoutColor(context),
-                      child: const SizedBox.expand(),
-                    ),
-                    leadingToTitle: 12,
-                    onTap: () => onTap(favorite),
-                    title: Text(
-                      favorite.workoutSettings.description,
-                    ),
-                    subtitle: Text(favorite.name),
-                    // textColor: context.color.mainText,
-                  ),
-                );
-              },
+                      key: ValueKey(favorite.id),
+                      child: CupertinoListTile(
+                        leading: ColoredBox(
+                          color: favorite.type.workoutColor(context),
+                          child: const SizedBox.expand(),
+                        ),
+                        leadingToTitle: 12,
+                        onTap: () => onTap(favorite),
+                        title: Text(
+                          favorite.workoutSettings.description,
+                        ),
+                        subtitle: Text(favorite.name),
+                        // textColor: context.color.mainText,
+                      ),
+                    );
+                  },
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
+              ],
             );
           }
           return const CircularProgressIndicator.adaptive();

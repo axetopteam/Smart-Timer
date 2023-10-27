@@ -28,29 +28,28 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AutoTabsScaffold(
-        routes: _routes,
-        lazyLoad: false,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.pushRoute(const NewTimerRouter());
-          },
-          child: const Icon(CupertinoIcons.add),
-        ),
-        resizeToAvoidBottomInset: false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBuilder: (ctx, tabsRouter) => CupertinoTabBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (index) => tabsRouter.setActiveIndex(index),
-          activeColor: context.theme.iconTheme.color,
-          items: TabBarItem.values
-              .map((TabBarItem e) => BottomNavigationBarItem(
-                    icon: Icon(e.icon),
-                    label: e.label,
-                  ))
-              .toList(),
-        ),
+    return AutoTabsScaffold(
+      extendBody: true,
+      routes: _routes,
+      lazyLoad: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.pushRoute(const NewTimerRouter());
+        },
+        child: const Icon(CupertinoIcons.add),
+      ),
+      resizeToAvoidBottomInset: false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBuilder: (ctx, tabsRouter) => CupertinoTabBar(
+        currentIndex: tabsRouter.activeIndex,
+        onTap: (index) => tabsRouter.setActiveIndex(index),
+        activeColor: context.theme.iconTheme.color,
+        items: TabBarItem.values
+            .map((TabBarItem e) => BottomNavigationBarItem(
+                  icon: Icon(e.icon),
+                  label: e.label,
+                ))
+            .toList(),
       ),
     );
   }

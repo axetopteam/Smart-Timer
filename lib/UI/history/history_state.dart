@@ -28,9 +28,10 @@ abstract class _HistoryState with Store {
   @action
   Future<void> loadMore({bool isRefresh = false}) async {
     if ((_isLoading || !canLoadMore) && !isRefresh) return;
+    error = null;
     _isLoading = true;
     try {
-      final response = await _sdk.fetchHistory(limit: _pageSize, offset: records.length);
+      final response = await _sdk.fetchHistory(limit: _pageSize, offset: isRefresh ? 0 : records.length);
 
       if (isRefresh) {
         records = ObservableList.of(response);

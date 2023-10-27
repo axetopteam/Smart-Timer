@@ -16,7 +16,7 @@ class IntervalResult implements WorkoutResultInterface {
 
   @override
   Duration get totalDuration {
-    return (currentDuration) ?? const Duration();
+    return (duration ?? currentDuration) ?? const Duration();
   }
 
   @override
