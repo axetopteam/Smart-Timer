@@ -1,8 +1,9 @@
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 
 sealed class Interval {
-  Interval({required this.type});
+  Interval({required this.type, this.isLast = false});
   final IntervalType type;
+  final bool isLast;
   Duration currentTime({required DateTime startTime, required DateTime now});
 }
 
@@ -20,7 +21,7 @@ extension IntervalX on Interval {
 }
 
 class FiniteInterval extends Interval {
-  FiniteInterval({required this.duration, required super.type});
+  FiniteInterval({required this.duration, required super.type, super.isLast});
   final Duration duration;
 
   @override
@@ -31,7 +32,7 @@ class FiniteInterval extends Interval {
 }
 
 class TimeCapInterval extends Interval {
-  TimeCapInterval({required this.timeCap, required super.type});
+  TimeCapInterval({required this.timeCap, required super.type, super.isLast});
   final Duration timeCap;
 
   @override
@@ -42,7 +43,7 @@ class TimeCapInterval extends Interval {
 }
 
 class InfiniteInterval extends Interval {
-  InfiniteInterval({required super.type});
+  InfiniteInterval({required super.type, super.isLast});
 
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {

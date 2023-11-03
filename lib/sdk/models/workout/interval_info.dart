@@ -1,3 +1,5 @@
+import 'package:smart_timer/services/audio_service.dart';
+
 import '../workout_interval_type.dart';
 
 sealed class TimerStatus {
@@ -17,11 +19,13 @@ class RunStatus extends TimerStatus {
     required this.time,
     required this.type,
     this.totalDuration,
+    this.soundType,
   });
 
   final Duration time;
   final IntervalType type;
   final Duration? totalDuration;
+  final SoundType? soundType;
 
   double? get shareOfTotalDuration {
     final currentIntervalDurationInMilliseconds = totalDuration?.inMilliseconds;

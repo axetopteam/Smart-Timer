@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:smart_timer/services/audio_service.dart';
 
 import '../workout_interval_type.dart';
 import 'interval.dart';
@@ -35,6 +36,16 @@ class Workout extends Equatable {
       return countdownInterval.currentTime(startTime: start, now: now) == Duration.zero;
     }
     return false;
+  }
+
+  Duration? get totalDuration {
+    var sum = Duration.zero;
+    for (var interval in intervals) {
+      final totalDuration = interval.totalDuration;
+      if (totalDuration == null) return null;
+      sum += totalDuration;
+    }
+    return sum;
   }
 
   Workout startPause(DateTime time) {
@@ -96,6 +107,7 @@ class WorkoutCalculator {
           time: time,
           type: interval.type,
           totalDuration: interval.totalDuration,
+          soundType: _checkSound(interval, time),
         );
         print('#WorkoutCalculator# ${status.time}, ${status.totalDuration}, ${status.shareOfTotalDuration}}');
         return status;
@@ -110,6 +122,50 @@ class WorkoutCalculator {
       }
     }
     return DoneStatus();
+  }
+
+  static const _threeSeconds = Duration(seconds: 3);
+  static const _tenSeconds = Duration(seconds: 10);
+  static const _delta = Duration(milliseconds: 100);
+
+  static SoundType? _checkSound(Interval interval, Duration time) {
+    switch (interval) {
+      case FiniteInterval():
+        if (interval.totalDuration! > _threeSeconds && time == _threeSeconds) {
+          return SoundType.countdown;
+        }
+        if (interval.totalDuration! > _tenSeconds && time == _tenSeconds) {
+          return SoundType.tenSeconds;
+        }
+        if (interval.isLast && interval.totalDuration! - _delta == time) {
+          return SoundType.lastRound;
+        }
+      case TimeCapInterval():
+        if (interval.totalDuration! > _threeSeconds && interval.totalDuration! - _threeSeconds == time) {
+          return SoundType.countdown;
+        }
+        if (interval.totalDuration! > _tenSeconds && interval.totalDuration! - _tenSeconds == time) {
+          return SoundType.tenSeconds;
+        }
+        if (interval.isLast && time == Duration.zero + _delta) {
+          return SoundType.lastRound;
+        }
+
+      case InfiniteInterval():
+        if (interval.isLast && time == Duration.zero + _delta) {
+          return SoundType.lastRound;
+        }
+    }
+
+    final totalDuration = interval.totalDuration;
+    if (totalDuration != null && totalDuration > const Duration(seconds: 29)) {
+      if (time == Duration(seconds: (totalDuration.inSeconds / 2).round())) {
+        return SoundType.halfTime;
+      }
+    }
+
+    return null;
+    // if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown;
   }
 }
 

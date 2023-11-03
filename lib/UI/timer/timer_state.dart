@@ -66,7 +66,6 @@ abstract class TimerStateBase with Store {
 
     _workout = _workout.copyWith(startTime: roundedNow);
     timerSubscription = timeStream.listen((nowUtc) {
-      _playAudioIfNeeded(nowUtc);
       tick(nowUtc);
     });
   }
@@ -130,7 +129,8 @@ abstract class TimerStateBase with Store {
     // totalRestTime = finishTimeUtc?.difference(nowUtc);
     // print('#TIMER# $time, $currentIntervalDurationInMilliseconds, $partOfDuration');
 
-//
+    _playAudioIfNeeded(status);
+
     if (status is DoneStatus) {
       timerSubscription?.cancel();
       TimerCouterService().addNewTime(DateTime.now());
@@ -150,22 +150,25 @@ abstract class TimerStateBase with Store {
   }
 
   //sound
-  void _playAudioIfNeeded(DateTime dateTime) {
-    switch (reminders[dateTime]) {
-      case SoundType.countdown:
-        _audio.playCountdown();
-        break;
-      case SoundType.tenSeconds:
-        _audio.play10Seconds();
-        break;
-      case SoundType.lastRound:
-        _audio.playLastRound();
-        break;
-      case SoundType.halfTime:
-        _audio.playHalfTime();
-        break;
-      case null:
-        break;
+  void _playAudioIfNeeded(TimerStatus status) {
+    if (status is! RunStatus) return;
+    {
+      switch (status.soundType) {
+        case SoundType.countdown:
+          _audio.playCountdown();
+          break;
+        case SoundType.tenSeconds:
+          _audio.play10Seconds();
+          break;
+        case SoundType.lastRound:
+          _audio.playLastRound();
+          break;
+        case SoundType.halfTime:
+          _audio.playHalfTime();
+          break;
+        case null:
+          break;
+      }
     }
   }
 

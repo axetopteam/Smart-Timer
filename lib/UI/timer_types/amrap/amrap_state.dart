@@ -62,7 +62,8 @@ abstract class AmrapStateBase with Store {
     final List<Interval> intervals = [];
 
     for (int i = 0; i < amrapsCount; i++) {
-      final workInterval = FiniteInterval(duration: amraps[i].workTime, type: IntervalType.work);
+      final workInterval = FiniteInterval(
+          duration: amraps[i].workTime, type: IntervalType.work, isLast: amrapsCount > 1 && i == amrapsCount - 1);
       final restInterval = FiniteInterval(duration: amraps[i].restTime, type: IntervalType.rest);
       intervals.addAll([
         workInterval,
