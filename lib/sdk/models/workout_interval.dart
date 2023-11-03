@@ -41,7 +41,7 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
         _currentTime = isCountdown ? duration : const Duration(),
         restDuration = duration;
 
-  final WorkoutIntervalType type;
+  final IntervalType type;
   final bool isCountdown;
   final bool isReverse;
   final double reverseRatio;
@@ -51,14 +51,6 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
 
   Duration? duration;
   Duration? restDuration;
-
-  Duration? get endReminderStart {
-    if (isCountdown) {
-      return const Duration(seconds: 3);
-    } else {
-      return duration != null ? duration! - const Duration(seconds: 3) : null;
-    }
-  }
 
   @computed
   bool get isFirstSecond {
@@ -210,3 +202,59 @@ abstract class WorkoutIntervalBase with Store implements IntervalInterface {
     );
   }
 }
+
+// class WorkoutIntervalA implements Ide {
+//   WorkoutIntervalA(this.duration);
+//   final Duration? duration;
+//   Duration restTime(DateTime startTime, DateTime currentTime) {
+//     if(duration == null){
+
+//     }else {
+
+//     }
+//     return duration - (currentTime - startTime);
+//   }
+// }
+
+// class WorkoutIntervalB {
+//   Duration restTime(DateTime startTime, DateTime currentTime) {
+//     return (currentTime - startTime);
+//   }
+// }
+
+// class WorkoutIntervalC {
+//   double ratio;
+// }
+
+
+
+
+// Workout(){
+  
+//     List<WorkoutIntervalA | WorkoutIntervalB > intervals;
+
+// Map<> rounds;
+// }
+
+
+
+// class WorkoutCalculator {
+//   List<WorkoutIntervalA | WorkoutIntervalB > intervals;
+//   final  DateTime startTime;
+
+// Duration currentIntervalRestTime(DateTime currentTime){
+//  for(...){
+//  return interval[index].restTime();
+//  }
+// }
+
+
+
+// }
+
+
+
+
+
+
+

@@ -74,7 +74,7 @@ abstract class CustomizedStateBase with Store {
     for (int i = 0; i < sets.length; i++) {
       final intervals = sets[i]
           .map(
-            (duration) => WorkoutInterval(type: WorkoutIntervalType.work, duration: duration),
+            (duration) => WorkoutInterval(type: IntervalType.work, duration: duration),
           )
           .toList();
       final round = WorkoutSet(intervals);

@@ -11,9 +11,9 @@ import 'package:smart_timer/utils/duration.extension.dart';
 import '../timer_type.dart';
 
 class CompletedState extends StatefulWidget {
-  const CompletedState({required this.timerType, required this.workout, super.key});
+  const CompletedState({required this.timerType, super.key});
   final TimerType timerType;
-  final WorkoutSet workout;
+  // final WorkoutSet workout;
 
   @override
   State<CompletedState> createState() => _CompletedStateState();
@@ -67,9 +67,9 @@ class _CompletedStateState extends State<CompletedState> {
     switch (widget.timerType) {
       case TimerType.afap:
       case TimerType.workRest:
-        return SingleChildScrollView(
-          child: _buildSets(widget.workout),
-        );
+      // return SingleChildScrollView(
+      //   child: _buildSets(widget.workout),
+      // );
       case TimerType.amrap:
       case TimerType.emom:
       case TimerType.tabata:
@@ -82,7 +82,7 @@ class _CompletedStateState extends State<CompletedState> {
       (element) {
         if (element is WorkoutSet) {
           return element.sets
-              .firstWhere((interval) => interval is WorkoutInterval && interval.type == WorkoutIntervalType.work);
+              .firstWhere((interval) => interval is WorkoutInterval && interval.type == IntervalType.work);
         }
       },
     );

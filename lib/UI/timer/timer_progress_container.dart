@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/sdk/models/workout/interval_info.dart';
+import 'package:smart_timer/sdk/models/workout/workout.dart';
 
 import '../widgets/play_icon.dart';
-import 'timer_status.dart';
 
 class TimerProgressContainer extends StatefulWidget {
   const TimerProgressContainer({
     required this.color,
     required this.child,
-    // required this.partOfHeight,
     required this.timerStatus,
     required this.controller,
     Key? key,
@@ -16,7 +16,6 @@ class TimerProgressContainer extends StatefulWidget {
 
   final Color color;
   final Widget child;
-  // final double partOfHeight;
   final TimerStatus timerStatus;
   final AnimationController controller;
 
@@ -50,7 +49,7 @@ class _TimerProgressContainerState extends State<TimerProgressContainer> {
             },
           ),
           widget.child,
-          if (widget.timerStatus == TimerStatus.pause)
+          if (widget.timerStatus is PauseStatus)
             Container(
               width: double.infinity,
               height: double.infinity,

@@ -16,13 +16,12 @@ mixin _$AfapState on AfapStateBase, Store {
       (_$afapsCountComputed ??= Computed<int>(() => super.afapsCount,
               name: 'AfapStateBase.afapsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
+  Computed<Workout>? _$workoutComputed;
 
   @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'AfapStateBase.workout'))
-          .value;
+  Workout get workout => (_$workoutComputed ??=
+          Computed<Workout>(() => super.workout, name: 'AfapStateBase.workout'))
+      .value;
   Computed<WorkoutSettings>? _$settingsComputed;
 
   @override

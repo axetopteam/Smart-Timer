@@ -45,17 +45,17 @@ abstract class WorkRestStateBase with Store {
     );
   }
 
-  @computed
-  WorkoutSet get workout {
+  Workout get workout {
+    return Workout(intervals: []);
     WorkoutInterval work = WorkoutInterval(
       duration: null,
-      type: WorkoutIntervalType.work,
+      type: IntervalType.work,
       isCountdown: false,
     );
 
     WorkoutInterval rest = WorkoutInterval(
       duration: null,
-      type: WorkoutIntervalType.rest,
+      type: IntervalType.rest,
       isCountdown: true,
       isReverse: true,
       reverseRatio: sets[setIndex].ratio,
@@ -66,7 +66,7 @@ abstract class WorkRestStateBase with Store {
     final lastRound = WorkoutSet(
       [
         WorkoutInterval(
-          type: WorkoutIntervalType.work,
+          type: IntervalType.work,
           duration: null,
           isCountdown: false,
           isLast: sets[setIndex].roundsCount != 1,
@@ -77,7 +77,7 @@ abstract class WorkRestStateBase with Store {
     final List<WorkoutSet> rounds = List.generate(
         sets[setIndex].roundsCount, (index) => index != sets[setIndex].roundsCount - 1 ? round.copy() : lastRound);
 
-    return WorkoutSet(rounds, descriptionSolver: _setDescriptionSolver);
+    // return WorkoutSet(rounds, descriptionSolver: _setDescriptionSolver);
   }
 
   @computed

@@ -16,11 +16,11 @@ mixin _$AmrapState on AmrapStateBase, Store {
       (_$amrapsCountComputed ??= Computed<int>(() => super.amrapsCount,
               name: 'AmrapStateBase.amrapsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
+  Computed<Workout>? _$workoutComputed;
 
   @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
+  Workout get workout =>
+      (_$workoutComputed ??= Computed<Workout>(() => super.workout,
               name: 'AmrapStateBase.workout'))
           .value;
   Computed<WorkoutSettings>? _$settingsComputed;

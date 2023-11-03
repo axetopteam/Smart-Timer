@@ -6,14 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/timer/timer_state.dart';
 import 'package:smart_timer/UI/timer/widgets/complete_button.dart';
 import 'package:smart_timer/UI/timer/widgets/completed_state.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -22,7 +20,6 @@ import '../history/history_state.dart';
 import '../timer_types/timer_settings_interface.dart';
 import '../widgets/play_icon.dart';
 import 'timer_progress_container.dart';
-import 'timer_status.dart';
 
 @RoutePage()
 class TimerPage extends StatefulWidget {
@@ -41,7 +38,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
   late final AnimationController controller;
 
   late final ReactionDisposer timeReactionDisposer;
-  late final ReactionDisposer intervalReactionDisposer;
 
   var runAnimation = true;
   final curve = Curves.linear;
@@ -63,25 +59,28 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     );
 
     timeReactionDisposer = reaction(
-      (p0) => state.currentInterval.currentTime,
-      (p0) {
-        final currentIntervalDurationinMilliseconds = state.currentInterval.duration?.inMilliseconds;
-        final partOfDuration = currentIntervalDurationinMilliseconds != null
-            ? (currentIntervalDurationinMilliseconds - (state.currentTime?.inMilliseconds ?? 0)) /
-                currentIntervalDurationinMilliseconds
-            : 0.0;
-        if (runAnimation && currentIntervalDurationinMilliseconds != null) {
-          controller.animateTo(partOfDuration, duration: const Duration(milliseconds: 100));
+      (p0) => state.status,
+      (status) {
+        switch (status) {
+          case ReadyStatus():
+            controller.animateTo(0, duration: const Duration(milliseconds: 500));
+          case RunStatus():
+            final shareOfTotalDuration = status.shareOfTotalDuration;
+            print('#TIMER# shareOfTotalDuration: $shareOfTotalDuration');
+            if (shareOfTotalDuration != null) {
+              if (shareOfTotalDuration == 0.0) {
+                runAnimation = false;
+                controller.animateTo(0, duration: const Duration(milliseconds: 500));
+                Future.delayed(const Duration(milliseconds: 500), () => runAnimation = true);
+              } else if (runAnimation) {
+                controller.animateTo(shareOfTotalDuration, duration: const Duration(milliseconds: 100));
+              }
+            }
+            break;
+          case PauseStatus():
+          case DoneStatus():
+            break;
         }
-      },
-    );
-
-    intervalReactionDisposer = reaction(
-      (p0) => state.currentInterval,
-      (p0) {
-        runAnimation = false;
-        controller.animateTo(0, duration: const Duration(milliseconds: 500));
-        Future.delayed(const Duration(milliseconds: 500), () => runAnimation = true);
       },
     );
 
@@ -90,30 +89,29 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   @override
   void dispose() async {
-    if (state.currentState == TimerStatus.done) {
+    if (state.status is DoneStatus) {
       _requestAppReview();
     }
 
     timerSubscription?.cancel();
     WakelockPlus.disable();
-    if (state.currentState != TimerStatus.ready) {
-      context.read<HistoryState>().saveTraining(
-            finishAt: DateTime.now(), //TODO: подумать какой время сохранить
-            name: '',
-            description: '',
-            workoutSettings: widget.timerSettings.settings,
-            timerType: widget.timerSettings.type,
-            result: state.workout.toResult(),
-            isFinished: state.currentState == TimerStatus.done,
-          );
-    }
+    // if (state.currentState != TimerStatus.ready) {
+    //   context.read<HistoryState>().saveTraining(
+    //         finishAt: DateTime.now(), //TODO: подумать какой время сохранить
+    //         name: '',
+    //         description: '',
+    //         workoutSettings: widget.timerSettings.settings,
+    //         timerType: widget.timerSettings.type,
+    //         result: state.workout.toResult(),
+    //         isFinished: state.currentState == TimerStatus.done,
+    //       );
+    // }
     AnalyticsManager.eventTimerClosed
-        .setProperty('status', state.currentState.name)
+        .setProperty('status', state.status.name)
         .setProperty('timer_type', state.timerType.name)
         .commit();
 
     timeReactionDisposer();
-    intervalReactionDisposer();
     controller.dispose();
 
     state.close();
@@ -125,7 +123,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (state.currentState != TimerStatus.ready && state.currentState != TimerStatus.done) {
+        if (state.status is! ReadyStatus && state.status is! DoneStatus) {
           final res = await _showConfirmExitAlert();
           return res ?? false;
         }
@@ -152,12 +150,8 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Observer(
-                builder: (ctx) => state.currentState == TimerStatus.done
-                    ? CompletedState(
-                        timerType: state.timerType,
-                        workout: state.workout,
-                      )
-                    : _buildTimerContainer(),
+                builder: (ctx) =>
+                    state.status is DoneStatus ? CompletedState(timerType: state.timerType) : _buildTimerContainer(),
               ),
             ),
           ),
@@ -173,26 +167,26 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
         Expanded(
           flex: 12,
           child: Observer(builder: (context) {
-            final currentTime = state.currentTime;
+            final status = state.status;
             return GestureDetector(
               onTap: () {
-                switch (state.currentState) {
-                  case TimerStatus.ready:
+                switch (status) {
+                  case ReadyStatus():
                     state.start();
                     break;
-                  case TimerStatus.run:
+                  case RunStatus():
                     state.pause();
                     break;
-                  case TimerStatus.pause:
+                  case PauseStatus():
                     state.resume();
                     break;
-                  case TimerStatus.done:
+                  case DoneStatus():
                     break;
                 }
               },
               child: TimerProgressContainer(
                 color: state.timerType.workoutColor(context),
-                timerStatus: state.currentState,
+                timerStatus: state.status,
                 controller: controller,
                 child: SizedBox.expand(
                   child: Column(
@@ -203,16 +197,27 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Observer(builder: (_) {
-                            final currentInterval = state.currentInterval;
-                            return Text(
-                              currentInterval.type.redableName,
-                              style: context.textTheme.titleSmall,
-                            );
+                            final status = state.status;
+                            switch (status) {
+                              case ReadyStatus():
+                              case DoneStatus():
+                                return const SizedBox();
+                              case RunStatus():
+                                return Text(
+                                  status.type.redableName,
+                                  style: context.textTheme.titleSmall,
+                                );
+                              case PauseStatus():
+                                return Text(
+                                  status.type.redableName,
+                                  style: context.textTheme.titleSmall,
+                                );
+                            }
                           }),
                           const SizedBox(height: 10),
-                          _buildTime(currentTime),
+                          _buildTime(status),
                           const SizedBox(height: 10),
-                          _buildRoudsInfo(),
+                          // _buildRoudsInfo(),
                         ],
                       ),
                       Expanded(
@@ -220,12 +225,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _totalTime(),
-                            !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
-                                ? CompleteButton(
-                                    action: state.endCurrentInterval,
-                                    iconColor: state.timerType.workoutColor(context),
-                                  )
-                                : const SizedBox(),
+                            // !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
+                            //     ? CompleteButton(
+                            //         action: state.endCurrentInterval,
+                            //         iconColor: state.timerType.workoutColor(context),
+                            //       )
+                            //     : const SizedBox(),
                           ],
                         ),
                       )
@@ -243,8 +248,8 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   Widget _bottomClickableText() {
     return Observer(builder: (context) {
-      switch (state.currentState) {
-        case TimerStatus.run:
+      switch (state.status) {
+        case RunStatus():
           return TextButton(
             onPressed: () => state.pause(),
             child: Text(
@@ -252,7 +257,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
               style: context.textTheme.bodyMedium,
             ),
           );
-        case TimerStatus.pause:
+        case PauseStatus():
           return TextButton(
             onPressed: () => state.resume(),
             child: Text(
@@ -260,35 +265,51 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
               style: context.textTheme.bodyMedium,
             ),
           );
-        case TimerStatus.done:
-        case TimerStatus.ready:
+        case DoneStatus():
+        case ReadyStatus():
           return const SizedBox();
       }
     });
   }
 
-  Widget _buildTime(Duration? currentTime) {
+  Widget _buildTime(TimerStatus status) {
     return SizedBox(
       height: PlayIcon.size,
-      child: Observer(
+      child: Builder(
         builder: (_) {
-          final currentInterval = state.currentInterval;
-          bool isFirstSecond = currentInterval.isFirstSecond;
-          String text;
-          if (currentInterval.type == WorkoutIntervalType.countdown) {
-            if (state.currentState != TimerStatus.run) {
+          switch (status) {
+            case ReadyStatus():
               return const PlayIcon();
-            } else {
-              text = currentTime != null ? currentTime.durationToString(isCountdown: true) : '– –';
-            }
-          } else {
-            text = isFirstSecond
-                ? currentInterval.type.redableName
-                : currentTime != null
-                    ? currentTime.durationToString(isCountdown: currentInterval.isCountdown)
-                    : '– –';
+            case RunStatus():
+              return Text(
+                status.time.durationToString(isCountdown: true),
+                style: context.textTheme.headlineSmall,
+              );
+            case PauseStatus():
+              return Text(
+                status.time.durationToString(isCountdown: true),
+                style: context.textTheme.headlineSmall,
+              );
+            case DoneStatus():
+              return const SizedBox();
           }
-          return Text(text, style: context.textTheme.headlineSmall);
+          // final currentInterval = state.currentInterval;
+          // bool isFirstSecond = currentInterval.isFirstSecond;
+          // String text;
+          // if (currentInterval.type == WorkoutIntervalType.countdown) {
+          //   if (state.currentState != TimerStatus.run) {
+          //     return const PlayIcon();
+          //   } else {
+          //     text = currentTime != null ? currentTime.durationToString(isCountdown: true) : '– –';
+          //   }
+          // } else {
+          //   text = isFirstSecond
+          //       ? currentInterval.type.redableName
+          //       : currentTime != null
+          //           ? currentTime.durationToString(isCountdown: currentInterval.isCountdown)
+          //           : '– –';
+          // }
+          // return Text(text, style: context.textTheme.headlineSmall);
         },
       ),
     );
@@ -310,15 +331,15 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     }
   }
 
-  Widget _buildRoudsInfo() {
-    return Observer(builder: (_) {
-      return Text(
-        state.workout.currentStateDescription ?? '',
-        style: context.textTheme.displayMedium,
-        textAlign: TextAlign.center,
-      );
-    });
-  }
+  // Widget _buildRoudsInfo() {
+  //   return Observer(builder: (_) {
+  //     return Text(
+  //       state.workout.currentStateDescription ?? '',
+  //       style: context.textTheme.displayMedium,
+  //       textAlign: TextAlign.center,
+  //     );
+  //   });
+  // }
 
   void _requestAppReview() {
     Future.delayed(const Duration(seconds: 1), AppReviewService().requestReviewIfAvailable);

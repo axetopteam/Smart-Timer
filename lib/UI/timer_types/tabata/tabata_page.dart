@@ -55,7 +55,7 @@ class _TabataPageState extends State<TabataPage> {
         appBarTitle: LocaleKeys.tabata_title.tr(),
         subtitle: LocaleKeys.tabata_description.tr(),
         scrollController: _scroolController,
-        workout: tabataState.workout,
+        // workout: tabataState.workout,
         addToFavorites: tabataState.saveToFavorites,
         onStartPressed: () {
           context.router.push(TimerRoute(timerSettings: tabataState));

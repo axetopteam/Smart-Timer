@@ -66,7 +66,9 @@ abstract class EmomStateBase with Store {
   }
 
   @computed
-  WorkoutSet get workout {
+  Workout get workout {
+    return Workout(intervals: []);
+
     List<WorkoutSet> sets = [];
     for (var i = 0; i < emomsCount; i++) {
       final emom = emoms[i];
@@ -74,14 +76,14 @@ abstract class EmomStateBase with Store {
         emom.roundsCount,
         (index) => WorkoutInterval(
           duration: emom.workTime,
-          type: WorkoutIntervalType.work,
+          type: IntervalType.work,
           isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
         ),
       );
       if (i != emomsCount - 1) {
         intervals.add(WorkoutInterval(
           duration: emom.restAfterSet,
-          type: WorkoutIntervalType.rest,
+          type: IntervalType.rest,
         ));
       }
       String? roundDescriptionSolver(int currentIndex) =>
@@ -92,7 +94,7 @@ abstract class EmomStateBase with Store {
       sets.add(set);
     }
 
-    return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
+    // return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
   }
 
   @computed

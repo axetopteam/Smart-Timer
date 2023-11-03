@@ -69,25 +69,27 @@ abstract class AfapStateBase with Store {
   }
 
   @computed
-  WorkoutSet get workout {
+  Workout get workout {
+    return Workout(intervals: []);
+
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < afapsCount; i++) {
       final afap = afaps[i];
       final set = WorkoutSet(
         [
           WorkoutInterval(
-            type: WorkoutIntervalType.work,
+            type: IntervalType.work,
             duration: afap.noTimeCap ? null : afap.timeCap,
             isCountdown: false,
             isLast: afapsCount != 1 && i == afapsCount - 1,
           ),
-          if (i != afapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: afap.restTime),
+          if (i != afapsCount - 1) WorkoutInterval(type: IntervalType.rest, duration: afap.restTime),
         ],
       );
       sets.add(set);
     }
 
-    return WorkoutSet(sets, descriptionSolver: _despriptionSolver);
+    // return WorkoutSet(sests, descriptionSolver: _despriptionSolver);
   }
 
   @computed

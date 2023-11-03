@@ -16,13 +16,12 @@ mixin _$EmomState on EmomStateBase, Store {
       (_$emomsCountComputed ??= Computed<int>(() => super.emomsCount,
               name: 'EmomStateBase.emomsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
+  Computed<Workout>? _$workoutComputed;
 
   @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
-              name: 'EmomStateBase.workout'))
-          .value;
+  Workout get workout => (_$workoutComputed ??=
+          Computed<Workout>(() => super.workout, name: 'EmomStateBase.workout'))
+      .value;
   Computed<WorkoutSettings>? _$settingsComputed;
 
   @override

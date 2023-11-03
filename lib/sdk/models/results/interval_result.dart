@@ -9,7 +9,7 @@ class IntervalResult implements WorkoutResultInterface {
     required this.currentDuration,
     required this.isCompleted,
   });
-  final WorkoutIntervalType type;
+  final IntervalType type;
   final Duration? duration;
   final Duration? currentDuration;
   final bool isCompleted;
@@ -33,7 +33,7 @@ class IntervalResult implements WorkoutResultInterface {
   }
 
   factory IntervalResult.fromJson(Map<String, dynamic> json) {
-    final type = WorkoutIntervalType.values.firstWhere((element) => element.name == json['type']);
+    final type = IntervalType.values.firstWhere((element) => element.name == json['type']);
     final duration = json['duration'] != null ? Duration(seconds: json['duration']) : null;
     final currentDuration = json['currentDuration'] != null ? Duration(seconds: json['currentDuration']) : null;
     final isCompleted = json['isCompleted'] ?? json['isEnded'];

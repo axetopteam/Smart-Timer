@@ -71,14 +71,16 @@ abstract class TabataStoreBase with Store {
   }
 
   @computed
-  WorkoutSet get workout {
+  Workout get workout {
+    return Workout(intervals: []);
+
     final sets = <WorkoutSet>[];
     for (var i = 0; i < tabatsCount; i++) {
       final tabata = tabats[i];
 
-      final workInterval = WorkoutInterval(duration: tabata.workTime, type: WorkoutIntervalType.work);
-      final restInterval = WorkoutInterval(duration: tabata.restTime, type: WorkoutIntervalType.rest);
-      final restAfterSet = WorkoutInterval(duration: tabata.restAfterSet, type: WorkoutIntervalType.rest);
+      final workInterval = WorkoutInterval(duration: tabata.workTime, type: IntervalType.work);
+      final restInterval = WorkoutInterval(duration: tabata.restTime, type: IntervalType.rest);
+      final restAfterSet = WorkoutInterval(duration: tabata.restAfterSet, type: IntervalType.rest);
 
       final rounds = <WorkoutSet>[];
       for (var j = 0; j < tabata.roundsCount; j++) {
@@ -97,7 +99,7 @@ abstract class TabataStoreBase with Store {
 
     String setDescriptionSolver(int currentIndex) => 'SET $currentIndex/$tabatsCount';
 
-    return WorkoutSet(sets, descriptionSolver: setDescriptionSolver);
+    // return WorkoutSet(sets, descriptionSolver: setDescriptionSolver);
   }
 
   @computed

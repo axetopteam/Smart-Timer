@@ -55,7 +55,7 @@ class _EmomPageState extends State<EmomPage> {
         appBarTitle: LocaleKeys.emom_title.tr(),
         subtitle: LocaleKeys.emom_description.tr(),
         scrollController: _scroolController,
-        workout: emomState.workout,
+        // workout: emomState.workout,
         addToFavorites: emomState.saveToFavorites,
         onStartPressed: () {
           context.router.push(TimerRoute(timerSettings: emomState));

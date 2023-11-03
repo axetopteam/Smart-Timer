@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -59,23 +58,21 @@ abstract class AmrapStateBase with Store {
   }
 
   @computed
-  WorkoutSet get workout {
-    final List<WorkoutSet> sets = [];
+  Workout get workout {
+    final List<Interval> intervals = [];
+
     for (int i = 0; i < amrapsCount; i++) {
-      final amrap = WorkoutSet(
-        [
-          WorkoutInterval(
-            type: WorkoutIntervalType.work,
-            duration: amraps[i].workTime,
-            isLast: amrapsCount != 1 && i == amrapsCount - 1,
-          ),
-          if (i != amrapsCount - 1) WorkoutInterval(type: WorkoutIntervalType.rest, duration: amraps[i].restTime),
-        ],
-      );
-      sets.add(amrap);
+      final workInterval = FiniteInterval(duration: amraps[i].workTime, type: IntervalType.work);
+      final restInterval = FiniteInterval(duration: amraps[i].restTime, type: IntervalType.rest);
+      intervals.addAll([
+        workInterval,
+        if (i != amrapsCount - 1) restInterval,
+      ]);
     }
 
-    return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
+    return Workout(intervals: intervals);
+
+    // return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
   }
 
   @computed

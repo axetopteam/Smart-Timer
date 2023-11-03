@@ -59,7 +59,7 @@ class _AmrapPageState extends State<AmrapPage> {
         appBarTitle: LocaleKeys.amrap_title.tr(),
         subtitle: LocaleKeys.amrap_description.tr(),
         scrollController: _scroolController,
-        workout: amrapState.workout,
+        // workout: amrapState.workout,
         addToFavorites: amrapState.saveToFavorites,
         onStartPressed: () {
           context.router.push(TimerRoute(timerSettings: amrapState));
@@ -92,15 +92,15 @@ class _AmrapPageState extends State<AmrapPage> {
               sliver: SliverToBoxAdapter(
                 child: ElevatedButton(
                   onPressed: () {
-                    context.read<HistoryState>().saveTraining(
-                          finishAt: DateTime.now(),
-                          name: '',
-                          description: '',
-                          workoutSettings: WorkoutSettings(amrap: AmrapSettings(amraps: amrapState.amraps)),
-                          timerType: TimerType.amrap,
-                          result: amrapState.workout.toResult(),
-                          isFinished: true,
-                        );
+                    // context.read<HistoryState>().saveTraining(
+                    //       finishAt: DateTime.now(),
+                    //       name: '',
+                    //       description: '',
+                    //       workoutSettings: WorkoutSettings(amrap: AmrapSettings(amraps: amrapState.amraps)),
+                    //       timerType: TimerType.amrap,
+                    //       result: amrapState.workout.toResult(),
+                    //       isFinished: true,
+                    //     );
                   },
                   child: Text('Add To History'),
                 ),

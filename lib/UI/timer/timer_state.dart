@@ -1,16 +1,16 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
+import 'package:smart_timer/sdk/models/workout/workout.dart';
+
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
-
-import 'timer_status.dart';
 
 part 'timer_state.g.dart';
 
@@ -18,31 +18,30 @@ class TimerState = TimerStateBase with _$TimerState;
 
 abstract class TimerStateBase with Store {
   TimerStateBase({
-    required this.workout,
+    required Workout workout,
     required this.timerType,
-  }) {
+  }) : _workout = workout {
     initialize();
   }
-
-  final WorkoutSet workout;
   final TimerType timerType;
-
   late final AudioService _audio;
-
   final _appProperties = AppProperties();
+
+  Workout _workout;
+
+  @observable
+  TimerStatus status = ReadyStatus();
+
+  @observable
+  Duration? totalRestTime;
 
   void initialize() {
     _audio = AudioService();
     final soundOn = _appProperties.soundOn;
     this.soundOn = soundOn;
     _audio.switchSoundOnOff(soundOn);
-    countdownInterval = WorkoutInterval(
-      type: WorkoutIntervalType.countdown,
-      duration: Duration(seconds: _appProperties.countdownSeconds),
-    );
+    _workout = _workout.addCountdown(Duration(seconds: _appProperties.countdownSeconds));
   }
-
-  late final WorkoutInterval countdownInterval;
 
   final timeStream = Stream.periodic(
     const Duration(milliseconds: 100),
@@ -54,97 +53,92 @@ abstract class TimerStateBase with Store {
 
   StreamSubscription? timerSubscription;
 
-  @observable
-  var currentState = TimerStatus.ready;
-
-  @computed
-  WorkoutInterval get currentInterval => !countdownInterval.isEnded ? countdownInterval : workout.currentInterval;
-
   Map<DateTime, SoundType> get reminders {
-    return workout.reminders..addAll(!countdownInterval.isEnded ? countdownInterval.reminders : {});
+    return {};
+    // return workout.reminders..addAll(!countdownInterval.isEnded ? countdownInterval.reminders : {});
   }
 
   @action
   void start() {
+    print('#TimerState# start timer');
     AnalyticsManager.eventTimerStarted.setProperty('timerType', timerType.name).commit();
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
-    currentState = TimerStatus.run;
-    countdownInterval.start(roundedNow);
-    workout.start(countdownInterval.finishTimeUtc!);
-
+    _workout = _workout.copyWith(startTime: roundedNow);
     timerSubscription = timeStream.listen((nowUtc) {
       _playAudioIfNeeded(nowUtc);
       tick(nowUtc);
     });
   }
 
-  @computed
-  Duration? get currentTime {
-    if (!countdownInterval.isEnded) {
-      return countdownInterval.currentTime;
-    } else {
-      return workout.currentTime;
-    }
-  }
-
-  @observable
-  Duration? totalRestTime;
-
   @action
   void pause() {
-    timerSubscription?.pause();
-    workout.pause();
-    _audio.pauseIfNeeded();
-    if (!countdownInterval.isEnded) {
-      countdownInterval.reset();
-      currentState = TimerStatus.ready;
-    } else {
-      currentState = TimerStatus.pause;
+    print('#TimerState# pause timer');
+    final currentStatus = status;
+    if (currentStatus is RunStatus) {
+      final roundedNow = DateTime.now().toUtc().roundToSeconds();
+      timerSubscription?.pause();
+      _workout = _workout.startPause(roundedNow);
+      _audio.pauseIfNeeded();
+      status = PauseStatus(time: currentStatus.time, type: currentStatus.type);
+
+      if (!_workout.isCountdownCompleted(now: roundedNow)) {
+        print('#TimerState# reser timer');
+        _workout = _workout.reset();
+        status = ReadyStatus();
+      }
+      //TODO: сброс таймера если не закончился обратный отсчет
+      // if (!countdownInterval.isEnded) {
+      //   countdownInterval.reset();
+      //   currentState = TimerStatus.ready;
+      // } else {
+      //   currentState = TimerStatus.pause;
+      // }
+      AnalyticsManager.eventTimerPaused.commit();
     }
-    AnalyticsManager.eventTimerPaused.commit();
   }
 
   @action
   void resume() {
+    print('#TimerState# resume timer');
+
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
     _audio.resumeIfNeeded();
-    if (!countdownInterval.isEnded) {
-      countdownInterval.start(roundedNow);
-      workout.start(countdownInterval.finishTimeUtc!);
-    } else {
-      workout.start(roundedNow);
-    }
+    _workout = _workout.endPause(roundedNow);
+    // if (!countdownInterval.isEnded) {
+    //   countdownInterval.start(roundedNow);
+    //   workout.start(countdownInterval.finishTimeUtc!);
+    // } else {
+    //   workout.start(roundedNow);
+    // }
 
-    currentState = TimerStatus.run;
     timerSubscription?.resume();
     AnalyticsManager.eventTimerResumed.commit();
   }
 
   void endCurrentInterval() {
-    workout.setDuration();
+    // workout.setDuration();
     AnalyticsManager.eventTimerRoundCompleted.commit();
   }
 
   @action
   void tick(DateTime nowUtc) {
-    if (!countdownInterval.isEnded) {
-      countdownInterval.tick(nowUtc);
-    } else {
-      workout.tick(nowUtc);
-      final finishTimeUtc = workout.finishTimeUtc;
-      totalRestTime = finishTimeUtc?.difference(nowUtc);
+    if (_workout.startTime == null) return;
+    status = WorkoutCalculator.currentIntervalInfo(
+        now: nowUtc, startTime: _workout.startTime!, intervals: _workout.intervals, pauses: _workout.pauses);
+    // final finishTimeUtc = workout.intervals.last.;
+    // totalRestTime = finishTimeUtc?.difference(nowUtc);
+    // print('#TIMER# $time, $currentIntervalDurationInMilliseconds, $partOfDuration');
 
-      if (workout.isEnded) {
-        currentState = TimerStatus.done;
-        timerSubscription?.cancel();
-        TimerCouterService().addNewTime(DateTime.now());
+//
+    if (status is DoneStatus) {
+      timerSubscription?.cancel();
+      TimerCouterService().addNewTime(DateTime.now());
 
-        AnalyticsManager.eventTimerFinished
-            .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
-            .setProperty('timer_type', timerType.name)
-            .commit();
-      }
+      AnalyticsManager.eventTimerFinished
+          .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
+          .setProperty('timer_type', timerType.name)
+          .commit();
     }
   }
 

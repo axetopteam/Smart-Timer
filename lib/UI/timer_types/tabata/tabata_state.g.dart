@@ -16,11 +16,11 @@ mixin _$TabataState on TabataStoreBase, Store {
       (_$tabatsCountComputed ??= Computed<int>(() => super.tabatsCount,
               name: 'TabataStoreBase.tabatsCount'))
           .value;
-  Computed<WorkoutSet>? _$workoutComputed;
+  Computed<Workout>? _$workoutComputed;
 
   @override
-  WorkoutSet get workout =>
-      (_$workoutComputed ??= Computed<WorkoutSet>(() => super.workout,
+  Workout get workout =>
+      (_$workoutComputed ??= Computed<Workout>(() => super.workout,
               name: 'TabataStoreBase.workout'))
           .value;
   Computed<WorkoutSettings>? _$settingsComputed;
