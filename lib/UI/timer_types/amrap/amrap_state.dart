@@ -71,7 +71,7 @@ abstract class AmrapStateBase with Store {
       ]);
     }
 
-    return Workout(intervals: intervals);
+    return Workout(intervals: intervals, description: _descriptionSolver);
 
     // return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
   }
@@ -79,7 +79,8 @@ abstract class AmrapStateBase with Store {
   @computed
   WorkoutSettings get settings => WorkoutSettings(amrap: AmrapSettings(amraps: amraps));
 
-  String _descriptionSolver(int currentAmrapIndex) {
-    return 'AMRAP $currentAmrapIndex/$amrapsCount';
+  String _descriptionSolver(int index) {
+    final amrapIndex = index ~/ 2;
+    return 'AMRAP ${amrapIndex + 1}/$amrapsCount';
   }
 }

@@ -217,7 +217,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                           const SizedBox(height: 10),
                           _buildTime(status),
                           const SizedBox(height: 10),
-                          // _buildRoudsInfo(),
+                          _buildRoudsInfo(status),
                         ],
                       ),
                       Expanded(
@@ -331,15 +331,13 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     }
   }
 
-  // Widget _buildRoudsInfo() {
-  //   return Observer(builder: (_) {
-  //     return Text(
-  //       state.workout.currentStateDescription ?? '',
-  //       style: context.textTheme.displayMedium,
-  //       textAlign: TextAlign.center,
-  //     );
-  //   });
-  // }
+  Widget _buildRoudsInfo(TimerStatus status) {
+    return Text(
+      status.roundsInfo,
+      style: context.textTheme.displayMedium,
+      textAlign: TextAlign.center,
+    );
+  }
 
   void _requestAppReview() {
     Future.delayed(const Duration(seconds: 1), AppReviewService().requestReviewIfAvailable);

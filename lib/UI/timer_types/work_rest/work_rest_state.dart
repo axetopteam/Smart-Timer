@@ -46,7 +46,7 @@ abstract class WorkRestStateBase with Store {
   }
 
   Workout get workout {
-    return Workout(intervals: []);
+    return Workout(intervals: [], description: _setDescriptionSolver);
     WorkoutInterval work = WorkoutInterval(
       duration: null,
       type: IntervalType.work,

@@ -67,7 +67,7 @@ abstract class EmomStateBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(intervals: []);
+    return Workout(intervals: [], description: _setDescriptionSolver);
 
     List<WorkoutSet> sets = [];
     for (var i = 0; i < emomsCount; i++) {

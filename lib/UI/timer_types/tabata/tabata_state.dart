@@ -72,7 +72,11 @@ abstract class TabataStoreBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(intervals: []);
+    return Workout(
+        intervals: [],
+        description: (_) {
+          return '';
+        });
 
     final sets = <WorkoutSet>[];
     for (var i = 0; i < tabatsCount; i++) {

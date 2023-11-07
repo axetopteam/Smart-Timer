@@ -20,7 +20,8 @@ abstract class TimerStateBase with Store {
   TimerStateBase({
     required Workout workout,
     required this.timerType,
-  }) : _workout = workout {
+  })  : _workout = workout,
+        status = ReadyStatus(roundsInfo: workout.roundInfo(0)) {
     initialize();
   }
   final TimerType timerType;
@@ -30,7 +31,7 @@ abstract class TimerStateBase with Store {
   Workout _workout;
 
   @observable
-  TimerStatus status = ReadyStatus();
+  TimerStatus status;
 
   @observable
   Duration? totalRestTime;
@@ -79,12 +80,12 @@ abstract class TimerStateBase with Store {
       timerSubscription?.pause();
       _workout = _workout.startPause(roundedNow);
       _audio.pauseIfNeeded();
-      status = PauseStatus(time: currentStatus.time, type: currentStatus.type);
+      status = PauseStatus(time: currentStatus.time, type: currentStatus.type, roundsInfo: currentStatus.roundsInfo);
 
       if (!_workout.isCountdownCompleted(now: roundedNow)) {
         print('#TimerState# reser timer');
         _workout = _workout.reset();
-        status = ReadyStatus();
+        status = ReadyStatus(roundsInfo: _workout.roundInfo(0));
       }
       //TODO: сброс таймера если не закончился обратный отсчет
       // if (!countdownInterval.isEnded) {
@@ -124,7 +125,9 @@ abstract class TimerStateBase with Store {
   void tick(DateTime nowUtc) {
     if (_workout.startTime == null) return;
     status = WorkoutCalculator.currentIntervalInfo(
-        now: nowUtc, startTime: _workout.startTime!, intervals: _workout.intervals, pauses: _workout.pauses);
+      now: nowUtc,
+      workout: _workout,
+    );
     // final finishTimeUtc = workout.intervals.last.;
     // totalRestTime = finishTimeUtc?.difference(nowUtc);
     // print('#TIMER# $time, $currentIntervalDurationInMilliseconds, $partOfDuration');

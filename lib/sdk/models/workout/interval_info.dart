@@ -3,10 +3,14 @@ import 'package:smart_timer/services/audio_service.dart';
 import '../workout_interval_type.dart';
 
 sealed class TimerStatus {
+  TimerStatus({required this.roundsInfo});
   abstract final String name;
+  final String roundsInfo;
 }
 
 class ReadyStatus extends TimerStatus {
+  ReadyStatus({required super.roundsInfo});
+
   @override
   final String name = 'ready';
 }
@@ -20,6 +24,7 @@ class RunStatus extends TimerStatus {
     required this.type,
     this.totalDuration,
     this.soundType,
+    required super.roundsInfo,
   });
 
   final Duration time;
@@ -43,6 +48,7 @@ class PauseStatus extends TimerStatus {
     required this.time,
     required this.type,
     this.totalDuration,
+    required super.roundsInfo,
   });
 
   final Duration time;
@@ -51,6 +57,8 @@ class PauseStatus extends TimerStatus {
 }
 
 class DoneStatus extends TimerStatus {
+  DoneStatus() : super(roundsInfo: '');
+
   @override
   final String name = 'done';
 }

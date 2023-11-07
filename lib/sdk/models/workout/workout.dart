@@ -8,15 +8,20 @@ import 'interval_info.dart';
 export 'interval.dart';
 export 'interval_info.dart';
 
+typedef DescriptionSolver = String Function(int index);
+
 class Workout extends Equatable {
   const Workout({
     required this.intervals,
+    required DescriptionSolver description,
     this.pauses = const [],
     this.startTime,
-  });
+  }) : _description = description;
+
   final List<Interval> intervals;
   final DateTime? startTime;
   final List<Pause> pauses;
+  final DescriptionSolver _description;
 
   Workout addCountdown(Duration duration) {
     final countdownInterval = FiniteInterval(
@@ -26,16 +31,24 @@ class Workout extends Equatable {
     return copyWith(intervals: [countdownInterval, ...intervals]);
   }
 
+  bool get hasCountdownInterval {
+    final countdownInterval = intervals.firstOrNull;
+    return countdownInterval != null &&
+        countdownInterval is FiniteInterval &&
+        countdownInterval.type == IntervalType.countdown;
+  }
+
   bool isCountdownCompleted({required DateTime now}) {
     final countdownInterval = intervals.firstOrNull;
     final start = startTime;
-    if (start != null &&
-        countdownInterval != null &&
-        countdownInterval is FiniteInterval &&
-        countdownInterval.type == IntervalType.countdown) {
-      return countdownInterval.currentTime(startTime: start, now: now) == Duration.zero;
+    if (start != null && hasCountdownInterval) {
+      return countdownInterval!.currentTime(startTime: start, now: now) == Duration.zero;
     }
     return false;
+  }
+
+  String roundInfo(int index) {
+    return _description(hasCountdownInterval ? index - 1 : index);
   }
 
   Duration? get totalDuration {
@@ -68,7 +81,7 @@ class Workout extends Equatable {
   }
 
   Workout reset() {
-    return Workout(intervals: intervals);
+    return Workout(intervals: intervals, description: _description);
   }
 
   Workout copyWith({List<Interval>? intervals, DateTime? startTime, List<Pause>? pauses}) {
@@ -76,6 +89,7 @@ class Workout extends Equatable {
       intervals: intervals ?? this.intervals,
       startTime: startTime ?? this.startTime,
       pauses: pauses ?? this.pauses,
+      description: _description,
     );
   }
 
@@ -85,21 +99,26 @@ class Workout extends Equatable {
 
 class WorkoutCalculator {
   static TimerStatus currentIntervalInfo({
-    required DateTime startTime,
     required DateTime now,
-    required List<Interval> intervals,
-    required List<Pause> pauses,
+    required Workout workout,
   }) {
+    var startTime = workout.startTime;
+    if (startTime == null) {
+      return ReadyStatus(roundsInfo: workout.roundInfo(0));
+    }
+
     var pauseDuration = Duration.zero;
-    for (var element in pauses) {
+    for (var element in workout.pauses) {
       pauseDuration += element.getDuration(now);
     }
     print('pause: $pauseDuration');
 
     startTime = startTime.add(pauseDuration);
-    for (var interval in intervals) {
+
+    for (var index = 0; index < workout.intervals.length; index++) {
+      final interval = workout.intervals[index];
       final time = interval.currentTime(
-        startTime: startTime,
+        startTime: startTime!,
         now: now,
       );
       if (time.inMilliseconds > 0) {
@@ -108,6 +127,7 @@ class WorkoutCalculator {
           type: interval.type,
           totalDuration: interval.totalDuration,
           soundType: _checkSound(interval, time),
+          roundsInfo: workout.roundInfo(index),
         );
         print('#WorkoutCalculator# ${status.time}, ${status.totalDuration}, ${status.shareOfTotalDuration}}');
         return status;

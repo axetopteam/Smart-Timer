@@ -70,7 +70,7 @@ abstract class AfapStateBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(intervals: []);
+    return Workout(intervals: [], description: _despriptionSolver);
 
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < afapsCount; i++) {
