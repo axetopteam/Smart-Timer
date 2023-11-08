@@ -20,6 +20,8 @@ extension IntervalX on Interval {
   }
 }
 
+const negativeTime = Duration(seconds: -1);
+
 class FiniteInterval extends Interval {
   FiniteInterval({required this.duration, required super.type, super.isLast});
   final Duration duration;
@@ -27,7 +29,7 @@ class FiniteInterval extends Interval {
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {
     final rest = (duration - now.difference(startTime));
-    return rest > const Duration() ? rest : const Duration();
+    return rest > const Duration() ? rest : const Duration(seconds: -1);
   }
 }
 
@@ -38,7 +40,7 @@ class TimeCapInterval extends Interval {
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {
     final currentDuration = now.difference(startTime);
-    return currentDuration <= timeCap ? currentDuration : const Duration();
+    return currentDuration < timeCap ? currentDuration : const Duration(seconds: -1);
   }
 }
 

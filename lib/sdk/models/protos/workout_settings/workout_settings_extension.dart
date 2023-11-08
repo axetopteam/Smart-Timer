@@ -5,7 +5,7 @@ import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/UI/timer_types/afap/afap_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/UI/timer_types/tabata/tabata_state.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 
 import 'workout_settings.pb.dart';
 

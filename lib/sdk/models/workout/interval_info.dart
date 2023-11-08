@@ -22,15 +22,17 @@ class RunStatus extends TimerStatus {
   RunStatus({
     required this.time,
     required this.type,
+    required super.roundsInfo,
+    required this.canBeCompleted,
     this.totalDuration,
     this.soundType,
-    required super.roundsInfo,
   });
 
   final Duration time;
   final IntervalType type;
   final Duration? totalDuration;
   final SoundType? soundType;
+  final bool canBeCompleted;
 
   double? get shareOfTotalDuration {
     final currentIntervalDurationInMilliseconds = totalDuration?.inMilliseconds;

@@ -5,7 +5,7 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 
 import '../../purchasing/adapty_profile_state.dart';
 import '../paywalls/paywall_page.dart';

@@ -70,7 +70,25 @@ abstract class AfapStateBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(intervals: [], description: _despriptionSolver);
+    final List<Interval> intervals = [];
+
+    for (int i = 0; i < afapsCount; i++) {
+      final afap = afaps[i];
+      final isLast = afapsCount > 1 && i == afapsCount - 1;
+      final workInterval = afap.noTimeCap
+          ? InfiniteInterval(type: IntervalType.work, isLast: isLast)
+          : TimeCapInterval(
+              timeCap: afap.timeCap,
+              type: IntervalType.work,
+              isLast: isLast,
+            );
+      final restInterval = FiniteInterval(duration: afap.restTime, type: IntervalType.rest);
+      intervals.addAll([
+        workInterval,
+        if (i != afapsCount - 1) restInterval,
+      ]);
+    }
+    return Workout(intervals: intervals, description: _despriptionSolver);
 
     final List<WorkoutSet> sets = [];
     for (int i = 0; i < afapsCount; i++) {
@@ -95,7 +113,8 @@ abstract class AfapStateBase with Store {
   @computed
   WorkoutSettings get settings => WorkoutSettings(afap: AfapSettings(afaps: afaps));
 
-  String _despriptionSolver(int currentIndex) {
-    return 'AFAP $currentIndex/$afapsCount';
+  String _despriptionSolver(int index) {
+    final afapIndex = index ~/ 2;
+    return 'AFAP ${afapIndex + 1}/$afapsCount';
   }
 }

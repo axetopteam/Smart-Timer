@@ -42,7 +42,7 @@ class Workout extends Equatable {
     final countdownInterval = intervals.firstOrNull;
     final start = startTime;
     if (start != null && hasCountdownInterval) {
-      return countdownInterval!.currentTime(startTime: start, now: now) == Duration.zero;
+      return countdownInterval!.currentTime(startTime: start, now: now) < Duration.zero;
     }
     return false;
   }
@@ -101,6 +101,7 @@ class WorkoutCalculator {
   static TimerStatus currentIntervalInfo({
     required DateTime now,
     required Workout workout,
+    bool completeCurrentInterval = false,
   }) {
     var startTime = workout.startTime;
     if (startTime == null) {
@@ -116,21 +117,31 @@ class WorkoutCalculator {
     startTime = startTime.add(pauseDuration);
 
     for (var index = 0; index < workout.intervals.length; index++) {
-      final interval = workout.intervals[index];
+      var interval = workout.intervals[index];
       final time = interval.currentTime(
         startTime: startTime!,
         now: now,
       );
-      if (time.inMilliseconds > 0) {
-        final status = RunStatus(
-          time: time,
-          type: interval.type,
-          totalDuration: interval.totalDuration,
-          soundType: _checkSound(interval, time),
-          roundsInfo: workout.roundInfo(index),
-        );
-        print('#WorkoutCalculator# ${status.time}, ${status.totalDuration}, ${status.shareOfTotalDuration}}');
-        return status;
+      if (time >= Duration.zero) {
+        if (completeCurrentInterval) {
+          final completedInterval = FiniteInterval(duration: time, type: interval.type, isLast: interval.isLast);
+          final newIntervals = workout.intervals;
+          newIntervals[index] = completedInterval;
+          workout = workout.copyWith(intervals: newIntervals);
+          interval = completedInterval;
+          completeCurrentInterval = false;
+        } else {
+          final status = RunStatus(
+            time: time,
+            type: interval.type,
+            totalDuration: interval.totalDuration,
+            soundType: _checkSound(interval, time),
+            roundsInfo: workout.roundInfo(index),
+            canBeCompleted: interval is! FiniteInterval,
+          );
+          print('#WorkoutCalculator# ${status.time}, ${status.totalDuration}, ${status.shareOfTotalDuration}}');
+          return status;
+        }
       }
       switch (interval) {
         case FiniteInterval():

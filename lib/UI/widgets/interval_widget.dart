@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 
 import 'value_container.dart';
 

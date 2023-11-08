@@ -72,8 +72,6 @@ abstract class AmrapStateBase with Store {
     }
 
     return Workout(intervals: intervals, description: _descriptionSolver);
-
-    // return WorkoutSet(sets, descriptionSolver: _descriptionSolver);
   }
 
   @computed

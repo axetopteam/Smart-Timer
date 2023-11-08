@@ -5,7 +5,7 @@ import 'package:smart_timer/application/constants.dart';
 import 'package:smart_timer/UI/bottom_sheets/rounds_picker.dart';
 import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/utils/string_utils.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 
 import '../../pages/workout_desc.dart';
 import '../../widgets/value_container.dart';

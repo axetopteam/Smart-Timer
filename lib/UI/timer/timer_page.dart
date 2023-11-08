@@ -225,12 +225,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _totalTime(),
-                            // !state.workout.currentInterval.isCountdown && state.countdownInterval.isEnded
-                            //     ? CompleteButton(
-                            //         action: state.endCurrentInterval,
-                            //         iconColor: state.timerType.workoutColor(context),
-                            //       )
-                            //     : const SizedBox(),
+                            status is RunStatus && status.canBeCompleted
+                                ? CompleteButton(
+                                    action: state.completeCurrentInterval,
+                                    iconColor: state.timerType.workoutColor(context),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       )
@@ -287,7 +287,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
               );
             case PauseStatus():
               return Text(
-                status.time.durationToString(isCountdown: true),
+                status.time.durationToString(isCountdown: false),
                 style: context.textTheme.headlineSmall,
               );
             case DoneStatus():

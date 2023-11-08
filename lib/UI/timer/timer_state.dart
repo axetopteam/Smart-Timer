@@ -87,13 +87,6 @@ abstract class TimerStateBase with Store {
         _workout = _workout.reset();
         status = ReadyStatus(roundsInfo: _workout.roundInfo(0));
       }
-      //TODO: сброс таймера если не закончился обратный отсчет
-      // if (!countdownInterval.isEnded) {
-      //   countdownInterval.reset();
-      //   currentState = TimerStatus.ready;
-      // } else {
-      //   currentState = TimerStatus.pause;
-      // }
       AnalyticsManager.eventTimerPaused.commit();
     }
   }
@@ -105,28 +98,27 @@ abstract class TimerStateBase with Store {
     final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
     _audio.resumeIfNeeded();
     _workout = _workout.endPause(roundedNow);
-    // if (!countdownInterval.isEnded) {
-    //   countdownInterval.start(roundedNow);
-    //   workout.start(countdownInterval.finishTimeUtc!);
-    // } else {
-    //   workout.start(roundedNow);
-    // }
 
     timerSubscription?.resume();
     AnalyticsManager.eventTimerResumed.commit();
   }
 
-  void endCurrentInterval() {
-    // workout.setDuration();
+  void completeCurrentInterval() {
+    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
+    tick(
+      roundedNow,
+      completeCurrentInterval: true,
+    );
     AnalyticsManager.eventTimerRoundCompleted.commit();
   }
 
   @action
-  void tick(DateTime nowUtc) {
+  void tick(DateTime nowUtc, {bool completeCurrentInterval = false}) {
     if (_workout.startTime == null) return;
     status = WorkoutCalculator.currentIntervalInfo(
       now: nowUtc,
       workout: _workout,
+      completeCurrentInterval: completeCurrentInterval,
     );
     // final finishTimeUtc = workout.intervals.last.;
     // totalRestTime = finishTimeUtc?.difference(nowUtc);
