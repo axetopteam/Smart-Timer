@@ -48,7 +48,7 @@ class Workout extends Equatable {
   }
 
   String roundInfo(int index) {
-    return _description(hasCountdownInterval ? index - 1 : index);
+    return _description(hasCountdownInterval && index != 0 ? index - 1 : index);
   }
 
   Duration? get totalDuration {

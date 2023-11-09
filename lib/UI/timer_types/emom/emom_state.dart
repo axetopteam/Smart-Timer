@@ -96,23 +96,23 @@ abstract class EmomStateBase with Store {
   WorkoutSettings get settings => WorkoutSettings(emom: EmomSettings(emoms: emoms));
 
   String _descriptionSolver(int currentIndex) {
-    var emomIndex = 0;
     var index = currentIndex;
-    while (emomIndex < emomsCount) {
+
+    for (var emomIndex = 0; emomIndex < emomsCount; emomIndex++) {
       final emomRoundsCount = emoms[emomIndex].roundsCount;
-      if (emomsCount == 1) {
-        return 'Round ${(currentIndex ~/ emomRoundsCount) + 1}/$emomRoundsCount';
-      } else {
-        if (index < emomRoundsCount) {
-          final buffer = StringBuffer();
-          buffer.write('SET $emomIndex/$emomsCount');
+
+      if (index < emomRoundsCount + 1) {
+        final buffer = StringBuffer();
+        if (emomsCount > 1) {
+          buffer.write('SET ${emomIndex + 1}/$emomsCount');
           buffer.write('\n');
-          buffer.write('Round $index/$emomRoundsCount');
-          return buffer.toString();
         }
-        index -= (emomRoundsCount + 1);
+        if (index < emomRoundsCount) {
+          buffer.write('Round ${index + 1}/$emomRoundsCount');
+        }
+        return buffer.toString();
       }
-      emomIndex++;
+      index -= (emomRoundsCount + 1);
     }
 
     return '';

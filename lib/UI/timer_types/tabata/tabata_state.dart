@@ -94,7 +94,27 @@ abstract class TabataStoreBase with Store {
     return Workout(intervals: intervals, description: _descriptionSolver);
   }
 
-  String _descriptionSolver(int currentIndex) => 'SET $currentIndex/$tabatsCount';
+  String _descriptionSolver(int currentIndex) {
+    var index = currentIndex;
+
+    for (var tabataIndex = 0; tabataIndex < tabatsCount; tabataIndex++) {
+      final tabataRoundsCount = tabats[tabataIndex].roundsCount;
+
+      if (index < 2 * tabataRoundsCount) {
+        final buffer = StringBuffer();
+        if (tabatsCount > 1) {
+          buffer.write('SET ${tabataIndex + 1}/$tabatsCount');
+          buffer.write('\n');
+        }
+        buffer.write('Round ${(index ~/ 2) + 1}/$tabataRoundsCount');
+
+        return buffer.toString();
+      }
+      index -= (2 * tabataRoundsCount);
+    }
+
+    return '';
+  }
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(tabata: TabataSettings(tabats: tabats));
