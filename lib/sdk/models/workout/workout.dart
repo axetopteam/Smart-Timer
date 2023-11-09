@@ -124,10 +124,19 @@ class WorkoutCalculator {
       );
       if (time >= Duration.zero) {
         if (completeCurrentInterval) {
-          final completedInterval = FiniteInterval(duration: time, type: interval.type, isLast: interval.isLast);
+          final completedInterval = TimeCapInterval(timeCap: time, type: interval.type, isLast: interval.isLast);
           final newIntervals = workout.intervals;
           newIntervals[index] = completedInterval;
+
+          final nextInterval = index + 1 < workout.intervals.length ? workout.intervals[index + 1] : null;
+          if (nextInterval != null && nextInterval is RatioInterval) {
+            final newNext = FiniteInterval(
+                duration: time * nextInterval.ratio, type: nextInterval.type, isLast: nextInterval.isLast);
+            newIntervals[index + 1] = newNext;
+          }
+
           workout = workout.copyWith(intervals: newIntervals);
+
           interval = completedInterval;
           completeCurrentInterval = false;
         } else {
@@ -149,6 +158,7 @@ class WorkoutCalculator {
         case TimeCapInterval():
           startTime = startTime.add(interval.timeCap);
         case InfiniteInterval():
+        case RatioInterval():
           throw TypeError();
       }
     }
@@ -186,6 +196,8 @@ class WorkoutCalculator {
         if (interval.isLast && time == Duration.zero + _delta) {
           return SoundType.lastRound;
         }
+      case RatioInterval():
+        break;
     }
 
     final totalDuration = interval.totalDuration;

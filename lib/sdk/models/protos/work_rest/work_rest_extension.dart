@@ -8,6 +8,10 @@ extension WorkRestX on WorkRest {
     ratio: 1,
   );
 
+  Duration get restAfterSet {
+    return Duration(seconds: restAfterSetInSeconds);
+  }
+
   WorkRest copyWithNewValue({int? roundsCount, double? ratio}) {
     return WorkRest(
       roundsCount: roundsCount ?? this.roundsCount,

@@ -15,6 +15,7 @@ extension IntervalX on Interval {
       case TimeCapInterval timeCapInterval:
         return timeCapInterval.timeCap;
       case InfiniteInterval():
+      case RatioInterval():
         return null;
     }
   }
@@ -54,6 +55,29 @@ class TimeCapInterval extends Interval {
 
 class InfiniteInterval extends Interval {
   InfiniteInterval({required super.type, super.isLast});
+
+  @override
+  Duration currentTime({required DateTime startTime, required DateTime now}) {
+    final currentDuration = now.difference(startTime);
+    return currentDuration;
+  }
+
+  InfiniteInterval copyWith({bool? isLast}) {
+    return InfiniteInterval(
+      type: type,
+      isLast: isLast ?? this.isLast,
+    );
+  }
+}
+
+class RatioInterval extends Interval {
+  RatioInterval({
+    required this.ratio,
+    required super.type,
+    super.isLast,
+  });
+
+  final double ratio;
 
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {

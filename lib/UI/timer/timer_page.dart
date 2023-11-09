@@ -286,7 +286,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
               );
             case PauseStatus():
               return Text(
-                status.time.durationToString(isCountdown: false),
+                status.time.durationToString(isCountdown: true),
                 style: context.textTheme.headlineSmall,
               );
             case DoneStatus():

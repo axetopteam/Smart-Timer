@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest/work_rest_extension.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest_settings/work_rest_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -46,42 +45,34 @@ abstract class WorkRestStateBase with Store {
   }
 
   Workout get workout {
-    return Workout(intervals: [], description: _setDescriptionSolver);
-    WorkoutInterval work = WorkoutInterval(
-      duration: null,
-      type: IntervalType.work,
-      isCountdown: false,
-    );
+    final intervals = <Interval>[];
+    for (var i = 0; i < sets.length; i++) {
+      final set = sets[i];
 
-    WorkoutInterval rest = WorkoutInterval(
-      duration: null,
-      type: IntervalType.rest,
-      isCountdown: true,
-      isReverse: true,
-      reverseRatio: sets[setIndex].ratio,
-    );
+      final workInterval = InfiniteInterval(type: IntervalType.work);
+      final restInterval = RatioInterval(type: IntervalType.rest, ratio: set.ratio);
+      final restAfterSet = FiniteInterval(duration: set.restAfterSet, type: IntervalType.rest);
 
-    final round = WorkoutSet([work, rest]);
-
-    final lastRound = WorkoutSet(
-      [
-        WorkoutInterval(
-          type: IntervalType.work,
-          duration: null,
-          isCountdown: false,
-          isLast: sets[setIndex].roundsCount != 1,
-        ),
-      ],
-    );
-
-    final List<WorkoutSet> rounds = List.generate(
-        sets[setIndex].roundsCount, (index) => index != sets[setIndex].roundsCount - 1 ? round.copy() : lastRound);
-
-    // return WorkoutSet(rounds, descriptionSolver: _setDescriptionSolver);
+      final setIntervals = <Interval>[];
+      for (var j = 0; j < set.roundsCount; j++) {
+        setIntervals.addAll(
+          [
+            workInterval.copyWith(isLast: set.roundsCount != 1 && j == set.roundsCount - 1),
+            if (j != set.roundsCount - 1) restInterval,
+            if (j == set.roundsCount - 1 && i != sets.length - 1) restAfterSet,
+          ],
+        );
+      }
+      intervals.addAll(setIntervals);
+    }
+    return Workout(intervals: intervals, description: _descriptionSolver);
   }
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(workRest: WorkRestSettings(workRests: sets));
 
-  String _setDescriptionSolver(int currentIndex) => 'ROUND $currentIndex/${sets[setIndex].roundsCount}';
+  String _descriptionSolver(int index) {
+    final roundIndex = index ~/ 2;
+    return 'ROUND ${roundIndex + 1}/${sets[setIndex].roundsCount}';
+  }
 }
