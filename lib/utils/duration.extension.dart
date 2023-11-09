@@ -22,8 +22,10 @@ extension DurationX on Duration {
     if (inMicroseconds < 0) {
       return "-${(-this).durationToString}";
     }
-    String twoDigitMinutes = twoDigits(inMinutes);
     final seconds = isCountdown ? isSecondsCeil : inSeconds;
+    final minutes = seconds ~/ secondsPerMinute;
+
+    String twoDigitMinutes = twoDigits(minutes);
 
     String twoDigitSeconds = twoDigits(seconds.remainder(secondsPerMinute));
 
