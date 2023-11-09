@@ -16,7 +16,6 @@ import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../history/history_state.dart';
 import '../timer_types/timer_settings_interface.dart';
 import '../widgets/play_icon.dart';
 import 'timer_progress_container.dart';

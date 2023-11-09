@@ -31,6 +31,14 @@ class FiniteInterval extends Interval {
     final rest = (duration - now.difference(startTime));
     return rest > const Duration() ? rest : const Duration(seconds: -1);
   }
+
+  FiniteInterval copyWith({bool? isLast}) {
+    return FiniteInterval(
+      duration: duration,
+      type: type,
+      isLast: isLast ?? this.isLast,
+    );
+  }
 }
 
 class TimeCapInterval extends Interval {

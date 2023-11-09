@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 import 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -72,39 +71,30 @@ abstract class TabataStoreBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(
-        intervals: [],
-        description: (_) {
-          return '';
-        });
-
-    final sets = <WorkoutSet>[];
+    final intervals = <Interval>[];
     for (var i = 0; i < tabatsCount; i++) {
       final tabata = tabats[i];
 
-      final workInterval = WorkoutInterval(duration: tabata.workTime, type: IntervalType.work);
-      final restInterval = WorkoutInterval(duration: tabata.restTime, type: IntervalType.rest);
-      final restAfterSet = WorkoutInterval(duration: tabata.restAfterSet, type: IntervalType.rest);
+      final workInterval = FiniteInterval(duration: tabata.workTime, type: IntervalType.work);
+      final restInterval = FiniteInterval(duration: tabata.restTime, type: IntervalType.rest);
+      final restAfterSet = FiniteInterval(duration: tabata.restAfterSet, type: IntervalType.rest);
 
-      final rounds = <WorkoutSet>[];
+      final roundIntervals = <Interval>[];
       for (var j = 0; j < tabata.roundsCount; j++) {
-        final round = WorkoutSet([
-          workInterval.copyWith(isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1),
-          if (j != tabata.roundsCount - 1) restInterval.copy(),
-          if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet.copy(),
-        ]);
-        rounds.add(round);
+        roundIntervals.addAll(
+          [
+            workInterval.copyWith(isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1),
+            if (j != tabata.roundsCount - 1) restInterval,
+            if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet,
+          ],
+        );
       }
-      String? roundDescriptionSolver(int currentIndex) =>
-          (currentIndex <= tabata.roundsCount) ? 'ROUND $currentIndex/${tabata.roundsCount}' : null;
-
-      sets.add(WorkoutSet(rounds, descriptionSolver: roundDescriptionSolver));
+      intervals.addAll(roundIntervals);
     }
-
-    String setDescriptionSolver(int currentIndex) => 'SET $currentIndex/$tabatsCount';
-
-    // return WorkoutSet(sets, descriptionSolver: setDescriptionSolver);
+    return Workout(intervals: intervals, description: _descriptionSolver);
   }
+
+  String _descriptionSolver(int currentIndex) => 'SET $currentIndex/$tabatsCount';
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(tabata: TabataSettings(tabats: tabats));

@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -67,40 +66,55 @@ abstract class EmomStateBase with Store {
 
   @computed
   Workout get workout {
-    return Workout(intervals: [], description: _setDescriptionSolver);
+    final List<Interval> intervals = [];
 
-    List<WorkoutSet> sets = [];
     for (var i = 0; i < emomsCount; i++) {
       final emom = emoms[i];
-      List<WorkoutInterval> intervals = List.generate(
+      List<Interval> setIntervals = List.generate(
         emom.roundsCount,
-        (index) => WorkoutInterval(
+        (index) => FiniteInterval(
           duration: emom.workTime,
           type: IntervalType.work,
           isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
         ),
       );
       if (i != emomsCount - 1) {
-        intervals.add(WorkoutInterval(
-          duration: emom.restAfterSet,
-          type: IntervalType.rest,
-        ));
+        setIntervals.add(
+          FiniteInterval(
+            duration: emom.restAfterSet,
+            type: IntervalType.rest,
+          ),
+        );
       }
-      String? roundDescriptionSolver(int currentIndex) =>
-          (currentIndex <= emom.roundsCount) ? 'ROUND $currentIndex/${emom.roundsCount}' : null;
 
-      final set = WorkoutSet(intervals, descriptionSolver: roundDescriptionSolver);
-
-      sets.add(set);
+      intervals.addAll(setIntervals);
     }
-
-    // return WorkoutSet(sets, descriptionSolver: _setDescriptionSolver);
+    return Workout(intervals: intervals, description: _descriptionSolver);
   }
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(emom: EmomSettings(emoms: emoms));
 
-  String _setDescriptionSolver(int currentIndex) {
-    return 'SET $currentIndex/$emomsCount';
+  String _descriptionSolver(int currentIndex) {
+    var emomIndex = 0;
+    var index = currentIndex;
+    while (emomIndex < emomsCount) {
+      final emomRoundsCount = emoms[emomIndex].roundsCount;
+      if (emomsCount == 1) {
+        return 'Round ${(currentIndex ~/ emomRoundsCount) + 1}/$emomRoundsCount';
+      } else {
+        if (index < emomRoundsCount) {
+          final buffer = StringBuffer();
+          buffer.write('SET $emomIndex/$emomsCount');
+          buffer.write('\n');
+          buffer.write('Round $index/$emomRoundsCount');
+          return buffer.toString();
+        }
+        index -= (emomRoundsCount + 1);
+      }
+      emomIndex++;
+    }
+
+    return '';
   }
 }

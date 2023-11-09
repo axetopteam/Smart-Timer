@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
 import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -89,25 +88,6 @@ abstract class AfapStateBase with Store {
       ]);
     }
     return Workout(intervals: intervals, description: _despriptionSolver);
-
-    final List<WorkoutSet> sets = [];
-    for (int i = 0; i < afapsCount; i++) {
-      final afap = afaps[i];
-      final set = WorkoutSet(
-        [
-          WorkoutInterval(
-            type: IntervalType.work,
-            duration: afap.noTimeCap ? null : afap.timeCap,
-            isCountdown: false,
-            isLast: afapsCount != 1 && i == afapsCount - 1,
-          ),
-          if (i != afapsCount - 1) WorkoutInterval(type: IntervalType.rest, duration: afap.restTime),
-        ],
-      );
-      sets.add(set);
-    }
-
-    // return WorkoutSet(sests, descriptionSolver: _despriptionSolver);
   }
 
   @computed
