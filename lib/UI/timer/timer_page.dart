@@ -331,11 +331,15 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
   }
 
   Widget _buildRoudsInfo(TimerStatus status) {
-    return Text(
-      status.roundsInfo,
-      style: context.textTheme.displayMedium,
-      textAlign: TextAlign.center,
-    );
+    return Column(
+        children: status.indexes
+            .map(
+              (index) => Text(
+                index.toString(),
+                style: context.textTheme.displayMedium,
+              ),
+            )
+            .toList());
   }
 
   void _requestAppReview() {

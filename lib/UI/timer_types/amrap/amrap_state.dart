@@ -62,16 +62,26 @@ abstract class AmrapStateBase with Store {
     final List<Interval> intervals = [];
 
     for (int i = 0; i < amrapsCount; i++) {
+      final setIndex = IntervalIndex(index: i + 1, name: 'AMRAP', totalCount: amrapsCount);
+
       final workInterval = FiniteInterval(
-          duration: amraps[i].workTime, type: IntervalType.work, isLast: amrapsCount > 1 && i == amrapsCount - 1);
-      final restInterval = FiniteInterval(duration: amraps[i].restTime, type: IntervalType.rest);
+        duration: amraps[i].workTime,
+        type: IntervalType.work,
+        isLast: amrapsCount > 1 && i == amrapsCount - 1,
+        indexes: amrapsCount > 1 ? [setIndex] : [],
+      );
+      final restInterval = FiniteInterval(
+        duration: amraps[i].restTime,
+        type: IntervalType.rest,
+        indexes: amrapsCount > 1 ? [setIndex] : [],
+      );
       intervals.addAll([
         workInterval,
         if (i != amrapsCount - 1) restInterval,
       ]);
     }
 
-    return Workout(intervals: intervals, description: _descriptionSolver);
+    return Workout(intervals: intervals);
   }
 
   @computed

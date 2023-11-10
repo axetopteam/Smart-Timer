@@ -49,30 +49,35 @@ abstract class WorkRestStateBase with Store {
     for (var i = 0; i < sets.length; i++) {
       final set = sets[i];
 
-      final workInterval = InfiniteInterval(type: IntervalType.work);
-      final restInterval = RatioInterval(type: IntervalType.rest, ratio: set.ratio);
-      final restAfterSet = FiniteInterval(duration: set.restAfterSet, type: IntervalType.rest);
+      final workInterval = InfiniteInterval(type: IntervalType.work, indexes: []);
+      final restInterval = RatioInterval(type: IntervalType.rest, ratio: set.ratio, indexes: []);
+      final restAfterSet = FiniteInterval(duration: set.restAfterSet, type: IntervalType.rest, indexes: []);
+
+      final setIndex = IntervalIndex(index: i + 1, name: 'SET', totalCount: sets.length);
+      final roundIndex = IntervalIndex(index: 0, name: 'ROUND', totalCount: set.roundsCount);
 
       final setIntervals = <Interval>[];
       for (var j = 0; j < set.roundsCount; j++) {
         setIntervals.addAll(
           [
-            workInterval.copyWith(isLast: set.roundsCount != 1 && j == set.roundsCount - 1),
-            if (j != set.roundsCount - 1) restInterval,
-            if (j == set.roundsCount - 1 && i != sets.length - 1) restAfterSet,
+            workInterval.copyWith(
+              isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
+              indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j + 1)],
+            ),
+            if (j != set.roundsCount - 1)
+              restInterval.copyWith(
+                isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
+                indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j + 1)],
+              ),
+            if (j == set.roundsCount - 1 && i != sets.length - 1) restAfterSet.copyWith(indexes: [setIndex]),
           ],
         );
       }
       intervals.addAll(setIntervals);
     }
-    return Workout(intervals: intervals, description: _descriptionSolver);
+    return Workout(intervals: intervals);
   }
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(workRest: WorkRestSettings(workRests: sets));
-
-  String _descriptionSolver(int index) {
-    final roundIndex = index ~/ 2;
-    return 'ROUND ${roundIndex + 1}/${sets[setIndex].roundsCount}';
-  }
 }

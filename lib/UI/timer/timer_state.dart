@@ -21,7 +21,7 @@ abstract class TimerStateBase with Store {
     required Workout workout,
     required this.timerType,
   })  : _workout = workout,
-        status = ReadyStatus(roundsInfo: workout.roundInfo(0)) {
+        status = ReadyStatus() {
     initialize();
   }
   final TimerType timerType;
@@ -80,12 +80,12 @@ abstract class TimerStateBase with Store {
       timerSubscription?.pause();
       _workout = _workout.startPause(roundedNow);
       _audio.pauseIfNeeded();
-      status = PauseStatus(time: currentStatus.time, type: currentStatus.type, roundsInfo: currentStatus.roundsInfo);
+      status = PauseStatus(time: currentStatus.time, type: currentStatus.type);
 
       if (!_workout.isCountdownCompleted(now: roundedNow)) {
         print('#TimerState# reser timer');
         _workout = _workout.reset();
-        status = ReadyStatus(roundsInfo: _workout.roundInfo(0));
+        status = ReadyStatus();
       }
       AnalyticsManager.eventTimerPaused.commit();
     }

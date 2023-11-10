@@ -80,12 +80,28 @@ abstract class EmomStateBase with Store {
       if (emom.deathBy) {
         setIntervals = [
           FiniteInterval(
+            indexes: [
+              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(name: 'ROUND', index: 1),
+            ],
             duration: emom.workTime,
             type: IntervalType.work,
           ),
           RepeatLastInterval(
             type: IntervalType.work,
-          )
+            indexes: [
+              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(name: 'ROUND', index: 1),
+            ],
+          ),
+          if (i != emomsCount - 1)
+            FiniteInterval(
+              duration: emom.restAfterSet,
+              type: IntervalType.rest,
+              indexes: [
+                if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+              ],
+            ),
         ];
       } else {
         setIntervals = List.generate(
@@ -93,6 +109,10 @@ abstract class EmomStateBase with Store {
           (index) => FiniteInterval(
             duration: emom.workTime,
             type: IntervalType.work,
+            indexes: [
+              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(name: 'ROUND', index: index + 1, totalCount: emom.roundsCount),
+            ],
             isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
           ),
         );
@@ -101,38 +121,18 @@ abstract class EmomStateBase with Store {
             FiniteInterval(
               duration: emom.restAfterSet,
               type: IntervalType.rest,
+              indexes: [
+                if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+              ],
             ),
           );
         }
       }
       intervals.addAll(setIntervals);
     }
-    return Workout(intervals: intervals, description: _descriptionSolver);
+    return Workout(intervals: intervals);
   }
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(emom: EmomSettings(emoms: emoms));
-
-  String _descriptionSolver(int currentIndex) {
-    var index = currentIndex;
-
-    for (var emomIndex = 0; emomIndex < emomsCount; emomIndex++) {
-      final emomRoundsCount = emoms[emomIndex].roundsCount;
-
-      if (index < emomRoundsCount + 1) {
-        final buffer = StringBuffer();
-        if (emomsCount > 1) {
-          buffer.write('EMOM ${emomIndex + 1}/$emomsCount');
-          buffer.write('\n');
-        }
-        if (index < emomRoundsCount) {
-          buffer.write('Round ${index + 1}/$emomRoundsCount');
-        }
-        return buffer.toString();
-      }
-      index -= (emomRoundsCount + 1);
-    }
-
-    return '';
-  }
 }

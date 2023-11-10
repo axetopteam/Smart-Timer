@@ -75,45 +75,31 @@ abstract class TabataStoreBase with Store {
     for (var i = 0; i < tabatsCount; i++) {
       final tabata = tabats[i];
 
-      final workInterval = FiniteInterval(duration: tabata.workTime, type: IntervalType.work);
-      final restInterval = FiniteInterval(duration: tabata.restTime, type: IntervalType.rest);
-      final restAfterSet = FiniteInterval(duration: tabata.restAfterSet, type: IntervalType.rest);
+      final workInterval = FiniteInterval(duration: tabata.workTime, type: IntervalType.work, indexes: []);
+      final restInterval = FiniteInterval(duration: tabata.restTime, type: IntervalType.rest, indexes: []);
+      final restAfterSet = FiniteInterval(duration: tabata.restAfterSet, type: IntervalType.rest, indexes: []);
+      final setIndex = IntervalIndex(index: i + 1, name: 'TABATA', totalCount: tabatsCount);
+      final roundIndex = IntervalIndex(index: 0, name: 'ROUND', totalCount: tabata.roundsCount);
 
       final roundIntervals = <Interval>[];
       for (var j = 0; j < tabata.roundsCount; j++) {
         roundIntervals.addAll(
           [
-            workInterval.copyWith(isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1),
-            if (j != tabata.roundsCount - 1) restInterval,
-            if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet,
+            workInterval.copyWith(
+                isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1,
+                indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j + 1)]),
+            if (j != tabata.roundsCount - 1)
+              restInterval.copyWith(indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j + 1)]),
+            if (j == tabata.roundsCount - 1 && i != tabatsCount - 1)
+              restAfterSet.copyWith(indexes: [if (tabatsCount > 1) setIndex]),
           ],
         );
       }
       intervals.addAll(roundIntervals);
     }
-    return Workout(intervals: intervals, description: _descriptionSolver);
-  }
-
-  String _descriptionSolver(int currentIndex) {
-    var index = currentIndex;
-
-    for (var tabataIndex = 0; tabataIndex < tabatsCount; tabataIndex++) {
-      final tabataRoundsCount = tabats[tabataIndex].roundsCount;
-
-      if (index < 2 * tabataRoundsCount) {
-        final buffer = StringBuffer();
-        if (tabatsCount > 1) {
-          buffer.write('TABATA ${tabataIndex + 1}/$tabatsCount');
-          buffer.write('\n');
-        }
-        buffer.write('Round ${(index ~/ 2) + 1}/$tabataRoundsCount');
-
-        return buffer.toString();
-      }
-      index -= (2 * tabataRoundsCount);
-    }
-
-    return '';
+    return Workout(
+      intervals: intervals,
+    );
   }
 
   @computed

@@ -13,20 +13,19 @@ typedef DescriptionSolver = String Function(int index);
 class Workout extends Equatable {
   const Workout({
     required this.intervals,
-    required DescriptionSolver description,
     this.pauses = const [],
     this.startTime,
-  }) : _description = description;
+  });
 
   final List<Interval> intervals;
   final DateTime? startTime;
   final List<Pause> pauses;
-  final DescriptionSolver _description;
 
   Workout addCountdown(Duration duration) {
     final countdownInterval = FiniteInterval(
       type: IntervalType.countdown,
       duration: duration,
+      indexes: [],
     );
     return copyWith(intervals: [countdownInterval, ...intervals]);
   }
@@ -45,10 +44,6 @@ class Workout extends Equatable {
       return countdownInterval!.currentTime(startTime: start, now: now) < Duration.zero;
     }
     return false;
-  }
-
-  String roundInfo(int index) {
-    return _description(hasCountdownInterval && index != 0 ? index - 1 : index);
   }
 
   Duration? get totalDuration {
@@ -81,7 +76,7 @@ class Workout extends Equatable {
   }
 
   Workout reset() {
-    return Workout(intervals: intervals, description: _description);
+    return Workout(intervals: intervals);
   }
 
   Workout copyWith({List<Interval>? intervals, DateTime? startTime, List<Pause>? pauses}) {
@@ -89,7 +84,6 @@ class Workout extends Equatable {
       intervals: intervals ?? this.intervals,
       startTime: startTime ?? this.startTime,
       pauses: pauses ?? this.pauses,
-      description: _description,
     );
   }
 
@@ -105,7 +99,7 @@ class WorkoutCalculator {
   }) {
     var startTime = workout.startTime;
     if (startTime == null) {
-      return ReadyStatus(roundsInfo: workout.roundInfo(0));
+      return ReadyStatus();
     }
 
     var pauseDuration = Duration.zero;
@@ -118,29 +112,43 @@ class WorkoutCalculator {
 
     for (var index = 0; index < workout.intervals.length; index++) {
       if (index > 0 && workout.intervals[index] is RepeatLastInterval) {
+        final previousInterval = workout.intervals[index - 1];
+        final previousIntervalIndexes = List.of(previousInterval.indexes);
+        previousIntervalIndexes.last = previousIntervalIndexes.last.copyWith(index);
         workout = workout.copyWith(
           intervals: workout.intervals
             ..insert(
               index,
-              workout.intervals[index - 1],
+              previousInterval.copyWith(indexes: previousIntervalIndexes),
             ),
         );
       }
       var interval = workout.intervals[index];
+      final nextInterval = index + 1 < workout.intervals.length ? workout.intervals[index + 1] : null;
+
       final time = interval.currentTime(
         startTime: startTime!,
         now: now,
       );
+
       if (time >= Duration.zero) {
         if (completeCurrentInterval) {
-          final completedInterval = TimeCapInterval(timeCap: time, type: interval.type, isLast: interval.isLast);
+          final completedInterval = TimeCapInterval(
+            timeCap: time,
+            type: interval.type,
+            isLast: interval.isLast,
+            indexes: interval.indexes,
+          );
           final newIntervals = workout.intervals;
           newIntervals[index] = completedInterval;
 
-          final nextInterval = index + 1 < workout.intervals.length ? workout.intervals[index + 1] : null;
           if (nextInterval != null && nextInterval is RatioInterval) {
             final newNext = FiniteInterval(
-                duration: time * nextInterval.ratio, type: nextInterval.type, isLast: nextInterval.isLast);
+              duration: time * nextInterval.ratio,
+              type: nextInterval.type,
+              indexes: nextInterval.indexes,
+              isLast: nextInterval.isLast,
+            );
             newIntervals[index + 1] = newNext;
           } else if (nextInterval != null && nextInterval is RepeatLastInterval) {
             newIntervals.removeAt(index + 1);
@@ -156,8 +164,8 @@ class WorkoutCalculator {
             type: interval.type,
             totalDuration: interval.totalDuration,
             soundType: _checkSound(interval, time),
-            roundsInfo: workout.roundInfo(index),
-            canBeCompleted: interval is! FiniteInterval || workout.intervals[index + 1] is RepeatLastInterval,
+            indexes: interval.indexes,
+            canBeCompleted: interval is! FiniteInterval || nextInterval != null && nextInterval is RepeatLastInterval,
           );
           return status;
         }
