@@ -106,7 +106,6 @@ class WorkoutCalculator {
     for (var element in workout.pauses) {
       pauseDuration += element.getDuration(now);
     }
-    print('pause: $pauseDuration');
 
     startTime = startTime.add(pauseDuration);
 
@@ -123,6 +122,7 @@ class WorkoutCalculator {
             ),
         );
       }
+
       var interval = workout.intervals[index];
       final nextInterval = index + 1 < workout.intervals.length ? workout.intervals[index + 1] : null;
 
@@ -134,7 +134,7 @@ class WorkoutCalculator {
       if (time >= Duration.zero) {
         if (completeCurrentInterval) {
           final completedInterval = TimeCapInterval(
-            timeCap: time,
+            timeCap: interval.pastTime(startTime: startTime, now: now),
             type: interval.type,
             isLast: interval.isLast,
             indexes: interval.indexes,
@@ -165,7 +165,7 @@ class WorkoutCalculator {
             totalDuration: interval.totalDuration,
             soundType: _checkSound(interval, time),
             indexes: interval.indexes,
-            canBeCompleted: interval is! FiniteInterval || nextInterval != null && nextInterval is RepeatLastInterval,
+            canBeCompleted: interval is! FiniteInterval || (nextInterval != null && nextInterval is RepeatLastInterval),
           );
           return status;
         }

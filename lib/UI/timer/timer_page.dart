@@ -65,7 +65,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             controller.animateTo(0, duration: const Duration(milliseconds: 500));
           case RunStatus():
             final shareOfTotalDuration = status.shareOfTotalDuration;
-            print('#TIMER# shareOfTotalDuration: $shareOfTotalDuration');
             if (shareOfTotalDuration != null) {
               if (shareOfTotalDuration == 0.0) {
                 runAnimation = false;
@@ -226,6 +225,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                             _totalTime(),
                             status is RunStatus && status.canBeCompleted
                                 ? CompleteButton(
+                                    key: ValueKey(status.indexes),
                                     action: state.completeCurrentInterval,
                                     iconColor: state.timerType.workoutColor(context),
                                   )

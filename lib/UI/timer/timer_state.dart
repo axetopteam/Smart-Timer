@@ -115,11 +115,13 @@ abstract class TimerStateBase with Store {
   @action
   void tick(DateTime nowUtc, {bool completeCurrentInterval = false}) {
     if (_workout.startTime == null) return;
+    print('#TIMERSTATE# tick start');
     status = WorkoutCalculator.currentIntervalInfo(
       now: nowUtc,
       workout: _workout,
       completeCurrentInterval: completeCurrentInterval,
     );
+    print('#TIMERSTATE# tick end');
     // final finishTimeUtc = workout.intervals.last.;
     // totalRestTime = finishTimeUtc?.difference(nowUtc);
     // print('#TIMER# $time, $currentIntervalDurationInMilliseconds, $partOfDuration');

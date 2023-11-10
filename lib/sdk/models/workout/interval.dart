@@ -12,7 +12,12 @@ sealed class Interval {
   final IntervalType type;
   final bool isLast;
   final List<IntervalIndex> indexes;
+
   Duration currentTime({required DateTime startTime, required DateTime now});
+
+  Duration pastTime({required DateTime startTime, required DateTime now}) {
+    return now.difference(startTime);
+  }
 }
 
 extension IntervalX on Interval {
