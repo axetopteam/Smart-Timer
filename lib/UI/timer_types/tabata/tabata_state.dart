@@ -103,7 +103,7 @@ abstract class TabataStoreBase with Store {
       if (index < 2 * tabataRoundsCount) {
         final buffer = StringBuffer();
         if (tabatsCount > 1) {
-          buffer.write('SET ${tabataIndex + 1}/$tabatsCount');
+          buffer.write('TABATA ${tabataIndex + 1}/$tabatsCount');
           buffer.write('\n');
         }
         buffer.write('Round ${(index ~/ 2) + 1}/$tabataRoundsCount');

@@ -104,7 +104,7 @@ abstract class EmomStateBase with Store {
       if (index < emomRoundsCount + 1) {
         final buffer = StringBuffer();
         if (emomsCount > 1) {
-          buffer.write('SET ${emomIndex + 1}/$emomsCount');
+          buffer.write('EMOM ${emomIndex + 1}/$emomsCount');
           buffer.write('\n');
         }
         if (index < emomRoundsCount) {
