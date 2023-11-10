@@ -10,12 +10,14 @@ class RoundsWidget extends StatefulWidget {
     required this.initialValue,
     required this.onValueChanged,
     this.flex = 1,
+    this.unlimited = false,
   }) : super(key: key);
 
   final String title;
   final int initialValue;
   final ValueChanged<int> onValueChanged;
   final int flex;
+  final bool unlimited;
 
   @override
   State<RoundsWidget> createState() => _RoundsWidgetState();
@@ -25,9 +27,11 @@ class _RoundsWidgetState extends State<RoundsWidget> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
 
+  final _unlimitedSymbol = '∞';
+
   @override
   void initState() {
-    _controller.text = widget.initialValue.toString();
+    _controller.text = widget.unlimited ? _unlimitedSymbol : widget.initialValue.toString();
     _focusNode.addListener(_focusNodeListener);
     super.initState();
   }
@@ -62,6 +66,14 @@ class _RoundsWidgetState extends State<RoundsWidget> {
   }
 
   @override
+  void didUpdateWidget(covariant RoundsWidget oldWidget) {
+    if (oldWidget.unlimited != widget.unlimited) {
+      _controller.text = widget.unlimited ? _unlimitedSymbol : widget.initialValue.toString();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: widget.flex,
@@ -82,16 +94,20 @@ class _RoundsWidgetState extends State<RoundsWidget> {
             alignment: Alignment.center,
             child: Row(
               children: [
-                IconButton(
-                  onPressed: _decrease,
-                  icon: const Icon(CupertinoIcons.minus_circle),
-                ),
+                if (!widget.unlimited)
+                  IconButton(
+                    onPressed: _decrease,
+                    icon: const Icon(CupertinoIcons.minus_circle),
+                  ),
                 Expanded(
                   child: CupertinoTextField(
+                    enabled: !widget.unlimited,
                     controller: _controller,
                     focusNode: _focusNode,
                     textAlign: TextAlign.center,
-                    style: context.textTheme.bodyLarge,
+                    style: widget.unlimited
+                        ? context.textTheme.bodyLarge?.copyWith(fontSize: 30)
+                        : context.textTheme.bodyLarge,
                     cursorColor: context.color.mainText,
                     decoration: const BoxDecoration(),
                     onChanged: (str) {
@@ -105,10 +121,11 @@ class _RoundsWidgetState extends State<RoundsWidget> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                IconButton(
-                  onPressed: _increase,
-                  icon: const Icon(CupertinoIcons.add_circled),
-                ),
+                if (!widget.unlimited)
+                  IconButton(
+                    onPressed: _increase,
+                    icon: const Icon(CupertinoIcons.add_circled),
+                  ),
               ],
             ),
           ),

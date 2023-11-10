@@ -20,6 +20,7 @@ const Emom$json = {
     {'1': 'workTimeInSeconds', '3': 1, '4': 1, '5': 13, '10': 'workTimeInSeconds'},
     {'1': 'roundsCount', '3': 2, '4': 1, '5': 13, '10': 'roundsCount'},
     {'1': 'restAfterSetInSeconds', '3': 3, '4': 1, '5': 13, '10': 'restAfterSetInSeconds'},
+    {'1': 'deathBy', '3': 4, '4': 1, '5': 8, '10': 'deathBy'},
   ],
 };
 
@@ -27,5 +28,6 @@ const Emom$json = {
 final $typed_data.Uint8List emomDescriptor = $convert.base64Decode(
     'CgRFbW9tEiwKEXdvcmtUaW1lSW5TZWNvbmRzGAEgASgNUhF3b3JrVGltZUluU2Vjb25kcxIgCg'
     'tyb3VuZHNDb3VudBgCIAEoDVILcm91bmRzQ291bnQSNAoVcmVzdEFmdGVyU2V0SW5TZWNvbmRz'
-    'GAMgASgNUhVyZXN0QWZ0ZXJTZXRJblNlY29uZHM=');
+    'GAMgASgNUhVyZXN0QWZ0ZXJTZXRJblNlY29uZHMSGAoHZGVhdGhCeRgEIAEoCFIHZGVhdGhCeQ'
+    '==');
 

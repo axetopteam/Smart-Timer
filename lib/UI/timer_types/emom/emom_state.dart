@@ -46,6 +46,12 @@ abstract class EmomStateBase with Store {
   }
 
   @action
+  void setDeathBy(int emomIndex, bool value) {
+    final emom = emoms[emomIndex];
+    emoms[emomIndex] = emom.copyWithNewValue(deathBy: value);
+  }
+
+  @action
   void addEmom() {
     final newEmom = emoms.last.copyWithNewValue();
     emoms.add(newEmom);
@@ -70,23 +76,35 @@ abstract class EmomStateBase with Store {
 
     for (var i = 0; i < emomsCount; i++) {
       final emom = emoms[i];
-      List<Interval> setIntervals = List.generate(
-        emom.roundsCount,
-        (index) => FiniteInterval(
-          duration: emom.workTime,
-          type: IntervalType.work,
-          isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
-        ),
-      );
-      if (i != emomsCount - 1) {
-        setIntervals.add(
+      List<Interval> setIntervals;
+      if (emom.deathBy) {
+        setIntervals = [
           FiniteInterval(
-            duration: emom.restAfterSet,
-            type: IntervalType.rest,
+            duration: emom.workTime,
+            type: IntervalType.work,
+          ),
+          RepeatLastInterval(
+            type: IntervalType.work,
+          )
+        ];
+      } else {
+        setIntervals = List.generate(
+          emom.roundsCount,
+          (index) => FiniteInterval(
+            duration: emom.workTime,
+            type: IntervalType.work,
+            isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
           ),
         );
+        if (i != emomsCount - 1) {
+          setIntervals.add(
+            FiniteInterval(
+              duration: emom.restAfterSet,
+              type: IntervalType.rest,
+            ),
+          );
+        }
       }
-
       intervals.addAll(setIntervals);
     }
     return Workout(intervals: intervals, description: _descriptionSolver);

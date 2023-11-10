@@ -16,6 +16,7 @@ extension IntervalX on Interval {
         return timeCapInterval.timeCap;
       case InfiniteInterval():
       case RatioInterval():
+      case RepeatLastInterval():
         return null;
     }
   }
@@ -78,6 +79,19 @@ class RatioInterval extends Interval {
   });
 
   final double ratio;
+
+  @override
+  Duration currentTime({required DateTime startTime, required DateTime now}) {
+    final currentDuration = now.difference(startTime);
+    return currentDuration;
+  }
+}
+
+class RepeatLastInterval extends Interval {
+  RepeatLastInterval({
+    required super.type,
+    super.isLast,
+  });
 
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {

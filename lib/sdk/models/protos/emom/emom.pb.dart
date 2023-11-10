@@ -18,6 +18,7 @@ class Emom extends $pb.GeneratedMessage {
     $core.int? workTimeInSeconds,
     $core.int? roundsCount,
     $core.int? restAfterSetInSeconds,
+    $core.bool? deathBy,
   }) {
     final $result = create();
     if (workTimeInSeconds != null) {
@@ -29,6 +30,9 @@ class Emom extends $pb.GeneratedMessage {
     if (restAfterSetInSeconds != null) {
       $result.restAfterSetInSeconds = restAfterSetInSeconds;
     }
+    if (deathBy != null) {
+      $result.deathBy = deathBy;
+    }
     return $result;
   }
   Emom._() : super();
@@ -39,6 +43,7 @@ class Emom extends $pb.GeneratedMessage {
     ..a<$core.int>(1, _omitFieldNames ? '' : 'workTimeInSeconds', $pb.PbFieldType.OU3, protoName: 'workTimeInSeconds')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'roundsCount', $pb.PbFieldType.OU3, protoName: 'roundsCount')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'restAfterSetInSeconds', $pb.PbFieldType.OU3, protoName: 'restAfterSetInSeconds')
+    ..aOB(4, _omitFieldNames ? '' : 'deathBy', protoName: 'deathBy')
     ..hasRequiredFields = false
   ;
 
@@ -89,6 +94,15 @@ class Emom extends $pb.GeneratedMessage {
   $core.bool hasRestAfterSetInSeconds() => $_has(2);
   @$pb.TagNumber(3)
   void clearRestAfterSetInSeconds() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get deathBy => $_getBF(3);
+  @$pb.TagNumber(4)
+  set deathBy($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDeathBy() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDeathBy() => clearField(4);
 }
 
 

@@ -117,6 +117,15 @@ class WorkoutCalculator {
     startTime = startTime.add(pauseDuration);
 
     for (var index = 0; index < workout.intervals.length; index++) {
+      if (index > 0 && workout.intervals[index] is RepeatLastInterval) {
+        workout = workout.copyWith(
+          intervals: workout.intervals
+            ..insert(
+              index,
+              workout.intervals[index - 1],
+            ),
+        );
+      }
       var interval = workout.intervals[index];
       final time = interval.currentTime(
         startTime: startTime!,
@@ -133,6 +142,8 @@ class WorkoutCalculator {
             final newNext = FiniteInterval(
                 duration: time * nextInterval.ratio, type: nextInterval.type, isLast: nextInterval.isLast);
             newIntervals[index + 1] = newNext;
+          } else if (nextInterval != null && nextInterval is RepeatLastInterval) {
+            newIntervals.removeAt(index + 1);
           }
 
           workout = workout.copyWith(intervals: newIntervals);
@@ -146,9 +157,8 @@ class WorkoutCalculator {
             totalDuration: interval.totalDuration,
             soundType: _checkSound(interval, time),
             roundsInfo: workout.roundInfo(index),
-            canBeCompleted: interval is! FiniteInterval,
+            canBeCompleted: interval is! FiniteInterval || workout.intervals[index + 1] is RepeatLastInterval,
           );
-          print('#WorkoutCalculator# ${status.time}, ${status.totalDuration}, ${status.shareOfTotalDuration}}');
           return status;
         }
       }
@@ -159,6 +169,7 @@ class WorkoutCalculator {
           startTime = startTime.add(interval.timeCap);
         case InfiniteInterval():
         case RatioInterval():
+        case RepeatLastInterval():
           throw TypeError();
       }
     }
@@ -197,6 +208,7 @@ class WorkoutCalculator {
           return SoundType.lastRound;
         }
       case RatioInterval():
+      case RepeatLastInterval():
         break;
     }
 

@@ -17,11 +17,12 @@ extension EmomX on Emom {
     restAfterSetInSeconds: 1 * 60,
   );
 
-  Emom copyWithNewValue({Duration? workTime, int? roundsCount, Duration? restAfterSet}) {
+  Emom copyWithNewValue({Duration? workTime, int? roundsCount, Duration? restAfterSet, bool? deathBy}) {
     return Emom(
       workTimeInSeconds: (workTime ?? this.workTime).inSeconds,
       roundsCount: roundsCount ?? this.roundsCount,
       restAfterSetInSeconds: (restAfterSet ?? this.restAfterSet).inSeconds,
+      deathBy: deathBy ?? this.deathBy,
     );
   }
 }

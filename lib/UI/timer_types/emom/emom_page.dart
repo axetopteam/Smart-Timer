@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
@@ -139,12 +140,14 @@ class _EmomPageState extends State<EmomPage> {
               Column(
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       RoundsWidget(
                         title: LocaleKeys.rounds.tr(),
                         initialValue: emom.roundsCount,
                         onValueChanged: (value) => emomState.setRounds(index, value),
+                        unlimited: emom.deathBy,
                       ),
                       const SizedBox(width: 10),
                       IntervalWidget(
@@ -162,6 +165,30 @@ class _EmomPageState extends State<EmomPage> {
                         },
                       ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Transform.translate(
+                      offset: const Offset(-10, 0),
+                      child: GestureDetector(
+                        child: Row(
+                          children: [
+                            CupertinoCheckbox(
+                              value: emom.deathBy,
+                              onChanged: (newValue) {
+                                if (newValue != null) {
+                                  emomState.setDeathBy(
+                                    index,
+                                    newValue,
+                                  );
+                                }
+                              },
+                            ),
+                            Expanded(child: Text('Death By')),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
