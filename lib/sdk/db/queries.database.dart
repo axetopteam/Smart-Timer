@@ -27,24 +27,24 @@ extension DatabaseQueries on AppDatabase {
   }
 
   Future<TrainingHistoryRawData> saveTrainingToHistory({
-    required int finishAt,
+    required int startAt,
+    required int endAt,
     required String name,
     required String description,
     int? wellBeing,
     required String workout,
     required String timerType,
-    required String result,
-    required bool isFinished,
+    required String intervals,
   }) {
     final entry = TrainingHistoryCompanion.insert(
-      finishAt: finishAt,
+      startAt: startAt,
+      endAt: endAt,
       name: Value(name),
       description: Value(description),
       wellBeing: Value(wellBeing),
       workout: workout,
       timerType: timerType,
-      result: result,
-      isFinished: isFinished,
+      intervals: intervals,
     );
     return into(trainingHistory).insertReturning(entry);
   }

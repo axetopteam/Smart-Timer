@@ -1,6 +1,6 @@
 import 'package:smart_timer/services/audio_service.dart';
 
-import '../workout_interval_type.dart';
+import '../activity_type.dart';
 import 'interval_index.dart';
 
 sealed class TimerStatus {
@@ -30,7 +30,7 @@ class RunStatus extends TimerStatus {
   });
 
   final Duration time;
-  final IntervalType type;
+  final ActivityType type;
   final Duration? totalDuration;
   final SoundType? soundType;
   final bool canBeCompleted;
@@ -55,7 +55,7 @@ class PauseStatus extends TimerStatus {
   });
 
   final Duration time;
-  final IntervalType type;
+  final ActivityType type;
   final Duration? totalDuration;
 }
 

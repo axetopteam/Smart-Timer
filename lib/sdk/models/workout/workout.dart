@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
-import '../workout_interval_type.dart';
 import 'interval.dart';
 import 'interval_info.dart';
 
 export 'interval.dart';
 export 'interval_info.dart';
 
-typedef DescriptionSolver = String Function(int index);
-
 class Workout extends Equatable {
   const Workout({
     required this.intervals,
     this.pauses = const [],
     this.startTime,
+    this.endTime,
   });
 
   final List<Interval> intervals;
   final DateTime? startTime;
+  final DateTime? endTime;
   final List<Pause> pauses;
 
   Workout addCountdown(Duration duration) {
     final countdownInterval = FiniteInterval(
-      type: IntervalType.countdown,
+      activityType: ActivityType.countdown,
+      isReverse: true,
       duration: duration,
       indexes: [],
     );
@@ -34,7 +34,7 @@ class Workout extends Equatable {
     final countdownInterval = intervals.firstOrNull;
     return countdownInterval != null &&
         countdownInterval is FiniteInterval &&
-        countdownInterval.type == IntervalType.countdown;
+        countdownInterval.activityType == ActivityType.countdown;
   }
 
   bool isCountdownCompleted({required DateTime now}) {
@@ -75,15 +75,22 @@ class Workout extends Equatable {
     return this;
   }
 
+  Workout setEndTime(DateTime dateTime) {
+    if (endTime != null) return this;
+    final workout = endPause(dateTime);
+    return workout.copyWith(endTime: endTime);
+  }
+
   Workout reset() {
     return Workout(intervals: intervals);
   }
 
-  Workout copyWith({List<Interval>? intervals, DateTime? startTime, List<Pause>? pauses}) {
+  Workout copyWith({List<Interval>? intervals, DateTime? startTime, DateTime? endTime, List<Pause>? pauses}) {
     return Workout(
       intervals: intervals ?? this.intervals,
       startTime: startTime ?? this.startTime,
       pauses: pauses ?? this.pauses,
+      endTime: endTime ?? this.endTime,
     );
   }
 
@@ -133,9 +140,10 @@ class WorkoutCalculator {
 
       if (time >= Duration.zero) {
         if (completeCurrentInterval) {
-          final completedInterval = TimeCapInterval(
-            timeCap: interval.pastTime(startTime: startTime, now: now),
-            type: interval.type,
+          final completedInterval = FiniteInterval(
+            duration: interval.pastTime(startTime: startTime, now: now),
+            isReverse: false,
+            activityType: interval.activityType,
             isLast: interval.isLast,
             indexes: interval.indexes,
           );
@@ -145,7 +153,8 @@ class WorkoutCalculator {
           if (nextInterval != null && nextInterval is RatioInterval) {
             final newNext = FiniteInterval(
               duration: time * nextInterval.ratio,
-              type: nextInterval.type,
+              isReverse: true,
+              activityType: nextInterval.activityType,
               indexes: nextInterval.indexes,
               isLast: nextInterval.isLast,
             );
@@ -161,7 +170,7 @@ class WorkoutCalculator {
         } else {
           final status = RunStatus(
             time: time,
-            type: interval.type,
+            type: interval.activityType,
             totalDuration: interval.totalDuration,
             soundType: _checkSound(interval, time),
             indexes: interval.indexes,
@@ -173,14 +182,13 @@ class WorkoutCalculator {
       switch (interval) {
         case FiniteInterval():
           startTime = startTime.add(interval.duration);
-        case TimeCapInterval():
-          startTime = startTime.add(interval.timeCap);
         case InfiniteInterval():
         case RatioInterval():
         case RepeatLastInterval():
           throw TypeError();
       }
     }
+
     return DoneStatus();
   }
 
@@ -191,24 +199,26 @@ class WorkoutCalculator {
   static SoundType? _checkSound(Interval interval, Duration time) {
     switch (interval) {
       case FiniteInterval():
-        if (interval.totalDuration! > _threeSeconds && time == _threeSeconds) {
-          return SoundType.countdown;
-        }
-        if (interval.totalDuration! > _tenSeconds && time == _tenSeconds) {
-          return SoundType.tenSeconds;
-        }
-        if (interval.isLast && interval.totalDuration! - _delta == time) {
-          return SoundType.lastRound;
-        }
-      case TimeCapInterval():
-        if (interval.totalDuration! > _threeSeconds && interval.totalDuration! - _threeSeconds == time) {
-          return SoundType.countdown;
-        }
-        if (interval.totalDuration! > _tenSeconds && interval.totalDuration! - _tenSeconds == time) {
-          return SoundType.tenSeconds;
-        }
-        if (interval.isLast && time == Duration.zero + _delta) {
-          return SoundType.lastRound;
+        if (interval.isReverse) {
+          if (interval.duration > _threeSeconds && time == _threeSeconds) {
+            return SoundType.countdown;
+          }
+          if (interval.duration > _tenSeconds && time == _tenSeconds) {
+            return SoundType.tenSeconds;
+          }
+          if (interval.isLast && interval.duration - _delta == time) {
+            return SoundType.lastRound;
+          }
+        } else {
+          if (interval.duration > _threeSeconds && interval.duration - _threeSeconds == time) {
+            return SoundType.countdown;
+          }
+          if (interval.duration > _tenSeconds && interval.duration - _tenSeconds == time) {
+            return SoundType.tenSeconds;
+          }
+          if (interval.isLast && time == Duration.zero + _delta) {
+            return SoundType.lastRound;
+          }
         }
 
       case InfiniteInterval():

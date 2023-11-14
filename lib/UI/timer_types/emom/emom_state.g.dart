@@ -67,6 +67,17 @@ mixin _$EmomState on EmomStateBase, Store {
   }
 
   @override
+  void setDeathBy(int emomIndex, bool value) {
+    final _$actionInfo = _$EmomStateBaseActionController.startAction(
+        name: 'EmomStateBase.setDeathBy');
+    try {
+      return super.setDeathBy(emomIndex, value);
+    } finally {
+      _$EmomStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void addEmom() {
     final _$actionInfo = _$EmomStateBaseActionController.startAction(
         name: 'EmomStateBase.addEmom');

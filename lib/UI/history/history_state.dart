@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/sdk/models/training_history_record.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 part 'history_state.g.dart';
@@ -48,23 +47,23 @@ abstract class _HistoryState with Store {
 
   @action
   Future<void> saveTraining({
-    required DateTime finishAt,
+    required DateTime startAt,
+    required DateTime endAt,
     required String name,
     required String description,
     int? wellBeing,
     required WorkoutSettings workoutSettings,
     required TimerType timerType,
-    required WorkoutResult result,
-    required bool isFinished,
+    required List<Interval> intervals,
   }) async {
     final record = await _sdk.saveTrainingToHistory(
-      finishAt: DateTime.now(),
+      startAt: startAt,
+      endAt: endAt,
       name: '',
       description: '',
       workoutSettings: workoutSettings,
       timerType: timerType,
-      result: result,
-      isFinished: isFinished,
+      intervals: intervals,
     );
     records.insert(0, record);
   }

@@ -47,6 +47,7 @@ class _WorkRestPageState extends State<WorkRestPage> {
       color: context.color.workRestColor,
       appBarTitle: LocaleKeys.work_rest_title.tr(),
       subtitle: LocaleKeys.work_rest_description.tr(),
+      workout: workRest.workout,
       addToFavorites: workRest.saveToFavorites,
       onStartPressed: () {
         context.router.push(TimerRoute(timerSettings: workRest));

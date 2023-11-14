@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout/workout.dart';
 import '../favorites/add_to_favorites_alert.dart';
 import '../pages/workout_desc.dart';
 import 'start_button.dart';
@@ -14,10 +14,10 @@ class TimerSetupScaffold extends StatelessWidget {
     required this.color,
     required this.appBarTitle,
     required this.subtitle,
+    required this.workout,
     required this.onStartPressed,
     required this.slivers,
     this.scrollController,
-    this.workout,
     this.addToFavorites,
     Key? key,
   }) : super(key: key);
@@ -26,8 +26,8 @@ class TimerSetupScaffold extends StatelessWidget {
   final String appBarTitle;
   final String subtitle;
   final List<Widget> slivers;
+  final Workout workout;
   final void Function() onStartPressed;
-  final WorkoutSet? workout;
   final ScrollController? scrollController;
   final OnSaveFavorite? addToFavorites;
 
@@ -59,11 +59,11 @@ class TimerSetupScaffold extends StatelessWidget {
                         },
                         icon: const Icon(CupertinoIcons.square_favorites_alt_fill),
                       ),
-                    if (kDebugMode && workout != null)
+                    if (kDebugMode)
                       IconButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                            return WorkoutDesc(workout!);
+                            return WorkoutDesc(workout);
                           }));
                         },
                         icon: const Icon(Icons.description_outlined),
@@ -89,7 +89,7 @@ class TimerSetupScaffold extends StatelessWidget {
                 return Observer(builder: (context) {
                   return StartButton(
                     backgroundColor: color,
-                    totalTime: workout?.totalTime,
+                    totalTime: workout.totalDuration,
                     onPressed: onStartPressed,
                   );
                 });

@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../timer_settings_interface.dart';
@@ -73,24 +72,26 @@ abstract class AfapStateBase with Store {
 
     for (int i = 0; i < afapsCount; i++) {
       final afap = afaps[i];
-      final setIndex = IntervalIndex(index: i + 1, name: 'AFAP', totalCount: afapsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: 'AFAP', totalCount: afapsCount);
 
       final isLast = afapsCount > 1 && i == afapsCount - 1;
       final workInterval = afap.noTimeCap
           ? InfiniteInterval(
-              type: IntervalType.work,
+              activityType: ActivityType.work,
               isLast: isLast,
               indexes: afapsCount > 1 ? [setIndex] : [],
             )
-          : TimeCapInterval(
-              timeCap: afap.timeCap,
-              type: IntervalType.work,
+          : FiniteInterval(
+              duration: afap.timeCap,
+              isReverse: false,
+              activityType: ActivityType.work,
               isLast: isLast,
               indexes: afapsCount > 1 ? [setIndex] : [],
             );
       final restInterval = FiniteInterval(
         duration: afap.restTime,
-        type: IntervalType.rest,
+        isReverse: true,
+        activityType: ActivityType.rest,
         indexes: afapsCount > 1 ? [setIndex] : [],
       );
       intervals.addAll([

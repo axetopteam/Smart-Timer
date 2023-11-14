@@ -50,39 +50,44 @@ class _AfapPageState extends State<AfapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TimerSetupScaffold(
-      color: context.color.afapColor,
-      appBarTitle: LocaleKeys.afap_title.tr(),
-      subtitle: LocaleKeys.afap_description.tr(),
-      scrollController: _scroolController,
-      addToFavorites: afapState.saveToFavorites,
-      onStartPressed: () {
-        context.pushRoute(
-          TimerRoute(timerSettings: afapState),
+    return Observer(
+      builder: (context) {
+        return TimerSetupScaffold(
+          color: context.color.afapColor,
+          appBarTitle: LocaleKeys.afap_title.tr(),
+          subtitle: LocaleKeys.afap_description.tr(),
+          workout: afapState.workout,
+          scrollController: _scroolController,
+          addToFavorites: afapState.saveToFavorites,
+          onStartPressed: () {
+            context.pushRoute(
+              TimerRoute(timerSettings: afapState),
+            );
+          },
+          slivers: [
+            SliverAnimatedList(
+              key: _listKey,
+              initialItemCount: afapState.afapsCount,
+              itemBuilder: _itemBuilder,
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
+              sliver: SliverToBoxAdapter(
+                  child: ElevatedButton(
+                onPressed: _addNewAfap,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add_circle_outline, size: 20),
+                    const SizedBox(width: 4),
+                    Text(LocaleKeys.afap_add_button_title.tr())
+                  ],
+                ),
+              )),
+            ),
+          ],
         );
       },
-      slivers: [
-        SliverAnimatedList(
-          key: _listKey,
-          initialItemCount: afapState.afapsCount,
-          itemBuilder: _itemBuilder,
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(30, 26, 30, 0),
-          sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-            onPressed: _addNewAfap,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.add_circle_outline, size: 20),
-                const SizedBox(width: 4),
-                Text(LocaleKeys.afap_add_button_title.tr())
-              ],
-            ),
-          )),
-        ),
-      ],
     );
   }
 

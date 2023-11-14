@@ -40,6 +40,8 @@ void main() async {
 
   GetIt.I.registerSingleton(SdkService(db: AppDatabase()));
 
+  GetIt.I.registerSingleton(HistoryState());
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
@@ -130,12 +132,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return Provider(
-          create: (_) => HistoryState(),
-          child: child,
-        );
-      },
       theme: createDarkTheme(),
     );
   }

@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 import 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../timer_settings_interface.dart';
@@ -75,11 +74,14 @@ abstract class TabataStoreBase with Store {
     for (var i = 0; i < tabatsCount; i++) {
       final tabata = tabats[i];
 
-      final workInterval = FiniteInterval(duration: tabata.workTime, type: IntervalType.work, indexes: []);
-      final restInterval = FiniteInterval(duration: tabata.restTime, type: IntervalType.rest, indexes: []);
-      final restAfterSet = FiniteInterval(duration: tabata.restAfterSet, type: IntervalType.rest, indexes: []);
-      final setIndex = IntervalIndex(index: i + 1, name: 'TABATA', totalCount: tabatsCount);
-      final roundIndex = IntervalIndex(index: 0, name: 'ROUND', totalCount: tabata.roundsCount);
+      final workInterval =
+          FiniteInterval(duration: tabata.workTime, isReverse: true, activityType: ActivityType.work, indexes: []);
+      final restInterval =
+          FiniteInterval(duration: tabata.restTime, isReverse: true, activityType: ActivityType.rest, indexes: []);
+      final restAfterSet =
+          FiniteInterval(duration: tabata.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: 'TABATA', totalCount: tabatsCount);
+      final roundIndex = IntervalIndex(index: 0, localeKey: 'ROUND', totalCount: tabata.roundsCount);
 
       final roundIntervals = <Interval>[];
       for (var j = 0; j < tabata.roundsCount; j++) {

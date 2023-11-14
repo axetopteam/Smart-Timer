@@ -2,24 +2,24 @@ part of 'sdk_service.dart';
 
 extension HistoryExtension on SdkService {
   Future<TrainingHistoryRecord> saveTrainingToHistory({
-    required DateTime finishAt,
+    required DateTime startAt,
+    required DateTime endAt,
     required String name,
     required String description,
     int? wellBeing,
     required WorkoutSettings workoutSettings,
     required TimerType timerType,
-    required WorkoutResult result,
-    required bool isFinished,
+    required List<Interval> intervals,
   }) async {
     final res = await _db.saveTrainingToHistory(
-      finishAt: finishAt.millisecondsSinceEpoch,
+      startAt: startAt.millisecondsSinceEpoch,
+      endAt: endAt.millisecondsSinceEpoch,
       name: name,
       description: description,
       wellBeing: wellBeing,
       timerType: timerType.name,
       workout: WorkoutParser.encode(timerType, workoutSettings),
-      result: jsonEncode(result.toJson()),
-      isFinished: isFinished,
+      intervals: jsonEncode(intervals.map((e) => e.toJson())),
     );
     return res.toHistoryRecord();
   }
@@ -36,13 +36,13 @@ extension on TrainingHistoryRawData {
 
     return TrainingHistoryRecord(
       id: id,
-      finishAt: DateTime.fromMillisecondsSinceEpoch(finishAt),
+      startAt: DateTime.fromMillisecondsSinceEpoch(startAt),
+      endAt: DateTime.fromMillisecondsSinceEpoch(endAt),
       name: name,
       description: description,
       workout: WorkoutParser.decode(workout),
       timerType: timerType,
-      result: WorkoutResult.workoutResultParser(jsonDecode(result)),
-      isCompleted: isFinished,
+      intervals: (jsonDecode(intervals) as List).map((json) => Interval.fromJson(json)).toList(),
     );
   }
 }

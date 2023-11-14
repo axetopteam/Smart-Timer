@@ -2,9 +2,10 @@
 
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
-import 'package:smart_timer/sdk/models/workout/workout.dart';
 
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/services/app_properties.dart';
@@ -12,19 +13,22 @@ import 'package:smart_timer/services/audio_service.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
 import 'package:smart_timer/utils/datetime_extension.dart';
 
+import '../timer_types/timer_settings_interface.dart';
+
 part 'timer_state.g.dart';
 
 class TimerState = TimerStateBase with _$TimerState;
 
 abstract class TimerStateBase with Store {
-  TimerStateBase({
-    required Workout workout,
-    required this.timerType,
-  })  : _workout = workout,
+  TimerStateBase({required TimerSettingsInterface timerSettings})
+      : _workout = timerSettings.workout,
+        timerType = timerSettings.type,
+        settings = timerSettings.settings,
         status = ReadyStatus() {
     initialize();
   }
   final TimerType timerType;
+  final WorkoutSettings settings;
   late final AudioService _audio;
   final _appProperties = AppProperties();
 
@@ -35,6 +39,8 @@ abstract class TimerStateBase with Store {
 
   @observable
   Duration? totalRestTime;
+
+  bool isSaved = false;
 
   void initialize() {
     _audio = AudioService();
@@ -54,16 +60,12 @@ abstract class TimerStateBase with Store {
 
   StreamSubscription? timerSubscription;
 
-  Map<DateTime, SoundType> get reminders {
-    return {};
-    // return workout.reminders..addAll(!countdownInterval.isEnded ? countdownInterval.reminders : {});
-  }
+  DateTime get roundedNow => DateTime.now().toUtc().roundToSeconds();
 
   @action
   void start() {
     print('#TimerState# start timer');
     AnalyticsManager.eventTimerStarted.setProperty('timerType', timerType.name).commit();
-    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
 
     _workout = _workout.copyWith(startTime: roundedNow);
     timerSubscription = timeStream.listen((nowUtc) {
@@ -76,7 +78,6 @@ abstract class TimerStateBase with Store {
     print('#TimerState# pause timer');
     final currentStatus = status;
     if (currentStatus is RunStatus) {
-      final roundedNow = DateTime.now().toUtc().roundToSeconds();
       timerSubscription?.pause();
       _workout = _workout.startPause(roundedNow);
       _audio.pauseIfNeeded();
@@ -95,7 +96,6 @@ abstract class TimerStateBase with Store {
   void resume() {
     print('#TimerState# resume timer');
 
-    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
     _audio.resumeIfNeeded();
     _workout = _workout.endPause(roundedNow);
 
@@ -104,7 +104,6 @@ abstract class TimerStateBase with Store {
   }
 
   void completeCurrentInterval() {
-    final DateTime roundedNow = DateTime.now().toUtc().roundToSeconds();
     tick(
       roundedNow,
       completeCurrentInterval: true,
@@ -131,6 +130,8 @@ abstract class TimerStateBase with Store {
     if (status is DoneStatus) {
       timerSubscription?.cancel();
       TimerCouterService().addNewTime(DateTime.now());
+      _workout = _workout.setEndTime(nowUtc);
+      _saveWorkout();
 
       AnalyticsManager.eventTimerFinished
           .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
@@ -139,8 +140,26 @@ abstract class TimerStateBase with Store {
     }
   }
 
+  Future<void> _saveWorkout() async {
+    final startTime = _workout.startTime;
+    final endTime = _workout.endTime;
+    if (status is! ReadyStatus && startTime != null && endTime != null) {
+      await GetIt.I<HistoryState>().saveTraining(
+        startAt: startTime,
+        endAt: endTime,
+        name: '',
+        description: '',
+        workoutSettings: settings,
+        timerType: timerType,
+        intervals: _workout.intervals,
+      );
+    }
+  }
+
   @action
   void close() {
+    _workout.setEndTime(roundedNow);
+    _saveWorkout();
     timerSubscription?.cancel();
     _audio.stop();
     _audio.dispose();

@@ -70,23 +70,23 @@ mixin _$HistoryState on _HistoryState, Store {
 
   @override
   Future<void> saveTraining(
-      {required DateTime finishAt,
+      {required DateTime startAt,
+      required DateTime endAt,
       required String name,
       required String description,
       int? wellBeing,
       required WorkoutSettings workoutSettings,
       required TimerType timerType,
-      required WorkoutResult result,
-      required bool isFinished}) {
+      required List<Interval> intervals}) {
     return _$saveTrainingAsyncAction.run(() => super.saveTraining(
-        finishAt: finishAt,
+        startAt: startAt,
+        endAt: endAt,
         name: name,
         description: description,
         wellBeing: wellBeing,
         workoutSettings: workoutSettings,
         timerType: timerType,
-        result: result,
-        isFinished: isFinished));
+        intervals: intervals));
   }
 
   @override

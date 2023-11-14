@@ -43,10 +43,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   @override
   void initState() {
-    state = TimerState(
-      workout: widget.timerSettings.workout,
-      timerType: widget.timerSettings.type,
-    );
+    state = TimerState(timerSettings: widget.timerSettings);
     AnalyticsManager.eventTimerOpened.setProperty('timer_type', widget.timerSettings.type.name).commit();
 
     WakelockPlus.enable();
@@ -93,17 +90,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
     timerSubscription?.cancel();
     WakelockPlus.disable();
-    // if (state.currentState != TimerStatus.ready) {
-    //   context.read<HistoryState>().saveTraining(
-    //         finishAt: DateTime.now(), //TODO: подумать какой время сохранить
-    //         name: '',
-    //         description: '',
-    //         workoutSettings: widget.timerSettings.settings,
-    //         timerType: widget.timerSettings.type,
-    //         result: state.workout.toResult(),
-    //         isFinished: state.currentState == TimerStatus.done,
-    //       );
-    // }
+
     AnalyticsManager.eventTimerClosed
         .setProperty('status', state.status.name)
         .setProperty('timer_type', state.timerType.name)

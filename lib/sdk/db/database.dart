@@ -19,14 +19,14 @@ class FavoriteWorkouts extends Table {
 @DataClassName("TrainingHistoryRawData")
 class TrainingHistory extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get finishAt => integer()();
+  IntColumn get startAt => integer()();
+  IntColumn get endAt => integer()();
   TextColumn get name => text().withDefault(const Constant(''))();
   TextColumn get description => text().withDefault(const Constant(''))();
   IntColumn get wellBeing => integer().nullable()();
   TextColumn get workout => text()();
   TextColumn get timerType => text()();
-  TextColumn get result => text()();
-  BoolColumn get isFinished => boolean()(); //TODO: переименовать isCompleted
+  TextColumn get intervals => text()();
 }
 
 @DriftDatabase(tables: [FavoriteWorkouts, TrainingHistory])

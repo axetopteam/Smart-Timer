@@ -56,8 +56,8 @@ class _AmrapPageState extends State<AmrapPage> {
         color: context.color.amrapColor,
         appBarTitle: LocaleKeys.amrap_title.tr(),
         subtitle: LocaleKeys.amrap_description.tr(),
+        workout: amrapState.workout,
         scrollController: _scroolController,
-        // workout: amrapState.workout,
         addToFavorites: amrapState.saveToFavorites,
         onStartPressed: () {
           context.router.push(TimerRoute(timerSettings: amrapState));

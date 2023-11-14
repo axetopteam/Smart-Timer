@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../timer_settings_interface.dart';
@@ -80,26 +79,28 @@ abstract class EmomStateBase with Store {
       if (emom.deathBy) {
         setIntervals = [
           FiniteInterval(
-            indexes: [
-              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(name: 'ROUND', index: 1),
-            ],
             duration: emom.workTime,
-            type: IntervalType.work,
+            isReverse: true,
+            activityType: ActivityType.work,
+            indexes: [
+              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: 'ROUND', index: 1),
+            ],
           ),
           RepeatLastInterval(
-            type: IntervalType.work,
+            activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(name: 'ROUND', index: 1),
+              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: 'ROUND', index: 1),
             ],
           ),
           if (i != emomsCount - 1)
             FiniteInterval(
               duration: emom.restAfterSet,
-              type: IntervalType.rest,
+              isReverse: true,
+              activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+                if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
               ],
             ),
         ];
@@ -108,10 +109,11 @@ abstract class EmomStateBase with Store {
           emom.roundsCount,
           (index) => FiniteInterval(
             duration: emom.workTime,
-            type: IntervalType.work,
+            isReverse: true,
+            activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(name: 'ROUND', index: index + 1, totalCount: emom.roundsCount),
+              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: 'ROUND', index: index + 1, totalCount: emom.roundsCount),
             ],
             isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
           ),
@@ -120,9 +122,10 @@ abstract class EmomStateBase with Store {
           setIntervals.add(
             FiniteInterval(
               duration: emom.restAfterSet,
-              type: IntervalType.rest,
+              isReverse: true,
+              activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(name: 'EMOM', index: i + 1, totalCount: emomsCount),
+                if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
               ],
             ),
           );

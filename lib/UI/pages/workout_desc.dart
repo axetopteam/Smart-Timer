@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smart_timer/core/context_extension.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
+import 'package:smart_timer/sdk/models/workout/workout.dart';
 // import 'package:smart_timer/models/workout.dart';
 
 class WorkoutDesc extends StatelessWidget {
   WorkoutDesc(this.workout, {Key? key}) : super(key: key) {
-    workout.start(DateTime(0));
+    // workout.start(DateTime(0));
   }
-  final WorkoutSet workout;
+  final Workout workout;
 
   @override
   Widget build(BuildContext context) {

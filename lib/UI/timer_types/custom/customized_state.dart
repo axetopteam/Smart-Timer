@@ -1,7 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
 
 part 'customized_state.g.dart';
 
@@ -68,34 +65,6 @@ abstract class CustomizedStateBase with Store {
 
   @observable
   ObservableList<ObservableList<Duration>> sets;
-
-  WorkoutSet get workout {
-    final List<WorkoutSet> workoutList = [];
-    for (int i = 0; i < sets.length; i++) {
-      final intervals = sets[i]
-          .map(
-            (duration) => WorkoutInterval(type: IntervalType.work, duration: duration),
-          )
-          .toList();
-      final round = WorkoutSet(intervals);
-
-      final lastIntervals = List.of(intervals);
-      lastIntervals.last = lastIntervals.last.copyWith(isLast: true);
-      final lastRound = WorkoutSet(lastIntervals);
-
-      final List<WorkoutSet> setsList = [];
-      for (int j = 0; j < roundsCounts[i]; j++) {
-        if (i == sets.length - 1 && j == roundsCounts[i] - 1) {
-          setsList.add(lastRound);
-        } else {
-          setsList.add(round);
-        }
-      }
-      final set = WorkoutSet(setsList);
-      workoutList.add(set);
-    }
-    return WorkoutSet(workoutList).copy();
-  }
 
   @action
   void setRounds(int setIndex, int value) {

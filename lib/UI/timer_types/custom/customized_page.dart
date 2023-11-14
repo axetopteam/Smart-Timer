@@ -7,7 +7,6 @@ import 'package:smart_timer/UI/bottom_sheets/time_picker/time_picker.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 
-import '../../pages/workout_desc.dart';
 import '../../widgets/value_container.dart';
 import 'customized_state.dart';
 
@@ -48,16 +47,16 @@ class _CustomizedPageState extends State<CustomizedPage> {
             const Text(
               'Set your Custom Timer',
             ),
-            TextButton(
-              child: Text(
-                'Show description',
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                  return WorkoutDesc(customSettings.workout);
-                }));
-              },
-            ),
+            // TextButton(
+            //   child: Text(
+            //     'Show description',
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+            //       return WorkoutDesc(customSettings.workout);
+            //     }));
+            //   },
+            // ),
             const SizedBox(height: 12),
 
             Expanded(

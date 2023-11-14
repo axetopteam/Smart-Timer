@@ -3,10 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
-import 'package:smart_timer/sdk/models/workout_interval.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
-import 'package:smart_timer/sdk/models/workout_set.dart';
-import 'package:smart_timer/utils/duration.extension.dart';
 
 import '../timer_type.dart';
 
@@ -77,28 +73,28 @@ class _CompletedStateState extends State<CompletedState> {
     }
   }
 
-  Widget _buildSets(WorkoutSet set) {
-    final workIntervals = set.sets.map(
-      (element) {
-        if (element is WorkoutSet) {
-          return element.sets
-              .firstWhere((interval) => interval is WorkoutInterval && interval.type == IntervalType.work);
-        }
-      },
-    );
-    final intervals = <WorkoutInterval>[];
-    for (var element in workIntervals) {
-      if (element is WorkoutInterval) {
-        intervals.add(element);
-      }
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: intervals
-          .map(
-            (e) => Text(e.duration?.durationToString(isCountdown: true) ?? ''),
-          )
-          .toList(),
-    );
-  }
+  // Widget _buildSets(WorkoutSet set) {
+  //   final workIntervals = set.sets.map(
+  //     (element) {
+  //       if (element is WorkoutSet) {
+  //         return element.sets
+  //             .firstWhere((interval) => interval is WorkoutInterval && interval.type == IntervalType.work);
+  //       }
+  //     },
+  //   );
+  //   final intervals = <WorkoutInterval>[];
+  //   for (var element in workIntervals) {
+  //     if (element is WorkoutInterval) {
+  //       intervals.add(element);
+  //     }
+  //   }
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: intervals
+  //         .map(
+  //           (e) => Text(e.duration?.durationToString(isCountdown: true) ?? ''),
+  //         )
+  //         .toList(),
+  //   );
+  // }
 }

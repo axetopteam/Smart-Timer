@@ -2,8 +2,8 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:provider/provider.dart';
 import 'package:smart_timer/core/context_extension.dart';
 
 import 'history_state.dart';
@@ -20,7 +20,7 @@ class _HistoryPageState extends State<HistoryPage> {
   late final HistoryState state;
   @override
   void initState() {
-    state = context.read<HistoryState>();
+    state = GetIt.I<HistoryState>();
     super.initState();
   }
 
@@ -68,7 +68,7 @@ class _HistoryPageState extends State<HistoryPage> {
               separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),
               itemBuilder: (ctx, index) {
                 final record = records[index];
-                final finishAt = Jiffy.parseFromDateTime(record.finishAt.toLocal());
+                final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
                 return CupertinoListTile(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   title: Text(record.readbleName),

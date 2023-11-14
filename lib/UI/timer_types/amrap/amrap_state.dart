@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../timer_settings_interface.dart';
@@ -62,17 +61,19 @@ abstract class AmrapStateBase with Store {
     final List<Interval> intervals = [];
 
     for (int i = 0; i < amrapsCount; i++) {
-      final setIndex = IntervalIndex(index: i + 1, name: 'AMRAP', totalCount: amrapsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: 'AMRAP', totalCount: amrapsCount);
 
       final workInterval = FiniteInterval(
         duration: amraps[i].workTime,
-        type: IntervalType.work,
+        isReverse: true,
+        activityType: ActivityType.work,
         isLast: amrapsCount > 1 && i == amrapsCount - 1,
         indexes: amrapsCount > 1 ? [setIndex] : [],
       );
       final restInterval = FiniteInterval(
         duration: amraps[i].restTime,
-        type: IntervalType.rest,
+        isReverse: true,
+        activityType: ActivityType.rest,
         indexes: amrapsCount > 1 ? [setIndex] : [],
       );
       intervals.addAll([
@@ -86,9 +87,4 @@ abstract class AmrapStateBase with Store {
 
   @computed
   WorkoutSettings get settings => WorkoutSettings(amrap: AmrapSettings(amraps: amraps));
-
-  String _descriptionSolver(int index) {
-    final amrapIndex = index ~/ 2;
-    return 'AMRAP ${amrapIndex + 1}/$amrapsCount';
-  }
 }

@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest/work_rest_extension.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest_settings/work_rest_settings.pb.dart';
-import 'package:smart_timer/sdk/models/workout_interval_type.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 import '../timer_settings_interface.dart';
@@ -49,12 +48,13 @@ abstract class WorkRestStateBase with Store {
     for (var i = 0; i < sets.length; i++) {
       final set = sets[i];
 
-      final workInterval = InfiniteInterval(type: IntervalType.work, indexes: []);
-      final restInterval = RatioInterval(type: IntervalType.rest, ratio: set.ratio, indexes: []);
-      final restAfterSet = FiniteInterval(duration: set.restAfterSet, type: IntervalType.rest, indexes: []);
+      final workInterval = InfiniteInterval(activityType: ActivityType.work, indexes: []);
+      final restInterval = RatioInterval(activityType: ActivityType.rest, ratio: set.ratio, indexes: []);
+      final restAfterSet =
+          FiniteInterval(duration: set.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
 
-      final setIndex = IntervalIndex(index: i + 1, name: 'SET', totalCount: sets.length);
-      final roundIndex = IntervalIndex(index: 0, name: 'ROUND', totalCount: set.roundsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: 'SET', totalCount: sets.length);
+      final roundIndex = IntervalIndex(index: 0, localeKey: 'ROUND', totalCount: set.roundsCount);
 
       final setIntervals = <Interval>[];
       for (var j = 0; j < set.roundsCount; j++) {
