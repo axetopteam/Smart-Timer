@@ -46,15 +46,7 @@ class Workout extends Equatable {
     return false;
   }
 
-  Duration? get totalDuration {
-    var sum = Duration.zero;
-    for (var interval in intervals) {
-      final totalDuration = interval.totalDuration;
-      if (totalDuration == null) return null;
-      sum += totalDuration;
-    }
-    return sum;
-  }
+  Duration? get totalDuration => intervals.totalDuration;
 
   Workout startPause(DateTime time) {
     final lastPause = pauses.lastOrNull;
@@ -96,6 +88,18 @@ class Workout extends Equatable {
 
   @override
   List<Object?> get props => [intervals, startTime, pauses];
+}
+
+extension IntervalsList on List<Interval> {
+  Duration? get totalDuration {
+    var sum = Duration.zero;
+    for (var interval in this) {
+      final totalDuration = interval.totalDuration;
+      if (totalDuration == null) return null;
+      sum += totalDuration;
+    }
+    return sum;
+  }
 }
 
 class WorkoutCalculator {

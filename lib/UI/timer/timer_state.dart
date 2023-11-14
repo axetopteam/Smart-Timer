@@ -40,7 +40,7 @@ abstract class TimerStateBase with Store {
   @observable
   Duration? totalRestTime;
 
-  bool isSaved = false;
+  bool _isSaved = false;
 
   void initialize() {
     _audio = AudioService();
@@ -143,7 +143,8 @@ abstract class TimerStateBase with Store {
   Future<void> _saveWorkout() async {
     final startTime = _workout.startTime;
     final endTime = _workout.endTime;
-    if (status is! ReadyStatus && startTime != null && endTime != null) {
+    if (!_isSaved && status is! ReadyStatus && startTime != null && endTime != null) {
+      _isSaved = true;
       await GetIt.I<HistoryState>().saveTraining(
         startAt: startTime,
         endAt: endTime,
