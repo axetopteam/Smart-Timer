@@ -78,7 +78,7 @@ class Workout extends Equatable {
   Workout setEndTime(DateTime dateTime) {
     if (endTime != null) return this;
     final workout = endPause(dateTime);
-    return workout.copyWith(endTime: endTime);
+    return workout.copyWith(endTime: dateTime);
   }
 
   Workout reset() {

@@ -19,14 +19,22 @@ extension HistoryExtension on SdkService {
       wellBeing: wellBeing,
       timerType: timerType.name,
       workout: WorkoutParser.encode(timerType, workoutSettings),
-      intervals: jsonEncode(intervals.map((e) => e.toJson())),
+      intervals: jsonEncode(intervals.map((e) => e.toJson()).toList()),
     );
     return res.toHistoryRecord();
   }
 
   Future<List<TrainingHistoryRecord>> fetchHistory({int offset = 0, int limit = 10}) async {
-    final res = await _db.fetchHistory(limit: limit, offset: offset);
-    return res.map((e) => e.toHistoryRecord()).toList();
+    final records = await _db.fetchHistory(limit: limit, offset: offset);
+    final results = <TrainingHistoryRecord>[];
+
+    for (var record in records) {
+      try {
+        final result = record.toHistoryRecord();
+        results.add(result);
+      } catch (e) {}
+    }
+    return results;
   }
 }
 

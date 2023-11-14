@@ -127,7 +127,7 @@ class FiniteInterval extends Interval {
     return {
       'type': 'finite',
       'duration': duration.inMilliseconds,
-      'activity_type': activityType.name,
+      'activityType': activityType.name,
       'isReverse': isReverse,
       'indexes': indexes.map((e) => e.toJson()).toList(),
       'isLast': isLast,
@@ -177,7 +177,7 @@ class InfiniteInterval extends Interval {
   Map<String, dynamic> toJson() {
     return {
       'type': 'infinite',
-      'activity_type': activityType.name,
+      'activityType': activityType.name,
       'indexes': indexes.map((e) => e.toJson()).toList(),
       'isLast': isLast,
     };
@@ -233,7 +233,7 @@ class RatioInterval extends Interval {
     return {
       'type': 'ratio',
       'ratio': ratio,
-      'activity_type': activityType.name,
+      'activityType': activityType.name,
       'indexes': indexes.map((e) => e.toJson()).toList(),
       'isLast': isLast,
     };
@@ -282,7 +282,7 @@ class RepeatLastInterval extends Interval {
   Map<String, dynamic> toJson() {
     return {
       'type': 'repeatLast',
-      'activity_type': activityType.name,
+      'activityType': activityType.name,
       'indexes': indexes.map((e) => e.toJson()).toList(),
       'isLast': isLast,
     };

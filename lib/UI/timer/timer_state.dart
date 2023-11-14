@@ -158,7 +158,7 @@ abstract class TimerStateBase with Store {
 
   @action
   void close() {
-    _workout.setEndTime(roundedNow);
+    _workout = _workout.setEndTime(roundedNow);
     _saveWorkout();
     timerSubscription?.cancel();
     _audio.stop();
