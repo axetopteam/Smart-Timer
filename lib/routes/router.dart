@@ -18,6 +18,7 @@ import 'package:smart_timer/UI/timer_types/timer_settings_interface.dart';
 import 'package:smart_timer/UI/timer_types/work_rest/work_rest_page.dart';
 
 import '../UI/favorites/favorites_page.dart';
+import '../UI/history/workout_details_page.dart';
 
 part 'router.gr.dart';
 
@@ -44,6 +45,7 @@ class AppRouter extends _$AppRouter {
             ),
           ],
         ),
+        AutoRoute(path: '/workoutDetails', page: WorkoutDetailsRoute.page),
         CustomRoute(
           path: '/newTimerRouter',
           page: NewTimerRouter.page,

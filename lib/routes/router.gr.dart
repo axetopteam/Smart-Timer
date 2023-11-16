@@ -122,6 +122,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HistoryPage(),
       );
     },
+    WorkoutDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<WorkoutDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WorkoutDetailsPage(
+          args.record,
+          key: args.key,
+        ),
+      );
+    },
   };
 }
 
@@ -444,4 +454,42 @@ class HistoryRoute extends PageRouteInfo<void> {
   static const String name = 'HistoryRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WorkoutDetailsPage]
+class WorkoutDetailsRoute extends PageRouteInfo<WorkoutDetailsRouteArgs> {
+  WorkoutDetailsRoute({
+    required TrainingHistoryRecord record,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WorkoutDetailsRoute.name,
+          args: WorkoutDetailsRouteArgs(
+            record: record,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'WorkoutDetailsRoute';
+
+  static const PageInfo<WorkoutDetailsRouteArgs> page =
+      PageInfo<WorkoutDetailsRouteArgs>(name);
+}
+
+class WorkoutDetailsRouteArgs {
+  const WorkoutDetailsRouteArgs({
+    required this.record,
+    this.key,
+  });
+
+  final TrainingHistoryRecord record;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WorkoutDetailsRouteArgs{record: $record, key: $key}';
+  }
 }

@@ -359,6 +359,11 @@ class $TrainingHistoryTable extends TrainingHistory
   late final GeneratedColumn<String> intervals = GeneratedColumn<String>(
       'intervals', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _pausesMeta = const VerificationMeta('pauses');
+  @override
+  late final GeneratedColumn<String> pauses = GeneratedColumn<String>(
+      'pauses', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -369,7 +374,8 @@ class $TrainingHistoryTable extends TrainingHistory
         wellBeing,
         workout,
         timerType,
-        intervals
+        intervals,
+        pauses
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -429,6 +435,10 @@ class $TrainingHistoryTable extends TrainingHistory
     } else if (isInserting) {
       context.missing(_intervalsMeta);
     }
+    if (data.containsKey('pauses')) {
+      context.handle(_pausesMeta,
+          pauses.isAcceptableOrUnknown(data['pauses']!, _pausesMeta));
+    }
     return context;
   }
 
@@ -456,6 +466,8 @@ class $TrainingHistoryTable extends TrainingHistory
           .read(DriftSqlType.string, data['${effectivePrefix}timer_type'])!,
       intervals: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}intervals'])!,
+      pauses: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pauses']),
     );
   }
 
@@ -476,6 +488,7 @@ class TrainingHistoryRawData extends DataClass
   final String workout;
   final String timerType;
   final String intervals;
+  final String? pauses;
   const TrainingHistoryRawData(
       {required this.id,
       required this.startAt,
@@ -485,7 +498,8 @@ class TrainingHistoryRawData extends DataClass
       this.wellBeing,
       required this.workout,
       required this.timerType,
-      required this.intervals});
+      required this.intervals,
+      this.pauses});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -500,6 +514,9 @@ class TrainingHistoryRawData extends DataClass
     map['workout'] = Variable<String>(workout);
     map['timer_type'] = Variable<String>(timerType);
     map['intervals'] = Variable<String>(intervals);
+    if (!nullToAbsent || pauses != null) {
+      map['pauses'] = Variable<String>(pauses);
+    }
     return map;
   }
 
@@ -516,6 +533,8 @@ class TrainingHistoryRawData extends DataClass
       workout: Value(workout),
       timerType: Value(timerType),
       intervals: Value(intervals),
+      pauses:
+          pauses == null && nullToAbsent ? const Value.absent() : Value(pauses),
     );
   }
 
@@ -532,6 +551,7 @@ class TrainingHistoryRawData extends DataClass
       workout: serializer.fromJson<String>(json['workout']),
       timerType: serializer.fromJson<String>(json['timerType']),
       intervals: serializer.fromJson<String>(json['intervals']),
+      pauses: serializer.fromJson<String?>(json['pauses']),
     );
   }
   @override
@@ -547,6 +567,7 @@ class TrainingHistoryRawData extends DataClass
       'workout': serializer.toJson<String>(workout),
       'timerType': serializer.toJson<String>(timerType),
       'intervals': serializer.toJson<String>(intervals),
+      'pauses': serializer.toJson<String?>(pauses),
     };
   }
 
@@ -559,7 +580,8 @@ class TrainingHistoryRawData extends DataClass
           Value<int?> wellBeing = const Value.absent(),
           String? workout,
           String? timerType,
-          String? intervals}) =>
+          String? intervals,
+          Value<String?> pauses = const Value.absent()}) =>
       TrainingHistoryRawData(
         id: id ?? this.id,
         startAt: startAt ?? this.startAt,
@@ -570,6 +592,7 @@ class TrainingHistoryRawData extends DataClass
         workout: workout ?? this.workout,
         timerType: timerType ?? this.timerType,
         intervals: intervals ?? this.intervals,
+        pauses: pauses.present ? pauses.value : this.pauses,
       );
   @override
   String toString() {
@@ -582,14 +605,15 @@ class TrainingHistoryRawData extends DataClass
           ..write('wellBeing: $wellBeing, ')
           ..write('workout: $workout, ')
           ..write('timerType: $timerType, ')
-          ..write('intervals: $intervals')
+          ..write('intervals: $intervals, ')
+          ..write('pauses: $pauses')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, startAt, endAt, name, description,
-      wellBeing, workout, timerType, intervals);
+      wellBeing, workout, timerType, intervals, pauses);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -602,7 +626,8 @@ class TrainingHistoryRawData extends DataClass
           other.wellBeing == this.wellBeing &&
           other.workout == this.workout &&
           other.timerType == this.timerType &&
-          other.intervals == this.intervals);
+          other.intervals == this.intervals &&
+          other.pauses == this.pauses);
 }
 
 class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
@@ -615,6 +640,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
   final Value<String> workout;
   final Value<String> timerType;
   final Value<String> intervals;
+  final Value<String?> pauses;
   const TrainingHistoryCompanion({
     this.id = const Value.absent(),
     this.startAt = const Value.absent(),
@@ -625,6 +651,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     this.workout = const Value.absent(),
     this.timerType = const Value.absent(),
     this.intervals = const Value.absent(),
+    this.pauses = const Value.absent(),
   });
   TrainingHistoryCompanion.insert({
     this.id = const Value.absent(),
@@ -636,6 +663,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     required String workout,
     required String timerType,
     required String intervals,
+    this.pauses = const Value.absent(),
   })  : startAt = Value(startAt),
         endAt = Value(endAt),
         workout = Value(workout),
@@ -651,6 +679,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     Expression<String>? workout,
     Expression<String>? timerType,
     Expression<String>? intervals,
+    Expression<String>? pauses,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -662,6 +691,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       if (workout != null) 'workout': workout,
       if (timerType != null) 'timer_type': timerType,
       if (intervals != null) 'intervals': intervals,
+      if (pauses != null) 'pauses': pauses,
     });
   }
 
@@ -674,7 +704,8 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       Value<int?>? wellBeing,
       Value<String>? workout,
       Value<String>? timerType,
-      Value<String>? intervals}) {
+      Value<String>? intervals,
+      Value<String?>? pauses}) {
     return TrainingHistoryCompanion(
       id: id ?? this.id,
       startAt: startAt ?? this.startAt,
@@ -685,6 +716,7 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
       workout: workout ?? this.workout,
       timerType: timerType ?? this.timerType,
       intervals: intervals ?? this.intervals,
+      pauses: pauses ?? this.pauses,
     );
   }
 
@@ -718,6 +750,9 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
     if (intervals.present) {
       map['intervals'] = Variable<String>(intervals.value);
     }
+    if (pauses.present) {
+      map['pauses'] = Variable<String>(pauses.value);
+    }
     return map;
   }
 
@@ -732,7 +767,8 @@ class TrainingHistoryCompanion extends UpdateCompanion<TrainingHistoryRawData> {
           ..write('wellBeing: $wellBeing, ')
           ..write('workout: $workout, ')
           ..write('timerType: $timerType, ')
-          ..write('intervals: $intervals')
+          ..write('intervals: $intervals, ')
+          ..write('pauses: $pauses')
           ..write(')'))
         .toString();
   }

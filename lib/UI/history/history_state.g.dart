@@ -77,7 +77,8 @@ mixin _$HistoryState on _HistoryState, Store {
       int? wellBeing,
       required WorkoutSettings workoutSettings,
       required TimerType timerType,
-      required List<Interval> intervals}) {
+      required List<Interval> intervals,
+      required List<Pause> pauses}) {
     return _$saveTrainingAsyncAction.run(() => super.saveTraining(
         startAt: startAt,
         endAt: endAt,
@@ -86,7 +87,8 @@ mixin _$HistoryState on _HistoryState, Store {
         wellBeing: wellBeing,
         workoutSettings: workoutSettings,
         timerType: timerType,
-        intervals: intervals));
+        intervals: intervals,
+        pauses: pauses));
   }
 
   @override

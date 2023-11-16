@@ -108,6 +108,7 @@ abstract class TimerStateBase with Store {
       roundedNow,
       completeCurrentInterval: true,
     );
+    _audio.stop();
     AnalyticsManager.eventTimerRoundCompleted.commit();
   }
 
@@ -153,6 +154,7 @@ abstract class TimerStateBase with Store {
         workoutSettings: settings,
         timerType: timerType,
         intervals: _workout.intervals,
+        pauses: _workout.pauses,
       );
     }
   }

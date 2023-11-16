@@ -10,17 +10,18 @@ extension HistoryExtension on SdkService {
     required WorkoutSettings workoutSettings,
     required TimerType timerType,
     required List<Interval> intervals,
+    required List<Pause> pauses,
   }) async {
     final res = await _db.saveTrainingToHistory(
-      startAt: startAt.millisecondsSinceEpoch,
-      endAt: endAt.millisecondsSinceEpoch,
-      name: name,
-      description: description,
-      wellBeing: wellBeing,
-      timerType: timerType.name,
-      workout: WorkoutParser.encode(timerType, workoutSettings),
-      intervals: jsonEncode(intervals.map((e) => e.toJson()).toList()),
-    );
+        startAt: startAt.millisecondsSinceEpoch,
+        endAt: endAt.millisecondsSinceEpoch,
+        name: name,
+        description: description,
+        wellBeing: wellBeing,
+        timerType: timerType.name,
+        workout: WorkoutParser.encode(timerType, workoutSettings),
+        intervals: jsonEncode(intervals.map((e) => e.toJson()).toList()),
+        pauses: jsonEncode(pauses.map((e) => e.toJson()).toList()));
     return res.toHistoryRecord();
   }
 
@@ -51,6 +52,7 @@ extension on TrainingHistoryRawData {
       workout: WorkoutParser.decode(workout),
       timerType: timerType,
       intervals: (jsonDecode(intervals) as List).map((json) => Interval.fromJson(json)).toList(),
+      pauses: pauses != null ? (jsonDecode(pauses!) as List).map((json) => Pause.fromJson(json)).toList() : [],
     );
   }
 }

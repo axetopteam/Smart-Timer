@@ -3,9 +3,11 @@ import 'package:smart_timer/services/audio_service.dart';
 
 import 'interval.dart';
 import 'interval_info.dart';
+import 'pause.dart';
 
 export 'interval.dart';
 export 'interval_info.dart';
+export 'pause.dart';
 
 class Workout extends Equatable {
   const Workout({
@@ -114,8 +116,8 @@ class WorkoutCalculator {
     }
 
     var pauseDuration = Duration.zero;
-    for (var element in workout.pauses) {
-      pauseDuration += element.getDuration(now);
+    for (var pause in workout.pauses) {
+      pauseDuration += pause.duration ?? (now.toUtc().difference(pause.startAt));
     }
 
     startTime = startTime.add(pauseDuration);
@@ -243,24 +245,5 @@ class WorkoutCalculator {
 
     return null;
     // if (finishTimeUtc != null) finishTimeUtc!.subtract(const Duration(seconds: 3)): SoundType.countdown;
-  }
-}
-
-class Pause {
-  Pause({
-    required this.startAt,
-    this.endAt,
-  });
-  final DateTime startAt;
-  final DateTime? endAt;
-
-  bool get isEnded => endAt != null;
-
-  Duration getDuration(DateTime now) {
-    return (endAt ?? now).toUtc().difference(startAt.toUtc());
-  }
-
-  Pause endPause(DateTime time) {
-    return Pause(startAt: startAt, endAt: time);
   }
 }

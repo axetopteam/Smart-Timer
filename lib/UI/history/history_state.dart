@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/sdk/models/workout/pause.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
 part 'history_state.g.dart';
@@ -55,6 +56,7 @@ abstract class _HistoryState with Store {
     required WorkoutSettings workoutSettings,
     required TimerType timerType,
     required List<Interval> intervals,
+    required List<Pause> pauses,
   }) async {
     final record = await _sdk.saveTrainingToHistory(
       startAt: startAt,
@@ -64,6 +66,7 @@ abstract class _HistoryState with Store {
       workoutSettings: workoutSettings,
       timerType: timerType,
       intervals: intervals,
+      pauses: pauses,
     );
     records.insert(0, record);
   }

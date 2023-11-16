@@ -1,10 +1,11 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/routes/router.dart';
 
 import 'history_state.dart';
 
@@ -70,6 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 final record = records[index];
                 final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
                 return CupertinoListTile(
+                  onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   title: Text(record.readbleName),
                   leading: DecoratedBox(
@@ -82,7 +84,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   trailing: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${finishAt.Md}/${finishAt.format(pattern: 'yy')}'),
+                      Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
                       Text(finishAt.jm),
                     ],
                   ),

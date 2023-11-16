@@ -6,6 +6,7 @@ import 'package:smart_timer/sdk/workout_parser.dart';
 
 import 'db/database.dart';
 import 'models/favorite_workout.dart';
+import 'models/workout/pause.dart';
 
 export 'models/favorite_workout.dart';
 export 'models/training_history_record.dart';

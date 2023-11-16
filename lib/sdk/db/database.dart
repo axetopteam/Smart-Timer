@@ -27,6 +27,7 @@ class TrainingHistory extends Table {
   TextColumn get workout => text()();
   TextColumn get timerType => text()();
   TextColumn get intervals => text()();
+  TextColumn get pauses => text().nullable()();
 }
 
 @DriftDatabase(tables: [FavoriteWorkouts, TrainingHistory])

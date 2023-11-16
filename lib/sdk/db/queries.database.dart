@@ -35,6 +35,7 @@ extension DatabaseQueries on AppDatabase {
     required String workout,
     required String timerType,
     required String intervals,
+    required String pauses,
   }) {
     final entry = TrainingHistoryCompanion.insert(
       startAt: startAt,
@@ -45,6 +46,7 @@ extension DatabaseQueries on AppDatabase {
       workout: workout,
       timerType: timerType,
       intervals: intervals,
+      pauses: Value(pauses),
     );
     return into(trainingHistory).insertReturning(entry);
   }
