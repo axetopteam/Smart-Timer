@@ -57,4 +57,14 @@ extension DatabaseQueries on AppDatabase {
           ..limit(limit, offset: offset))
         .get();
   }
+
+  Future<List<TrainingHistoryRawData>> updateTainingHistoryRecord(
+      {required int id, String? name, String? description}) async {
+    return await (update(trainingHistory)..where((t) => t.id.equals(id))).writeReturning(
+      TrainingHistoryCompanion(
+        name: name != null ? Value(name) : const Value.absent(),
+        description: description != null ? Value(description) : const Value.absent(),
+      ),
+    );
+  }
 }

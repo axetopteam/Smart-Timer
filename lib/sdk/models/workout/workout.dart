@@ -126,7 +126,7 @@ class WorkoutCalculator {
       if (index > 0 && workout.intervals[index] is RepeatLastInterval) {
         final previousInterval = workout.intervals[index - 1];
         final previousIntervalIndexes = List.of(previousInterval.indexes);
-        previousIntervalIndexes.last = previousIntervalIndexes.last.copyWith(index);
+        previousIntervalIndexes.last = previousIntervalIndexes.last.copyWith(previousIntervalIndexes.last.index + 1);
         workout = workout.copyWith(
           intervals: workout.intervals
             ..insert(

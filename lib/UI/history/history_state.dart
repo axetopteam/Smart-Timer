@@ -70,4 +70,20 @@ abstract class _HistoryState with Store {
     );
     records.insert(0, record);
   }
+
+  @action
+  Future<void> updateRecord({required int id, String? name, String? description}) async {
+    final updatedRecords = await _sdk.updateTainingHistoryRecord(
+      id: id,
+      name: name,
+      description: description,
+    );
+
+    for (var record in updatedRecords) {
+      final index = records.indexWhere((element) => element.id == record.id);
+      if (index != -1) {
+        records[index] = record;
+      }
+    }
+  }
 }

@@ -2,7 +2,10 @@ import 'package:auto_route/annotations.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
@@ -33,9 +36,18 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   @override
   void dispose() {
+    _save();
     _nameController.dispose();
     _descriptionController.dispose();
     super.dispose();
+  }
+
+  Future<void> _save() async {
+    await GetIt.I<HistoryState>().updateRecord(
+      id: record.id,
+      name: _nameController.text,
+      description: _descriptionController.text,
+    );
   }
 
   TrainingHistoryRecord get record => widget.record;
@@ -74,7 +86,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     _buildName(),
                     _buildDescription(),
                     const SizedBox(height: 20),
-                    Text('Детали тренировки'),
+                    Text(
+                      'Детали тренировки:',
+                      style: context.textTheme.bodyLarge,
+                    ),
                     SizedBox(height: 12),
                     _buildSets(),
                   ],
@@ -90,11 +105,20 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   Widget _buildItem(IconData icon, String title, String value) {
     return Row(
       children: [
-        Icon(icon),
+        Icon(
+          icon,
+          size: 28,
+        ),
         SizedBox(width: 4),
-        Text(title),
+        Text(
+          title,
+          style: context.textTheme.bodyLarge,
+        ),
         Spacer(),
-        Text(value),
+        Text(
+          value,
+          style: context.textTheme.bodyLarge,
+        ),
       ],
     );
   }
@@ -105,7 +129,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Name:'),
+          Text(
+            'Name:',
+            style: context.textTheme.bodyLarge,
+          ),
           const SizedBox(height: 4),
           CupertinoTextField(
             controller: _nameController,
@@ -128,7 +155,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Description:'),
+          Text(
+            'Description:',
+            style: context.textTheme.bodyLarge,
+          ),
           const SizedBox(height: 4),
           CupertinoTextField(
             decoration: BoxDecoration(
@@ -180,7 +210,9 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   Widget _buildTime(String title, String value) {
     return Row(
       children: [
-        Text(title),
+        Text(
+          title,
+        ),
         const SizedBox(width: 20),
         Text(
           value,

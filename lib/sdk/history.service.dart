@@ -37,6 +37,25 @@ extension HistoryExtension on SdkService {
     }
     return results;
   }
+
+  Future<List<TrainingHistoryRecord>> updateTainingHistoryRecord(
+      {required int id, String? name, String? description}) async {
+    final records = await _db.updateTainingHistoryRecord(
+      id: id,
+      name: name,
+      description: description,
+    );
+
+    final results = <TrainingHistoryRecord>[];
+
+    for (var record in records) {
+      try {
+        final result = record.toHistoryRecord();
+        results.add(result);
+      } catch (e) {}
+    }
+    return results;
+  }
 }
 
 extension on TrainingHistoryRawData {
