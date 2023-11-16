@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
