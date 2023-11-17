@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum TabBarItem {
-  favorites,
-  history,
+  main,
+  workouts,
   settings;
 
   IconData get icon {
     switch (this) {
-      case TabBarItem.favorites:
-        return CupertinoIcons.square_favorites_fill;
-      case TabBarItem.history:
+      case TabBarItem.main:
+        return CupertinoIcons.timer_fill;
+      case TabBarItem.workouts:
         return Icons.history;
       case TabBarItem.settings:
         return CupertinoIcons.settings;
@@ -19,10 +19,10 @@ enum TabBarItem {
 
   String get label {
     switch (this) {
-      case TabBarItem.favorites:
-        return 'Избранное';
-      case TabBarItem.history:
-        return 'История';
+      case TabBarItem.main:
+        return 'Главное';
+      case TabBarItem.workouts:
+        return 'Тренировки';
       case TabBarItem.settings:
         return 'Настройки';
     }

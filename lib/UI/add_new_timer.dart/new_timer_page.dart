@@ -11,6 +11,7 @@ class NewTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final safeOffset = MediaQuery.of(context).padding;
     return DecoratedBox(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -20,20 +21,6 @@ class NewTimerPage extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          actions: [
-            IconButton(
-              icon: const Icon(
-                CupertinoIcons.clear_circled,
-                size: 34,
-              ),
-              onPressed: () {
-                context.popRoute();
-              },
-            ),
-          ],
-        ),
         resizeToAvoidBottomInset: false,
         body: Material(
           color: Colors.transparent,
@@ -44,7 +31,7 @@ class NewTimerPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 160),
                   Padding(
                     padding: const EdgeInsets.only(left: 18),
                     child: Text(
@@ -111,7 +98,7 @@ class NewTimerPage extends StatelessWidget {
                       // ),
                     ],
                   ),
-                  const SizedBox(height: 56),
+                  SizedBox(height: safeOffset.bottom + 40),
                 ],
               ),
             ),

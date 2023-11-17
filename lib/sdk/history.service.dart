@@ -33,7 +33,9 @@ extension HistoryExtension on SdkService {
       try {
         final result = record.toHistoryRecord();
         results.add(result);
-      } catch (e) {}
+      } catch (e) {
+        continue;
+      }
     }
     return results;
   }
@@ -52,7 +54,9 @@ extension HistoryExtension on SdkService {
       try {
         final result = record.toHistoryRecord();
         results.add(result);
-      } catch (e) {}
+      } catch (e) {
+        continue;
+      }
     }
     return results;
   }

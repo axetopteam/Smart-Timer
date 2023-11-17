@@ -91,6 +91,16 @@ mixin _$HistoryState on _HistoryState, Store {
         pauses: pauses));
   }
 
+  late final _$updateRecordAsyncAction =
+      AsyncAction('_HistoryState.updateRecord', context: context);
+
+  @override
+  Future<void> updateRecord(
+      {required int id, String? name, String? description}) {
+    return _$updateRecordAsyncAction.run(
+        () => super.updateRecord(id: id, name: name, description: description));
+  }
+
   @override
   String toString() {
     return '''

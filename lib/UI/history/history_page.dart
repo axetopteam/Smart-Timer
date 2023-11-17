@@ -9,7 +9,6 @@ import 'package:smart_timer/routes/router.dart';
 
 import 'history_state.dart';
 
-@RoutePage<void>()
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
 
@@ -31,67 +30,70 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return CustomScrollView(
       slivers: [
-        CupertinoSliverNavigationBar(
-          largeTitle: Text('History'),
-          heroTag: 'history',
-        ),
+        // CupertinoSliverNavigationBar(
+        //   largeTitle: Text('History'),
+        //   heroTag: 'history',
+        // ),
         CupertinoSliverRefreshControl(
           onRefresh: () async {
             await state.loadMore(isRefresh: true);
           },
         ),
-        Observer(
-          builder: (context) {
-            if (state.error != null) {
-              return SliverFillRemaining(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Failed to load history',
-                      style: context.textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButtonTheme(
-                      data: context.buttonThemes.paywallButtonTheme,
-                      child: ElevatedButton(
-                        onPressed: () => state.loadMore(isRefresh: true),
-                        child: Text('Обновить'),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-            final records = state.records;
-            return SliverList.separated(
-              itemCount: records.length,
-              separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),
-              itemBuilder: (ctx, index) {
-                final record = records[index];
-                final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
-                return CupertinoListTile(
-                  onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  title: Text(record.readbleName),
-                  leading: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: record.timerType.workoutColor(context),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const SizedBox.expand(),
-                  ),
-                  trailing: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          sliver: Observer(
+            builder: (context) {
+              if (state.error != null) {
+                return SliverFillRemaining(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
-                      Text(finishAt.jm),
+                      Text(
+                        'Failed to load history',
+                        style: context.textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButtonTheme(
+                        data: context.buttonThemes.paywallButtonTheme,
+                        child: ElevatedButton(
+                          onPressed: () => state.loadMore(isRefresh: true),
+                          child: Text('Обновить'),
+                        ),
+                      )
                     ],
                   ),
                 );
-              },
-            );
-          },
+              }
+              final records = state.records;
+              return SliverList.separated(
+                itemCount: records.length,
+                separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),
+                itemBuilder: (ctx, index) {
+                  final record = records[index];
+                  final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
+                  return CupertinoListTile(
+                    onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    title: Text(record.readbleName),
+                    leading: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: record.timerType.workoutColor(context),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const SizedBox.expand(),
+                    ),
+                    trailing: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
+                        Text(finishAt.jm),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
         SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
       ],

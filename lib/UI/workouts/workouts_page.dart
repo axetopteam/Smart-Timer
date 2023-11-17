@@ -1,0 +1,71 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:smart_timer/UI/favorites/favorites_page.dart';
+import 'package:smart_timer/UI/history/history_page.dart';
+
+enum WorkoutsPageType { history, favorites }
+
+@RoutePage()
+class WorkoutsPage extends StatefulWidget {
+  const WorkoutsPage({super.key});
+
+  @override
+  State<WorkoutsPage> createState() => _WorkoutsPageState();
+}
+
+class _WorkoutsPageState extends State<WorkoutsPage> {
+  var selectedPage = WorkoutsPageType.history;
+
+  final PageController _pageController = PageController();
+
+  void _onTapSegmentController(WorkoutsPageType? newValue) {
+    if (newValue != null) {
+      setState(() {
+        selectedPage = newValue;
+      });
+      _pageController.animateToPage(newValue.index, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
+  }
+
+  void _onPageChanged(int index) {
+    final pageType = WorkoutsPageType.values.firstWhereOrNull((element) => element.index == index);
+    if (pageType != null) {
+      setState(() {
+        selectedPage = pageType;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final safeOffset = MediaQuery.of(context).padding;
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(20, safeOffset.top, 20, 20),
+            sliver: SliverToBoxAdapter(
+              child: CupertinoSlidingSegmentedControl<WorkoutsPageType>(
+                groupValue: selectedPage,
+                children: {
+                  WorkoutsPageType.history: Text('История'),
+                  WorkoutsPageType.favorites: Text('Избранное'),
+                },
+                onValueChanged: _onTapSegmentController,
+              ),
+            ),
+          )
+        ];
+      },
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: [
+          HistoryPage(),
+          FavouritesPage(),
+        ],
+      ),
+    );
+  }
+}

@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/routes/router.dart';
 
@@ -19,8 +18,8 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _routes = [
-      const FavoritesRouter(),
-      const HistoryRoute(),
+      const NewTimerRouter(),
+      const WorkoutsRouter(),
       const SettingsRoute(),
     ];
     super.initState();
@@ -32,14 +31,7 @@ class _MainPageState extends State<MainPage> {
       extendBody: true,
       routes: _routes,
       lazyLoad: false,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.pushRoute(const NewTimerRouter());
-        },
-        child: const Icon(CupertinoIcons.add),
-      ),
       resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBuilder: (ctx, tabsRouter) => CupertinoTabBar(
         currentIndex: tabsRouter.activeIndex,
         onTap: (index) => tabsRouter.setActiveIndex(index),

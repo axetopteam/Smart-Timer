@@ -101,6 +101,9 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-Black.ttf
           weight: 900
+    - family: TimerIcons
+      fonts:
+        - asset: assets/icons/TimerIcons.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

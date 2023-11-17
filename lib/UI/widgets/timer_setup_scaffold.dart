@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:smart_timer/core/app_theme/timer_icons_icons.dart';
 import 'package:smart_timer/sdk/models/workout/workout.dart';
 import '../favorites/add_to_favorites_alert.dart';
 import '../pages/workout_desc.dart';
@@ -57,7 +58,7 @@ class TimerSetupScaffold extends StatelessWidget {
                           AddToFavoritesAlert.show(context, addToFavorites: addToFavorites!);
                           // addToFavorites!.call('', '');
                         },
-                        icon: const Icon(CupertinoIcons.square_favorites_alt_fill),
+                        icon: const Icon(TimerIcons.add_to_favorites),
                       ),
                     if (kDebugMode)
                       IconButton(

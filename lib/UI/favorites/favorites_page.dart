@@ -8,7 +8,6 @@ import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
-@RoutePage<void>()
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
 
@@ -32,10 +31,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
           if (favorites != null) {
             return CustomScrollView(
               slivers: [
-                CupertinoSliverNavigationBar(
-                  largeTitle: Text('Favorites'),
-                  heroTag: 'favorites',
-                ),
+                // CupertinoSliverNavigationBar(
+                //   largeTitle: Text('Favorites'),
+                //   heroTag: 'favorites',
+                // ),
                 SliverList.separated(
                   itemCount: favorites.length,
                   separatorBuilder: (_, __) => const Divider(height: 12, thickness: 2),
@@ -43,6 +42,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     final favorite = favorites[index];
                     return Slidable(
                       endActionPane: ActionPane(
+                        extentRatio: .25,
                         motion: const DrawerMotion(),
                         children: [
                           SlidableAction(
@@ -59,8 +59,11 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       ),
                       key: ValueKey(favorite.id),
                       child: CupertinoListTile(
-                        leading: ColoredBox(
-                          color: favorite.type.workoutColor(context),
+                        leading: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: favorite.type.workoutColor(context),
+                            shape: BoxShape.circle,
+                          ),
                           child: const SizedBox.expand(),
                         ),
                         leadingToTitle: 12,
@@ -68,7 +71,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         title: Text(
                           favorite.workoutSettings.description,
                         ),
-                        subtitle: Text(favorite.name),
+                        subtitle: favorite.name.isNotEmpty ? Text(favorite.name) : null,
                         // textColor: context.color.mainText,
                       ),
                     );
@@ -88,15 +91,15 @@ class _FavouritesPageState extends State<FavouritesPage> {
     final workoutSettings = favoriteWorkout.workoutSettings;
     switch (workoutSettings.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
-        context.pushRoute(NewTimerRouter(children: [AmrapRoute(amrapSettings: workoutSettings.amrap)]));
+        context.pushRoute(AmrapRoute(amrapSettings: workoutSettings.amrap));
       case WorkoutSettings_Workout.afap:
-        context.pushRoute(NewTimerRouter(children: [AfapRoute(afapSettings: workoutSettings.afap)]));
+        context.pushRoute(AfapRoute(afapSettings: workoutSettings.afap));
       case WorkoutSettings_Workout.emom:
-        context.pushRoute(NewTimerRouter(children: [EmomRoute(emomSettings: workoutSettings.emom)]));
+        context.pushRoute(EmomRoute(emomSettings: workoutSettings.emom));
       case WorkoutSettings_Workout.tabata:
-        context.pushRoute(NewTimerRouter(children: [TabataRoute(tabataSettings: workoutSettings.tabata)]));
+        context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
       case WorkoutSettings_Workout.workRest:
-        context.pushRoute(NewTimerRouter(children: [WorkRestRoute(workRestSettings: workoutSettings.workRest)]));
+        context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
       case WorkoutSettings_Workout.notSet:
     }
   }
