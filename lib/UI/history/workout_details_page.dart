@@ -206,7 +206,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       case WorkoutSettings_Workout.workRest:
       // TODO: Handle this case.
       case WorkoutSettings_Workout.notSet:
-        return SliverToBoxAdapter(child: Container());
+        return Container();
     }
   }
 

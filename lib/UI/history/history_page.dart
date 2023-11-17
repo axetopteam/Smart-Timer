@@ -70,10 +70,14 @@ class _HistoryPageState extends State<HistoryPage> {
               }
               if (records.isEmpty) {
                 return SliverFillRemaining(
-                  child: Align(
-                    child: Text(
-                      LocaleKeys.history_empty.tr(),
-                      style: context.textTheme.bodyLarge,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 40, 120),
+                    child: Align(
+                      child: Text(
+                        LocaleKeys.history_empty.tr(),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.bodyLarge,
+                      ),
                     ),
                   ),
                 );
