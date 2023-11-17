@@ -131,5 +131,28 @@
             "trial": "Free Trial",
             "default": "Subscription"
         }
+    },
+    "tab_bar_items": {
+        "main": "Main",
+        "workouts": "Workouts",
+        "settings": "Settings"
+    },
+    "history": {
+        "title": "History",
+        "error": "Failed to load workout history",
+        "empty": "Your workout history will appear here",
+        "name": "Name",
+        "description": "Description",
+        "start_time": "Start Time",
+        "total_time": "Total Time",
+        "results_title": "Workout Details:"
+    },
+    "favorites": {
+        "title": "Favorites",
+        "error": "Failed to load favorite workouts",
+        "empty": "Your favorite workouts will appear here",
+        "add_title": "Add to Favorites",
+        "name": "Name",
+        "description": "Description"
     }
 }
