@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -7,6 +8,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
@@ -78,18 +80,20 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                       Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
                       style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
                     ),
-                    SizedBox(height: 20),
-                    _buildItem(CupertinoIcons.time, 'Начало', Jiffy.parseFromDateTime(record.startAt.toLocal()).jm),
+                    const SizedBox(height: 20),
+                    _buildItem(CupertinoIcons.time, LocaleKeys.history_start_time.tr(),
+                        Jiffy.parseFromDateTime(record.startAt.toLocal()).jm),
                     const SizedBox(height: 12),
-                    _buildItem(CupertinoIcons.timer, 'Общее время', record.realDuration.durationToString()),
+                    _buildItem(CupertinoIcons.timer, LocaleKeys.history_total_time.tr(),
+                        record.realDuration.durationToString()),
                     _buildName(),
                     _buildDescription(),
                     const SizedBox(height: 20),
                     Text(
-                      'Детали тренировки:',
+                      LocaleKeys.history_results_title.tr(),
                       style: context.textTheme.bodyLarge,
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     _buildSets(),
                   ],
                 ),
@@ -108,12 +112,12 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
           icon,
           size: 28,
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Text(
           title,
           style: context.textTheme.bodyLarge,
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           value,
           style: context.textTheme.bodyLarge,
@@ -124,12 +128,12 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   Widget _buildName() {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Name:',
+            LocaleKeys.history_name.tr(),
             style: context.textTheme.bodyLarge,
           ),
           const SizedBox(height: 4),
@@ -150,12 +154,12 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   Widget _buildDescription() {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Description:',
+            LocaleKeys.history_description.tr(),
             style: context.textTheme.bodyLarge,
           ),
           const SizedBox(height: 4),

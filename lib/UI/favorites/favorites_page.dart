@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -23,19 +25,28 @@ class _FavouritesPageState extends State<FavouritesPage> {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
-      body: StreamBuilder(
-        stream: _sdk.favoritesStream(),
-        builder: (context, snapshot) {
-          final favorites = snapshot.data;
+      body: CustomScrollView(
+        slivers: [
+          StreamBuilder(
+              stream: _sdk.favoritesStream(),
+              builder: (context, snapshot) {
+                final favorites = snapshot.data;
 
-          if (favorites != null) {
-            return CustomScrollView(
-              slivers: [
-                // CupertinoSliverNavigationBar(
-                //   largeTitle: Text('Favorites'),
-                //   heroTag: 'favorites',
-                // ),
-                SliverList.separated(
+                if (favorites == null) {
+                  return const SliverFillRemaining(child: CircularProgressIndicator.adaptive());
+                }
+                if (favorites.isEmpty) {
+                  return SliverFillRemaining(
+                    child: Align(
+                      child: Text(
+                        LocaleKeys.favorites_empty.tr(),
+                        style: context.textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }
+
+                return SliverList.separated(
                   itemCount: favorites.length,
                   separatorBuilder: (_, __) => const Divider(height: 12, thickness: 2),
                   itemBuilder: (ctx, index) {
@@ -76,13 +87,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       ),
                     );
                   },
-                ),
-                SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
-              ],
-            );
-          }
-          return const CircularProgressIndicator.adaptive();
-        },
+                );
+              }),
+          SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
+        ],
       ),
     );
   }

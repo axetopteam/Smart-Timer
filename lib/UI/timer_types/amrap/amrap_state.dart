@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/amrap_settings/amrap_settings.pbserver.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -61,7 +62,7 @@ abstract class AmrapStateBase with Store {
     final List<Interval> intervals = [];
 
     for (int i = 0; i < amrapsCount; i++) {
-      final setIndex = IntervalIndex(index: i + 1, localeKey: 'AMRAP', totalCount: amrapsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.amrap_title, totalCount: amrapsCount);
 
       final workInterval = FiniteInterval(
         duration: amraps[i].workTime,

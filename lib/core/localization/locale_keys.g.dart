@@ -18,6 +18,11 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const ok = 'ok';
   static const close = 'close';
+  static const repeat = 'repeat';
+  static const edit = 'edit';
+  static const save = 'save';
+  static const set = 'set';
+  static const round = 'round';
   static const second_shortest = 'second.shortest';
   static const second_short = 'second.short';
   static const second = 'second';
@@ -41,6 +46,7 @@ abstract class  LocaleKeys {
   static const emom_description = 'emom.description';
   static const emom_add_button_title = 'emom.add_button_title';
   static const emom_delete_button_title = 'emom.delete_button_title';
+  static const emom_death_by = 'emom.death_by';
   static const emom = 'emom';
   static const tabata_title = 'tabata.title';
   static const tabata_description = 'tabata.description';
@@ -110,5 +116,25 @@ abstract class  LocaleKeys {
   static const paywall_product_title_default = 'paywall.product_title.default';
   static const paywall_product_title = 'paywall.product_title';
   static const paywall = 'paywall';
+  static const tab_bar_items_main = 'tab_bar_items.main';
+  static const tab_bar_items_workouts = 'tab_bar_items.workouts';
+  static const tab_bar_items_settings = 'tab_bar_items.settings';
+  static const tab_bar_items = 'tab_bar_items';
+  static const history_title = 'history.title';
+  static const history_error = 'history.error';
+  static const history_empty = 'history.empty';
+  static const history_name = 'history.name';
+  static const history_description = 'history.description';
+  static const history_start_time = 'history.start_time';
+  static const history_total_time = 'history.total_time';
+  static const history_results_title = 'history.results_title';
+  static const history = 'history';
+  static const favorites_title = 'favorites.title';
+  static const favorites_error = 'favorites.error';
+  static const favorites_empty = 'favorites.empty';
+  static const favorites_add_title = 'favorites.add_title';
+  static const favorites_name = 'favorites.name';
+  static const favorites_description = 'favorites.description';
+  static const favorites = 'favorites';
 
 }

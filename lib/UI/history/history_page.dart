@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 
 import 'history_state.dart';
@@ -43,13 +45,15 @@ class _HistoryPageState extends State<HistoryPage> {
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
           sliver: Observer(
             builder: (context) {
-              if (state.error != null) {
+              final records = state.records;
+
+              if (records.isEmpty && state.error != null) {
                 return SliverFillRemaining(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Failed to load history',
+                        LocaleKeys.history_error.tr(),
                         style: context.textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 20),
@@ -57,14 +61,23 @@ class _HistoryPageState extends State<HistoryPage> {
                         data: context.buttonThemes.paywallButtonTheme,
                         child: ElevatedButton(
                           onPressed: () => state.loadMore(isRefresh: true),
-                          child: Text('Обновить'),
+                          child: Text(LocaleKeys.repeat.tr()),
                         ),
                       )
                     ],
                   ),
                 );
               }
-              final records = state.records;
+              if (records.isEmpty) {
+                return SliverFillRemaining(
+                  child: Align(
+                    child: Text(
+                      LocaleKeys.history_empty.tr(),
+                      style: context.textTheme.bodyLarge,
+                    ),
+                  ),
+                );
+              }
               return SliverList.separated(
                 itemCount: records.length,
                 separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),

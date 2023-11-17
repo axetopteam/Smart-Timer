@@ -16,6 +16,10 @@
     "cancel": "Cancel",
     "ok": "OK",
     "close": "Close",
+    "repeat": "Update",
+    "save": "Save",
+    "set": "Set",
+    "round": "Round",
     "second": {
         "shortest": "s",
         "short": "sec"
@@ -43,7 +47,8 @@
         "title": "EMOM",
         "description": "Perform one round and rest until the end of time",
         "add_button_title": "Add Another EMOM",
-        "delete_button_title": "Delete EMOM {}"
+        "delete_button_title": "Delete EMOM {}",
+        "death_by": "As long as possible (Death By)"
     },
     "tabata": {
         "title": "TABATA",

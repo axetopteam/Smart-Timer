@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/emom/emom_extension.dart';
 import 'package:smart_timer/sdk/models/protos/emom_settings/emom_settings.pb.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -83,15 +84,15 @@ abstract class EmomStateBase with Store {
             isReverse: true,
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(localeKey: 'ROUND', index: 1),
+              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.round, index: 1),
             ],
           ),
           RepeatLastInterval(
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(localeKey: 'ROUND', index: 1),
+              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.round, index: 1),
             ],
           ),
           if (i != emomsCount - 1)
@@ -100,7 +101,8 @@ abstract class EmomStateBase with Store {
               isReverse: true,
               activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
+                if (emomsCount > 1)
+                  IntervalIndex(localeKey: LocaleKeys.emom_title, index: i + 1, totalCount: emomsCount),
               ],
             ),
         ];
@@ -112,8 +114,8 @@ abstract class EmomStateBase with Store {
             isReverse: true,
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
-              IntervalIndex(localeKey: 'ROUND', index: index + 1, totalCount: emom.roundsCount),
+              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i + 1, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.round, index: index + 1, totalCount: emom.roundsCount),
             ],
             isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
           ),
@@ -125,7 +127,8 @@ abstract class EmomStateBase with Store {
               isReverse: true,
               activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(localeKey: 'EMOM', index: i + 1, totalCount: emomsCount),
+                if (emomsCount > 1)
+                  IntervalIndex(localeKey: LocaleKeys.emom_title, index: i + 1, totalCount: emomsCount),
               ],
             ),
           );

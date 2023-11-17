@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 enum TabBarItem {
   main,
@@ -20,11 +22,11 @@ enum TabBarItem {
   String get label {
     switch (this) {
       case TabBarItem.main:
-        return 'Главное';
+        return LocaleKeys.tab_bar_items_main.tr();
       case TabBarItem.workouts:
-        return 'Тренировки';
+        return LocaleKeys.tab_bar_items_workouts.tr();
       case TabBarItem.settings:
-        return 'Настройки';
+        return LocaleKeys.tab_bar_items_settings.tr();
     }
   }
 }

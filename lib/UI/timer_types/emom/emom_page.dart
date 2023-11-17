@@ -184,7 +184,7 @@ class _EmomPageState extends State<EmomPage> {
                                 }
                               },
                             ),
-                            Expanded(child: Text('Death By')),
+                            Expanded(child: Text(LocaleKeys.emom_death_by.tr())),
                           ],
                         ),
                       ),

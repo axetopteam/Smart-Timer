@@ -5,6 +5,7 @@ import 'package:smart_timer/sdk/sdk_service.dart';
 
 part 'history_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class HistoryState = _HistoryState with _$HistoryState;
 
 abstract class _HistoryState with Store {

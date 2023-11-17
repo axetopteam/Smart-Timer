@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/afap/afap_extension.dart';
 import 'package:smart_timer/sdk/models/protos/afap_settings/afap_settings.pb.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -72,7 +73,7 @@ abstract class AfapStateBase with Store {
 
     for (int i = 0; i < afapsCount; i++) {
       final afap = afaps[i];
-      final setIndex = IntervalIndex(index: i + 1, localeKey: 'AFAP', totalCount: afapsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.afap_name, totalCount: afapsCount);
 
       final isLast = afapsCount > 1 && i == afapsCount - 1;
       final workInterval = afap.noTimeCap

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../unsuitable_type_error.dart';
 
 class IntervalIndex {
@@ -38,7 +40,7 @@ class IntervalIndex {
   String toString() {
     final buffer = StringBuffer();
     if (localeKey != null) {
-      buffer.writeAll([localeKey, ' ']);
+      buffer.writeAll([localeKey!.tr().toUpperCase(), ' ']);
     }
     buffer.write(index);
     if (totalCount != null) {

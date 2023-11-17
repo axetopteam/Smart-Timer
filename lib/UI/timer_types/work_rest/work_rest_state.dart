@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest/work_rest_extension.dart';
 import 'package:smart_timer/sdk/models/protos/work_rest_settings/work_rest_settings.pb.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -53,8 +54,8 @@ abstract class WorkRestStateBase with Store {
       final restAfterSet =
           FiniteInterval(duration: set.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
 
-      final setIndex = IntervalIndex(index: i + 1, localeKey: 'SET', totalCount: sets.length);
-      final roundIndex = IntervalIndex(index: 0, localeKey: 'ROUND', totalCount: set.roundsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.set, totalCount: sets.length);
+      final roundIndex = IntervalIndex(index: 0, localeKey: LocaleKeys.round, totalCount: set.roundsCount);
 
       final setIntervals = <Interval>[];
       for (var j = 0; j < set.roundsCount; j++) {

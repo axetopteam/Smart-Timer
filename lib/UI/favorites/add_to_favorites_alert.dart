@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 
 typedef OnSaveFavorite = Future<void> Function({required String name, required String description});
 
@@ -38,18 +40,18 @@ class _AddToFavoritesAlertState extends State<AddToFavoritesAlert> {
     return CupertinoAlertDialog(
       title: Padding(
         padding: const EdgeInsets.only(bottom: 12),
-        child: Text('Save To Favorites'),
+        child: Text(LocaleKeys.favorites_add_title.tr()),
       ),
       content: Column(
         children: [
           CupertinoTextField(
             controller: _nameController,
-            placeholder: 'Name',
+            placeholder: LocaleKeys.favorites_name.tr(),
           ),
           const SizedBox(height: 12),
           CupertinoTextField(
             controller: _descriptionController,
-            placeholder: 'Description',
+            placeholder: LocaleKeys.favorites_description.tr(),
           ),
         ],
       ),
@@ -57,7 +59,7 @@ class _AddToFavoritesAlertState extends State<AddToFavoritesAlert> {
         CupertinoDialogAction(
           onPressed: () => Navigator.of(context).pop(),
           isDestructiveAction: true,
-          child: Text('Cancel'),
+          child: Text(LocaleKeys.cancel.tr()),
         ),
         CupertinoDialogAction(
           onPressed: () async {
@@ -65,7 +67,7 @@ class _AddToFavoritesAlertState extends State<AddToFavoritesAlert> {
             await widget.addToFavorites(name: _nameController.text, description: _descriptionController.text);
             navigator.pop();
           },
-          child: Text('Save'),
+          child: Text(LocaleKeys.save.tr()),
         ),
       ],
     );

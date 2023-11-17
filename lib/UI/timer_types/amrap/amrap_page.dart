@@ -100,7 +100,7 @@ class _AmrapPageState extends State<AmrapPage> {
                     //       isFinished: true,
                     //     );
                   },
-                  child: Text('Add To History'),
+                  child: const Text('Add To History'),
                 ),
               ),
             ),

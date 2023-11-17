@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_timer/UI/timer/timer_type.dart';
 import 'package:smart_timer/core/context_extension.dart';

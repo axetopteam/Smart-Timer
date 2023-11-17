@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/sdk/models/protos/tabata/tabata_extension.dart';
 import 'package:smart_timer/sdk/models/protos/tabata_settings/tabata_settings.pb.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
@@ -80,8 +81,8 @@ abstract class TabataStoreBase with Store {
           FiniteInterval(duration: tabata.restTime, isReverse: true, activityType: ActivityType.rest, indexes: []);
       final restAfterSet =
           FiniteInterval(duration: tabata.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
-      final setIndex = IntervalIndex(index: i + 1, localeKey: 'TABATA', totalCount: tabatsCount);
-      final roundIndex = IntervalIndex(index: 0, localeKey: 'ROUND', totalCount: tabata.roundsCount);
+      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.tabata_title, totalCount: tabatsCount);
+      final roundIndex = IntervalIndex(index: 0, localeKey: LocaleKeys.round, totalCount: tabata.roundsCount);
 
       final roundIntervals = <Interval>[];
       for (var j = 0; j < tabata.roundsCount; j++) {
