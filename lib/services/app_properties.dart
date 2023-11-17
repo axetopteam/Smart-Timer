@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// AppProperties singleton class
@@ -90,19 +88,6 @@ class AppProperties {
 }
 
 extension on SharedPreferences {
-  Future<bool> setJson(String key, Map<String, dynamic> json) {
-    return setString(key, jsonEncode(json));
-  }
-
-  Map<String, dynamic>? getJson(String key) {
-    final jsonString = getString(key);
-    if (jsonString != null) {
-      final json = jsonDecode(jsonString);
-      return json;
-    }
-    return null;
-  }
-
   Future<bool> setDateTime(String key, DateTime? dateTime) {
     if (dateTime == null) {
       return remove(key);
