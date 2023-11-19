@@ -83,10 +83,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         ),
                         leadingToTitle: 12,
                         onTap: () => onTap(favorite),
-                        title: Text(
-                          favorite.workoutSettings.description,
-                        ),
-                        subtitle: favorite.name.isNotEmpty ? Text(favorite.name) : null,
+                        title: Text(favorite.readbleName),
+
+                        subtitle: Text(favorite.readbleDescription),
                         // textColor: context.color.mainText,
                       ),
                     );

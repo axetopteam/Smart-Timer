@@ -12,6 +12,28 @@ import 'workout_settings.pb.dart';
 export 'workout_settings.pb.dart';
 
 extension WorkoutSettingsX on WorkoutSettings {
+  String get name {
+    switch (whichWorkout()) {
+      case WorkoutSettings_Workout.amrap:
+        final amrapsCount = amrap.amraps.length > 1 ? '${amrap.amraps.length}x' : '';
+        return '$amrapsCount${LocaleKeys.amrap_title.tr()}';
+      case WorkoutSettings_Workout.afap:
+        final afapsCount = afap.afaps.length > 1 ? '${afap.afaps.length}x' : '';
+        return '$afapsCount${LocaleKeys.afap_title.tr()}';
+      case WorkoutSettings_Workout.emom:
+        final emomsCount = emom.emoms.length > 1 ? '${emom.emoms.length}x' : '';
+        return '$emomsCount${LocaleKeys.emom_title.tr()}';
+      case WorkoutSettings_Workout.tabata:
+        final tabatsCount = tabata.tabats.length > 1 ? '${tabata.tabats.length}x' : '';
+        return '$tabatsCount${LocaleKeys.tabata_title.tr()}';
+      case WorkoutSettings_Workout.workRest:
+        final setsCount = workRest.workRests.length > 1 ? '${workRest.workRests.length}x' : '';
+        return '$setsCount${LocaleKeys.work_rest_title.tr()}';
+      case WorkoutSettings_Workout.notSet:
+        return '';
+    }
+  }
+
   String get description {
     switch (whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
@@ -24,13 +46,13 @@ extension WorkoutSettingsX on WorkoutSettings {
             }
           },
         );
-        return '${LocaleKeys.amrap_title.tr()}: $buffer';
+        return buffer.toString();
       case WorkoutSettings_Workout.afap:
         final buffer = StringBuffer();
         afap.afaps.forEachIndexed(
           (index, element) {
             if (element.noTimeCap) {
-              buffer.write('No cap');
+              buffer.write(LocaleKeys.no_cap.tr());
             } else {
               buffer.write(element.timeCap.readableString);
             }
@@ -39,7 +61,7 @@ extension WorkoutSettingsX on WorkoutSettings {
             }
           },
         );
-        return '${LocaleKeys.afap_title.tr()}: $buffer';
+        return '$buffer';
       case WorkoutSettings_Workout.emom:
         final buffer = StringBuffer();
         emom.emoms.forEachIndexed(
@@ -53,7 +75,7 @@ extension WorkoutSettingsX on WorkoutSettings {
             }
           },
         );
-        return '${LocaleKeys.emom_title.tr()}: $buffer';
+        return '$buffer';
       case WorkoutSettings_Workout.tabata:
         final buffer = StringBuffer();
         tabata.tabats.forEachIndexed(
@@ -71,24 +93,23 @@ extension WorkoutSettingsX on WorkoutSettings {
             }
           },
         );
-        return '${LocaleKeys.tabata_title.tr()}: $buffer';
+        return '$buffer';
       case WorkoutSettings_Workout.workRest:
         final buffer = StringBuffer();
         workRest.workRests.forEachIndexed(
           (index, element) {
+            double ratioFraction = element.ratio - element.ratio.truncate();
+            final ratio = ratioFraction == 0 ? element.ratio.toInt() : element.ratio;
+
             buffer.writeAll([
               '${element.roundsCount}x',
               '(',
-              'ratio:',
-              element.ratio,
+              '1:$ratio',
               ')',
             ]);
-            // if (index != emom.emoms.length - 1) {
-            //   buffer.writeAll(['/', element.restAfterSet.readableString, '/']);
-            // }
           },
         );
-        return '${LocaleKeys.work_rest_title.tr()}: $buffer';
+        return '$buffer';
       case WorkoutSettings_Workout.notSet:
         return '';
     }
