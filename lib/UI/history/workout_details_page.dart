@@ -1,4 +1,6 @@
-import 'package:auto_route/annotations.dart';
+import 'dart:math';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +9,10 @@ import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
+import 'package:smart_timer/UI/timer_types/timer_settings_interface.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
@@ -95,6 +99,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     ),
                     const SizedBox(height: 12),
                     _buildSets(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
+                        onPressed: _repeat,
+                        child: Text('Повторить тренировку'),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -180,36 +193,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     );
   }
 
-  Widget _buildSets() {
-    final workoutType = record.workout.whichWorkout();
-
-    switch (workoutType) {
-      case WorkoutSettings_Workout.emom:
-        return _buildEmomResult(record.workout.emom.emoms);
-      case WorkoutSettings_Workout.amrap:
-        final amraps = record.workout.amrap.amraps;
-        return Column(
-            children: amraps
-                .mapIndexed(
-                  (index, e) => Column(
-                    children: [
-                      _buildTime('${widget.record.timerType.readbleName} ${index + 1}:', e.workTime.durationToString()),
-                      if (index != amraps.length - 1) _buildTime('Rest:', e.restTime.durationToString()),
-                    ],
-                  ),
-                )
-                .toList());
-      case WorkoutSettings_Workout.afap:
-      // TODO: Handle this case.
-      case WorkoutSettings_Workout.tabata:
-      // TODO: Handle this case.
-      case WorkoutSettings_Workout.workRest:
-      // TODO: Handle this case.
-      case WorkoutSettings_Workout.notSet:
-        return Container();
-    }
-  }
-
   Widget _buildTime(String title, String value) {
     return Row(
       children: [
@@ -224,12 +207,69 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     );
   }
 
+  Widget _buildSets() {
+    final workoutType = record.workout.whichWorkout();
+
+    switch (workoutType) {
+      case WorkoutSettings_Workout.emom:
+        return _buildEmomResult(record.workout.emom.emoms);
+      case WorkoutSettings_Workout.amrap:
+        final amraps = record.workout.amrap.amraps;
+
+        return Column(
+            children: amraps.mapIndexed((index, e) {
+          final workIndex = 2 * index;
+          final restIndex = 2 * index + 1;
+          final previousRestIndex = workIndex - 1;
+          final previousDurationAtEndOfRest = record.durationAtEndOfInterval(previousRestIndex) ?? Duration.zero;
+
+          final durationAtEndOfWork =
+              minDuration(record.durationAtEndOfInterval(workIndex) ?? Duration.zero, record.realDuration);
+          final durationAtEndOfRest =
+              minDuration(record.durationAtEndOfInterval(restIndex) ?? Duration.zero, record.realDuration);
+
+          final realWorkDuration = durationAtEndOfWork - previousDurationAtEndOfRest;
+          final realRestDuration = durationAtEndOfRest - previousDurationAtEndOfRest;
+
+          return Column(
+            children: [
+              _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
+                  '${e.workTime.durationToString()}  ${realWorkDuration < e.workTime ? realWorkDuration.durationToString() : ''}'),
+              if (index != amraps.length - 1)
+                _buildTime('Rest:',
+                    '${e.restTime.durationToString()}  ${realWorkDuration < e.restTime ? realRestDuration.durationToString() : ''}'),
+            ],
+          );
+        }).toList());
+      case WorkoutSettings_Workout.afap:
+        final intervals = record.intervalsWithoutCountdown;
+        return Column(
+            children: intervals
+                .mapIndexed(
+                  (index, e) => Column(
+                    children: [
+                      _buildTime(
+                          '${widget.record.timerType.readbleName} ${index + 1}:', e.totalDuration!.durationToString()),
+                      if (index != intervals.length - 1) _buildTime('Rest:', e.totalDuration!.durationToString()),
+                    ],
+                  ),
+                )
+                .toList());
+      case WorkoutSettings_Workout.tabata:
+      // TODO: Handle this case.
+      case WorkoutSettings_Workout.workRest:
+      // TODO: Handle this case.
+      case WorkoutSettings_Workout.notSet:
+        return Container();
+    }
+  }
+
   Widget _buildEmomResult(List<Emom> emoms) {
     return Column(
       children: emoms.mapIndexed((index, emom) {
         final int? roundsCount;
         if (emom.deathBy) {
-          final interval = record.intervals
+          final interval = record.intervalsWithoutCountdown
               .lastWhere((element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
           roundsCount = interval.indexes.last.index;
         } else {
@@ -244,5 +284,22 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         );
       }).toList(),
     );
+  }
+
+  void _repeat() {
+    final workoutSettings = record.workout;
+    switch (workoutSettings.whichWorkout()) {
+      case WorkoutSettings_Workout.amrap:
+        context.pushRoute(AmrapRoute(amrapSettings: workoutSettings.amrap));
+      case WorkoutSettings_Workout.afap:
+        context.pushRoute(AfapRoute(afapSettings: workoutSettings.afap));
+      case WorkoutSettings_Workout.emom:
+        context.pushRoute(EmomRoute(emomSettings: workoutSettings.emom));
+      case WorkoutSettings_Workout.tabata:
+        context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
+      case WorkoutSettings_Workout.workRest:
+        context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
+      case WorkoutSettings_Workout.notSet:
+    }
   }
 }

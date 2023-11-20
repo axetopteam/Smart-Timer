@@ -14,7 +14,7 @@ class TrainingHistoryRecord {
   final int? wellBeing;
   final WorkoutSettings workout;
   final TimerType timerType;
-  final List<Interval> intervals;
+  final List<Interval> _intervals;
   final List<Pause> pauses;
 
   TrainingHistoryRecord({
@@ -26,17 +26,17 @@ class TrainingHistoryRecord {
     this.wellBeing,
     required this.workout,
     required this.timerType,
-    required this.intervals,
+    required List<Interval> intervals,
     required this.pauses,
-  });
+  }) : _intervals = intervals;
 
   Duration get realDuration {
     var countdownDuration = Duration.zero;
-    for (var interval in intervals) {
-      if (interval.activityType == ActivityType.countdown && interval.totalDuration != null) {
-        countdownDuration += interval.totalDuration!;
-      }
+    final firstInterval = _intervals.first;
+    if (firstInterval.activityType == ActivityType.countdown && firstInterval.totalDuration != null) {
+      countdownDuration = firstInterval.totalDuration!;
     }
+
     return endAt.difference(startAt) - sumPause - countdownDuration;
   }
 
@@ -46,6 +46,33 @@ class TrainingHistoryRecord {
       result += pause.duration!;
     }
     return result;
+  }
+
+  Duration? durationAtEndOfInterval(int index) {
+    final endIndex = (index + 1).clamp(0, intervalsWithoutCountdown.length);
+    return intervalsWithoutCountdown.getRange(0, endIndex).toList().totalDuration;
+  }
+
+  List<Interval> get intervalsWithoutCountdown {
+    if (_intervals.firstOrNull?.activityType == ActivityType.countdown) {
+      return _intervals.getRange(1, _intervals.length).toList();
+    }
+    return _intervals;
+  }
+
+  Duration sumPauseToTime(DateTime time) {
+    //предполагается что паузы отсортированы
+
+    var pauseDuration = Duration.zero;
+    for (var pause in pauses) {
+      if (pause.startAt.isBefore(time)) {
+        break;
+      }
+      final endTime = time.isBefore(pause.endAt!) ? time : pause.endAt!;
+      final duration = endTime.difference(pause.startAt);
+      pauseDuration += duration;
+    }
+    return pauseDuration;
   }
 
   String get readbleName {

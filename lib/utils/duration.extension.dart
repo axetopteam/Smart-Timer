@@ -36,3 +36,7 @@ extension DurationX on Duration {
     return (inMilliseconds / 1000).ceil();
   }
 }
+
+Duration minDuration(Duration a, Duration b) {
+  return a < b ? a : b;
+}
