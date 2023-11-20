@@ -20,7 +20,7 @@ extension DurationX on Duration {
 
   String durationToString({bool isCountdown = false}) {
     if (inMicroseconds < 0) {
-      return "-${(-this).durationToString}";
+      return "-${(-this).durationToString()}";
     }
     final seconds = isCountdown ? isSecondsCeil : inSeconds;
     final minutes = seconds ~/ secondsPerMinute;
