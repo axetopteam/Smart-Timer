@@ -84,9 +84,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         leadingToTitle: 12,
                         onTap: () => onTap(favorite),
                         title: Text(favorite.readbleName),
-
-                        subtitle: Text(favorite.readbleDescription),
-                        // textColor: context.color.mainText,
+                        subtitle: Text(
+                          favorite.readbleDescription,
+                          maxLines: 3,
+                        ),
                       ),
                     );
                   },

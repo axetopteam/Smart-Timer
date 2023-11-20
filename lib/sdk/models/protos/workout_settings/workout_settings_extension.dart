@@ -66,10 +66,15 @@ extension WorkoutSettingsX on WorkoutSettings {
         final buffer = StringBuffer();
         emom.emoms.forEachIndexed(
           (index, element) {
-            buffer.writeAll([
-              '${element.roundsCount}x',
-              element.workTime.readableString,
-            ]);
+            if (element.deathBy) {
+              buffer.write('Every ${element.workTime.readableString} as long as possible');
+            } else {
+              buffer.writeAll([
+                '${element.roundsCount}x',
+                element.workTime.readableString,
+              ]);
+            }
+
             if (index != emom.emoms.length - 1) {
               buffer.writeAll(['/', element.restAfterSet.readableString, '/']);
             }
@@ -103,9 +108,7 @@ extension WorkoutSettingsX on WorkoutSettings {
 
             buffer.writeAll([
               '${element.roundsCount}x',
-              '(',
-              '1:$ratio',
-              ')',
+              ratio,
             ]);
           },
         );
