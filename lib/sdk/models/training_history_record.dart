@@ -48,9 +48,48 @@ class TrainingHistoryRecord {
     return result;
   }
 
+  (Duration? workDuration, Duration? restDuration) realSetDuration(int setIndex) {
+    switch (workout.whichWorkout()) {
+      case WorkoutSettings_Workout.amrap:
+      case WorkoutSettings_Workout.afap:
+      case WorkoutSettings_Workout.emom:
+      case WorkoutSettings_Workout.tabata:
+      case WorkoutSettings_Workout.workRest:
+      case WorkoutSettings_Workout.notSet:
+        return (null, null);
+    }
+  }
+
+  int? lastIntervalIndexOfSet(int setIndex) {
+    switch (workout.whichWorkout()) {
+      case WorkoutSettings_Workout.amrap:
+        var lastIndex = 0;
+        for (int i = 0; i <= setIndex; i++) {
+          lastIndex += workout.tabata.tabats[i].roundsCount;
+        }
+        return lastIndex;
+      case WorkoutSettings_Workout.afap:
+      case WorkoutSettings_Workout.emom:
+      case WorkoutSettings_Workout.tabata:
+        if (setIndex < 0 || setIndex > workout.tabata.tabats.length - 1) {
+          return null;
+        }
+        var intervalsCount = 0;
+        for (int i = 0; i <= setIndex; i++) {
+          intervalsCount += 2 * workout.tabata.tabats[i].roundsCount - 1;
+        }
+        return intervalsCount - 1;
+      case WorkoutSettings_Workout.workRest:
+      case WorkoutSettings_Workout.notSet:
+        return -1;
+    }
+  }
+
   Duration? durationAtEndOfInterval(int index) {
-    final endIndex = (index + 1).clamp(0, intervalsWithoutCountdown.length);
-    return intervalsWithoutCountdown.getRange(0, endIndex).toList().totalDuration;
+    if (index < 0 || index > intervalsWithoutCountdown.length) {
+      return null;
+    }
+    return intervalsWithoutCountdown.getRange(0, index + 1).toList().totalDuration;
   }
 
   List<Interval> get intervalsWithoutCountdown {

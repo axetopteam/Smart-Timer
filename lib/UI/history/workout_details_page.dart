@@ -8,10 +8,12 @@ import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/UI/timer_types/afap/afap_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
+import 'package:smart_timer/UI/timer_types/tabata/tabata_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
+import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 
@@ -219,12 +221,30 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       case WorkoutSettings_Workout.afap:
         return _buildAfap();
       case WorkoutSettings_Workout.tabata:
-      // TODO: Handle this case.
+        return _buildTabata();
       case WorkoutSettings_Workout.workRest:
       // TODO: Handle this case.
       case WorkoutSettings_Workout.notSet:
         return Container();
     }
+  }
+
+  Widget _buildTabata() {
+    final tabats = record.workout.tabata.tabats;
+
+    return Column(
+      children: tabats.mapIndexed((index, tabata) {
+        final realSetDuration = record.realSetDuration(index);
+
+        return Column(
+          children: [
+            _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
+                '${tabata.roundsCount} x (${tabata.workTime.durationToString()}/${tabata.restTime.durationToString()}) (${realSetDuration.$1?.durationToString()})'),
+            if (index != tabats.length - 1) _buildTime('Rest:', '${realSetDuration.$2?.durationToString()}'),
+          ],
+        );
+      }).toList(),
+    );
   }
 
   Widget _buildAfap() {
