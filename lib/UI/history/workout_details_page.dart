@@ -193,13 +193,16 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   Widget _buildTime(String title, String value) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
         ),
         const SizedBox(width: 20),
-        Text(
-          value,
+        Expanded(
+          child: Text(
+            value,
+          ),
         ),
       ],
     );
@@ -288,17 +291,29 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     return Column(
       children: emoms.mapIndexed((index, emom) {
         final int? roundsCount;
-        if (emom.deathBy) {
-          final interval = record.intervalsWithoutCountdown
-              .lastWhere((element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
-          roundsCount = interval.indexes.last.index;
-        } else {
-          roundsCount = emom.roundsCount;
-        }
+        final Duration? totalEmomDuration;
+
+        final lastPreviousIntervalIndex = record.intervalsWithoutCountdown
+            .lastIndexWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
+
+        final lastIntervalIndex = record.intervalsWithoutCountdown.lastIndexWhere(
+            (element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
+
+        totalEmomDuration = (record.durationAtEndOfInterval(lastIntervalIndex) ?? Duration.zero) -
+            (record.durationAtEndOfInterval(lastPreviousIntervalIndex) ?? Duration.zero);
+
+        final interval = record.intervalsWithoutCountdown
+            .lastWhere((element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
+        roundsCount = interval.indexes.last.index;
+
         return Column(
           children: [
-            _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '$roundsCount x ${emom.workTime.durationToString()}'),
+            if (emom.deathBy)
+              _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
+                  'Every ${emom.workTime.durationToString()}, As Long As Possible (${totalEmomDuration.durationToString()})'),
+            if (!emom.deathBy)
+              _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
+                  '$roundsCount x ${emom.workTime.durationToString()} (${totalEmomDuration.durationToString()})'),
             if (index != emoms.length - 1) _buildTime('Rest:', emom.restAfterSet.durationToString()),
           ],
         );
