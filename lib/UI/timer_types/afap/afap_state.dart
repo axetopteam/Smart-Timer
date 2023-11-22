@@ -73,7 +73,7 @@ abstract class AfapStateBase with Store {
 
     for (int i = 0; i < afapsCount; i++) {
       final afap = afaps[i];
-      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.afap_name, totalCount: afapsCount);
+      final setIndex = IntervalIndex(index: i, localeKey: LocaleKeys.afap_name, totalCount: afapsCount);
 
       final isLast = afapsCount > 1 && i == afapsCount - 1;
       final workInterval = afap.noTimeCap

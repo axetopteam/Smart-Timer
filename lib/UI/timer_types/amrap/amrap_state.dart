@@ -62,7 +62,7 @@ abstract class AmrapStateBase with Store {
     final List<Interval> intervals = [];
 
     for (int i = 0; i < amrapsCount; i++) {
-      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.amrap_title, totalCount: amrapsCount);
+      final setIndex = IntervalIndex(index: i, localeKey: LocaleKeys.amrap_title, totalCount: amrapsCount);
 
       final workInterval = FiniteInterval(
         duration: amraps[i].workTime,

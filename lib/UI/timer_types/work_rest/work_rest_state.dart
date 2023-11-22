@@ -54,7 +54,7 @@ abstract class WorkRestStateBase with Store {
       final restAfterSet =
           FiniteInterval(duration: set.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
 
-      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.set, totalCount: sets.length);
+      final setIndex = IntervalIndex(index: i, localeKey: LocaleKeys.set, totalCount: sets.length);
       final roundIndex = IntervalIndex(index: 0, localeKey: LocaleKeys.round, totalCount: set.roundsCount);
 
       final setIntervals = <Interval>[];
@@ -63,12 +63,12 @@ abstract class WorkRestStateBase with Store {
           [
             workInterval.copyWith(
               isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
-              indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j + 1)],
+              indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j)],
             ),
             if (j != set.roundsCount - 1)
               restInterval.copyWith(
                 isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
-                indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j + 1)],
+                indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j)],
               ),
             if (j == set.roundsCount - 1 && i != sets.length - 1) restAfterSet.copyWith(indexes: [setIndex]),
           ],

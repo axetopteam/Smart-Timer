@@ -316,14 +316,14 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         final lastPreviousIntervalIndex = record.intervalsWithoutCountdown
             .lastIndexWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
 
-        final lastIntervalIndex = record.intervalsWithoutCountdown.lastIndexWhere(
-            (element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
+        final lastIntervalIndex = record.intervalsWithoutCountdown
+            .lastIndexWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
 
         totalEmomDuration = (record.durationAtEndOfInterval(lastIntervalIndex) ?? Duration.zero) -
             (record.durationAtEndOfInterval(lastPreviousIntervalIndex) ?? Duration.zero);
 
         final interval = record.intervalsWithoutCountdown
-            .lastWhere((element) => element.indexes.firstOrNull?.index == index + 1 && element.indexes.length == 2);
+            .lastWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
         roundsCount = interval.indexes.last.index;
 
         return Column(

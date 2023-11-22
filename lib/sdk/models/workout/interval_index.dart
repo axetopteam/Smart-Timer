@@ -42,7 +42,7 @@ class IntervalIndex {
     if (localeKey != null) {
       buffer.writeAll([localeKey!.tr().toUpperCase(), ' ']);
     }
-    buffer.write(index);
+    buffer.write(index + 1);
     if (totalCount != null) {
       buffer.writeAll(['/', totalCount]);
     }

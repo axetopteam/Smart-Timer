@@ -81,7 +81,7 @@ abstract class TabataStoreBase with Store {
           FiniteInterval(duration: tabata.restTime, isReverse: true, activityType: ActivityType.rest, indexes: []);
       final restAfterSet =
           FiniteInterval(duration: tabata.restAfterSet, isReverse: true, activityType: ActivityType.rest, indexes: []);
-      final setIndex = IntervalIndex(index: i + 1, localeKey: LocaleKeys.tabata_title, totalCount: tabatsCount);
+      final setIndex = IntervalIndex(index: i, localeKey: LocaleKeys.tabata_title, totalCount: tabatsCount);
       final roundIndex = IntervalIndex(index: 0, localeKey: LocaleKeys.round, totalCount: tabata.roundsCount);
 
       final roundIntervals = <Interval>[];
@@ -90,9 +90,9 @@ abstract class TabataStoreBase with Store {
           [
             workInterval.copyWith(
                 isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1,
-                indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j + 1)]),
+                indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j)]),
             if (j != tabata.roundsCount - 1)
-              restInterval.copyWith(indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j + 1)]),
+              restInterval.copyWith(indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j)]),
             if (j == tabata.roundsCount - 1 && i != tabatsCount - 1)
               restAfterSet.copyWith(indexes: [if (tabatsCount > 1) setIndex]),
           ],
