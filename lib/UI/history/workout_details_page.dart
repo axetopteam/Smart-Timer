@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
-import 'package:smart_timer/UI/timer_types/afap/afap_state.dart';
 import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
 import 'package:smart_timer/UI/timer_types/tabata/tabata_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
-import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 
@@ -231,16 +229,14 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   Widget _buildTabata() {
     final tabats = record.workout.tabata.tabats;
-
     return Column(
       children: tabats.mapIndexed((index, tabata) {
         final realSetDuration = record.realSetDuration(index);
-
         return Column(
           children: [
             _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '${tabata.roundsCount} x (${tabata.workTime.durationToString()}/${tabata.restTime.durationToString()}) (${realSetDuration.$1?.durationToString()})'),
-            if (index != tabats.length - 1) _buildTime('Rest:', '${realSetDuration.$2?.durationToString()}'),
+                '${tabata.roundsCount} x (${tabata.workTime.durationToString()}/${tabata.restTime.durationToString()}) (${realSetDuration.$1.durationToString()})'),
+            if (index != tabats.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
           ],
         );
       }).toList(),
@@ -252,26 +248,13 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
     return Column(
         children: afaps.mapIndexed((index, e) {
-      final workIndex = 2 * index;
-      final restIndex = 2 * index + 1;
-      final previousRestIndex = workIndex - 1;
-      final previousDurationAtEndOfRest = record.durationAtEndOfInterval(previousRestIndex) ?? Duration.zero;
-
-      final durationAtEndOfWork =
-          minDuration(record.durationAtEndOfInterval(workIndex) ?? Duration.zero, record.realDuration);
-      final durationAtEndOfRest =
-          minDuration(record.durationAtEndOfInterval(restIndex) ?? Duration.zero, record.realDuration);
-
-      final realWorkDuration = durationAtEndOfWork - previousDurationAtEndOfRest;
-      final realRestDuration = durationAtEndOfRest - durationAtEndOfWork;
+      final realSetDuration = record.realSetDuration(index);
 
       return Column(
         children: [
           _buildTime(
-              '${widget.record.timerType.readbleName} ${index + 1}:', '  ${realWorkDuration.durationToString()}'),
-          if (index != afaps.length - 1)
-            _buildTime('Rest:',
-                '${e.restTime.durationToString()}  ${realWorkDuration < e.restTime ? realRestDuration.durationToString() : ''}'),
+              '${widget.record.timerType.readbleName} ${index + 1}:', '  ${realSetDuration.$1.durationToString()}'),
+          if (index != afaps.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
         ],
       );
     }).toList());
@@ -282,26 +265,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
     return Column(
         children: amraps.mapIndexed((index, e) {
-      final workIndex = 2 * index;
-      final restIndex = 2 * index + 1;
-      final previousRestIndex = workIndex - 1;
-      final previousDurationAtEndOfRest = record.durationAtEndOfInterval(previousRestIndex) ?? Duration.zero;
-
-      final durationAtEndOfWork =
-          minDuration(record.durationAtEndOfInterval(workIndex) ?? Duration.zero, record.realDuration);
-      final durationAtEndOfRest =
-          minDuration(record.durationAtEndOfInterval(restIndex) ?? Duration.zero, record.realDuration);
-
-      final realWorkDuration = durationAtEndOfWork - previousDurationAtEndOfRest;
-      final realRestDuration = durationAtEndOfRest - durationAtEndOfWork;
+      final realSetDuration = record.realSetDuration(index);
 
       return Column(
         children: [
           _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-              '${e.workTime.durationToString()}  ${realWorkDuration < e.workTime ? realWorkDuration.durationToString() : ''}'),
+              '${e.workTime.durationToString()}  ${(realSetDuration.$1) < e.workTime ? realSetDuration.$1.durationToString() : ''}'),
           if (index != amraps.length - 1)
             _buildTime('Rest:',
-                '${e.restTime.durationToString()}  ${realWorkDuration < e.restTime ? realRestDuration.durationToString() : ''}'),
+                '${e.restTime.durationToString()}  ${(realSetDuration.$2) < e.restTime ? realSetDuration.$2.durationToString() : ''}'),
         ],
       );
     }).toList());
@@ -310,31 +282,17 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   Widget _buildEmom(List<Emom> emoms) {
     return Column(
       children: emoms.mapIndexed((index, emom) {
-        final int? roundsCount;
-        final Duration? totalEmomDuration;
-
-        final lastPreviousIntervalIndex = record.intervalsWithoutCountdown
-            .lastIndexWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
-
-        final lastIntervalIndex = record.intervalsWithoutCountdown
-            .lastIndexWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
-
-        totalEmomDuration = (record.durationAtEndOfInterval(lastIntervalIndex) ?? Duration.zero) -
-            (record.durationAtEndOfInterval(lastPreviousIntervalIndex) ?? Duration.zero);
-
-        final interval = record.intervalsWithoutCountdown
-            .lastWhere((element) => element.indexes.firstOrNull?.index == index && element.indexes.length == 2);
-        roundsCount = interval.indexes.last.index;
+        final realSetDuration = record.realSetDuration(index);
 
         return Column(
           children: [
             if (emom.deathBy)
               _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  'Every ${emom.workTime.durationToString()}, As Long As Possible (${totalEmomDuration.durationToString()})'),
+                  'Every ${emom.workTime.durationToString()} As Long As Possible (${realSetDuration.$1.durationToString()})'),
             if (!emom.deathBy)
               _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  '$roundsCount x ${emom.workTime.durationToString()} (${totalEmomDuration.durationToString()})'),
-            if (index != emoms.length - 1) _buildTime('Rest:', emom.restAfterSet.durationToString()),
+                  '${emom.roundsCount} x ${emom.workTime.durationToString()} (${realSetDuration.$1.durationToString()})'),
+            if (index != emoms.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
           ],
         );
       }).toList(),

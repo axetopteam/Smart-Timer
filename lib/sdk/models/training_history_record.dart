@@ -1,7 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:smart_timer/UI/timer/timer_type.dart';
 import 'package:smart_timer/UI/timer_types/timer_settings_interface.dart';
 import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings.pb.dart';
 import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
+import 'package:smart_timer/utils/duration.extension.dart';
 
 export 'package:smart_timer/sdk/models/workout/interval.dart';
 
@@ -48,37 +50,67 @@ class TrainingHistoryRecord {
     return result;
   }
 
-  (Duration? workDuration, Duration? restDuration) realSetDuration(int setIndex) {
+  (Duration workDuration, Duration restDuration) realSetDuration(int setIndex) {
     switch (workout.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
       case WorkoutSettings_Workout.afap:
       case WorkoutSettings_Workout.emom:
       case WorkoutSettings_Workout.tabata:
+        final lastSetIndex = _lastIntervalIndexOfSet(setIndex) ?? -2;
+        final lastPreviousSetIndex = _lastIntervalIndexOfSet(setIndex - 1) ?? -2;
+
+        final previousRestEndDuration = durationAtEndOfInterval(lastPreviousSetIndex + 1);
+        final setEndDuration = durationAtEndOfInterval(lastSetIndex);
+        final restEndDuration = durationAtEndOfInterval(lastSetIndex + 1);
+
+        final actualPreviousRestEndDuration =
+            previousRestEndDuration != null ? minDuration(previousRestEndDuration, realDuration) : realDuration;
+        final actualSetEndDuration = setEndDuration != null ? minDuration(setEndDuration, realDuration) : realDuration;
+        final actualRestEndDuration =
+            restEndDuration != null ? minDuration(restEndDuration, realDuration) : realDuration;
+
+        return (actualSetEndDuration - actualPreviousRestEndDuration, actualRestEndDuration - actualSetEndDuration);
       case WorkoutSettings_Workout.workRest:
       case WorkoutSettings_Workout.notSet:
-        return (null, null);
+        return (Duration.zero, Duration.zero);
     }
   }
 
-  int? lastIntervalIndexOfSet(int setIndex) {
+  int? _lastIntervalIndexOfSet(int setIndex) {
     switch (workout.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
-        var lastIndex = 0;
-        for (int i = 0; i <= setIndex; i++) {
-          lastIndex += workout.tabata.tabats[i].roundsCount;
-        }
-        return lastIndex;
+        return 2 * setIndex;
       case WorkoutSettings_Workout.afap:
+        return 2 * setIndex;
       case WorkoutSettings_Workout.emom:
+        if (setIndex < 0 || setIndex > workout.emom.emoms.length - 1) {
+          return null;
+        }
+
+        var intervalsCount = 0;
+        for (int i = 0; i <= setIndex; i++) {
+          final emom = workout.emom.emoms[i];
+          if (emom.deathBy) {
+            final interval = intervalsWithoutCountdown
+                .lastWhereOrNull((element) => element.indexes.firstOrNull?.index == i && element.indexes.length == 2);
+            if (interval != null) {
+              intervalsCount += interval.indexes.last.index + 2;
+            }
+          } else {
+            intervalsCount += emom.roundsCount + 1;
+          }
+        }
+        return intervalsCount - 2;
+
       case WorkoutSettings_Workout.tabata:
         if (setIndex < 0 || setIndex > workout.tabata.tabats.length - 1) {
           return null;
         }
         var intervalsCount = 0;
         for (int i = 0; i <= setIndex; i++) {
-          intervalsCount += 2 * workout.tabata.tabats[i].roundsCount - 1;
+          intervalsCount += 2 * workout.tabata.tabats[i].roundsCount;
         }
-        return intervalsCount - 1;
+        return intervalsCount - 2;
       case WorkoutSettings_Workout.workRest:
       case WorkoutSettings_Workout.notSet:
         return -1;
@@ -86,8 +118,11 @@ class TrainingHistoryRecord {
   }
 
   Duration? durationAtEndOfInterval(int index) {
-    if (index < 0 || index > intervalsWithoutCountdown.length) {
-      return null;
+    if (index < 0) {
+      return Duration.zero;
+    }
+    if (index >= intervalsWithoutCountdown.length) {
+      return intervalsWithoutCountdown.totalDuration;
     }
     return intervalsWithoutCountdown.getRange(0, index + 1).toList().totalDuration;
   }
