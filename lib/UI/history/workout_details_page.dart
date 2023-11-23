@@ -86,8 +86,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                     _buildItem(CupertinoIcons.time, LocaleKeys.history_start_time.tr(),
                         Jiffy.parseFromDateTime(record.startAt.toLocal()).jm),
                     const SizedBox(height: 12),
-                    _buildItem(CupertinoIcons.timer, LocaleKeys.history_total_time.tr(),
-                        record.realDuration.durationToString()),
+                    _buildItem(CupertinoIcons.timer, LocaleKeys.history_total_time.tr(), record.realDuration.format),
                     _buildName(),
                     _buildDescription(),
                     const SizedBox(height: 20),
@@ -236,15 +235,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         return Column(
           children: [
             _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '${set.roundsCount} x ${set.ratio} (${realSetDuration.$1.durationToString()})'),
+                '${set.roundsCount} x ${set.ratio} (${realSetDuration.$1.format})'),
             Column(
               children: roundsDuration
                   .mapIndexed(
-                    (index, round) => _buildTime('Round ${index + 1}:', round.durationToString()),
+                    (index, round) => _buildTime('Round ${index + 1}:', round.format),
                   )
                   .toList(),
             ),
-            if (index != workRests.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
+            if (index != workRests.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
           ],
         );
       }).toList(),
@@ -259,8 +258,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         return Column(
           children: [
             _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '${tabata.roundsCount} x (${tabata.workTime.durationToString()}/${tabata.restTime.durationToString()}) (${realSetDuration.$1.durationToString()})'),
-            if (index != tabats.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
+                '${tabata.roundsCount} x (${tabata.workTime.format}/${tabata.restTime.format}) (${realSetDuration.$1.format})'),
+            if (index != tabats.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
           ],
         );
       }).toList(),
@@ -276,9 +275,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
       return Column(
         children: [
-          _buildTime(
-              '${widget.record.timerType.readbleName} ${index + 1}:', '  ${realSetDuration.$1.durationToString()}'),
-          if (index != afaps.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
+          _buildTime('${widget.record.timerType.readbleName} ${index + 1}:', '  ${realSetDuration.$1.format}'),
+          if (index != afaps.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
         ],
       );
     }).toList());
@@ -294,10 +292,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       return Column(
         children: [
           _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-              '${e.workTime.durationToString()}  ${(realSetDuration.$1) < e.workTime ? realSetDuration.$1.durationToString() : ''}'),
+              '${e.workTime.format}  ${(realSetDuration.$1) < e.workTime ? realSetDuration.$1.format : ''}'),
           if (index != amraps.length - 1)
-            _buildTime('Rest:',
-                '${e.restTime.durationToString()}  ${(realSetDuration.$2) < e.restTime ? realSetDuration.$2.durationToString() : ''}'),
+            _buildTime(
+                'Rest:', '${e.restTime.format}  ${(realSetDuration.$2) < e.restTime ? realSetDuration.$2.format : ''}'),
         ],
       );
     }).toList());
@@ -312,11 +310,11 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
           children: [
             if (emom.deathBy)
               _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  'Every ${emom.workTime.durationToString()} As Long As Possible (${realSetDuration.$1.durationToString()})'),
+                  'Every ${emom.workTime.format} As Long As Possible (${realSetDuration.$1.format})'),
             if (!emom.deathBy)
               _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  '${emom.roundsCount} x ${emom.workTime.durationToString()} (${realSetDuration.$1.durationToString()})'),
-            if (index != emoms.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
+                  '${emom.roundsCount} x ${emom.workTime.format} (${realSetDuration.$1.format})'),
+            if (index != emoms.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
           ],
         );
       }).toList(),
@@ -338,5 +336,21 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
       case WorkoutSettings_Workout.notSet:
     }
+  }
+}
+
+extension DurationX on Duration {
+  String get format {
+    if (inMicroseconds < 0) {
+      return "-${(-this).format}";
+    }
+    final milliseconds = inMilliseconds.remainder(inSeconds * 1000);
+    final millisecondsString = milliseconds != 0 ? '.$milliseconds' : '';
+
+    String twoDigitMinutes = twoDigits(inMinutes);
+
+    String twoDigitSeconds = twoDigits(inSeconds.remainder(secondsPerMinute));
+
+    return "$twoDigitMinutes:$twoDigitSeconds$millisecondsString";
   }
 }
