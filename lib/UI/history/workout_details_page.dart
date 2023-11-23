@@ -221,10 +221,34 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       case WorkoutSettings_Workout.tabata:
         return _buildTabata();
       case WorkoutSettings_Workout.workRest:
-      // TODO: Handle this case.
+        return _buildWorkRest();
       case WorkoutSettings_Workout.notSet:
         return Container();
     }
+  }
+
+  Widget _buildWorkRest() {
+    final workRests = record.workout.workRest.workRests;
+    return Column(
+      children: workRests.mapIndexed((index, set) {
+        final realSetDuration = record.realSetDuration(index);
+        final roundsDuration = record.workRestRoundsDuration(index);
+        return Column(
+          children: [
+            _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
+                '${set.roundsCount} x ${set.ratio} (${realSetDuration.$1.durationToString()})'),
+            Column(
+              children: roundsDuration
+                  .mapIndexed(
+                    (index, round) => _buildTime('Round ${index + 1}:', round.durationToString()),
+                  )
+                  .toList(),
+            ),
+            if (index != workRests.length - 1) _buildTime('Rest:', realSetDuration.$2.durationToString()),
+          ],
+        );
+      }).toList(),
+    );
   }
 
   Widget _buildTabata() {

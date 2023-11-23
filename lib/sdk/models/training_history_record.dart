@@ -56,6 +56,7 @@ class TrainingHistoryRecord {
       case WorkoutSettings_Workout.afap:
       case WorkoutSettings_Workout.emom:
       case WorkoutSettings_Workout.tabata:
+      case WorkoutSettings_Workout.workRest:
         final lastSetIndex = _lastIntervalIndexOfSet(setIndex) ?? -2;
         final lastPreviousSetIndex = _lastIntervalIndexOfSet(setIndex - 1) ?? -2;
 
@@ -70,10 +71,28 @@ class TrainingHistoryRecord {
             restEndDuration != null ? minDuration(restEndDuration, realDuration) : realDuration;
 
         return (actualSetEndDuration - actualPreviousRestEndDuration, actualRestEndDuration - actualSetEndDuration);
-      case WorkoutSettings_Workout.workRest:
+
       case WorkoutSettings_Workout.notSet:
         return (Duration.zero, Duration.zero);
     }
+  }
+
+  List<Duration> workRestRoundsDuration(int setIndex) {
+    final set = workout.workRest.workRests[setIndex];
+
+    final lastSetIndex = _lastIntervalIndexOfSet(setIndex) ?? -2;
+
+    final roundsDurations = <Duration>[];
+    for (int i = lastSetIndex; i > lastSetIndex - 2 * set.roundsCount; i = i - 2) {
+      final previousRestEndDuration = durationAtEndOfInterval(i - 1);
+      final setEndDuration = durationAtEndOfInterval(i);
+
+      final actualPreviousRestEndDuration =
+          previousRestEndDuration != null ? minDuration(previousRestEndDuration, realDuration) : realDuration;
+      final actualSetEndDuration = setEndDuration != null ? minDuration(setEndDuration, realDuration) : realDuration;
+      roundsDurations.add(actualSetEndDuration - actualPreviousRestEndDuration);
+    }
+    return roundsDurations;
   }
 
   int? _lastIntervalIndexOfSet(int setIndex) {
@@ -112,8 +131,16 @@ class TrainingHistoryRecord {
         }
         return intervalsCount - 2;
       case WorkoutSettings_Workout.workRest:
+        if (setIndex < 0 || setIndex > workout.workRest.workRests.length - 1) {
+          return null;
+        }
+        var intervalsCount = 0;
+        for (int i = 0; i <= setIndex; i++) {
+          intervalsCount += 2 * workout.workRest.workRests[i].roundsCount;
+        }
+        return intervalsCount - 2;
       case WorkoutSettings_Workout.notSet:
-        return -1;
+        return null;
     }
   }
 
