@@ -92,7 +92,7 @@ class TrainingHistoryRecord {
       final actualSetEndDuration = setEndDuration != null ? minDuration(setEndDuration, realDuration) : realDuration;
       roundsDurations.add(actualSetEndDuration - actualPreviousRestEndDuration);
     }
-    return roundsDurations;
+    return roundsDurations.reversed.toList();
   }
 
   int? _lastIntervalIndexOfSet(int setIndex) {
