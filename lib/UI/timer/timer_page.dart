@@ -19,6 +19,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import '../timer_types/timer_settings_interface.dart';
 import '../widgets/play_icon.dart';
 import 'timer_progress_container.dart';
+import 'widgets/animated_countdown.dart';
 
 @RoutePage()
 class TimerPage extends StatefulWidget {
@@ -266,7 +267,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
           switch (status) {
             case ReadyStatus():
               return const PlayIcon();
-            case RunStatus():
+            case RunStatus status:
+              if (status.type == ActivityType.countdown) {
+                return AnimatedCountdown(
+                  duration: status.time,
+                );
+              }
               return Text(
                 status.time.durationToString(isCountdown: true),
                 style: context.textTheme.headlineSmall,
@@ -279,23 +285,6 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
             case DoneStatus():
               return const SizedBox();
           }
-          // final currentInterval = state.currentInterval;
-          // bool isFirstSecond = currentInterval.isFirstSecond;
-          // String text;
-          // if (currentInterval.type == WorkoutIntervalType.countdown) {
-          //   if (state.currentState != TimerStatus.run) {
-          //     return const PlayIcon();
-          //   } else {
-          //     text = currentTime != null ? currentTime.durationToString(isCountdown: true) : '– –';
-          //   }
-          // } else {
-          //   text = isFirstSecond
-          //       ? currentInterval.type.redableName
-          //       : currentTime != null
-          //           ? currentTime.durationToString(isCountdown: currentInterval.isCountdown)
-          //           : '– –';
-          // }
-          // return Text(text, style: context.textTheme.headlineSmall);
         },
       ),
     );
