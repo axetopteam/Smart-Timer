@@ -1,6 +1,13 @@
 part of 'theme.dart';
 
 class AppFonts {
+  static const chip = TextStyle(
+    fontFamily: 'Inter',
+    height: 1,
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+  );
   static const bodyLarge = TextStyle(
     fontFamily: 'Inter',
     height: 20 / 18,

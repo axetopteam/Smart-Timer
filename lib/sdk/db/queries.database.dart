@@ -19,7 +19,8 @@ extension DatabaseQueries on AppDatabase {
   }
 
   Stream<List<FavoriteWorkoutRawData>> fetchFavorites() {
-    return select(favoriteWorkouts).watch();
+    return (select(favoriteWorkouts)..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+        .watch();
   }
 
   Future<int> deleteFavorite(int id) {

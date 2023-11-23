@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smart_timer/UI/favorites/favorites_page.dart';
@@ -31,23 +30,10 @@ class WorkoutsPage extends StatefulWidget {
 class _WorkoutsPageState extends State<WorkoutsPage> {
   var selectedPage = WorkoutsPageType.history;
 
-  final PageController _pageController = PageController();
-
   void _onTapSegmentController(WorkoutsPageType? newValue) {
     if (newValue != null) {
       setState(() {
         selectedPage = newValue;
-      });
-      _pageController.animateToPage(newValue.index,
-          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    }
-  }
-
-  void _onPageChanged(int index) {
-    final pageType = WorkoutsPageType.values.firstWhereOrNull((element) => element.index == index);
-    if (pageType != null) {
-      setState(() {
-        selectedPage = pageType;
       });
     }
   }
@@ -81,9 +67,8 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
           ),
         ),
         Expanded(
-          child: PageView(
-            controller: _pageController,
-            onPageChanged: _onPageChanged,
+          child: IndexedStack(
+            index: selectedPage.index,
             children: const [
               HistoryPage(),
               FavouritesPage(),

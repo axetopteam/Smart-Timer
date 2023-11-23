@@ -7,8 +7,9 @@ import 'package:get_it/get_it.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/sdk/models/protos/workout_settings/workout_settings_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
+
+import 'widgets/favorite_tile.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
@@ -52,7 +53,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
                 return SliverList.separated(
                   itemCount: favorites.length,
-                  separatorBuilder: (_, __) => const Divider(height: 12, thickness: 2),
+                  separatorBuilder: (_, __) => const Divider(height: 2, thickness: 2),
                   itemBuilder: (ctx, index) {
                     final favorite = favorites[index];
                     return Slidable(
@@ -67,27 +68,14 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             },
                             backgroundColor: context.color.warning,
                             foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: 'Delete',
+                            icon: CupertinoIcons.delete,
                           ),
                         ],
                       ),
                       key: ValueKey(favorite.id),
-                      child: CupertinoListTile(
-                        leading: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: favorite.type.workoutColor(context),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const SizedBox.expand(),
-                        ),
-                        leadingToTitle: 12,
-                        onTap: () => onTap(favorite),
-                        title: Text(favorite.readbleName),
-                        subtitle: Text(
-                          favorite.readbleDescription,
-                          maxLines: 3,
-                        ),
+                      child: FavoriteTile(
+                        favorite: favorite,
+                        onTap: onTap,
                       ),
                     );
                   },

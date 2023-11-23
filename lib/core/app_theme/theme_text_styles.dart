@@ -1,11 +1,17 @@
 part of 'theme.dart';
 
 class ThemeTextStyles extends ThemeExtension<ThemeTextStyles> {
-  const ThemeTextStyles();
+  const ThemeTextStyles({
+    required this.chip,
+  });
+
+  final TextStyle chip;
 
   @override
-  ThemeExtension<ThemeTextStyles> copyWith() {
-    return const ThemeTextStyles();
+  ThemeExtension<ThemeTextStyles> copyWith({
+    TextStyle? chip,
+  }) {
+    return ThemeTextStyles(chip: chip ?? this.chip);
   }
 
   @override
@@ -17,8 +23,10 @@ class ThemeTextStyles extends ThemeExtension<ThemeTextStyles> {
       return this;
     }
 
-    return const ThemeTextStyles();
+    return ThemeTextStyles(
+      chip: TextStyle.lerp(chip, other.chip, t)!,
+    );
   }
 
-  static get dark => const ThemeTextStyles();
+  static get dark => const ThemeTextStyles(chip: AppFonts.chip);
 }
