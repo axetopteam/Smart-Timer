@@ -60,6 +60,10 @@ extension HistoryExtension on SdkService {
     }
     return results;
   }
+
+  Future<int> deleteTrainingHistoryRecord(int id) {
+    return _db.deleteTrainingHistoryRecord(id);
+  }
 }
 
 extension on TrainingHistoryRawData {

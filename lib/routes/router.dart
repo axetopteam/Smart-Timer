@@ -5,7 +5,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_page.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_router.dart';
-import 'package:smart_timer/UI/history/history_page.dart';
 import 'package:smart_timer/UI/main_page/main_page.dart';
 import 'package:smart_timer/UI/settings/settings_page.dart';
 import 'package:smart_timer/UI/timer/timer_page.dart';
@@ -18,7 +17,6 @@ import 'package:smart_timer/UI/timer_types/work_rest/work_rest_page.dart';
 import 'package:smart_timer/UI/workouts/workouts_page.dart';
 import 'package:smart_timer/UI/workouts/workouts_tab.dart';
 
-import '../UI/favorites/favorites_page.dart';
 import '../UI/history/workout_details_page.dart';
 
 part 'router.gr.dart';
@@ -43,7 +41,6 @@ class AppRouter extends _$AppRouter {
               ],
             ),
             AutoRoute(path: 'settings', page: SettingsRoute.page),
-            AutoRoute(path: 'history', page: HistoryRoute.page),
             AutoRoute(
               path: 'workoutsTab',
               page: WorkoutsRouter.page,

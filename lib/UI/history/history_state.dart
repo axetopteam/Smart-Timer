@@ -87,4 +87,13 @@ abstract class _HistoryState with Store {
       }
     }
   }
+
+  @action
+  Future<void> deleteRecord(int id) async {
+    final index = records.indexWhere((element) => element.id == id);
+    if (index != -1) {
+      records.removeAt(index);
+      await _sdk.deleteTrainingHistoryRecord(id);
+    }
+  }
 }

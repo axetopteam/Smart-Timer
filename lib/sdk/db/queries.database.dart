@@ -68,4 +68,8 @@ extension DatabaseQueries on AppDatabase {
       ),
     );
   }
+
+  Future<int> deleteTrainingHistoryRecord(int id) {
+    return (delete(trainingHistory)..where((t) => t.id.equals(id))).go();
+  }
 }

@@ -101,6 +101,14 @@ mixin _$HistoryState on _HistoryState, Store {
         () => super.updateRecord(id: id, name: name, description: description));
   }
 
+  late final _$deleteRecordAsyncAction =
+      AsyncAction('_HistoryState.deleteRecord', context: context);
+
+  @override
+  Future<void> deleteRecord(int id) {
+    return _$deleteRecordAsyncAction.run(() => super.deleteRecord(id));
+  }
+
   @override
   String toString() {
     return '''

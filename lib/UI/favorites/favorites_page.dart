@@ -25,65 +25,66 @@ class _FavouritesPageState extends State<FavouritesPage> {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          StreamBuilder(
-              stream: _sdk.favoritesStream(),
-              builder: (context, snapshot) {
-                final favorites = snapshot.data;
+    return CustomScrollView(
+      slivers: [
+        StreamBuilder(
+            stream: _sdk.favoritesStream(),
+            builder: (context, snapshot) {
+              final favorites = snapshot.data;
 
-                if (favorites == null) {
-                  return const SliverFillRemaining(child: CircularProgressIndicator.adaptive());
-                }
-                if (favorites.isEmpty) {
-                  return SliverFillRemaining(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 120),
-                      child: Align(
-                        child: Text(
-                          LocaleKeys.favorites_empty.tr(),
-                          textAlign: TextAlign.center,
-                          style: context.textTheme.bodyLarge,
-                        ),
+              if (favorites == null) {
+                return const SliverFillRemaining(child: CircularProgressIndicator.adaptive());
+              }
+              if (favorites.isEmpty) {
+                return SliverFillRemaining(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 40, 120),
+                    child: Align(
+                      child: Text(
+                        LocaleKeys.favorites_empty.tr(),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.bodyLarge,
                       ),
                     ),
-                  );
-                }
-
-                return SliverList.separated(
-                  itemCount: favorites.length,
-                  separatorBuilder: (_, __) => const Divider(height: 2, thickness: 2),
-                  itemBuilder: (ctx, index) {
-                    final favorite = favorites[index];
-                    return Slidable(
-                      endActionPane: ActionPane(
-                        extentRatio: .25,
-                        motion: const DrawerMotion(),
-                        children: [
-                          SlidableAction(
-                            // An action can be bigger than the others.
-                            onPressed: (_) {
-                              _sdk.deleteFavorite(favorite.id);
-                            },
-                            backgroundColor: context.color.warning,
-                            foregroundColor: Colors.white,
-                            icon: CupertinoIcons.delete,
-                          ),
-                        ],
-                      ),
-                      key: ValueKey(favorite.id),
-                      child: FavoriteTile(
-                        favorite: favorite,
-                        onTap: onTap,
-                      ),
-                    );
-                  },
+                  ),
                 );
-              }),
-          SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
-        ],
-      ),
+              }
+
+              return SliverList.separated(
+                itemCount: favorites.length,
+                separatorBuilder: (_, __) => const Divider(height: 2, thickness: 2),
+                itemBuilder: (ctx, index) {
+                  final favorite = favorites[index];
+                  return Slidable(
+                    key: ValueKey(favorite.id),
+                    endActionPane: ActionPane(
+                      extentRatio: .25,
+                      dismissible: DismissiblePane(onDismissed: () {
+                        _sdk.deleteFavorite(favorite.id);
+                      }),
+                      motion: const DrawerMotion(),
+                      children: [
+                        SlidableAction(
+                          // An action can be bigger than the others.
+                          onPressed: (_) {
+                            _sdk.deleteFavorite(favorite.id);
+                          },
+                          backgroundColor: context.color.warning,
+                          foregroundColor: Colors.white,
+                          icon: CupertinoIcons.delete,
+                        ),
+                      ],
+                    ),
+                    child: FavoriteTile(
+                      favorite: favorite,
+                      onTap: onTap,
+                    ),
+                  );
+                },
+              );
+            }),
+        SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
+      ],
     );
   }
 

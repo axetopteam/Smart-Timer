@@ -34,7 +34,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     TabataRoute.name: (routeData) {
-      final args = routeData.argsAs<TabataRouteArgs>(orElse: () => const TabataRouteArgs());
+      final args = routeData.argsAs<TabataRouteArgs>(
+          orElse: () => const TabataRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: TabataPage(
@@ -44,7 +45,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     WorkRestRoute.name: (routeData) {
-      final args = routeData.argsAs<WorkRestRouteArgs>(orElse: () => const WorkRestRouteArgs());
+      final args = routeData.argsAs<WorkRestRouteArgs>(
+          orElse: () => const WorkRestRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: WorkRestPage(
@@ -54,7 +56,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AfapRoute.name: (routeData) {
-      final args = routeData.argsAs<AfapRouteArgs>(orElse: () => const AfapRouteArgs());
+      final args =
+          routeData.argsAs<AfapRouteArgs>(orElse: () => const AfapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: AfapPage(
@@ -64,7 +67,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     AmrapRoute.name: (routeData) {
-      final args = routeData.argsAs<AmrapRouteArgs>(orElse: () => const AmrapRouteArgs());
+      final args = routeData.argsAs<AmrapRouteArgs>(
+          orElse: () => const AmrapRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: AmrapPage(
@@ -74,19 +78,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     EmomRoute.name: (routeData) {
-      final args = routeData.argsAs<EmomRouteArgs>(orElse: () => const EmomRouteArgs());
+      final args =
+          routeData.argsAs<EmomRouteArgs>(orElse: () => const EmomRouteArgs());
       return AutoRoutePage<void>(
         routeData: routeData,
         child: EmomPage(
           emomSettings: args.emomSettings,
           key: args.key,
         ),
-      );
-    },
-    FavouritesRoute.name: (routeData) {
-      return AutoRoutePage<void>(
-        routeData: routeData,
-        child: const FavouritesPage(),
       );
     },
     TimerRoute.name: (routeData) {
@@ -103,12 +102,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<void>(
         routeData: routeData,
         child: const MainPage(),
-      );
-    },
-    HistoryRoute.name: (routeData) {
-      return AutoRoutePage<void>(
-        routeData: routeData,
-        child: const HistoryPage(),
       );
     },
     WorkoutDetailsRoute.name: (routeData) {
@@ -233,7 +226,8 @@ class WorkRestRoute extends PageRouteInfo<WorkRestRouteArgs> {
 
   static const String name = 'WorkRestRoute';
 
-  static const PageInfo<WorkRestRouteArgs> page = PageInfo<WorkRestRouteArgs>(name);
+  static const PageInfo<WorkRestRouteArgs> page =
+      PageInfo<WorkRestRouteArgs>(name);
 }
 
 class WorkRestRouteArgs {
@@ -364,20 +358,6 @@ class EmomRouteArgs {
 }
 
 /// generated route for
-/// [FavouritesPage]
-class FavouritesRoute extends PageRouteInfo<void> {
-  const FavouritesRoute({List<PageRouteInfo>? children})
-      : super(
-          FavouritesRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FavouritesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [TimerPage]
 class TimerRoute extends PageRouteInfo<TimerRouteArgs> {
   TimerRoute({
@@ -429,20 +409,6 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [HistoryPage]
-class HistoryRoute extends PageRouteInfo<void> {
-  const HistoryRoute({List<PageRouteInfo>? children})
-      : super(
-          HistoryRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HistoryRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [WorkoutDetailsPage]
 class WorkoutDetailsRoute extends PageRouteInfo<WorkoutDetailsRouteArgs> {
   WorkoutDetailsRoute({
@@ -460,7 +426,8 @@ class WorkoutDetailsRoute extends PageRouteInfo<WorkoutDetailsRouteArgs> {
 
   static const String name = 'WorkoutDetailsRoute';
 
-  static const PageInfo<WorkoutDetailsRouteArgs> page = PageInfo<WorkoutDetailsRouteArgs>(name);
+  static const PageInfo<WorkoutDetailsRouteArgs> page =
+      PageInfo<WorkoutDetailsRouteArgs>(name);
 }
 
 class WorkoutDetailsRouteArgs {

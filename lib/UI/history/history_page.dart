@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/core/context_extension.dart';
@@ -32,10 +33,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return CustomScrollView(
       slivers: [
-        // CupertinoSliverNavigationBar(
-        //   largeTitle: Text('History'),
-        //   heroTag: 'history',
-        // ),
         CupertinoSliverRefreshControl(
           onRefresh: () async {
             await state.loadMore(isRefresh: true);
@@ -83,28 +80,52 @@ class _HistoryPageState extends State<HistoryPage> {
                 );
               }
               return SliverList.separated(
-                itemCount: records.length,
+                itemCount: records.length + (state.canLoadMore ? 1 : 0),
                 separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),
                 itemBuilder: (ctx, index) {
+                  if (index == records.length) {
+                    state.loadMore();
+                    return const CircularProgressIndicator.adaptive();
+                  }
                   final record = records[index];
                   final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
-                  return CupertinoListTile(
-                    onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
-                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    title: Text(record.readbleName),
-                    leading: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: record.timerType.workoutColor(context),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const SizedBox.expand(),
-                    ),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  return Slidable(
+                    key: ValueKey(record.id),
+                    endActionPane: ActionPane(
+                      dismissible: DismissiblePane(onDismissed: () {
+                        state.deleteRecord(record.id);
+                      }),
+                      extentRatio: .25,
+                      motion: const DrawerMotion(),
                       children: [
-                        Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
-                        Text(finishAt.jm),
+                        SlidableAction(
+                          onPressed: (_) {
+                            state.deleteRecord(record.id);
+                          },
+                          backgroundColor: context.color.warning,
+                          foregroundColor: Colors.white,
+                          icon: CupertinoIcons.delete,
+                        ),
                       ],
+                    ),
+                    child: CupertinoListTile(
+                      onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                      title: Text(record.readbleName),
+                      leading: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: record.timerType.workoutColor(context),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const SizedBox.expand(),
+                      ),
+                      trailing: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
+                          Text(finishAt.jm),
+                        ],
+                      ),
                     ),
                   );
                 },
