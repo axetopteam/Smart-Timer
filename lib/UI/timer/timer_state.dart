@@ -144,7 +144,8 @@ abstract class TimerStateBase with Store {
   Future<void> _saveWorkout() async {
     final startTime = _workout.startTime;
     final endTime = _workout.endTime;
-    if (!_isSaved && status is! ReadyStatus && startTime != null && endTime != null) {
+
+    if (!_isSaved && startTime != null && endTime != null && _workout.isCountdownCompleted(now: endTime)) {
       _isSaved = true;
       await GetIt.I<HistoryState>().saveTraining(
         startAt: startTime,
