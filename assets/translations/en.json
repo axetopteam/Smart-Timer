@@ -145,7 +145,7 @@
         "description": "Description",
         "start_time": "Start Time",
         "total_time": "Total Time",
-        "results_title": "Workout Details:"
+        "results_title": "Workout Details"
     },
     "favorites": {
         "title": "Favorites",

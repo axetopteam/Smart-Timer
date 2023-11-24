@@ -146,7 +146,7 @@
         "description": "Описание",
         "start_time": "Начало",
         "total_time": "Общее время",
-        "results_title": "Детали тренировки:"
+        "results_title": "Детали тренировки"
     },
     "favorites": {
         "title": "Избранные",

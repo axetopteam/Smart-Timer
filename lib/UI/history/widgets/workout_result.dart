@@ -70,7 +70,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
     return Table(
       children: children,
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(100),
+        0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.top,
@@ -104,7 +104,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
     return Table(
       children: children,
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(110),
+        0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.top,
@@ -143,9 +143,9 @@ class _WorkoutResultState extends State<WorkoutResult> {
     return Table(
       children: children,
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(80),
+        0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
-        2: FixedColumnWidth(90),
+        2: IntrinsicColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.top,
     );
@@ -181,9 +181,9 @@ class _WorkoutResultState extends State<WorkoutResult> {
     return Table(
       children: children,
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(80),
+        0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
-        2: FixedColumnWidth(90),
+        2: IntrinsicColumnWidth(),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.top,
     );
@@ -218,9 +218,8 @@ class _WorkoutResultState extends State<WorkoutResult> {
     return Table(
       children: children,
       columnWidths: const <int, TableColumnWidth>{
-        0: FixedColumnWidth(80),
+        0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
-        2: FixedColumnWidth(90),
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.top,
     );
@@ -231,14 +230,20 @@ class _WorkoutResultState extends State<WorkoutResult> {
       children: [
         TableCell(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: const EdgeInsets.only(bottom: 4, right: 8),
             child: Text(
               title,
             ),
           ),
         ),
-        if (description != null) TableCell(child: Text(description)),
-        TableCell(child: Text(value)),
+        if (description != null) Text(description),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Text(value),
+          ),
+        ),
       ],
     );
   }
