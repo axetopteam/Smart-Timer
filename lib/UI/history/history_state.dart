@@ -48,7 +48,7 @@ abstract class _HistoryState with Store {
   }
 
   @action
-  Future<void> saveTraining({
+  Future<TrainingHistoryRecord> saveTraining({
     required DateTime startAt,
     required DateTime endAt,
     required String name,
@@ -70,6 +70,7 @@ abstract class _HistoryState with Store {
       pauses: pauses,
     );
     records.insert(0, record);
+    return record;
   }
 
   @action

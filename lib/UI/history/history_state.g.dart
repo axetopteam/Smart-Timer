@@ -69,7 +69,7 @@ mixin _$HistoryState on _HistoryState, Store {
       AsyncAction('_HistoryState.saveTraining', context: context);
 
   @override
-  Future<void> saveTraining(
+  Future<TrainingHistoryRecord> saveTraining(
       {required DateTime startAt,
       required DateTime endAt,
       required String name,

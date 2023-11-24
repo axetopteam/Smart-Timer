@@ -122,9 +122,6 @@ abstract class TimerStateBase with Store {
       completeCurrentInterval: completeCurrentInterval,
     );
     print('#TIMERSTATE# tick end');
-    // final finishTimeUtc = workout.intervals.last.;
-    // totalRestTime = finishTimeUtc?.difference(nowUtc);
-    // print('#TIMER# $time, $currentIntervalDurationInMilliseconds, $partOfDuration');
 
     _playAudioIfNeeded(status);
 
@@ -141,13 +138,13 @@ abstract class TimerStateBase with Store {
     }
   }
 
-  Future<void> _saveWorkout() async {
+  Future<TrainingHistoryRecord?> _saveWorkout() async {
     final startTime = _workout.startTime;
     final endTime = _workout.endTime;
 
     if (!_isSaved && startTime != null && endTime != null && _workout.isCountdownCompleted(now: endTime)) {
       _isSaved = true;
-      await GetIt.I<HistoryState>().saveTraining(
+      final record = await GetIt.I<HistoryState>().saveTraining(
         startAt: startTime,
         endAt: endTime,
         name: '',
@@ -157,7 +154,9 @@ abstract class TimerStateBase with Store {
         intervals: _workout.intervals,
         pauses: _workout.pauses,
       );
+      return record;
     }
+    return null;
   }
 
   @action
