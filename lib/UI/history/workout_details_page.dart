@@ -1,19 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
-import 'package:smart_timer/UI/timer_types/emom/emom_state.dart';
-import 'package:smart_timer/UI/timer_types/tabata/tabata_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/routes/router.dart';
-import 'package:smart_timer/sdk/models/protos/amrap/amrap_extension.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
-import 'package:smart_timer/utils/duration.extension.dart';
+
+import 'widgets/workout_result.dart';
 
 export 'package:smart_timer/sdk/models/training_history_record.dart';
 
@@ -54,6 +51,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   }
 
   TrainingHistoryRecord get record => widget.record;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -63,50 +61,48 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
             slivers: [
               CupertinoSliverNavigationBar(
                 stretch: true,
-                largeTitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.record.readbleName,
-                    ),
-                  ],
+                largeTitle: Text(
+                  widget.record.readbleName,
                 ),
-                alwaysShowMiddle: false,
-                middle: Text(widget.record.readbleName),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                sliver: SliverList.list(
-                  children: [
-                    Text(
+              SliverList.list(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
                       Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
                       style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
                     ),
-                    const SizedBox(height: 20),
-                    _buildItem(CupertinoIcons.time, LocaleKeys.history_start_time.tr(),
-                        Jiffy.parseFromDateTime(record.startAt.toLocal()).jm),
-                    const SizedBox(height: 12),
-                    _buildItem(CupertinoIcons.timer, LocaleKeys.history_total_time.tr(), record.realDuration.format),
-                    _buildName(),
-                    _buildDescription(),
-                    const SizedBox(height: 20),
-                    Text(
-                      LocaleKeys.history_results_title.tr(),
-                      style: context.textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 20),
+                  _buildCommonInfo(),
+                  const SizedBox(height: 32),
+                  _buildDescription(),
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          LocaleKeys.history_results_title.tr().toUpperCase(),
+                          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+                        ),
+                        const SizedBox(height: 12),
+                        WorkoutResult(record),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    _buildSets(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
-                        onPressed: _repeat,
-                        child: Text('Повторить тренировку'),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 32, 20, 0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
+                      onPressed: _repeat,
+                      child: Text('Повторить тренировку'),
+                    ),
+                  )
+                ],
               ),
             ],
           );
@@ -115,22 +111,33 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     );
   }
 
-  Widget _buildItem(IconData icon, String title, String value) {
-    return Row(
+  Widget _buildCommonInfo() {
+    return CupertinoListSection.insetGrouped(
+      backgroundColor: context.color.background,
+      header: Text(
+        'Основное'.toUpperCase(),
+        style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+      ),
+      margin: const EdgeInsets.fromLTRB(20, 4, 20, 0),
+      decoration: BoxDecoration(
+        color: context.color.containerBackground,
+      ),
       children: [
-        Icon(
-          icon,
-          size: 28,
+        CupertinoListTile.notched(
+          title: Text(LocaleKeys.history_start_time.tr()),
+          leading: const Icon(CupertinoIcons.time),
+          trailing: Text(
+            Jiffy.parseFromDateTime(record.startAt.toLocal()).jm,
+            style: CupertinoTheme.of(context).textTheme.textStyle,
+          ),
         ),
-        const SizedBox(width: 4),
-        Text(
-          title,
-          style: context.textTheme.bodyLarge,
-        ),
-        const Spacer(),
-        Text(
-          value,
-          style: context.textTheme.bodyLarge,
+        CupertinoListTile.notched(
+          title: Text(LocaleKeys.history_total_time.tr()),
+          leading: const Icon(CupertinoIcons.timer),
+          trailing: Text(
+            record.realDuration.format,
+            style: CupertinoTheme.of(context).textTheme.textStyle,
+          ),
         ),
       ],
     );
@@ -164,15 +171,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   Widget _buildDescription() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            LocaleKeys.history_description.tr(),
-            style: context.textTheme.bodyLarge,
+            LocaleKeys.history_description.tr().toUpperCase(),
+            style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 10),
           CupertinoTextField(
             decoration: BoxDecoration(
               border: Border.all(
@@ -182,142 +189,12 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             controller: _descriptionController,
+            placeholder: 'Напишите заметки по тренировки...',
             maxLines: null,
             expands: true,
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTime(String title, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-        ),
-        const SizedBox(width: 20),
-        Expanded(
-          child: Text(
-            value,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSets() {
-    final workoutType = record.workout.whichWorkout();
-
-    switch (workoutType) {
-      case WorkoutSettings_Workout.emom:
-        return _buildEmom(record.workout.emom.emoms);
-      case WorkoutSettings_Workout.amrap:
-        return _buildAmrap();
-      case WorkoutSettings_Workout.afap:
-        return _buildAfap();
-      case WorkoutSettings_Workout.tabata:
-        return _buildTabata();
-      case WorkoutSettings_Workout.workRest:
-        return _buildWorkRest();
-      case WorkoutSettings_Workout.notSet:
-        return Container();
-    }
-  }
-
-  Widget _buildWorkRest() {
-    final workRests = record.workout.workRest.workRests;
-    return Column(
-      children: workRests.mapIndexed((index, set) {
-        final realSetDuration = record.realSetDuration(index);
-        final roundsDuration = record.workRestRoundsDuration(index);
-        return Column(
-          children: [
-            _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '${set.roundsCount} x ${set.ratio} (${realSetDuration.$1.format})'),
-            Column(
-              children: roundsDuration
-                  .mapIndexed(
-                    (index, round) => _buildTime('Round ${index + 1}:', round.format),
-                  )
-                  .toList(),
-            ),
-            if (index != workRests.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
-          ],
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildTabata() {
-    final tabats = record.workout.tabata.tabats;
-    return Column(
-      children: tabats.mapIndexed((index, tabata) {
-        final realSetDuration = record.realSetDuration(index);
-        return Column(
-          children: [
-            _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                '${tabata.roundsCount} x (${tabata.workTime.format}/${tabata.restTime.format}) (${realSetDuration.$1.format})'),
-            if (index != tabats.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
-          ],
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildAfap() {
-    final afaps = record.workout.afap.afaps;
-
-    return Column(
-        children: afaps.mapIndexed((index, e) {
-      final realSetDuration = record.realSetDuration(index);
-
-      return Column(
-        children: [
-          _buildTime('${widget.record.timerType.readbleName} ${index + 1}:', '  ${realSetDuration.$1.format}'),
-          if (index != afaps.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
-        ],
-      );
-    }).toList());
-  }
-
-  Widget _buildAmrap() {
-    final amraps = record.workout.amrap.amraps;
-
-    return Column(
-        children: amraps.mapIndexed((index, e) {
-      final realSetDuration = record.realSetDuration(index);
-
-      return Column(
-        children: [
-          _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-              '${e.workTime.format}  ${(realSetDuration.$1) < e.workTime ? realSetDuration.$1.format : ''}'),
-          if (index != amraps.length - 1)
-            _buildTime(
-                'Rest:', '${e.restTime.format}  ${(realSetDuration.$2) < e.restTime ? realSetDuration.$2.format : ''}'),
-        ],
-      );
-    }).toList());
-  }
-
-  Widget _buildEmom(List<Emom> emoms) {
-    return Column(
-      children: emoms.mapIndexed((index, emom) {
-        final realSetDuration = record.realSetDuration(index);
-
-        return Column(
-          children: [
-            if (emom.deathBy)
-              _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  'Every ${emom.workTime.format} As Long As Possible (${realSetDuration.$1.format})'),
-            if (!emom.deathBy)
-              _buildTime('${widget.record.timerType.readbleName} ${index + 1}:',
-                  '${emom.roundsCount} x ${emom.workTime.format} (${realSetDuration.$1.format})'),
-            if (index != emoms.length - 1) _buildTime('Rest:', realSetDuration.$2.format),
-          ],
-        );
-      }).toList(),
     );
   }
 
@@ -336,21 +213,5 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
       case WorkoutSettings_Workout.notSet:
     }
-  }
-}
-
-extension DurationX on Duration {
-  String get format {
-    if (inMicroseconds < 0) {
-      return "-${(-this).format}";
-    }
-    final milliseconds = inMilliseconds.remainder(inSeconds * 1000);
-    final millisecondsString = milliseconds != 0 ? '.$milliseconds' : '';
-
-    String twoDigitMinutes = twoDigits(inMinutes);
-
-    String twoDigitSeconds = twoDigits(inSeconds.remainder(secondsPerMinute));
-
-    return "$twoDigitMinutes:$twoDigitSeconds$millisecondsString";
   }
 }

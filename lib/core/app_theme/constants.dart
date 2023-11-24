@@ -4,7 +4,7 @@ class AppFonts {
   static const chip = TextStyle(
     fontFamily: 'Inter',
     height: 1,
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: FontWeight.w400,
     color: AppColors.white,
   );

@@ -180,7 +180,10 @@ class WorkoutCalculator {
             totalDuration: interval.totalDuration,
             soundType: _checkSound(interval, time),
             indexes: interval.indexes,
-            canBeCompleted: interval is! FiniteInterval || (nextInterval != null && nextInterval is RepeatLastInterval),
+            canBeCompleted: _checkCanBeCompleted(
+              interval,
+              nextInterval,
+            ),
           );
           return status;
         }
@@ -201,6 +204,10 @@ class WorkoutCalculator {
   static const _threeSeconds = Duration(seconds: 3);
   static const _tenSeconds = Duration(seconds: 10);
   static const _delta = Duration(milliseconds: 100);
+
+  static bool _checkCanBeCompleted(Interval interval, Interval? nextInterval) {
+    return interval is! FiniteInterval || (nextInterval != null && nextInterval is RepeatLastInterval);
+  }
 
   static SoundType? _checkSound(Interval interval, Duration time) {
     switch (interval) {

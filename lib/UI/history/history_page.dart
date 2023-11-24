@@ -38,100 +38,97 @@ class _HistoryPageState extends State<HistoryPage> {
             await state.loadMore(isRefresh: true);
           },
         ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-          sliver: Observer(
-            builder: (context) {
-              final records = state.records;
+        Observer(
+          builder: (context) {
+            final records = state.records;
 
-              if (records.isEmpty && state.error != null) {
-                return SliverFillRemaining(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        LocaleKeys.history_error.tr(),
-                        style: context.textTheme.bodyLarge,
+            if (records.isEmpty && state.error != null) {
+              return SliverFillRemaining(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      LocaleKeys.history_error.tr(),
+                      style: context.textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButtonTheme(
+                      data: context.buttonThemes.paywallButtonTheme,
+                      child: ElevatedButton(
+                        onPressed: () => state.loadMore(isRefresh: true),
+                        child: Text(LocaleKeys.repeat.tr()),
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButtonTheme(
-                        data: context.buttonThemes.paywallButtonTheme,
-                        child: ElevatedButton(
-                          onPressed: () => state.loadMore(isRefresh: true),
-                          child: Text(LocaleKeys.repeat.tr()),
-                        ),
-                      )
+                    )
+                  ],
+                ),
+              );
+            }
+            if (records.isEmpty) {
+              return SliverFillRemaining(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 0, 40, 120),
+                  child: Align(
+                    child: Text(
+                      LocaleKeys.history_empty.tr(),
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return SliverList.separated(
+              itemCount: records.length + (state.canLoadMore ? 1 : 0),
+              separatorBuilder: (ctx, index) => const Divider(height: 2, thickness: 2),
+              itemBuilder: (ctx, index) {
+                if (index == records.length) {
+                  state.loadMore();
+                  return const CircularProgressIndicator.adaptive();
+                }
+                final record = records[index];
+                final startAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
+                return Slidable(
+                  key: ValueKey(record.id),
+                  endActionPane: ActionPane(
+                    dismissible: DismissiblePane(onDismissed: () {
+                      state.deleteRecord(record.id);
+                    }),
+                    extentRatio: .25,
+                    motion: const DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) {
+                          state.deleteRecord(record.id);
+                        },
+                        backgroundColor: context.color.warning,
+                        foregroundColor: Colors.white,
+                        icon: CupertinoIcons.delete,
+                      ),
                     ],
                   ),
-                );
-              }
-              if (records.isEmpty) {
-                return SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 0, 40, 120),
-                    child: Align(
-                      child: Text(
-                        LocaleKeys.history_empty.tr(),
-                        textAlign: TextAlign.center,
-                        style: context.textTheme.bodyLarge,
+                  child: CupertinoListTile(
+                    onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    title: Text(record.readbleName),
+                    leading: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: record.timerType.workoutColor(context),
+                        shape: BoxShape.circle,
                       ),
+                      child: const SizedBox.expand(),
+                    ),
+                    trailing: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('${startAt.toLocal().Md}.${startAt.toLocal().format(pattern: 'yy')}'),
+                        Text(startAt.toLocal().jm),
+                      ],
                     ),
                   ),
                 );
-              }
-              return SliverList.separated(
-                itemCount: records.length + (state.canLoadMore ? 1 : 0),
-                separatorBuilder: (ctx, index) => const Divider(height: 12, thickness: 2),
-                itemBuilder: (ctx, index) {
-                  if (index == records.length) {
-                    state.loadMore();
-                    return const CircularProgressIndicator.adaptive();
-                  }
-                  final record = records[index];
-                  final finishAt = Jiffy.parseFromDateTime(record.startAt.toLocal());
-                  return Slidable(
-                    key: ValueKey(record.id),
-                    endActionPane: ActionPane(
-                      dismissible: DismissiblePane(onDismissed: () {
-                        state.deleteRecord(record.id);
-                      }),
-                      extentRatio: .25,
-                      motion: const DrawerMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (_) {
-                            state.deleteRecord(record.id);
-                          },
-                          backgroundColor: context.color.warning,
-                          foregroundColor: Colors.white,
-                          icon: CupertinoIcons.delete,
-                        ),
-                      ],
-                    ),
-                    child: CupertinoListTile(
-                      onTap: () => context.router.push(WorkoutDetailsRoute(record: record)),
-                      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                      title: Text(record.readbleName),
-                      leading: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: record.timerType.workoutColor(context),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const SizedBox.expand(),
-                      ),
-                      trailing: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${finishAt.Md}.${finishAt.format(pattern: 'yy')}'),
-                          Text(finishAt.jm),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+              },
+            );
+          },
         ),
         SliverToBoxAdapter(child: SizedBox(height: bottomPadding + 20)),
       ],
