@@ -103,39 +103,104 @@ abstract class TimerStateBase with Store {
     AnalyticsManager.eventTimerResumed.commit();
   }
 
+  Interval? getNextInterval(int index) => index + 1 < _workout.intervals.length ? _workout.intervals[index + 1] : null;
+
   void completeCurrentInterval() {
-    tick(
-      roundedNow,
-      completeCurrentInterval: true,
+    final now = roundedNow;
+    final (_, pastTime, currentIndex) = WorkoutCalculator.currentIntervalInfo(now: now, workout: _workout);
+    final currentInterval = _workout.intervals[currentIndex];
+    final nextInterval = getNextInterval(currentIndex);
+
+    final completedInterval = FiniteInterval(
+      duration: pastTime!,
+      isReverse: false,
+      activityType: currentInterval.activityType,
+      isLast: currentInterval.isLast,
+      indexes: currentInterval.indexes,
     );
+    final newIntervals = List.of(_workout.intervals);
+    newIntervals[currentIndex] = completedInterval;
+
+    if (nextInterval != null && nextInterval is RatioInterval) {
+      final newNext = FiniteInterval(
+        duration: pastTime * nextInterval.ratio,
+        isReverse: true,
+        activityType: nextInterval.activityType,
+        indexes: nextInterval.indexes,
+        isLast: nextInterval.isLast,
+      );
+      newIntervals[currentIndex + 1] = newNext;
+    } else if (nextInterval != null && nextInterval is RepeatLastInterval) {
+      newIntervals.removeAt(currentIndex + 1);
+    }
+
+    _workout = _workout.copyWith(intervals: newIntervals);
+
+    tick(now);
     _audio.stop();
     AnalyticsManager.eventTimerRoundCompleted.commit();
   }
 
   @action
-  void tick(DateTime nowUtc, {bool completeCurrentInterval = false}) {
+  void tick(DateTime nowUtc) {
     if (_workout.startTime == null) return;
-    print('#TIMERSTATE# tick start');
-    status = WorkoutCalculator.currentIntervalInfo(
+    final (curentTime, _, currentIndex) = WorkoutCalculator.currentIntervalInfo(
       now: nowUtc,
       workout: _workout,
-      completeCurrentInterval: completeCurrentInterval,
     );
-    print('#TIMERSTATE# tick end');
-
-    _playAudioIfNeeded(status);
-
-    if (status is DoneStatus) {
-      timerSubscription?.cancel();
-      TimerCouterService().addNewTime(DateTime.now());
-      _workout = _workout.setEndTime(nowUtc);
-      _saveWorkout();
-
-      AnalyticsManager.eventTimerFinished
-          .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
-          .setProperty('timer_type', timerType.name)
-          .commit();
+    if (currentIndex < 0) {
+      status = ReadyStatus();
+      return;
     }
+    if (currentIndex >= _workout.intervals.length) {
+      status = _timerCompleted(nowUtc);
+      return;
+    }
+
+    final currentInterval = _workout.intervals[currentIndex];
+    final nextInterval = getNextInterval(currentIndex);
+
+    if (currentIndex > 0 && currentInterval is RepeatLastInterval) {
+      _insertNewInterval(currentIndex);
+      tick(nowUtc);
+      return;
+    }
+
+    if (curentTime != null) {
+      status = RunStatus(
+          time: curentTime,
+          type: currentInterval.activityType,
+          canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval, nextInterval),
+          soundType: WorkoutCalculator.checkSound(currentInterval, curentTime));
+    }
+    _playAudioIfNeeded(status);
+  }
+
+  void _insertNewInterval(int index) {
+    final previousInterval = _workout.intervals[index - 1];
+    final previousIntervalIndexes = List.of(previousInterval.indexes);
+    previousIntervalIndexes.last = previousIntervalIndexes.last.copyWith(previousIntervalIndexes.last.index + 1);
+
+    _workout = _workout.copyWith(
+      intervals: List.of(_workout.intervals)
+        ..insert(
+          index,
+          previousInterval.copyWith(indexes: previousIntervalIndexes),
+        ),
+    );
+  }
+
+  DoneStatus _timerCompleted(DateTime time) {
+    timerSubscription?.cancel();
+    TimerCouterService().addNewTime(DateTime.now());
+    _workout = _workout.setEndTime(time);
+    _saveWorkout();
+
+    AnalyticsManager.eventTimerFinished
+        .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
+        .setProperty('timer_type', timerType.name)
+        .commit();
+    return DoneStatus();
   }
 
   Future<TrainingHistoryRecord?> _saveWorkout() async {

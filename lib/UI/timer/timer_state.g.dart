@@ -102,12 +102,11 @@ mixin _$TimerState on TimerStateBase, Store {
   }
 
   @override
-  void tick(DateTime nowUtc, {bool completeCurrentInterval = false}) {
+  void tick(DateTime nowUtc) {
     final _$actionInfo = _$TimerStateBaseActionController.startAction(
         name: 'TimerStateBase.tick');
     try {
-      return super
-          .tick(nowUtc, completeCurrentInterval: completeCurrentInterval);
+      return super.tick(nowUtc);
     } finally {
       _$TimerStateBaseActionController.endAction(_$actionInfo);
     }

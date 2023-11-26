@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
 import 'interval.dart';
-import 'interval_info.dart';
 import 'pause.dart';
 
 export 'interval.dart';
@@ -10,12 +9,12 @@ export 'interval_info.dart';
 export 'pause.dart';
 
 class Workout extends Equatable {
-  const Workout({
-    required this.intervals,
+  Workout({
+    required List<Interval> intervals,
     this.pauses = const [],
     this.startTime,
     this.endTime,
-  });
+  }) : intervals = List.unmodifiable(intervals);
 
   final List<Interval> intervals;
   final DateTime? startTime;
@@ -105,113 +104,64 @@ extension IntervalsList on List<Interval> {
 }
 
 class WorkoutCalculator {
-  static TimerStatus currentIntervalInfo({
+  static (Duration?, Duration?, int) currentIntervalInfo({
     required DateTime now,
     required Workout workout,
-    bool completeCurrentInterval = false,
   }) {
     var startTime = workout.startTime;
     if (startTime == null) {
-      return ReadyStatus();
+      return (null, null, -1);
     }
+
+    var start = startTime;
 
     var pauseDuration = Duration.zero;
     for (var pause in workout.pauses) {
       pauseDuration += pause.duration ?? (now.toUtc().difference(pause.startAt));
     }
 
-    startTime = startTime.add(pauseDuration);
+    start = start.add(pauseDuration);
 
     for (var index = 0; index < workout.intervals.length; index++) {
-      if (index > 0 && workout.intervals[index] is RepeatLastInterval) {
-        final previousInterval = workout.intervals[index - 1];
-        final previousIntervalIndexes = List.of(previousInterval.indexes);
-        previousIntervalIndexes.last = previousIntervalIndexes.last.copyWith(previousIntervalIndexes.last.index + 1);
-        workout = workout.copyWith(
-          intervals: workout.intervals
-            ..insert(
-              index,
-              previousInterval.copyWith(indexes: previousIntervalIndexes),
-            ),
-        );
-      }
-
       var interval = workout.intervals[index];
-      final nextInterval = index + 1 < workout.intervals.length ? workout.intervals[index + 1] : null;
 
       final time = interval.currentTime(
-        startTime: startTime!,
+        startTime: start,
+        now: now,
+      );
+      final pastTime = interval.pastTime(
+        startTime: start,
         now: now,
       );
 
       if (time >= Duration.zero) {
-        if (completeCurrentInterval) {
-          final completedInterval = FiniteInterval(
-            duration: interval.pastTime(startTime: startTime, now: now),
-            isReverse: false,
-            activityType: interval.activityType,
-            isLast: interval.isLast,
-            indexes: interval.indexes,
-          );
-          final newIntervals = workout.intervals;
-          newIntervals[index] = completedInterval;
-
-          if (nextInterval != null && nextInterval is RatioInterval) {
-            final newNext = FiniteInterval(
-              duration: time * nextInterval.ratio,
-              isReverse: true,
-              activityType: nextInterval.activityType,
-              indexes: nextInterval.indexes,
-              isLast: nextInterval.isLast,
-            );
-            newIntervals[index + 1] = newNext;
-          } else if (nextInterval != null && nextInterval is RepeatLastInterval) {
-            newIntervals.removeAt(index + 1);
-          }
-
-          workout = workout.copyWith(intervals: newIntervals);
-
-          interval = completedInterval;
-          completeCurrentInterval = false;
-        } else {
-          final status = RunStatus(
-            time: time,
-            type: interval.activityType,
-            totalDuration: interval.totalDuration,
-            soundType: _checkSound(interval, time),
-            indexes: interval.indexes,
-            canBeCompleted: _checkCanBeCompleted(
-              interval,
-              nextInterval,
-            ),
-          );
-          return status;
-        }
+        return (time, pastTime, index);
       }
+
       switch (interval) {
         case FiniteInterval():
-          startTime = startTime.add(interval.duration);
+          start = start.add(interval.duration);
         case InfiniteInterval():
         case RatioInterval():
         case RepeatLastInterval():
-          throw TypeError();
+          return (null, null, index);
       }
     }
 
-    return DoneStatus();
+    return (null, null, workout.intervals.length);
   }
 
   static const _threeSeconds = Duration(seconds: 3);
   static const _tenSeconds = Duration(seconds: 10);
   static const _delta = Duration(milliseconds: 100);
 
-  static bool _checkCanBeCompleted(Interval interval, Interval? nextInterval) {
+  static bool checkCanBeCompleted(Interval interval, Interval? nextInterval) {
     return interval is! FiniteInterval ||
         (!interval.isReverse) ||
         (nextInterval != null && nextInterval is RepeatLastInterval);
   }
 
-  static SoundType? _checkSound(Interval interval, Duration time) {
+  static SoundType? checkSound(Interval interval, Duration time) {
     switch (interval) {
       case FiniteInterval():
         if (interval.isReverse) {
