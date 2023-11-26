@@ -81,7 +81,8 @@ abstract class EmomStateBase with Store {
         setIntervals = [
           FiniteInterval(
             duration: emom.workTime,
-            isReverse: true,
+            isReverse: false,
+            canBeCompleteEarlier: true,
             activityType: ActivityType.work,
             indexes: [
               if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),

@@ -158,7 +158,6 @@ abstract class TimerStateBase with Store {
     }
 
     final currentInterval = _workout.intervals[currentIndex];
-    final nextInterval = getNextInterval(currentIndex);
 
     if (currentIndex > 0 && currentInterval is RepeatLastInterval) {
       _insertNewInterval(currentIndex);
@@ -170,7 +169,7 @@ abstract class TimerStateBase with Store {
       status = RunStatus(
           time: curentTime,
           type: currentInterval.activityType,
-          canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval, nextInterval),
+          canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval),
           soundType: WorkoutCalculator.checkSound(currentInterval, curentTime));
     }
     _playAudioIfNeeded(status);

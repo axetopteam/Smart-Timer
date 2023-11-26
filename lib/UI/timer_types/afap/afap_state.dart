@@ -85,6 +85,7 @@ abstract class AfapStateBase with Store {
           : FiniteInterval(
               duration: afap.timeCap,
               isReverse: false,
+              canBeCompleteEarlier: true,
               activityType: ActivityType.work,
               isLast: isLast,
               indexes: afapsCount > 1 ? [setIndex] : [],

@@ -67,18 +67,18 @@ extension IntervalX on Interval {
   }
 }
 
-const negativeTime = Duration(seconds: -1);
-
 class FiniteInterval extends Interval {
   FiniteInterval({
     required this.duration,
     required this.isReverse,
+    this.canBeCompleteEarlier = false,
     required super.activityType,
     required super.indexes,
     super.isLast,
   });
   final Duration duration;
   final bool isReverse;
+  final bool canBeCompleteEarlier;
 
   @override
   Duration currentTime({required DateTime startTime, required DateTime now}) {
@@ -95,6 +95,7 @@ class FiniteInterval extends Interval {
     return FiniteInterval(
       duration: duration,
       isReverse: isReverse,
+      canBeCompleteEarlier: canBeCompleteEarlier,
       activityType: activityType,
       indexes: indexes ?? this.indexes,
       isLast: isLast ?? this.isLast,
@@ -104,6 +105,8 @@ class FiniteInterval extends Interval {
   factory FiniteInterval.fromJson(Map<String, dynamic> json) {
     final duration = Duration(milliseconds: json['duration'] ?? (throw UnsuitableTypeError('duration is null')));
     final isReverse = json['isReverse'] ?? (throw UnsuitableTypeError('isReverse is null'));
+    final canBeCompleteEarlier =
+        json['canBeCompleteEarlier'] ?? (throw UnsuitableTypeError('canBeCompleteEarlier is null'));
     final activityTypeName = json['activityType'] ?? (throw UnsuitableTypeError('activityType is null'));
     final activityType = ActivityType.values.firstWhereOrNull((element) => element.name == activityTypeName) ??
         (throw UnsuitableTypeError('activityType: $activityTypeName is unknown'));
@@ -116,6 +119,7 @@ class FiniteInterval extends Interval {
     return FiniteInterval(
       duration: duration,
       isReverse: isReverse,
+      canBeCompleteEarlier: canBeCompleteEarlier,
       activityType: activityType,
       indexes: indexesList,
       isLast: isLast,
@@ -127,6 +131,7 @@ class FiniteInterval extends Interval {
     return {
       'type': 'finite',
       'duration': duration.inMilliseconds,
+      'canBeCompleteEarlier': canBeCompleteEarlier,
       'activityType': activityType.name,
       'isReverse': isReverse,
       'indexes': indexes.map((e) => e.toJson()).toList(),
