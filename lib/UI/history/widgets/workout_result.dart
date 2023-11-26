@@ -255,7 +255,7 @@ extension DurationResult on Duration {
       return "-${(-this).format}";
     }
     final milliseconds = inSeconds != 0 ? inMilliseconds.remainder(inSeconds * 1000) : inMilliseconds;
-    final millisecondsString = milliseconds != 0 ? '.$milliseconds' : '';
+    final millisecondsString = milliseconds != 0 ? ',$milliseconds' : '';
 
     String twoDigitMinutes = twoDigits(inMinutes);
 
