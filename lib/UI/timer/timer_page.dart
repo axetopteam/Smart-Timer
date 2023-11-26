@@ -309,6 +309,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
   Widget _buildRoudsInfo(TimerStatus status) {
     return Column(
         children: status.indexes
+            .where((element) => element.totalCount != 1)
             .map(
               (index) => Text(
                 index.toString(),

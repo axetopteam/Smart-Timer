@@ -69,13 +69,13 @@ abstract class AmrapStateBase with Store {
         isReverse: true,
         activityType: ActivityType.work,
         isLast: amrapsCount > 1 && i == amrapsCount - 1,
-        indexes: amrapsCount > 1 ? [setIndex] : [],
+        indexes: [setIndex],
       );
       final restInterval = FiniteInterval(
         duration: amraps[i].restTime,
         isReverse: true,
         activityType: ActivityType.rest,
-        indexes: amrapsCount > 1 ? [setIndex] : [],
+        indexes: [setIndex],
       );
       intervals.addAll([
         workInterval,

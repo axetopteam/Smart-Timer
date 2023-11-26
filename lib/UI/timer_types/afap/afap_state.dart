@@ -88,13 +88,13 @@ abstract class AfapStateBase with Store {
               canBeCompleteEarlier: true,
               activityType: ActivityType.work,
               isLast: isLast,
-              indexes: afapsCount > 1 ? [setIndex] : [],
+              indexes: [setIndex],
             );
       final restInterval = FiniteInterval(
         duration: afap.restTime,
         isReverse: true,
         activityType: ActivityType.rest,
-        indexes: afapsCount > 1 ? [setIndex] : [],
+        indexes: [setIndex],
       );
       intervals.addAll([
         workInterval,

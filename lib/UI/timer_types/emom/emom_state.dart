@@ -85,14 +85,14 @@ abstract class EmomStateBase with Store {
             canBeCompleteEarlier: true,
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
               IntervalIndex(localeKey: LocaleKeys.round, index: 0),
             ],
           ),
           RepeatLastInterval(
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
               IntervalIndex(localeKey: LocaleKeys.round, index: 1),
             ],
           ),
@@ -102,7 +102,7 @@ abstract class EmomStateBase with Store {
               isReverse: true,
               activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
+                IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
               ],
             ),
         ];
@@ -114,7 +114,7 @@ abstract class EmomStateBase with Store {
             isReverse: true,
             activityType: ActivityType.work,
             indexes: [
-              if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
+              IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
               IntervalIndex(localeKey: LocaleKeys.round, index: index, totalCount: emom.roundsCount),
             ],
             isLast: emom.roundsCount != 1 && index == emom.roundsCount - 1,
@@ -127,7 +127,7 @@ abstract class EmomStateBase with Store {
               isReverse: true,
               activityType: ActivityType.rest,
               indexes: [
-                if (emomsCount > 1) IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
+                IntervalIndex(localeKey: LocaleKeys.emom_title, index: i, totalCount: emomsCount),
               ],
             ),
           );

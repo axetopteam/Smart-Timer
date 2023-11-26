@@ -90,11 +90,9 @@ abstract class TabataStoreBase with Store {
           [
             workInterval.copyWith(
                 isLast: tabata.roundsCount != 1 && j == tabata.roundsCount - 1,
-                indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j)]),
-            if (j != tabata.roundsCount - 1)
-              restInterval.copyWith(indexes: [if (tabatsCount > 1) setIndex, roundIndex.copyWith(j)]),
-            if (j == tabata.roundsCount - 1 && i != tabatsCount - 1)
-              restAfterSet.copyWith(indexes: [if (tabatsCount > 1) setIndex]),
+                indexes: [setIndex, roundIndex.copyWith(j)]),
+            if (j != tabata.roundsCount - 1) restInterval.copyWith(indexes: [setIndex, roundIndex.copyWith(j)]),
+            if (j == tabata.roundsCount - 1 && i != tabatsCount - 1) restAfterSet.copyWith(indexes: [setIndex]),
           ],
         );
       }

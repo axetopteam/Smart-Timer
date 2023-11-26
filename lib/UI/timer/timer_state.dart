@@ -169,6 +169,7 @@ abstract class TimerStateBase with Store {
       status = RunStatus(
           time: curentTime,
           type: currentInterval.activityType,
+          indexes: currentInterval.indexes,
           canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval),
           soundType: WorkoutCalculator.checkSound(currentInterval, curentTime));
     }

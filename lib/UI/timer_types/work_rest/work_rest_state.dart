@@ -63,12 +63,12 @@ abstract class WorkRestStateBase with Store {
           [
             workInterval.copyWith(
               isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
-              indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j)],
+              indexes: [setIndex, roundIndex.copyWith(j)],
             ),
             if (j != set.roundsCount - 1)
               restInterval.copyWith(
                 isLast: set.roundsCount != 1 && j == set.roundsCount - 1,
-                indexes: [if (sets.length > 1) setIndex, roundIndex.copyWith(j)],
+                indexes: [setIndex, roundIndex.copyWith(j)],
               ),
             if (j == set.roundsCount - 1 && i != sets.length - 1) restAfterSet.copyWith(indexes: [setIndex]),
           ],
