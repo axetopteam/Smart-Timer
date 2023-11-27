@@ -9,7 +9,8 @@ part of 'timer_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TimerState on TimerStateBase, Store {
-  late final _$statusAtom = Atom(name: 'TimerStateBase.status', context: context);
+  late final _$statusAtom =
+      Atom(name: 'TimerStateBase.status', context: context);
 
   @override
   TimerStatus get status {
@@ -24,7 +25,8 @@ mixin _$TimerState on TimerStateBase, Store {
     });
   }
 
-  late final _$totalRestTimeAtom = Atom(name: 'TimerStateBase.totalRestTime', context: context);
+  late final _$totalRestTimeAtom =
+      Atom(name: 'TimerStateBase.totalRestTime', context: context);
 
   @override
   Duration? get totalRestTime {
@@ -39,7 +41,8 @@ mixin _$TimerState on TimerStateBase, Store {
     });
   }
 
-  late final _$soundOnAtom = Atom(name: 'TimerStateBase.soundOn', context: context);
+  late final _$soundOnAtom =
+      Atom(name: 'TimerStateBase.soundOn', context: context);
 
   @override
   bool get soundOn {
@@ -54,18 +57,21 @@ mixin _$TimerState on TimerStateBase, Store {
     });
   }
 
-  late final _$switchSoundOnOffAsyncAction = AsyncAction('TimerStateBase.switchSoundOnOff', context: context);
+  late final _$switchSoundOnOffAsyncAction =
+      AsyncAction('TimerStateBase.switchSoundOnOff', context: context);
 
   @override
   Future<void> switchSoundOnOff() {
     return _$switchSoundOnOffAsyncAction.run(() => super.switchSoundOnOff());
   }
 
-  late final _$TimerStateBaseActionController = ActionController(name: 'TimerStateBase', context: context);
+  late final _$TimerStateBaseActionController =
+      ActionController(name: 'TimerStateBase', context: context);
 
   @override
   void start() {
-    final _$actionInfo = _$TimerStateBaseActionController.startAction(name: 'TimerStateBase.start');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.start');
     try {
       return super.start();
     } finally {
@@ -75,7 +81,8 @@ mixin _$TimerState on TimerStateBase, Store {
 
   @override
   void pause() {
-    final _$actionInfo = _$TimerStateBaseActionController.startAction(name: 'TimerStateBase.pause');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.pause');
     try {
       return super.pause();
     } finally {
@@ -85,7 +92,8 @@ mixin _$TimerState on TimerStateBase, Store {
 
   @override
   void resume() {
-    final _$actionInfo = _$TimerStateBaseActionController.startAction(name: 'TimerStateBase.resume');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.resume');
     try {
       return super.resume();
     } finally {
@@ -95,7 +103,8 @@ mixin _$TimerState on TimerStateBase, Store {
 
   @override
   void tick(DateTime nowUtc) {
-    final _$actionInfo = _$TimerStateBaseActionController.startAction(name: 'TimerStateBase.tick');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.tick');
     try {
       return super.tick(nowUtc);
     } finally {
@@ -105,7 +114,8 @@ mixin _$TimerState on TimerStateBase, Store {
 
   @override
   void close() {
-    final _$actionInfo = _$TimerStateBaseActionController.startAction(name: 'TimerStateBase.close');
+    final _$actionInfo = _$TimerStateBaseActionController.startAction(
+        name: 'TimerStateBase.close');
     try {
       return super.close();
     } finally {

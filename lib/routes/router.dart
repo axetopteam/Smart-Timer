@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_page.dart';
 import 'package:smart_timer/UI/add_new_timer.dart/new_timer_router.dart';
+import 'package:smart_timer/UI/intro/intro_page.dart';
 import 'package:smart_timer/UI/main_page/main_page.dart';
 import 'package:smart_timer/UI/settings/settings_page.dart';
 import 'package:smart_timer/UI/timer/timer_page.dart';
@@ -29,8 +30,11 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          path: '/intro',
+          page: IntroRoute.page,
+        ),
+        AutoRoute(
           path: '/main',
-          initial: true,
           page: MainRoute.page,
           children: [
             AutoRoute(

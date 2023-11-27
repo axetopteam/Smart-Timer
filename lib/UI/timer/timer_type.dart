@@ -31,6 +31,23 @@ enum TimerType {
     }
   }
 
+  String get readbleDescription {
+    switch (this) {
+      case TimerType.amrap:
+        return LocaleKeys.amrap_description.tr();
+      case TimerType.afap:
+        return LocaleKeys.afap_description.tr();
+      case TimerType.emom:
+        return LocaleKeys.emom_description.tr();
+      case TimerType.tabata:
+        return LocaleKeys.tabata_description.tr();
+      case TimerType.workRest:
+        return LocaleKeys.work_rest_description.tr();
+      // case TimerType.custom:
+      //   return 'Custom';
+    }
+  }
+
   Color workoutColor(BuildContext context) {
     switch (this) {
       case TimerType.amrap:

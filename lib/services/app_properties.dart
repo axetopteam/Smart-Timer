@@ -17,6 +17,8 @@ class AppProperties {
   final String _rateSuggestionShowedVersionKey = 'rateSuggestionShowedVersion';
   final String _countdownDurationKey = 'countdownDuration';
 
+  final String _introShowedAtKey = 'introShowedAt';
+
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
     return true;
@@ -84,6 +86,14 @@ class AppProperties {
     } else {
       _preferences.setInt(_countdownDurationKey, seconds);
     }
+  }
+
+  DateTime? get introShowedAt {
+    return _preferences.getDateTime(_introShowedAtKey);
+  }
+
+  setIntroShowedDateTime(DateTime dateTime) {
+    _preferences.setDateTime(_introShowedAtKey, dateTime);
   }
 }
 
