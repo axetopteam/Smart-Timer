@@ -134,11 +134,16 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
           child: SizedBox(
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Observer(
-                builder: (ctx) =>
-                    state.status is DoneStatus ? CompletedState(timerType: state.timerType) : _buildTimerContainer(),
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Observer(builder: (ctx) {
+                final status = state.status;
+                return status is DoneStatus
+                    ? CompletedState(
+                        timerType: state.timerType,
+                        result: status.result,
+                      )
+                    : _buildTimerContainer();
+              }),
             ),
           ),
         ),

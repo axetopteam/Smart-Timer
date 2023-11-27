@@ -60,57 +60,64 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     final bottomPadding = max(mq.viewInsets.bottom, mq.padding.bottom) + 20;
     return Material(
       child: CupertinoPageScaffold(
-        child: Builder(builder: (context) {
-          return CustomScrollView(
-            slivers: [
-              CupertinoSliverNavigationBar(
-                stretch: true,
-                largeTitle: Text(
-                  widget.record.readbleName,
-                ),
-              ),
-              SliverList.list(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
-                      style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildCommonInfo(),
-                  const SizedBox(height: 32),
-                  _buildDescription(),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocaleKeys.history_results_title.tr().toUpperCase(),
-                          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+        child: Column(
+          children: [
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  return CustomScrollView(
+                    slivers: [
+                      CupertinoSliverNavigationBar(
+                        stretch: true,
+                        largeTitle: Text(
+                          widget.record.readbleName,
                         ),
-                        const SizedBox(height: 12),
-                        WorkoutResult(record),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 32, 20, bottomPadding),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
-                      onPressed: _repeat,
-                      child: Text('Повторить тренировку'),
-                    ),
-                  )
-                ],
+                      ),
+                      SliverList.list(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
+                              style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          _buildCommonInfo(),
+                          const SizedBox(height: 32),
+                          _buildDescription(),
+                          const SizedBox(height: 32),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  LocaleKeys.history_results_title.tr().toUpperCase(),
+                                  style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+                                ),
+                                const SizedBox(height: 12),
+                                WorkoutResult(record),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
               ),
-            ],
-          );
-        }),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 20, 20, bottomPadding),
+              child: ElevatedButton(
+                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
+                onPressed: _repeat,
+                child: Text('Повторить тренировку'),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

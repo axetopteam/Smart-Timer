@@ -85,6 +85,7 @@ abstract class TimerStateBase with Store {
         time: currentStatus.time,
         type: currentStatus.type,
         isReverse: currentStatus.isReverse,
+        indexes: currentStatus.indexes,
       );
 
       if (!_workout.isCountdownCompleted(now: roundedNow)) {
@@ -157,7 +158,7 @@ abstract class TimerStateBase with Store {
       return;
     }
     if (currentIndex >= _workout.intervals.length) {
-      status = _timerCompleted(nowUtc);
+      _timerCompleted(nowUtc).then((value) => status = value);
       return;
     }
 
@@ -196,17 +197,17 @@ abstract class TimerStateBase with Store {
     );
   }
 
-  DoneStatus _timerCompleted(DateTime time) {
+  Future<DoneStatus> _timerCompleted(DateTime time) async {
     timerSubscription?.cancel();
     TimerCouterService().addNewTime(DateTime.now());
     _workout = _workout.setEndTime(time);
-    _saveWorkout();
+    final result = await _saveWorkout();
 
     AnalyticsManager.eventTimerFinished
         .setProperty('today_completed_timers_count', TimerCouterService().todaysCount)
         .setProperty('timer_type', timerType.name)
         .commit();
-    return DoneStatus();
+    return DoneStatus(result: result);
   }
 
   Future<TrainingHistoryRecord?> _saveWorkout() async {

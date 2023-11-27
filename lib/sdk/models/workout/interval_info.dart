@@ -1,7 +1,5 @@
+import 'package:smart_timer/sdk/models/training_history_record.dart';
 import 'package:smart_timer/services/audio_service.dart';
-
-import '../activity_type.dart';
-import 'interval_index.dart';
 
 sealed class TimerStatus {
   TimerStatus({this.indexes = const []});
@@ -64,7 +62,9 @@ class PauseStatus extends TimerStatus {
 }
 
 class DoneStatus extends TimerStatus {
-  DoneStatus() : super();
+  DoneStatus({this.result}) : super();
+
+  final TrainingHistoryRecord? result;
 
   @override
   final String name = 'done';

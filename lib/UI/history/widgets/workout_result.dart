@@ -53,14 +53,14 @@ class _WorkoutResultState extends State<WorkoutResult> {
 
       children.add(
         _tableRow(
-          title: '${widget.record.timerType.readbleName} ${index + 1}:',
+          title: '${widget.record.timerType.readbleName} ${index + 1}',
           value: realSetDuration.$1.format,
         ),
       );
       if (index != amraps.length - 1) {
         children.add(
           _tableRow(
-            title: 'Rest:',
+            title: 'Rest',
             value: realSetDuration.$2.format,
           ),
         );
@@ -232,7 +232,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 4, right: 8),
             child: Text(
-              title,
+              title.toUpperCase(),
             ),
           ),
         ),

@@ -42,20 +42,6 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
   Widget build(BuildContext context) {
     final safeOffset = MediaQuery.of(context).padding;
     return Column(
-      // headerSliverBuilder: (context, innerBoxIsScrolled) {
-      //   return [
-      //     SliverPadding(
-      //       padding: EdgeInsets.fromLTRB(20, safeOffset.top, 20, 20),
-      //       sliver: SliverToBoxAdapter(
-      //         child: CupertinoSlidingSegmentedControl<WorkoutsPageType>(
-      //           groupValue: selectedPage,
-      //           children: Map.fromIterable(WorkoutsPageType.values, value: (type) => Text(type.readbleName)),
-      //           onValueChanged: _onTapSegmentController,
-      //         ),
-      //       ),
-      //     )
-      //   ];
-      // },
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(20, safeOffset.top + 20, 20, 20),

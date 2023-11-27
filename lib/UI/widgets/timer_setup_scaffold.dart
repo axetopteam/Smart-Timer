@@ -42,6 +42,7 @@ class TimerSetupScaffold extends StatelessWidget {
         child: Stack(
           children: [
             CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: scrollController,
               slivers: [
                 SliverAppBar(
@@ -49,7 +50,7 @@ class TimerSetupScaffold extends StatelessWidget {
                   title: Text(appBarTitle),
                   pinned: true,
                   backgroundColor: color,
-                  expandedHeight: 140.0,
+                  expandedHeight: 120.0,
                   actions: [
                     if (addToFavorites != null)
                       IconButton(
@@ -72,7 +73,7 @@ class TimerSetupScaffold extends StatelessWidget {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       alignment: Alignment.bottomLeft,
-                      padding: const EdgeInsets.only(left: 94, bottom: 20, right: 20),
+                      padding: const EdgeInsets.only(left: 78, bottom: 20, right: 20),
                       child: Text(subtitle),
                     ),
                   ),

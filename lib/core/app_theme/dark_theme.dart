@@ -11,11 +11,11 @@ ThemeData createDarkTheme() {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
-      titleTextStyle: AppFonts.displaySmall,
+      titleTextStyle: AppFonts.headlineMedium,
       centerTitle: false,
       elevation: 0,
       toolbarHeight: 70,
-      titleSpacing: 36,
+      titleSpacing: 20,
       backgroundColor: AppColors.black,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
