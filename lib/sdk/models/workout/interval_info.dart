@@ -27,6 +27,7 @@ class RunStatus extends TimerStatus {
     required this.canBeCompleted,
     this.totalDuration,
     this.soundType,
+    required this.isReverse,
   });
 
   final Duration time;
@@ -34,6 +35,7 @@ class RunStatus extends TimerStatus {
   final Duration? totalDuration;
   final SoundType? soundType;
   final bool canBeCompleted;
+  final bool isReverse;
 
   double? get shareOfTotalDuration {
     final currentIntervalDurationInMilliseconds = totalDuration?.inMilliseconds;
@@ -52,11 +54,13 @@ class PauseStatus extends TimerStatus {
     required this.type,
     this.totalDuration,
     super.indexes,
+    required this.isReverse,
   });
 
   final Duration time;
   final ActivityType type;
   final Duration? totalDuration;
+  final bool isReverse;
 }
 
 class DoneStatus extends TimerStatus {

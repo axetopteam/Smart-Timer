@@ -33,9 +33,9 @@ extension DurationX on Duration {
     return "$minutesString$secondsString";
   }
 
-  String durationToString({bool isCountdown = false}) {
+  String toTimerFormat({bool isCountdown = false}) {
     if (inMicroseconds < 0) {
-      return "-${(-this).durationToString()}";
+      return "-${(-this).toTimerFormat(isCountdown: isCountdown)}";
     }
     final seconds = isCountdown ? isSecondsCeil : inSeconds;
     final minutes = seconds ~/ secondsPerMinute;

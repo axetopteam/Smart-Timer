@@ -274,12 +274,12 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                 );
               }
               return Text(
-                status.time.durationToString(isCountdown: true),
+                status.time.toTimerFormat(isCountdown: status.isReverse),
                 style: context.textTheme.headlineSmall,
               );
             case PauseStatus():
               return Text(
-                status.time.durationToString(isCountdown: true),
+                status.time.toTimerFormat(isCountdown: status.isReverse),
                 style: context.textTheme.headlineSmall,
               );
             case DoneStatus():
@@ -296,7 +296,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '${LocaleKeys.timer_total_time.tr()}: ${state.totalRestTime!.durationToString(isCountdown: true)}',
+            '${LocaleKeys.timer_total_time.tr()}: ${state.totalRestTime!.toTimerFormat(isCountdown: false)}',
             style: context.textTheme.titleMedium,
           ),
         );

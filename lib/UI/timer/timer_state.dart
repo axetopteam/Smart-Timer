@@ -81,7 +81,11 @@ abstract class TimerStateBase with Store {
       timerSubscription?.pause();
       _workout = _workout.startPause(roundedNow);
       _audio.pauseIfNeeded();
-      status = PauseStatus(time: currentStatus.time, type: currentStatus.type);
+      status = PauseStatus(
+        time: currentStatus.time,
+        type: currentStatus.type,
+        isReverse: currentStatus.isReverse,
+      );
 
       if (!_workout.isCountdownCompleted(now: roundedNow)) {
         print('#TimerState# reser timer');
@@ -167,11 +171,13 @@ abstract class TimerStateBase with Store {
 
     if (curentTime != null) {
       status = RunStatus(
-          time: curentTime,
-          type: currentInterval.activityType,
-          indexes: currentInterval.indexes,
-          canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval),
-          soundType: WorkoutCalculator.checkSound(currentInterval, curentTime));
+        time: curentTime,
+        type: currentInterval.activityType,
+        indexes: currentInterval.indexes,
+        canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval),
+        soundType: WorkoutCalculator.checkSound(currentInterval, curentTime),
+        isReverse: currentInterval is FiniteInterval && currentInterval.isReverse,
+      );
     }
     _playAudioIfNeeded(status);
   }
