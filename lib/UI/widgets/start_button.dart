@@ -1,14 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/timer_couter_service.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 
 import '../../purchasing/adapty_profile_state.dart';
-import '../paywalls/paywall_page.dart';
 import 'adaptive_alert.dart';
 
 class StartButton extends StatelessWidget {
@@ -51,7 +52,7 @@ class StartButton extends StatelessWidget {
               ],
             );
             // ignore: use_build_context_synchronously
-            final hasPremium = await PaywallPage.show(context) ?? false;
+            final hasPremium = await context.router.push<bool>(const PaywallRoute()) ?? false;
             if (hasPremium) {
               onPressed();
             }

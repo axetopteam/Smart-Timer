@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     AnalyticsManager.eventAppOpened.commit();
     if (AppProperties().introShowedAt == null) {
-      widget.appRouter.push(const IntroRoute());
+      widget.appRouter.push(IntroRoute());
     } else {
       widget.appRouter.push(const MainRoute());
     }

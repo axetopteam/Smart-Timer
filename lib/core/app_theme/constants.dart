@@ -8,6 +8,14 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.white,
   );
+
+  static const alternativeBodyLarge = TextStyle(
+    fontFamily: 'Inter',
+    height: 18 / 16,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
+
   static const bodyLarge = TextStyle(
     fontFamily: 'Inter',
     height: 20 / 18,
@@ -54,6 +62,13 @@ class AppFonts {
     fontFamily: 'Inter',
     height: 90 / 70,
     fontSize: 70,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const titleLarge = TextStyle(
+    fontFamily: 'Montserrat',
+    height: 24 / 20,
+    fontSize: 20,
     fontWeight: FontWeight.w900,
   );
 

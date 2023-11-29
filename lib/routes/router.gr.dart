@@ -33,6 +33,31 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const NewTimerNavigator(),
       );
     },
+    IntroRoute.name: (routeData) {
+      final args = routeData.argsAs<IntroRouteArgs>(orElse: () => const IntroRouteArgs());
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: IntroPage(key: args.key),
+      );
+    },
+    PaywallRoute.name: (routeData) {
+      return AutoRoutePage<bool>(
+        routeData: routeData,
+        child: const PaywallPage(),
+      );
+    },
+    WorkoutsRouter.name: (routeData) {
+      return AutoRoutePage<void>(
+        routeData: routeData,
+        child: const WorkoutsTab(),
+      );
+    },
+    WorkoutsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WorkoutsPage(),
+      );
+    },
     TabataRoute.name: (routeData) {
       final args = routeData.argsAs<TabataRouteArgs>(orElse: () => const TabataRouteArgs());
       return AutoRoutePage<void>(
@@ -109,24 +134,6 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    WorkoutsRouter.name: (routeData) {
-      return AutoRoutePage<void>(
-        routeData: routeData,
-        child: const WorkoutsTab(),
-      );
-    },
-    WorkoutsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WorkoutsPage(),
-      );
-    },
-    IntroRoute.name: (routeData) {
-      return AutoRoutePage<void>(
-        routeData: routeData,
-        child: const IntroPage(),
-      );
-    },
   };
 }
 
@@ -168,6 +175,76 @@ class NewTimerRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'NewTimerRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [IntroPage]
+class IntroRoute extends PageRouteInfo<IntroRouteArgs> {
+  IntroRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          IntroRoute.name,
+          args: IntroRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'IntroRoute';
+
+  static const PageInfo<IntroRouteArgs> page = PageInfo<IntroRouteArgs>(name);
+}
+
+class IntroRouteArgs {
+  const IntroRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'IntroRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [PaywallPage]
+class PaywallRoute extends PageRouteInfo<void> {
+  const PaywallRoute({List<PageRouteInfo>? children})
+      : super(
+          PaywallRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PaywallRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WorkoutsTab]
+class WorkoutsRouter extends PageRouteInfo<void> {
+  const WorkoutsRouter({List<PageRouteInfo>? children})
+      : super(
+          WorkoutsRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WorkoutsRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WorkoutsPage]
+class WorkoutsRoute extends PageRouteInfo<void> {
+  const WorkoutsRoute({List<PageRouteInfo>? children})
+      : super(
+          WorkoutsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WorkoutsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -443,46 +520,4 @@ class WorkoutDetailsRouteArgs {
   String toString() {
     return 'WorkoutDetailsRouteArgs{record: $record, key: $key}';
   }
-}
-
-/// generated route for
-/// [WorkoutsTab]
-class WorkoutsRouter extends PageRouteInfo<void> {
-  const WorkoutsRouter({List<PageRouteInfo>? children})
-      : super(
-          WorkoutsRouter.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WorkoutsRouter';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WorkoutsPage]
-class WorkoutsRoute extends PageRouteInfo<void> {
-  const WorkoutsRoute({List<PageRouteInfo>? children})
-      : super(
-          WorkoutsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WorkoutsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [IntroPage]
-class IntroRoute extends PageRouteInfo<void> {
-  const IntroRoute({List<PageRouteInfo>? children})
-      : super(
-          IntroRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'IntroRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -169,7 +169,6 @@ class _FavoriteTileState extends State<FavoriteTile> {
           children: chilren,
         );
       case WorkoutSettings_Workout.notSet:
-        // TODO: Handle this case.
         return Container();
     }
   }
