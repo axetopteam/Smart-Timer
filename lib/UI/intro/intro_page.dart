@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
@@ -6,8 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/timer/timer_type.dart';
 import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
+import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/routes/router.dart';
+import 'package:smart_timer/services/app_properties.dart';
 import 'package:smart_timer/utils/interable_extension.dart';
 
 import 'intro_state.dart';
@@ -18,11 +21,30 @@ class IntroPage extends StatelessWidget {
 
   final IntroState state = IntroState();
 
+  Future<void> _onFinishTap(BuildContext context) async {
+    final role = state.selectedRole;
+    if (role != null) {
+      AnalyticsManager().setUserProperty('role', role.name);
+    }
+
+    AppProperties().setIntroShowedDateTime(DateTime.now().toUtc());
+
+    final premiumState = context.read<AdaptyProfileState>();
+
+    context.router.popUntil((route) => false);
+    await context.router.pushAll([
+      const MainRoute(),
+      if (!premiumState.isPremiumActive) const PaywallRoute(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return OnBoardingSlider(
+      indicatorAbove: false,
       headerBackgroundColor: context.color.background,
-      finishButtonText: 'Начать',
+      finishButtonText: LocaleKeys.intro_start_button.tr(),
+      finishButtonTextStyle: context.textTheme.headlineMedium!,
       finishButtonStyle: FinishButtonStyle(
         backgroundColor: context.theme.primaryColor,
         shape: const RoundedRectangleBorder(
@@ -30,22 +52,10 @@ class IntroPage extends StatelessWidget {
         ),
       ),
       skipTextButton: Text(
-        'Skip',
+        LocaleKeys.intro_skip.tr(),
         style: context.textTheme.bodySmall,
       ),
-      onFinish: () async {
-        final role = state.selectedRole;
-        if (role != null) {
-          AnalyticsManager().setUserProperty('role', role.name);
-        }
-        final premiumState = context.read<AdaptyProfileState>();
-
-        context.router.popUntil((route) => false);
-        await context.router.pushAll([
-          const MainRoute(),
-          if (!premiumState.isPremiumActive) const PaywallRoute(),
-        ]);
-      },
+      onFinish: () => _onFinishTap(context),
       background: [
         ColoredBox(color: context.color.background),
         ColoredBox(color: context.color.background),
@@ -79,13 +89,13 @@ class _IntroPage3State extends State<IntroPage3> {
           children: <Widget>[
             const SizedBox(height: 20),
             Text(
-              'Для чего вы используете наш таймер?',
+              LocaleKeys.intro_page3_title.tr(),
               style: context.textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
             const Spacer(),
             _buildItem(
-              title: 'Я тренер',
+              title: LocaleKeys.intro_page3_option2.tr(),
               isSelected: widget.introState.selectedRole == RoleOption.coach,
               onTap: () {
                 widget.introState.selectRole(RoleOption.coach);
@@ -93,7 +103,7 @@ class _IntroPage3State extends State<IntroPage3> {
             ),
             const SizedBox(height: 20),
             _buildItem(
-              title: 'Тренируюсь сам',
+              title: LocaleKeys.intro_page3_option1.tr(),
               isSelected: widget.introState.selectedRole == RoleOption.onMyOwn,
               onTap: () {
                 widget.introState.selectRole(RoleOption.onMyOwn);
@@ -146,7 +156,7 @@ class IntroPage2 extends StatelessWidget {
         children: <Widget>[
           const SizedBox(height: 20),
           Text(
-            "Разные режимы подойдут под любые ваши тренировки",
+            LocaleKeys.intro_page2_title.tr(),
             style: context.textTheme.displaySmall,
             textAlign: TextAlign.center,
           ),
@@ -202,15 +212,16 @@ class IntroPage1 extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               style: context.textTheme.displaySmall,
-              text: 'Welcome to ',
+              text: LocaleKeys.intro_page1_welcome.tr(),
               children: [
-                TextSpan(text: 'Easy Timer', style: TextStyle(color: context.theme.primaryColor)),
+                TextSpan(
+                    text: LocaleKeys.intro_page1_app_name.tr(), style: TextStyle(color: context.theme.primaryColor)),
               ],
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            "Your Ultimate Workout Companion!",
+            LocaleKeys.intro_page1_subtitle.tr(),
             style: context.textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
@@ -221,7 +232,7 @@ class IntroPage1 extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            "Настраивайте таймер индивидуально под ваши тренировки",
+            LocaleKeys.intro_page1_feature1.tr(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
@@ -231,7 +242,7 @@ class IntroPage1 extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Добайляйте тренировки в избранное, чтобы иметь к ним быстрый доступ',
+            LocaleKeys.intro_page1_feature2.tr(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
@@ -241,7 +252,7 @@ class IntroPage1 extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Все ваши тренировки сохраняются, чтобы вы могли легко отслеживать свой прогресс',
+            LocaleKeys.intro_page1_feature3.tr(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 50),

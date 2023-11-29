@@ -136,5 +136,21 @@ abstract class  LocaleKeys {
   static const favorites_name = 'favorites.name';
   static const favorites_description = 'favorites.description';
   static const favorites = 'favorites';
+  static const intro_skip = 'intro.skip';
+  static const intro_start_button = 'intro.start_button';
+  static const intro_page1_welcome = 'intro.page1.welcome';
+  static const intro_page1_app_name = 'intro.page1.app_name';
+  static const intro_page1_subtitle = 'intro.page1.subtitle';
+  static const intro_page1_feature1 = 'intro.page1.feature1';
+  static const intro_page1_feature2 = 'intro.page1.feature2';
+  static const intro_page1_feature3 = 'intro.page1.feature3';
+  static const intro_page1 = 'intro.page1';
+  static const intro_page2_title = 'intro.page2.title';
+  static const intro_page2 = 'intro.page2';
+  static const intro_page3_title = 'intro.page3.title';
+  static const intro_page3_option1 = 'intro.page3.option1';
+  static const intro_page3_option2 = 'intro.page3.option2';
+  static const intro_page3 = 'intro.page3';
+  static const intro = 'intro';
 
 }

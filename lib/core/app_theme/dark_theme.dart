@@ -23,7 +23,11 @@ ThemeData createDarkTheme() {
       selectedItemColor: AppColors.white,
       unselectedItemColor: AppColors.dullGrey,
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.white),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColors.white,
+      extendedPadding: EdgeInsets.all(40),
+      extendedSizeConstraints: BoxConstraints(maxHeight: 56),
+    ),
     canvasColor: AppColors.black,
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     elevatedButtonTheme: ElevatedButtonThemeData(

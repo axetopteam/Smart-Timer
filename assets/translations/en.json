@@ -8,7 +8,7 @@
     "rounds": "Rounds:",
     "start": "Start",
     "time_cap": "Time Cap",
-    "rest_ratio": "Rest Time Ratio:",
+    "rest_ratio": "Work To Rest Ratio:",
     "no_time_cap": "No Time Limit",
     "no_cap": "No Limit",
     "yes": "Yes",
@@ -32,20 +32,20 @@
     "total": "Total",
     "amrap": {
         "title": "AMRAP",
-        "description": "Perform as many repetitions as\npossible in a specified time",
+        "description": "Perform as many repetitions as possible in a specified time",
         "add_button_title": "Add Another AMRAP",
         "delete_button_title": "Delete AMRAP {}"
     },
     "afap": {
         "name": "AFAP",
         "title": "FOR TIME",
-        "description": "Complete the task as fast as possible",
+        "description": "Complete the workout as fast as possible",
         "add_button_title": "Add Another AFAP",
         "delete_button_title": "Delete AFAP {}"
     },
     "emom": {
         "title": "EMOM",
-        "description": "Perform one round and rest until the end of time",
+        "description": "Perform a set of exercises at the beginning of each round",
         "add_button_title": "Add Another EMOM",
         "delete_button_title": "Delete EMOM {}",
         "death_by": "As long as possible (Death By)"
@@ -154,5 +154,25 @@
         "add_title": "Add to Favorites",
         "name": "Name",
         "description": "Description"
+    },
+    "intro": {
+        "skip": "Skip",
+        "start_button": "Get Started",
+        "page1": {
+            "welcome": "Welcome to ",
+            "app_name": "Easy Timer",
+            "subtitle": "Your Ultimate Workout Companion!",
+            "feature1": "Customize the timer according to your workout preferences",
+            "feature2": "Add workouts to your favorites\nfor quick access",
+            "feature3": "All your workouts are saved for easy progress tracking"
+        },
+        "page2": {
+            "title": "Choose Your Mode"
+        },
+        "page3": {
+            "title": "How do you primarily use the app?",
+            "option1": "Personal Workouts",
+            "option2": "Coaching Others"
+        }
     }
 }
