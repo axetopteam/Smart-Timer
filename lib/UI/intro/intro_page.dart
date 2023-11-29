@@ -214,8 +214,7 @@ class IntroPage1 extends StatelessWidget {
               style: context.textTheme.displaySmall,
               text: LocaleKeys.intro_page1_welcome.tr(),
               children: [
-                TextSpan(
-                    text: LocaleKeys.intro_page1_app_name.tr(), style: TextStyle(color: context.theme.primaryColor)),
+                TextSpan(text: LocaleKeys.app_name.tr(), style: TextStyle(color: context.theme.primaryColor)),
               ],
             ),
           ),

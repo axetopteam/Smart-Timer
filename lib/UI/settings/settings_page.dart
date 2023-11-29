@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +10,7 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
+import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/services/app_review_service.dart';
 import 'package:smart_timer/utils/utils.dart';
 
@@ -117,6 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(CupertinoIcons.star_circle_fill),
                 onTap: () {
                   AnalyticsManager.eventSettingsPurchasePressed.commit();
+                  context.router.push(const PaywallRoute());
                 },
               ),
             CupertinoListTile.notched(

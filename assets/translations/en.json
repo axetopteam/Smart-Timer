@@ -1,4 +1,5 @@
 {
+    "app_name": "Easy Timer",
     "work_time": "Work:",
     "rest_time": "Rest:",
     "rest_after_time": "Rest after {}:",
@@ -8,7 +9,7 @@
     "rounds": "Rounds:",
     "start": "Start",
     "time_cap": "Time Cap",
-    "rest_ratio": "Work To Rest Ratio:",
+    "rest_ratio": "Rest To Work Ratio:",
     "no_time_cap": "No Time Limit",
     "no_cap": "No Limit",
     "yes": "Yes",
@@ -17,6 +18,7 @@
     "ok": "OK",
     "close": "Close",
     "repeat": "Update",
+    "edit": "Edit",
     "save": "Save",
     "set": "Set",
     "round": "Round",
@@ -110,12 +112,11 @@
             "title": "Failed to restore purchases",
             "no_active_subscription": "Couldn't find active subscriptions"
         },
-        "title": "Unlock All Features\nEasy Timer",
+        "title": "Unlock All Features",
         "features": {
-            "1_title": "No Restrictions",
-            "1_subtitle": "Launch an unlimited number of timers",
+            "1_title": "Start unlimited timers.",
             "2_title": "Ad-Free",
-            "2_subtitle": "Train without distracting ads"
+            "3_title": "Launch timers from favorites"
         },
         "bottom_block": {
             "no_commitments": "No commitments, cancel anytime.",
@@ -160,7 +161,6 @@
         "start_button": "Get Started",
         "page1": {
             "welcome": "Welcome to ",
-            "app_name": "Easy Timer",
             "subtitle": "Your Ultimate Workout Companion!",
             "feature1": "Customize the timer according to your workout preferences",
             "feature2": "Add workouts to your favorites\nfor quick access",

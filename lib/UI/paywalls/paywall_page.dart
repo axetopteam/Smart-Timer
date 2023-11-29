@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/annotations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,10 +100,14 @@ class _PaywallPageState extends State<PaywallPage> {
                 child: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   children: [
-                    SizedBox(height: safeOffset.top + 80),
+                    SizedBox(height: safeOffset.top + 40),
                     Text(
                       LocaleKeys.paywall_title.tr(),
                       style: context.textTheme.titleSmall,
+                    ),
+                    Text(
+                      LocaleKeys.app_name.tr(),
+                      style: context.textTheme.titleSmall?.copyWith(color: context.theme.primaryColor),
                     ),
                     const SizedBox(height: 40),
                     _featuresList(),
@@ -152,6 +158,7 @@ class _PaywallPageState extends State<PaywallPage> {
   Positioned _closeButton(EdgeInsets safeOffset) {
     return Positioned(
       top: safeOffset.top + 20,
+      right: 20,
       child: IconButton(
         onPressed: () {
           AnalyticsManager.eventPaywallClosed.setProperty('premium_activated', 'false').commit();
@@ -183,7 +190,7 @@ class _PaywallPageState extends State<PaywallPage> {
               : null;
 
       return Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, safeOffset.bottom + 20),
+        padding: EdgeInsets.fromLTRB(20, 0, 20, max(safeOffset.bottom, 20)),
         decoration: BoxDecoration(
           color: context.color.background,
           boxShadow: [
@@ -277,19 +284,22 @@ class _PaywallPageState extends State<PaywallPage> {
         _featureRow(
           icon: Icons.all_inclusive,
           title: LocaleKeys.paywall_features_1_title.tr(),
-          subtitle: LocaleKeys.paywall_features_1_subtitle.tr(),
         ),
         _featureRow(
           icon: CupertinoIcons.nosign,
           title: LocaleKeys.paywall_features_2_title.tr(),
-          subtitle: LocaleKeys.paywall_features_2_subtitle.tr(),
+        ),
+        _featureRow(
+          icon: CupertinoIcons.heart,
+          title: LocaleKeys.paywall_features_3_title.tr(),
         ),
       ].addSeparator(const SizedBox(height: 20)),
     );
   }
 
-  Widget _featureRow({required IconData icon, required String title, required String subtitle}) {
+  Widget _featureRow({required IconData icon, required String title, String? subtitle}) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           icon,
@@ -304,10 +314,11 @@ class _PaywallPageState extends State<PaywallPage> {
                 title,
                 style: context.textTheme.headlineMedium,
               ),
-              Text(
-                subtitle,
-                style: context.textTheme.bodyLarge?.copyWith(color: context.color.secondaryText),
-              ),
+              if (subtitle != null)
+                Text(
+                  subtitle,
+                  style: context.textTheme.bodyLarge?.copyWith(color: context.color.secondaryText),
+                ),
             ],
           ),
         ),

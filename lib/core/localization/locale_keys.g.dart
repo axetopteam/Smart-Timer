@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const app_name = 'app_name';
   static const work_time = 'work_time';
   static const rest_time = 'rest_time';
   static const rest_after_time = 'rest_after_time';
@@ -99,9 +100,8 @@ abstract class  LocaleKeys {
   static const paywall_restore_error = 'paywall.restore_error';
   static const paywall_title = 'paywall.title';
   static const paywall_features_1_title = 'paywall.features.1_title';
-  static const paywall_features_1_subtitle = 'paywall.features.1_subtitle';
   static const paywall_features_2_title = 'paywall.features.2_title';
-  static const paywall_features_2_subtitle = 'paywall.features.2_subtitle';
+  static const paywall_features_3_title = 'paywall.features.3_title';
   static const paywall_features = 'paywall.features';
   static const paywall_bottom_block_no_commitments = 'paywall.bottom_block.no_commitments';
   static const paywall_bottom_block_trial = 'paywall.bottom_block.trial';
@@ -139,7 +139,6 @@ abstract class  LocaleKeys {
   static const intro_skip = 'intro.skip';
   static const intro_start_button = 'intro.start_button';
   static const intro_page1_welcome = 'intro.page1.welcome';
-  static const intro_page1_app_name = 'intro.page1.app_name';
   static const intro_page1_subtitle = 'intro.page1.subtitle';
   static const intro_page1_feature1 = 'intro.page1.feature1';
   static const intro_page1_feature2 = 'intro.page1.feature2';

@@ -55,7 +55,13 @@ ThemeData createDarkTheme() {
       ),
     ),
     textButtonTheme: const TextButtonThemeData(
-      style: ButtonStyle(overlayColor: MaterialStatePropertyAll(Colors.transparent)),
+      style: ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(Colors.transparent),
+        minimumSize: MaterialStatePropertyAll(Size.zero),
+        padding: MaterialStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        ),
+      ),
     ),
     iconTheme: const IconThemeData(color: AppColors.white),
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
