@@ -66,13 +66,17 @@ class _SettingsPageState extends State<SettingsPage> {
     return SliverToBoxAdapter(
       child: CupertinoListSection.insetGrouped(
         backgroundColor: context.color.background,
-        header: Text(
-          LocaleKeys.settings_general.tr().toUpperCase(),
-          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+        header: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            LocaleKeys.settings_general.tr().toUpperCase(),
+            style: context.textStyles.cupertinoSectionTitle,
+          ),
         ),
         margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
         decoration: BoxDecoration(
           color: context.color.containerBackground,
+          borderRadius: BorderRadius.circular(10),
         ),
         children: [
           CupertinoListTile.notched(
@@ -102,13 +106,17 @@ class _SettingsPageState extends State<SettingsPage> {
         final isActive = adaptyProfileState.profile?.hasPremium ?? false;
         return CupertinoListSection.insetGrouped(
           backgroundColor: context.color.background,
-          header: Text(
-            LocaleKeys.settings_plan_title.tr().toUpperCase(),
-            style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+          header: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(
+              LocaleKeys.settings_plan_title.tr().toUpperCase(),
+              style: context.textStyles.cupertinoSectionTitle,
+            ),
           ),
           margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
           decoration: BoxDecoration(
             color: context.color.containerBackground,
+            borderRadius: BorderRadius.circular(10),
           ),
           children: [
             if (!adaptyProfileState.isPremiumActive)
@@ -166,14 +174,17 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _timerBlock() {
     return SliverToBoxAdapter(
       child: CupertinoListSection.insetGrouped(
-        header: Text(
-          LocaleKeys.settings_timer.tr().toUpperCase(),
-          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+        header: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            LocaleKeys.settings_timer.tr().toUpperCase(),
+            style: context.textStyles.cupertinoSectionTitle,
+          ),
         ),
         backgroundColor: context.color.background,
         margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           color: context.color.containerBackground,
         ),
         children: [
@@ -228,9 +239,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _legalBlock() {
     return SliverToBoxAdapter(
       child: CupertinoListSection.insetGrouped(
-        header: Text(
-          LocaleKeys.settings_legal.tr().toUpperCase(),
-          style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+        header: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            LocaleKeys.settings_legal.tr().toUpperCase(),
+            style: context.textStyles.cupertinoSectionTitle,
+          ),
         ),
         backgroundColor: context.color.background,
         margin: const EdgeInsets.fromLTRB(20, 4, 20, 20),

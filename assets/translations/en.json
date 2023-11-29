@@ -82,7 +82,7 @@
         "rate_us": "Rate Us",
         "contact_us": "Contact Us",
         "plan": {
-            "title": "Subscription",
+            "title": "Plan",
             "purchase": "Subscribe",
             "active": "Active",
             "inactive": "Inactive",
@@ -91,7 +91,7 @@
         "timer": "Timer",
         "sound_on": "Sound On",
         "countdown": "Countdown",
-        "legal": "Agreements",
+        "legal": "Legal",
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use",
         "support_email_signature": "Write your feedback or describe your issue above this line.\n\nPlease do not delete or modify the information provided below.",
@@ -143,10 +143,12 @@
         "error": "Failed to load workout history",
         "empty": "Your workout history will appear here",
         "name": "Name",
-        "description": "Description",
+        "notes": "Notes",
+        "notes_hint": "Add workout notes...",
         "start_time": "Start Time",
         "total_time": "Total Time",
-        "results_title": "Workout Details"
+        "results_title": "Workout Details",
+        "repeat_workout": "Repeat the workout"
     },
     "favorites": {
         "title": "Favorites",

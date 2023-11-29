@@ -124,10 +124,12 @@ abstract class  LocaleKeys {
   static const history_error = 'history.error';
   static const history_empty = 'history.empty';
   static const history_name = 'history.name';
-  static const history_description = 'history.description';
+  static const history_notes = 'history.notes';
+  static const history_notes_hint = 'history.notes_hint';
   static const history_start_time = 'history.start_time';
   static const history_total_time = 'history.total_time';
   static const history_results_title = 'history.results_title';
+  static const history_repeat_workout = 'history.repeat_workout';
   static const history = 'history';
   static const favorites_title = 'favorites.title';
   static const favorites_error = 'favorites.error';

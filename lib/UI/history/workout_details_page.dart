@@ -60,63 +60,76 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     final bottomPadding = max(mq.viewInsets.bottom, mq.padding.bottom) + 20;
     return Material(
       child: CupertinoPageScaffold(
-        child: Column(
-          children: [
-            Expanded(
-              child: Builder(
-                builder: (context) {
-                  return CustomScrollView(
-                    slivers: [
-                      CupertinoSliverNavigationBar(
-                        stretch: true,
-                        largeTitle: Text(
-                          widget.record.readbleName,
+        resizeToAvoidBottomInset: false,
+        child: GestureDetector(
+          onTap: FocusManager.instance.primaryFocus?.unfocus,
+          child: Column(
+            children: [
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    return CustomScrollView(
+                      slivers: [
+                        CupertinoSliverNavigationBar(
+                          stretch: true,
+                          largeTitle: Text(
+                            widget.record.readbleName,
+                          ),
                         ),
-                      ),
-                      SliverList.list(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
-                              style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+                        SliverList.list(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                Jiffy.parseFromDateTime(record.startAt.toLocal()).yMEd,
+                                style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          _buildCommonInfo(),
-                          const SizedBox(height: 32),
-                          _buildDescription(),
-                          const SizedBox(height: 32),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  LocaleKeys.history_results_title.tr().toUpperCase(),
-                                  style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
-                                ),
-                                const SizedBox(height: 12),
-                                WorkoutResult(record),
-                              ],
+                            const SizedBox(height: 20),
+                            _buildCommonInfo(),
+                            const SizedBox(height: 32),
+                            _buildNotes(),
+                            const SizedBox(height: 32),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Text(
+                                      LocaleKeys.history_results_title.tr().toUpperCase(),
+                                      style: context.textStyles.cupertinoSectionTitle,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  WorkoutResult(record),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, bottomPadding),
-              child: ElevatedButton(
-                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context))),
-                onPressed: _repeat,
-                child: Text('Повторить тренировку'),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, bottomPadding),
+                child: ElevatedButtonTheme(
+                  data: context.buttonThemes.startButtonTheme,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(record.timerType.workoutColor(context)),
+                      minimumSize: MaterialStateProperty.all(const Size(double.infinity, 56)),
+                    ),
+                    onPressed: _repeat,
+                    child: Text(LocaleKeys.history_repeat_workout.tr()),
+                  ),
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -125,10 +138,6 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   Widget _buildCommonInfo() {
     return CupertinoListSection.insetGrouped(
       backgroundColor: context.color.background,
-      header: Text(
-        'Основное'.toUpperCase(),
-        style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
-      ),
       margin: const EdgeInsets.fromLTRB(20, 4, 20, 0),
       decoration: BoxDecoration(
         color: context.color.containerBackground,
@@ -154,41 +163,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     );
   }
 
-  Widget _buildName() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            LocaleKeys.history_name.tr(),
-            style: context.textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 4),
-          CupertinoTextField(
-            controller: _nameController,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: context.color.borderColor,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDescription() {
+  Widget _buildNotes() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            LocaleKeys.history_description.tr().toUpperCase(),
-            style: context.textTheme.titleMedium?.copyWith(color: context.color.secondaryText),
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(LocaleKeys.history_notes.tr().toUpperCase(), style: context.textStyles.cupertinoSectionTitle),
           ),
           const SizedBox(height: 10),
           CupertinoTextField(
@@ -200,7 +183,8 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             controller: _descriptionController,
-            placeholder: 'Напишите заметки по тренировки...',
+            placeholder: LocaleKeys.history_notes_hint.tr(),
+            padding: const EdgeInsets.fromLTRB(16, 7, 16, 7),
             maxLines: null,
             expands: true,
           ),

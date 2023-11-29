@@ -9,6 +9,15 @@ class AppFonts {
     color: AppColors.white,
   );
 
+  static const cupertinoSectionTitle = TextStyle(
+    inherit: false,
+    fontFamily: '.SF Pro Text',
+    fontSize: 13.0,
+    letterSpacing: -0.41,
+    color: Color.fromRGBO(142, 142, 146, 1.0),
+    decoration: TextDecoration.none,
+  );
+
   static const alternativeBodyLarge = TextStyle(
     fontFamily: 'Inter',
     height: 18 / 16,
