@@ -19,6 +19,8 @@ part 'timer_state.g.dart';
 
 class TimerState = TimerStateBase with _$TimerState;
 
+typedef TimerStreamListener = void Function(DateTime);
+
 abstract class TimerStateBase with Store {
   TimerStateBase({required TimerSettingsInterface timerSettings})
       : _workout = timerSettings.workout,
@@ -68,8 +70,14 @@ abstract class TimerStateBase with Store {
     AnalyticsManager.eventTimerStarted.setProperty('timerType', timerType.name).commit();
 
     _workout = _workout.copyWith(startTime: roundedNow);
+    _addNewTimerSubscription(tick);
+  }
+
+  void _addNewTimerSubscription(TimerStreamListener listener) {
+    timerSubscription?.cancel();
+    timerSubscription = null;
     timerSubscription = timeStream.listen((nowUtc) {
-      tick(nowUtc);
+      listener(nowUtc);
     });
   }
 
@@ -78,7 +86,7 @@ abstract class TimerStateBase with Store {
     print('#TimerState# pause timer');
     final currentStatus = status;
     if (currentStatus is RunStatus) {
-      timerSubscription?.pause();
+      timerSubscription?.cancel();
       _workout = _workout.startPause(roundedNow);
       _audio.pauseIfNeeded();
       status = PauseStatus(
@@ -103,8 +111,7 @@ abstract class TimerStateBase with Store {
 
     _audio.resumeIfNeeded();
     _workout = _workout.endPause(roundedNow);
-
-    timerSubscription?.resume();
+    _addNewTimerSubscription(tick);
     AnalyticsManager.eventTimerResumed.commit();
   }
 
@@ -153,10 +160,13 @@ abstract class TimerStateBase with Store {
       now: nowUtc,
       workout: _workout,
     );
+    // print('#TimerState# tickTime $nowUtc curentTime: $curentTime, currentIndex: $currentIndex ');
+
     if (currentIndex < 0) {
       status = ReadyStatus(indexes: _workout.firstIntervalIndexes);
       return;
     }
+
     if (currentIndex >= _workout.intervals.length) {
       _timerCompleted(nowUtc).then((value) => status = value);
       return;
@@ -236,6 +246,7 @@ abstract class TimerStateBase with Store {
     _workout = _workout.setEndTime(roundedNow);
     _saveWorkout();
     timerSubscription?.cancel();
+    timerSubscription = null;
     _audio.stop();
     _audio.dispose();
   }
