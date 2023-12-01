@@ -7,6 +7,7 @@ abstract class  LocaleKeys {
   static const rest_after_time = 'rest_after_time';
   static const work = 'work';
   static const rest = 'rest';
+  static const get_teady_in = 'get_teady_in';
   static const rest_between_sets = 'rest_between_sets';
   static const rounds = 'rounds';
   static const start = 'start';

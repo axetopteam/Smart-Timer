@@ -24,7 +24,7 @@ abstract class TimerStateBase with Store {
       : _workout = timerSettings.workout,
         timerType = timerSettings.type,
         settings = timerSettings.settings,
-        status = ReadyStatus() {
+        status = ReadyStatus(indexes: timerSettings.workout.firstIntervalIndexes) {
     initialize();
   }
   final TimerType timerType;
@@ -91,7 +91,7 @@ abstract class TimerStateBase with Store {
       if (!_workout.isCountdownCompleted(now: roundedNow)) {
         print('#TimerState# reser timer');
         _workout = _workout.reset();
-        status = ReadyStatus();
+        status = ReadyStatus(indexes: _workout.firstIntervalIndexes);
       }
       AnalyticsManager.eventTimerPaused.commit();
     }
@@ -154,7 +154,7 @@ abstract class TimerStateBase with Store {
       workout: _workout,
     );
     if (currentIndex < 0) {
-      status = ReadyStatus();
+      status = ReadyStatus(indexes: _workout.firstIntervalIndexes);
       return;
     }
     if (currentIndex >= _workout.intervals.length) {

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:smart_timer/services/audio_service.dart';
 
@@ -26,16 +27,14 @@ class Workout extends Equatable {
       activityType: ActivityType.countdown,
       isReverse: true,
       duration: duration,
-      indexes: [],
+      indexes: firstIntervalIndexes,
     );
     return copyWith(intervals: [countdownInterval, ...intervals]);
   }
 
   bool get hasCountdownInterval {
     final countdownInterval = intervals.firstOrNull;
-    return countdownInterval != null &&
-        countdownInterval is FiniteInterval &&
-        countdownInterval.activityType == ActivityType.countdown;
+    return countdownInterval?.isCountdownInterval ?? false;
   }
 
   bool isCountdownCompleted({required DateTime now}) {
@@ -45,6 +44,10 @@ class Workout extends Equatable {
       return countdownInterval!.currentTime(startTime: start, now: now) < Duration.zero;
     }
     return false;
+  }
+
+  List<IntervalIndex> get firstIntervalIndexes {
+    return intervals.firstWhereOrNull((element) => !element.isCountdownInterval)?.indexes ?? [];
   }
 
   Duration? get totalDuration => intervals.totalDuration;

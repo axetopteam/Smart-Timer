@@ -23,6 +23,10 @@ sealed class Interval {
     return now.difference(startTime);
   }
 
+  bool get isCountdownInterval {
+    return this is FiniteInterval && activityType == ActivityType.countdown;
+  }
+
   Map<String, dynamic> toJson();
 
   factory Interval.fromJson(Map<String, dynamic> json) {

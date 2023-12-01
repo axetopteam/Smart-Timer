@@ -9,7 +9,7 @@ enum ActivityType {
   String get redableName {
     switch (this) {
       case ActivityType.countdown:
-        return '';
+        return LocaleKeys.get_teady_in.tr();
       case ActivityType.work:
         return LocaleKeys.work.tr();
       case ActivityType.rest:

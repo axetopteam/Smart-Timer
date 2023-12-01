@@ -151,6 +151,76 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     );
   }
 
+  Widget _buildTop(TimerStatus status) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        const SizedBox(height: 30),
+        switch (status) {
+          ReadyStatus() => const SizedBox(),
+          DoneStatus() => const SizedBox(),
+          RunStatus() => Text(
+              status.type.redableName,
+              style: context.textStyles.timerInfo,
+              textAlign: TextAlign.center,
+            ),
+          PauseStatus() => Text(
+              status.type.redableName,
+              style: context.textStyles.timerInfo,
+              textAlign: TextAlign.center,
+            ),
+        },
+        const SizedBox(height: 30),
+      ],
+    );
+  }
+
+  Widget _buildMiddle(TimerStatus status) {
+    switch (status) {
+      case ReadyStatus():
+        return const PlayIcon();
+      case DoneStatus():
+        return const SizedBox();
+      case RunStatus():
+        return _buildTime(
+          time: status.time,
+          isReverse: status.isReverse,
+          isCountdown: status.type == ActivityType.countdown,
+        );
+      case PauseStatus():
+        return _buildTime(
+          time: status.time,
+          isReverse: status.isReverse,
+          isCountdown: status.type == ActivityType.countdown,
+        );
+    }
+  }
+
+  Widget _buildBottom(TimerStatus status) {
+    switch (status) {
+      case DoneStatus():
+        return const SizedBox();
+      case ReadyStatus():
+      case RunStatus():
+      case PauseStatus():
+        return Column(
+          children: [
+            const SizedBox(height: 30),
+            _buildRoudsInfo(status.indexes),
+            _totalTime(),
+            const Spacer(),
+            if (status is RunStatus && status.canBeCompleted)
+              CompleteButton(
+                key: ValueKey(status.indexes),
+                action: state.completeCurrentInterval,
+                iconColor: state.timerType.workoutColor(context),
+              ),
+            const SizedBox(height: 30),
+          ],
+        );
+    }
+  }
+
   Column _buildTimerContainer() {
     return Column(
       children: [
@@ -182,50 +252,9 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
                 child: SizedBox.expand(
                   child: Column(
                     children: [
-                      const Spacer(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Observer(builder: (_) {
-                            final status = state.status;
-                            switch (status) {
-                              case ReadyStatus():
-                              case DoneStatus():
-                                return const SizedBox();
-                              case RunStatus():
-                                return Text(
-                                  status.type.redableName,
-                                  style: context.textTheme.titleSmall,
-                                );
-                              case PauseStatus():
-                                return Text(
-                                  status.type.redableName,
-                                  style: context.textTheme.titleSmall,
-                                );
-                            }
-                          }),
-                          const SizedBox(height: 10),
-                          _buildTime(status),
-                          const SizedBox(height: 10),
-                          _buildRoudsInfo(status),
-                        ],
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _totalTime(),
-                            status is RunStatus && status.canBeCompleted
-                                ? CompleteButton(
-                                    key: ValueKey(status.indexes),
-                                    action: state.completeCurrentInterval,
-                                    iconColor: state.timerType.workoutColor(context),
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
-                      )
+                      Expanded(child: Align(child: _buildTop(status))),
+                      _buildMiddle(status),
+                      Expanded(child: _buildBottom(status)),
                     ],
                   ),
                 ),
@@ -264,34 +293,20 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     });
   }
 
-  Widget _buildTime(TimerStatus status) {
-    return SizedBox(
+  Widget _buildTime({
+    required Duration time,
+    required bool isCountdown,
+    required bool isReverse,
+  }) {
+    return Container(
+      alignment: Alignment.center,
       height: PlayIcon.size,
-      child: Builder(
-        builder: (_) {
-          switch (status) {
-            case ReadyStatus():
-              return const PlayIcon();
-            case RunStatus status:
-              if (status.type == ActivityType.countdown) {
-                return AnimatedCountdown(
-                  duration: status.time,
-                );
-              }
-              return Text(
-                status.time.toTimerFormat(isCountdown: status.isReverse),
-                style: context.textTheme.headlineSmall,
-              );
-            case PauseStatus():
-              return Text(
-                status.time.toTimerFormat(isCountdown: status.isReverse),
-                style: context.textTheme.headlineSmall,
-              );
-            case DoneStatus():
-              return const SizedBox();
-          }
-        },
-      ),
+      child: isCountdown
+          ? AnimatedCountdown(duration: time)
+          : Text(
+              time.toTimerFormat(isCountdown: isReverse),
+              style: context.textTheme.headlineSmall,
+            ),
     );
   }
 
@@ -311,17 +326,17 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     }
   }
 
-  Widget _buildRoudsInfo(TimerStatus status) {
+  Widget _buildRoudsInfo(List<IntervalIndex> indexes) {
     return Column(
-        children: status.indexes
-            .where((element) => element.totalCount != 1)
-            .map(
-              (index) => Text(
-                index.toString(),
-                style: context.textTheme.displayMedium,
-              ),
-            )
-            .toList());
+      children: indexes
+          .map(
+            (index) => Text(
+              index.toString(),
+              style: context.textStyles.timerInfo,
+            ),
+          )
+          .toList(),
+    );
   }
 
   void _requestAppReview() {

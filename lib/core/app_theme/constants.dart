@@ -18,6 +18,13 @@ class AppFonts {
     decoration: TextDecoration.none,
   );
 
+  static const timerInfo = TextStyle(
+    fontFamily: 'Inter',
+    height: 32 / 28,
+    fontSize: 28,
+    fontWeight: FontWeight.w900,
+  );
+
   static const alternativeBodyLarge = TextStyle(
     fontFamily: 'Inter',
     height: 18 / 16,
