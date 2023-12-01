@@ -7,8 +7,13 @@ import 'package:smart_timer/sdk/models/training_history_record.dart';
 import 'package:smart_timer/utils/duration.extension.dart';
 
 class WorkoutResult extends StatefulWidget {
-  const WorkoutResult(this.record, {super.key});
+  const WorkoutResult(
+    this.record, {
+    required this.showRestIntervals,
+    super.key,
+  });
   final TrainingHistoryRecord record;
+  final bool showRestIntervals;
 
   @override
   State<WorkoutResult> createState() => _WorkoutResultState();
@@ -57,7 +62,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
           value: realSetDuration.$1.format,
         ),
       );
-      if (index != amraps.length - 1) {
+      if (widget.showRestIntervals && index != amraps.length - 1) {
         children.add(
           _tableRow(
             title: 'Rest',
@@ -91,7 +96,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
           value: realSetDuration.$1.format,
         ),
       );
-      if (index != afaps.length - 1) {
+      if (widget.showRestIntervals && index != afaps.length - 1) {
         children.add(
           _tableRow(
             title: 'Rest:',
@@ -130,7 +135,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
           value: realSetDuration.$1.format,
         ),
       );
-      if (index != emoms.length - 1) {
+      if (widget.showRestIntervals && index != emoms.length - 1) {
         children.add(
           _tableRow(
             title: 'Rest:',
@@ -168,7 +173,7 @@ class _WorkoutResultState extends State<WorkoutResult> {
           value: realSetDuration.$1.format,
         ),
       );
-      if (index != tabats.length - 1) {
+      if (widget.showRestIntervals && index != tabats.length - 1) {
         children.add(
           _tableRow(
             title: 'Rest:',

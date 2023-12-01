@@ -73,7 +73,7 @@ class _CompletedStateState extends State<CompletedState> {
     if (widget.result != null) {
       return Column(
         children: [
-          WorkoutResult(widget.result!),
+          WorkoutResult(widget.result!, showRestIntervals: false),
         ],
       );
     }

@@ -35,11 +35,14 @@ class RunStatus extends TimerStatus {
   final bool canBeCompleted;
   final bool isReverse;
 
-  double? get shareOfTotalDuration {
+  double get shareOfTotalDuration {
     final currentIntervalDurationInMilliseconds = totalDuration?.inMilliseconds;
-    return currentIntervalDurationInMilliseconds != null
-        ? (currentIntervalDurationInMilliseconds - time.inMilliseconds) / currentIntervalDurationInMilliseconds
-        : null;
+    if (currentIntervalDurationInMilliseconds != null) {
+      return isReverse
+          ? (currentIntervalDurationInMilliseconds - time.inMilliseconds) / currentIntervalDurationInMilliseconds
+          : (time.inMilliseconds) / currentIntervalDurationInMilliseconds;
+    }
+    return 0.0;
   }
 }
 

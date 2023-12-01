@@ -103,7 +103,10 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                                     ),
                                   ),
                                   const SizedBox(height: 6),
-                                  WorkoutResult(record),
+                                  WorkoutResult(
+                                    record,
+                                    showRestIntervals: false,
+                                  ),
                                 ],
                               ),
                             ),

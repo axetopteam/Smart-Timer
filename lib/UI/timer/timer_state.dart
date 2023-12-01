@@ -183,6 +183,7 @@ abstract class TimerStateBase with Store {
     if (curentTime != null) {
       status = RunStatus(
         time: curentTime,
+        totalDuration: currentInterval.totalDuration,
         type: currentInterval.activityType,
         indexes: currentInterval.indexes,
         canBeCompleted: WorkoutCalculator.checkCanBeCompleted(currentInterval),

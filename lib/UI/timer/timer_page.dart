@@ -39,8 +39,9 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
 
   late final ReactionDisposer timeReactionDisposer;
 
-  var runAnimation = true;
-  final curve = Curves.linear;
+  var _animationInProgress = false;
+  final _resetAnimationCurve = Curves.easeInOut;
+  final _resetAnimationDuration = const Duration(milliseconds: 400);
 
   @override
   void initState() {
@@ -52,7 +53,7 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
     controller = AnimationController(
       vsync: this,
       duration: const Duration(microseconds: 100),
-      reverseDuration: const Duration(microseconds: 300),
+      reverseDuration: _resetAnimationDuration,
     );
 
     timeReactionDisposer = reaction(
@@ -60,18 +61,19 @@ class _TimerPageState extends State<TimerPage> with SingleTickerProviderStateMix
       (status) {
         switch (status) {
           case ReadyStatus():
-            controller.animateTo(0, duration: const Duration(milliseconds: 500));
+            controller.animateTo(0, duration: _resetAnimationDuration, curve: _resetAnimationCurve);
           case RunStatus():
             final shareOfTotalDuration = status.shareOfTotalDuration;
-            if (shareOfTotalDuration != null) {
-              if (shareOfTotalDuration == 0.0) {
-                runAnimation = false;
-                controller.animateTo(0, duration: const Duration(milliseconds: 500));
-                Future.delayed(const Duration(milliseconds: 500), () => runAnimation = true);
-              } else if (runAnimation) {
-                controller.animateTo(shareOfTotalDuration, duration: const Duration(milliseconds: 100));
-              }
+            if (_animationInProgress) return;
+
+            if (shareOfTotalDuration == 0.0 && controller.value != 0) {
+              _animationInProgress = true;
+              controller.animateTo(0, duration: _resetAnimationDuration, curve: _resetAnimationCurve);
+              Future.delayed(_resetAnimationDuration, () => _animationInProgress = false);
+            } else {
+              controller.animateTo(shareOfTotalDuration, duration: const Duration(milliseconds: 100));
             }
+
             break;
           case PauseStatus():
           case DoneStatus():
