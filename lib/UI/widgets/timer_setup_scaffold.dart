@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:smart_timer/core/app_theme/timer_icons_icons.dart';
 import 'package:smart_timer/sdk/models/workout/workout.dart';
 import '../favorites/add_to_favorites_alert.dart';
@@ -56,7 +55,6 @@ class TimerSetupScaffold extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           AddToFavoritesAlert.show(context, addToFavorites: addToFavorites!);
-                          // addToFavorites!.call('', '');
                         },
                         icon: const Icon(TimerIcons.add_to_favorites),
                       ),
@@ -86,15 +84,11 @@ class TimerSetupScaffold extends StatelessWidget {
               right: 30,
               left: 30,
               bottom: bommomPadding,
-              child: Builder(builder: (context) {
-                return Observer(builder: (context) {
-                  return StartButton(
-                    backgroundColor: color,
-                    totalTime: workout.totalDuration,
-                    onPressed: onStartPressed,
-                  );
-                });
-              }),
+              child: StartButton(
+                backgroundColor: color,
+                totalTime: workout.totalDuration,
+                onPressed: onStartPressed,
+              ),
             ),
           ],
         ),
