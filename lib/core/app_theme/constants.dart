@@ -34,7 +34,7 @@ class AppFonts {
 
   static const bodyLarge = TextStyle(
     fontFamily: 'Inter',
-    height: 20 / 18,
+    height: 22 / 18,
     fontSize: 18,
     fontWeight: FontWeight.w700,
   );

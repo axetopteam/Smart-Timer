@@ -6,9 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_timer/UI/history/history_state.dart';
 import 'package:smart_timer/core/context_extension.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
+import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
 
@@ -196,19 +198,27 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     );
   }
 
-  void _repeat() {
+  void _repeat() async {
+    final premiumState = context.read<AdaptyProfileState>();
+    final router = context.router;
+    if (!premiumState.isPremiumActive) {
+      final hasPremium = await router.push<bool>(const PaywallRoute()) ?? false;
+      if (!hasPremium) {
+        return;
+      }
+    }
     final workoutSettings = record.workout;
     switch (workoutSettings.whichWorkout()) {
       case WorkoutSettings_Workout.amrap:
-        context.pushRoute(AmrapRoute(amrapSettings: workoutSettings.amrap));
+        await router.push(AmrapRoute(amrapSettings: workoutSettings.amrap));
       case WorkoutSettings_Workout.afap:
-        context.pushRoute(AfapRoute(afapSettings: workoutSettings.afap));
+        await router.push(AfapRoute(afapSettings: workoutSettings.afap));
       case WorkoutSettings_Workout.emom:
-        context.pushRoute(EmomRoute(emomSettings: workoutSettings.emom));
+        await router.push(EmomRoute(emomSettings: workoutSettings.emom));
       case WorkoutSettings_Workout.tabata:
-        context.pushRoute(TabataRoute(tabataSettings: workoutSettings.tabata));
+        await router.push(TabataRoute(tabataSettings: workoutSettings.tabata));
       case WorkoutSettings_Workout.workRest:
-        context.pushRoute(WorkRestRoute(workRestSettings: workoutSettings.workRest));
+        await router.push(WorkRestRoute(workRestSettings: workoutSettings.workRest));
       case WorkoutSettings_Workout.notSet:
     }
   }

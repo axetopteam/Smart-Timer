@@ -142,7 +142,7 @@
     "history": {
         "title": "History",
         "error": "Failed to load workout history",
-        "empty": "Your workout history will appear here",
+        "empty": "Your workout history\nwill appear here",
         "name": "Name",
         "notes": "Notes",
         "notes_hint": "Add workout notes...",
@@ -154,7 +154,7 @@
     "favorites": {
         "title": "Favorites",
         "error": "Failed to load favorite workouts",
-        "empty": "Your favorite workouts will appear here",
+        "empty": "Your favorite workouts\nwill appear here",
         "add_title": "Add to Favorites",
         "name": "Name",
         "description": "Description"
