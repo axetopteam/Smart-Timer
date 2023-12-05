@@ -1,0 +1,9 @@
+syntax = "proto3";
+package timer;
+
+
+message Afap {
+  uint32 timeCapInSeconds = 1;
+  uint32 restTimeInSeconds = 2;  
+  bool noTimeCap = 3;
+}

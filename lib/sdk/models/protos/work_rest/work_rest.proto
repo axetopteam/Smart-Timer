@@ -1,0 +1,10 @@
+syntax = "proto3";
+package timer;
+
+
+message WorkRest {
+  uint32 roundsCount = 1; 
+  double ratio = 2;
+  int32 restAfterSetInSeconds = 3;
+
+}

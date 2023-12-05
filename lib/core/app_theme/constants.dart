@@ -1,9 +1,40 @@
 part of 'theme.dart';
 
 class AppFonts {
+  static const chip = TextStyle(
+    fontFamily: 'Inter',
+    height: 1,
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+  );
+
+  static const cupertinoSectionTitle = TextStyle(
+    inherit: false,
+    fontFamily: '.SF Pro Text',
+    fontSize: 13.0,
+    letterSpacing: -0.41,
+    color: Color.fromRGBO(142, 142, 146, 1.0),
+    decoration: TextDecoration.none,
+  );
+
+  static const timerInfo = TextStyle(
+    fontFamily: 'Inter',
+    height: 32 / 28,
+    fontSize: 28,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const alternativeBodyLarge = TextStyle(
+    fontFamily: 'Inter',
+    height: 18 / 16,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
+
   static const bodyLarge = TextStyle(
     fontFamily: 'Inter',
-    height: 20 / 18,
+    height: 22 / 18,
     fontSize: 18,
     fontWeight: FontWeight.w700,
   );
@@ -50,6 +81,13 @@ class AppFonts {
     fontWeight: FontWeight.w900,
   );
 
+  static const titleLarge = TextStyle(
+    fontFamily: 'Montserrat',
+    height: 24 / 20,
+    fontSize: 20,
+    fontWeight: FontWeight.w900,
+  );
+
   static const titleMedium = TextStyle(
     fontFamily: 'Inter',
     height: 20 / 16,
@@ -68,6 +106,7 @@ class AppFonts {
 abstract class AppColors {
   static const white = Colors.white;
   static const black = Color(0xFF0E0E0E);
+  static const black20 = Color(0x330E0E0E);
   static const black50 = Color(0x800E0E0E);
   static const black70 = Color(0xB20E0E0E);
   static const red = Color(0xFFFF5151);

@@ -1,0 +1,9 @@
+syntax = "proto3";
+package timer;
+
+import "tabata/tabata.proto";
+
+
+message TabataSettings {
+  repeated Tabata tabats = 1;
+}

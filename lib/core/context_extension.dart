@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_theme/theme.dart';
 
 extension BuildContextExt on BuildContext {
-  // ThemeTextStyles get text => Theme.of(this).extension<ThemeTextStyles>()!;
+  ThemeData get theme => Theme.of(this);
 
   ThemeColors get color => Theme.of(this).extension<ThemeColors>()!;
 

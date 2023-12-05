@@ -10,8 +10,8 @@ import 'package:smart_timer/analytics/analytics_manager.dart';
 import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/services/app_properties.dart';
 
+import 'paywalls_ids.dart';
 import 'adapty_extensions.dart';
-import 'paywalls/paywalls_ids.dart';
 
 enum PurchaseResultType {
   userCancelled,

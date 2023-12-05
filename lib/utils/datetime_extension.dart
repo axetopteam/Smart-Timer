@@ -3,7 +3,7 @@ extension DateTimeUtils on DateTime {
     final extraMillisecond = (microsecond / 1000).round();
     final roundedMilliseconds = ((millisecond + extraMillisecond) / 100).round() * 100;
 
-    final roundedNow = DateTime(
+    final roundedNow = DateTime.utc(
       year,
       month,
       day,

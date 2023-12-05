@@ -1,0 +1,8 @@
+syntax = "proto3";
+package timer;
+
+
+message Amrap {
+  uint32 workDurationInSeconds = 1;
+  uint32 restDurationInSeconds = 2;  
+}

@@ -1,11 +1,13 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const app_name = 'app_name';
   static const work_time = 'work_time';
   static const rest_time = 'rest_time';
   static const rest_after_time = 'rest_after_time';
   static const work = 'work';
   static const rest = 'rest';
+  static const get_teady_in = 'get_teady_in';
   static const rest_between_sets = 'rest_between_sets';
   static const rounds = 'rounds';
   static const start = 'start';
@@ -18,6 +20,11 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const ok = 'ok';
   static const close = 'close';
+  static const repeat = 'repeat';
+  static const edit = 'edit';
+  static const save = 'save';
+  static const set = 'set';
+  static const round = 'round';
   static const second_shortest = 'second.shortest';
   static const second_short = 'second.short';
   static const second = 'second';
@@ -41,6 +48,7 @@ abstract class  LocaleKeys {
   static const emom_description = 'emom.description';
   static const emom_add_button_title = 'emom.add_button_title';
   static const emom_delete_button_title = 'emom.delete_button_title';
+  static const emom_death_by = 'emom.death_by';
   static const emom = 'emom';
   static const tabata_title = 'tabata.title';
   static const tabata_description = 'tabata.description';
@@ -93,9 +101,8 @@ abstract class  LocaleKeys {
   static const paywall_restore_error = 'paywall.restore_error';
   static const paywall_title = 'paywall.title';
   static const paywall_features_1_title = 'paywall.features.1_title';
-  static const paywall_features_1_subtitle = 'paywall.features.1_subtitle';
   static const paywall_features_2_title = 'paywall.features.2_title';
-  static const paywall_features_2_subtitle = 'paywall.features.2_subtitle';
+  static const paywall_features_3_title = 'paywall.features.3_title';
   static const paywall_features = 'paywall.features';
   static const paywall_bottom_block_no_commitments = 'paywall.bottom_block.no_commitments';
   static const paywall_bottom_block_trial = 'paywall.bottom_block.trial';
@@ -110,5 +117,42 @@ abstract class  LocaleKeys {
   static const paywall_product_title_default = 'paywall.product_title.default';
   static const paywall_product_title = 'paywall.product_title';
   static const paywall = 'paywall';
+  static const tab_bar_items_main = 'tab_bar_items.main';
+  static const tab_bar_items_workouts = 'tab_bar_items.workouts';
+  static const tab_bar_items_settings = 'tab_bar_items.settings';
+  static const tab_bar_items = 'tab_bar_items';
+  static const history_title = 'history.title';
+  static const history_error = 'history.error';
+  static const history_empty = 'history.empty';
+  static const history_name = 'history.name';
+  static const history_notes = 'history.notes';
+  static const history_notes_hint = 'history.notes_hint';
+  static const history_start_time = 'history.start_time';
+  static const history_total_time = 'history.total_time';
+  static const history_results_title = 'history.results_title';
+  static const history_repeat_workout = 'history.repeat_workout';
+  static const history = 'history';
+  static const favorites_title = 'favorites.title';
+  static const favorites_error = 'favorites.error';
+  static const favorites_empty = 'favorites.empty';
+  static const favorites_add_title = 'favorites.add_title';
+  static const favorites_name = 'favorites.name';
+  static const favorites_description = 'favorites.description';
+  static const favorites = 'favorites';
+  static const intro_skip = 'intro.skip';
+  static const intro_start_button = 'intro.start_button';
+  static const intro_page1_welcome = 'intro.page1.welcome';
+  static const intro_page1_subtitle = 'intro.page1.subtitle';
+  static const intro_page1_feature1 = 'intro.page1.feature1';
+  static const intro_page1_feature2 = 'intro.page1.feature2';
+  static const intro_page1_feature3 = 'intro.page1.feature3';
+  static const intro_page1 = 'intro.page1';
+  static const intro_page2_title = 'intro.page2.title';
+  static const intro_page2 = 'intro.page2';
+  static const intro_page3_title = 'intro.page3.title';
+  static const intro_page3_option1 = 'intro.page3.option1';
+  static const intro_page3_option2 = 'intro.page3.option2';
+  static const intro_page3 = 'intro.page3';
+  static const intro = 'intro';
 
 }

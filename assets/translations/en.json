@@ -1,14 +1,16 @@
 {
+    "app_name": "Easy Timer",
     "work_time": "Work:",
     "rest_time": "Rest:",
     "rest_after_time": "Rest after {}:",
     "work": "Work",
     "rest": "Rest",
+    "get_teady_in": "Get Ready\nIn",
     "rest_between_sets": "Rest between sets",
     "rounds": "Rounds:",
     "start": "Start",
     "time_cap": "Time Cap",
-    "rest_ratio": "Rest Time Ratio:",
+    "rest_ratio": "Rest To Work Ratio:",
     "no_time_cap": "No Time Limit",
     "no_cap": "No Limit",
     "yes": "Yes",
@@ -16,6 +18,11 @@
     "cancel": "Cancel",
     "ok": "OK",
     "close": "Close",
+    "repeat": "Update",
+    "edit": "Edit",
+    "save": "Save",
+    "set": "Set",
+    "round": "Round",
     "second": {
         "shortest": "s",
         "short": "sec"
@@ -28,22 +35,23 @@
     "total": "Total",
     "amrap": {
         "title": "AMRAP",
-        "description": "Perform as many repetitions as\npossible in a specified time",
+        "description": "Perform as many repetitions as possible in a specified time",
         "add_button_title": "Add Another AMRAP",
         "delete_button_title": "Delete AMRAP {}"
     },
     "afap": {
         "name": "AFAP",
         "title": "FOR TIME",
-        "description": "Complete the task as fast as possible",
+        "description": "Complete the workout as fast as possible",
         "add_button_title": "Add Another AFAP",
         "delete_button_title": "Delete AFAP {}"
     },
     "emom": {
         "title": "EMOM",
-        "description": "Perform one round and rest until the end of time",
+        "description": "Perform a set of exercises at the beginning of each round",
         "add_button_title": "Add Another EMOM",
-        "delete_button_title": "Delete EMOM {}"
+        "delete_button_title": "Delete EMOM {}",
+        "death_by": "As long as possible (Death By)"
     },
     "tabata": {
         "title": "TABATA",
@@ -75,7 +83,7 @@
         "rate_us": "Rate Us",
         "contact_us": "Contact Us",
         "plan": {
-            "title": "Subscription",
+            "title": "Plan",
             "purchase": "Subscribe",
             "active": "Active",
             "inactive": "Inactive",
@@ -84,7 +92,7 @@
         "timer": "Timer",
         "sound_on": "Sound On",
         "countdown": "Countdown",
-        "legal": "Agreements",
+        "legal": "Legal",
         "privacy_policy": "Privacy Policy",
         "terms_of_use": "Terms of Use",
         "support_email_signature": "Write your feedback or describe your issue above this line.\n\nPlease do not delete or modify the information provided below.",
@@ -105,12 +113,11 @@
             "title": "Failed to restore purchases",
             "no_active_subscription": "Couldn't find active subscriptions"
         },
-        "title": "Unlock All Features\nEasy Timer",
+        "title": "Unlock All Features",
         "features": {
-            "1_title": "No Restrictions",
-            "1_subtitle": "Launch an unlimited number of timers",
+            "1_title": "Start unlimited timers.",
             "2_title": "Ad-Free",
-            "2_subtitle": "Train without distracting ads"
+            "3_title": "Launch timers from favorites"
         },
         "bottom_block": {
             "no_commitments": "No commitments, cancel anytime.",
@@ -125,6 +132,50 @@
             "unlim": "Pay Once",
             "trial": "Free Trial",
             "default": "Subscription"
+        }
+    },
+    "tab_bar_items": {
+        "main": "Main",
+        "workouts": "Workouts",
+        "settings": "Settings"
+    },
+    "history": {
+        "title": "History",
+        "error": "Failed to load workout history",
+        "empty": "Your workout history\nwill appear here",
+        "name": "Name",
+        "notes": "Notes",
+        "notes_hint": "Add workout notes...",
+        "start_time": "Start Time",
+        "total_time": "Total Time",
+        "results_title": "Workout Details",
+        "repeat_workout": "Repeat the workout"
+    },
+    "favorites": {
+        "title": "Favorites",
+        "error": "Failed to load favorite workouts",
+        "empty": "Your favorite workouts\nwill appear here",
+        "add_title": "Add to Favorites",
+        "name": "Name",
+        "description": "Description"
+    },
+    "intro": {
+        "skip": "Skip",
+        "start_button": "Get Started",
+        "page1": {
+            "welcome": "Welcome to ",
+            "subtitle": "Your Ultimate Workout Companion!",
+            "feature1": "Customize the timer according to your workout preferences",
+            "feature2": "Add workouts to your favorites\nfor quick access",
+            "feature3": "All your workouts are saved for easy progress tracking"
+        },
+        "page2": {
+            "title": "Choose Your Mode"
+        },
+        "page3": {
+            "title": "How do you primarily use the app?",
+            "option1": "Personal Workouts",
+            "option2": "Coaching Others"
         }
     }
 }

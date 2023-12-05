@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// AppProperties singleton class
@@ -12,17 +10,14 @@ class AppProperties {
   late SharedPreferences _preferences;
   final String _userIdKey = 'userId';
   final String _firstLaunchKey = 'firstLaunch';
-  final String _amrapSettingsKey = 'amrapSettings';
-  final String _afapSettingsKey = 'afapSettings';
-  final String _tabataSettingsKey = 'tabataSettings';
-  final String _emomSettingsKey = 'emomSettings';
-  final String _customSettingsKey = 'customSettings';
-  final String _workRestSettingsKey = 'workRestSettings';
+
   final String _soundOnKey = 'soundOn';
   final String _lastTimersEndTimesKey = 'lastTimersEndTimes';
   final String _rateSuggestionShowedAtKey = 'rateSuggestionShowedAt';
   final String _rateSuggestionShowedVersionKey = 'rateSuggestionShowedVersion';
   final String _countdownDurationKey = 'countdownDuration';
+
+  final String _introShowedAtKey = 'introShowedAt';
 
   Future<bool> initializeProperties() async {
     _preferences = await SharedPreferences.getInstance();
@@ -43,54 +38,6 @@ class AppProperties {
 
   Future<bool?> setFirstLaunchDate(DateTime value) async {
     return await _preferences.setDateTime(_firstLaunchKey, value);
-  }
-
-  Future<bool> setAmrapSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_amrapSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getAmrapSettings() {
-    return _preferences.getJson(_amrapSettingsKey);
-  }
-
-  Future<bool> setAfapSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_afapSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getAfapSettings() {
-    return _preferences.getJson(_afapSettingsKey);
-  }
-
-  Future<bool> setTabataSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_tabataSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getTabataSettings() {
-    return _preferences.getJson(_tabataSettingsKey);
-  }
-
-  Future<bool> setEmomSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_emomSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getEmomSettings() {
-    return _preferences.getJson(_emomSettingsKey);
-  }
-
-  Future<bool> setCustomSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_customSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getCustomSettings() {
-    return _preferences.getJson(_customSettingsKey);
-  }
-
-  Future<bool> setWorkRestSettings(Map<String, dynamic> json) {
-    return _preferences.setJson(_workRestSettingsKey, json);
-  }
-
-  Map<String, dynamic>? getWorkRestSettings() {
-    return _preferences.getJson(_workRestSettingsKey);
   }
 
   bool get soundOn {
@@ -140,22 +87,17 @@ class AppProperties {
       _preferences.setInt(_countdownDurationKey, seconds);
     }
   }
+
+  DateTime? get introShowedAt {
+    return _preferences.getDateTime(_introShowedAtKey);
+  }
+
+  setIntroShowedDateTime(DateTime dateTime) {
+    _preferences.setDateTime(_introShowedAtKey, dateTime);
+  }
 }
 
 extension on SharedPreferences {
-  Future<bool> setJson(String key, Map<String, dynamic> json) {
-    return setString(key, jsonEncode(json));
-  }
-
-  Map<String, dynamic>? getJson(String key) {
-    final jsonString = getString(key);
-    if (jsonString != null) {
-      final json = jsonDecode(jsonString);
-      return json;
-    }
-    return null;
-  }
-
   Future<bool> setDateTime(String key, DateTime? dateTime) {
     if (dateTime == null) {
       return remove(key);

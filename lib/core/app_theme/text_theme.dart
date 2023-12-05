@@ -9,6 +9,7 @@ TextTheme createTextTheme() {
     displaySmall: AppFonts.displaySmall,
     headlineMedium: AppFonts.headlineMedium,
     headlineSmall: AppFonts.headlineSmall,
+    titleLarge: AppFonts.titleLarge,
     titleMedium: AppFonts.titleMedium,
     titleSmall: AppFonts.titleSmall,
   );

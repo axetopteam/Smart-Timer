@@ -11,12 +11,22 @@ ThemeData createDarkTheme() {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
-      titleTextStyle: AppFonts.displaySmall,
+      titleTextStyle: AppFonts.headlineMedium,
       centerTitle: false,
       elevation: 0,
       toolbarHeight: 70,
-      titleSpacing: 36,
+      titleSpacing: 20,
       backgroundColor: AppColors.black,
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.black,
+      selectedItemColor: AppColors.white,
+      unselectedItemColor: AppColors.dullGrey,
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColors.white,
+      extendedPadding: EdgeInsets.all(40),
+      extendedSizeConstraints: BoxConstraints(maxHeight: 56),
     ),
     canvasColor: AppColors.black,
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -45,12 +55,20 @@ ThemeData createDarkTheme() {
       ),
     ),
     textButtonTheme: const TextButtonThemeData(
-      style: ButtonStyle(overlayColor: MaterialStatePropertyAll(Colors.transparent)),
+      style: ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(Colors.transparent),
+        minimumSize: MaterialStatePropertyAll(Size.zero),
+        padding: MaterialStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        ),
+      ),
     ),
     iconTheme: const IconThemeData(color: AppColors.white),
     cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
       primaryColor: AppColors.activeBlue,
       textTheme: CupertinoTextThemeData(),
+      scaffoldBackgroundColor: AppColors.black,
+      barBackgroundColor: AppColors.black70,
     ),
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.dark,

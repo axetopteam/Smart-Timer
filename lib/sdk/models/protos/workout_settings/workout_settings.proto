@@ -1,0 +1,19 @@
+syntax = "proto3";
+package timer;
+
+import "amrap_settings/amrap_settings.proto";
+import "afap_settings/afap_settings.proto";
+import "emom_settings/emom_settings.proto";
+import "tabata_settings/tabata_settings.proto";
+import "work_rest_settings/work_rest_settings.proto";
+
+
+message WorkoutSettings {
+  oneof workout {
+    AmrapSettings amrap = 1;
+    AfapSettings afap = 2;
+    EmomSettings emom = 3;
+    TabataSettings tabata = 4;
+    WorkRestSettings workRest = 5;
+  }
+}
