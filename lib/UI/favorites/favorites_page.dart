@@ -10,6 +10,7 @@ import 'package:smart_timer/core/localization/locale_keys.g.dart';
 import 'package:smart_timer/purchasing/adapty_profile_state.dart';
 import 'package:smart_timer/routes/router.dart';
 import 'package:smart_timer/sdk/sdk_service.dart';
+import 'package:smart_timer/services/share_service.dart';
 
 import 'widgets/favorite_tile.dart';
 
@@ -60,12 +61,21 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   return Slidable(
                     key: ValueKey(favorite.id),
                     endActionPane: ActionPane(
-                      extentRatio: .25,
+                      extentRatio: .5,
                       dismissible: DismissiblePane(onDismissed: () {
                         _sdk.deleteFavorite(favorite.id);
                       }),
                       motion: const DrawerMotion(),
                       children: [
+                        SlidableAction(
+                          // An action can be bigger than the others.
+                          onPressed: (_) {
+                            ShareService().shareWorkout(favorite.type, favorite.workoutSettings);
+                          },
+                          backgroundColor: context.color.accent,
+                          foregroundColor: Colors.white,
+                          icon: CupertinoIcons.share_up,
+                        ),
                         SlidableAction(
                           // An action can be bigger than the others.
                           onPressed: (_) {

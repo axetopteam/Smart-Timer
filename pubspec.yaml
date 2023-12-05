@@ -23,6 +23,7 @@ dependencies:
   auto_route: ^7.7.0
   provider: ^6.0.5
   protoc_plugin: ^21.1.1
+  share_plus: ^7.2.1
 
   #purchase
   adapty_flutter: ^2.4.4
