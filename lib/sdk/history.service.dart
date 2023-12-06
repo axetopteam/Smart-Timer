@@ -25,8 +25,8 @@ extension HistoryExtension on SdkService {
     return res.toHistoryRecord();
   }
 
-  Future<List<TrainingHistoryRecord>> fetchHistory({int offset = 0, int limit = 10}) async {
-    final records = await _db.fetchHistory(limit: limit, offset: offset);
+  Future<List<TrainingHistoryRecord>> fetchHistory({TimerType? type, int offset = 0, int limit = 10}) async {
+    final records = await _db.fetchHistory(timerType: type?.name, limit: limit, offset: offset);
     final results = <TrainingHistoryRecord>[];
 
     for (var record in records) {

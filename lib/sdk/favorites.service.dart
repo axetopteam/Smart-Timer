@@ -16,7 +16,7 @@ extension FavoritesExtension on SdkService {
   }
 
   Stream<List<FavoriteWorkout>> favoritesStream(TimerType? type) {
-    return _db.fetchFavorites(type).map(
+    return _db.fetchFavorites(type?.name).map(
       (favoritesRawData) {
         List<FavoriteWorkout> favorites = [];
         for (var data in favoritesRawData) {

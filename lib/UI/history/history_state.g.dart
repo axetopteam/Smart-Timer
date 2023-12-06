@@ -56,6 +56,22 @@ mixin _$HistoryState on _HistoryState, Store {
     });
   }
 
+  late final _$selectedTypeAtom =
+      Atom(name: '_HistoryState.selectedType', context: context);
+
+  @override
+  TimerType? get selectedType {
+    _$selectedTypeAtom.reportRead();
+    return super.selectedType;
+  }
+
+  @override
+  set selectedType(TimerType? value) {
+    _$selectedTypeAtom.reportWrite(value, super.selectedType, () {
+      super.selectedType = value;
+    });
+  }
+
   late final _$loadMoreAsyncAction =
       AsyncAction('_HistoryState.loadMore', context: context);
 
@@ -109,12 +125,27 @@ mixin _$HistoryState on _HistoryState, Store {
     return _$deleteRecordAsyncAction.run(() => super.deleteRecord(id));
   }
 
+  late final _$_HistoryStateActionController =
+      ActionController(name: '_HistoryState', context: context);
+
+  @override
+  void selectType(TimerType? newType) {
+    final _$actionInfo = _$_HistoryStateActionController.startAction(
+        name: '_HistoryState.selectType');
+    try {
+      return super.selectType(newType);
+    } finally {
+      _$_HistoryStateActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 records: ${records},
 canLoadMore: ${canLoadMore},
-error: ${error}
+error: ${error},
+selectedType: ${selectedType}
     ''';
   }
 }

@@ -26,13 +26,26 @@ abstract class _HistoryState with Store {
   @observable
   Object? error;
 
+  @observable
+  TimerType? selectedType;
+
+  @action
+  void selectType(TimerType? newType) {
+    selectedType = newType;
+    loadMore(isRefresh: true);
+  }
+
   @action
   Future<void> loadMore({bool isRefresh = false}) async {
     if ((_isLoading || !canLoadMore) && !isRefresh) return;
     error = null;
     _isLoading = true;
     try {
-      final response = await _sdk.fetchHistory(limit: _pageSize, offset: isRefresh ? 0 : records.length);
+      final response = await _sdk.fetchHistory(
+        type: selectedType,
+        limit: _pageSize,
+        offset: isRefresh ? 0 : records.length,
+      );
 
       if (isRefresh) {
         records = ObservableList.of(response);
