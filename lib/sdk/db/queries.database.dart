@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:smart_timer/UI/timer/timer_type.dart';
 
 import 'database.dart';
 
@@ -18,9 +19,16 @@ extension DatabaseQueries on AppDatabase {
     return into(favoriteWorkouts).insert(entry);
   }
 
-  Stream<List<FavoriteWorkoutRawData>> fetchFavorites() {
-    return (select(favoriteWorkouts)..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
-        .watch();
+  Stream<List<FavoriteWorkoutRawData>> fetchFavorites(TimerType? type) {
+    if (type != null) {
+      return (select(favoriteWorkouts)
+            ..where((tbl) => tbl.timerType.equals(type.name))
+            ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+          .watch();
+    } else {
+      return (select(favoriteWorkouts)..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+          .watch();
+    }
   }
 
   Future<int> deleteFavorite(int id) {
