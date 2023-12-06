@@ -15,15 +15,20 @@ class WorkoutFilterChip extends StatefulWidget {
 class _WorkoutFilterChipState extends State<WorkoutFilterChip> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<TimerType?>(
+      initialValue: widget.selectedType,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       position: PopupMenuPosition.under,
-      constraints: const BoxConstraints(maxWidth: 160),
       offset: const Offset(0, 4),
       padding: EdgeInsets.zero,
       child: Chip(
-        label: Text(
-          widget.selectedType?.readbleName ?? 'All',
+        labelStyle: context.textTheme.bodyMedium,
+        label: Container(
+          alignment: Alignment.center,
+          width: 100,
+          child: Text(
+            widget.selectedType?.readbleName ?? 'All',
+          ),
         ),
       ),
       itemBuilder: (BuildContext context) {
@@ -47,7 +52,7 @@ class _WorkoutFilterChipState extends State<WorkoutFilterChip> {
     );
   }
 
-  PopupMenuItem _buildPopupMenuItem(
+  PopupMenuItem<TimerType> _buildPopupMenuItem(
     TimerType? type, {
     void Function()? onTap,
   }) {
