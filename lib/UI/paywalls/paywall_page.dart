@@ -107,7 +107,7 @@ class _PaywallPageState extends State<PaywallPage> {
                     ),
                     Text(
                       LocaleKeys.app_name.tr(),
-                      style: context.textTheme.titleSmall?.copyWith(color: context.theme.primaryColor),
+                      style: context.textTheme.titleSmall?.copyWith(fontSize: 30, color: context.theme.primaryColor),
                     ),
                     const SizedBox(height: 40),
                     _featuresList(),
@@ -196,9 +196,9 @@ class _PaywallPageState extends State<PaywallPage> {
           boxShadow: [
             BoxShadow(
               color: context.color.shadow,
-              blurRadius: 8,
-              offset: const Offset(0, -8),
-              spreadRadius: -8,
+              blurRadius: 4,
+              offset: const Offset(0, -4),
+              spreadRadius: -4,
             )
           ],
         ),
@@ -242,36 +242,75 @@ class _PaywallPageState extends State<PaywallPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            Column(
-              children: [
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            const SizedBox(height: 20),
+            TextButtonTheme(
+              data: TextButtonThemeData(
+                style: context.theme.textButtonTheme.style?.copyWith(
+                  foregroundColor: MaterialStatePropertyAll(context.color.secondaryText),
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  runSpacing: 4,
+                  spacing: 8,
                   children: [
-                    Expanded(
-                      child: TextButton(
-                        style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
-                        onPressed: AppUtils.openTermsOfUse,
-                        child: Text(LocaleKeys.paywall_bottom_block_terms.tr()),
+                    TextButton(
+                      onPressed: AppUtils.openTermsOfUse,
+                      child: Text(
+                        LocaleKeys.paywall_bottom_block_terms.tr(),
+                        style: context.textStyles.footer,
                       ),
                     ),
-                    Expanded(
-                      child: TextButton(
-                        style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
-                        onPressed: AppUtils.openPrivacyPolicy,
-                        child: Text(LocaleKeys.paywall_bottom_block_privacy.tr()),
+                    TextButton(
+                      onPressed: state.restorePurchase,
+                      child: Text(
+                        LocaleKeys.paywall_bottom_block_restore.tr(),
+                        style: context.textStyles.footer,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: AppUtils.openPrivacyPolicy,
+                      child: Text(
+                        LocaleKeys.paywall_bottom_block_privacy.tr(),
+                        style: context.textStyles.footer,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                TextButton(
-                  style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
-                  onPressed: state.restorePurchase,
-                  child: Text(LocaleKeys.paywall_bottom_block_restore.tr()),
-                ),
-              ],
+              ),
             ),
+            // Column(
+            //   children: [
+            //     Row(
+            //       // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //       children: [
+            //         Expanded(
+            //           child: TextButton(
+            //             style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
+            //             onPressed: AppUtils.openTermsOfUse,
+            //             child: Text(LocaleKeys.paywall_bottom_block_terms.tr()),
+            //           ),
+            //         ),
+            //         Expanded(
+            //           child: TextButton(
+            //             style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
+            //             onPressed: AppUtils.openPrivacyPolicy,
+            //             child: Text(LocaleKeys.paywall_bottom_block_privacy.tr()),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //     const SizedBox(height: 4),
+            //     TextButton(
+            //       style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(context.color.secondaryText)),
+            //       onPressed: state.restorePurchase,
+            //       child: Text(LocaleKeys.paywall_bottom_block_restore.tr()),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       );

@@ -151,6 +151,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         premium: AppColors.activeGreen,
         warning: AppColors.systemRed,
         accent: AppColors.activeBlue,
-        shadow: AppColors.grey,
+        shadow: AppColors.dullGrey,
       );
 }

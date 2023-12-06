@@ -1,6 +1,13 @@
 part of 'theme.dart';
 
 class AppFonts {
+  static const footer = TextStyle(
+    fontFamily: 'Inter',
+    height: 1,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.grey,
+  );
   static const chip = TextStyle(
     fontFamily: 'Inter',
     height: 1,
